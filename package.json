@@ -2,9 +2,10 @@
   "name": "ventilator-viz",
   "version": "1.0.0",
   "description": "Ventilator visualization",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/rhotter/ventilator-viz/issues"
   },
-  "homepage": "https://github.com/rhotter/ventilator-viz#readme"
+  "homepage": "https://github.com/rhotter/ventilator-viz#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
