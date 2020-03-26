@@ -30,14 +30,18 @@ module.exports = class ClientMessager {
 	// tidalVolume = {time: DateTime, volume: volume}
 	// TODO: Aggregate values depending on freq., for frontend
 	handleTidalVolumeData(tidalVolume) {
-		this.io.emit(tidalVolume);
+		this.sendToClient(tidalVolume);
 	}
 
 	handleFiO2Data(fiO2) {
-		this.io.emit(fiO2);
+		this.sendToClient(fiO2);
 	}
 
 	handleMinuteVentilationData(minuteVentilation) {
-		this.io.emit(minuteVentilation);
-  }
+		this.sendToClient(minuteVentilation);
+	}
+	
+	sendToClient(message) {
+		this.io.emit(message);
+	}
 }

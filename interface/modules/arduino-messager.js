@@ -18,5 +18,4 @@ module.exports = class ArduinoMessager {
 	handleData(data) {
 		console.log('received data', data);
 	}
-
 }
