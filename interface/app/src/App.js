@@ -1,25 +1,10 @@
-// import React from 'react';
-//import Graph from './Graph.js';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div>
-//       <Graph />
-//    </div>
-//   );
-// }
-
-// export default App;
-
-
 import React from 'react';
-import Graph from './Graph.js';
+import LineChart from './LineChart';
 import './App.css';
 
 function App() {
   return (
-    <Graph />
+    <LineChart timeSeriesData={[5.0, 7.0, 10.0, -0.5, -1.0, 3, -5.0]} />
     // <div className="App">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />

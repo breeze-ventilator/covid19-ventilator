@@ -1,31 +1,42 @@
 import React from 'react';
-import d3Utils from './utils';
-// import d3Config from './config';
-const d3Config = {
-  svgHeight: 100,
-}
+import {initializeChart, handleNewData, setWidth} from './d3chart';
+import d3Config from './d3Config'
 
-export default class Graph extends React.Component {
-  constructor(props) {
-    // We'll fill this out soon
+export default class LineChart extends React.Component {
+    constructor(props) {
+      super(props);
+  
+      this.callSetWidth = this.callSetWidth.bind(this);
+    }
+  
+    componentDidMount() {
+			const { timeSeriesData } = this.props;
+			console.log(timeSeriesData)
+      initializeChart(timeSeriesData);
+      window.addEventListener('resize', this.callSetWidth);
+    }
+  
+    componentDidUpdate(prevProps) {
+			console.log('updating')
+      const { timeSeriesData } = this.props;
+      if (prevProps.timeSeriesData !== timeSeriesData) 
+        handleNewData(timeSeriesData);
+    }
+  
+    componentWillUnmount() {
+      window.removeEventListener('resize', this.callSetWidth);
+    }
+    
+    callSetWidth() {
+      const { timeSeriesData } = this.props;
+      setWidth(timeSeriesData);
+    }
+  
+    render() {
+      return (
+        <div id='line-chart-container'>
+          <svg className="line-chart" width="100%" height={d3Config.svgDefaultHeight} />
+        </div>
+      );
+    }
   }
-
-  componentDidMount() {
-    const { timeSeriesData } = this.props;
-    d3Utils.initializeChart(timeSeriesData, 'monthToDate');
-  }
-
-  componentDidUpdate(prevProps) {
-    // This too
-  }
-
-  componentWillUnmount() {
-    // And finally this
-  }
-
-  render() {
-    return (
-      <svg className="line-chart" width="100%" height={d3Config.svgHeight} />
-    );
-  }
-}
