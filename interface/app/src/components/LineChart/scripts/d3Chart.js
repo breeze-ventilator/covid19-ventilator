@@ -1,10 +1,11 @@
-import './d3Chart.css'
+import '../css/d3Chart.css'
 import d3Config from './d3Config'
 
 import {
   axisLeft,
   axisBottom,
 	scaleLinear,
+  active,
 	// format,
 } from 'd3';
 
@@ -101,11 +102,24 @@ const drawLine = (data) => {
   const line = d3Line()
     .x(scaleXData)
     .y(scaleYData)
-    // .curve(curveMonotoneX);
 
   select('.line-chart-line')
     .attr('d', line(data));
 }
+
+// const updateLine = (data) => {
+//   const line = d3Line()
+//     .x(scaleXData)
+//     .y(scaleYData)
+
+//   select('.line-chart-line')
+//     .attr('d', line(data))
+//     .attr("transform", null);
+  
+//   select('.line-chart-line').attr("transform", "translate(" + xScale(-1) + ",0)")
+//   .transition()
+// }
+
 
 // invoke functions to draw appropriate changes
 const renderChanges = (data) => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import LineChart from './LineChart';
-import Messager from './Messager';
-import './App.css';
+import LineChart from '../LineChart/LineChart';
+import Messager from '../../handlers/Messager';
+import './css/App.css';
 
 export default class App extends React.Component {
   constructor(props) {

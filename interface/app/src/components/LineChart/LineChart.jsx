@@ -1,6 +1,6 @@
 import React from 'react';
-import {initializeChart, handleNewData, setWidth} from './d3chart';
-import d3Config from './d3Config'
+import {initializeChart, handleNewData, setWidth} from './scripts/d3Chart';
+import d3Config from './scripts/d3Config'
 
 export default class LineChart extends React.Component {
     constructor(props) {

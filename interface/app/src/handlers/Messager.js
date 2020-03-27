@@ -7,7 +7,7 @@ export default class Messager {
 
 	listenForData() {
 		setInterval( () => {
-			let val = Math.random()*20.0 - 10.0;
+			let val = Math.random()*10.0 - 5.0;
 			this.updateData({
 				type: 'tidal volume',
 				value: val
