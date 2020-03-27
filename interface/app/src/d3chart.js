@@ -14,20 +14,18 @@ import {
   select,
 } from 'd3';
 
-const margin = {top: 20, right: 20, bottom: 20, left: 40};
-
 function getSvgDims() {
   let svgWidth = document.getElementById('line-chart-container').offsetWidth;
   let svgHeight = document.getElementById('line-chart-container').offsetHeight;
   
-  const width = svgWidth - margin.left - margin.right;
-  const height = svgHeight - margin.top - margin.bottom;
+  const width = svgWidth - d3Config.margin.left -d3Config.margin.right;
+  const height = svgHeight -d3Config.margin.top -d3Config.margin.bottom;
 
   return {width, height}
 }
 
 // create x- and y-scales
-const numDataPoints = 10
+const numDataPoints = 500
 const xScale =
   scaleLinear() // scales data to its position based on its input
     .domain([0, numDataPoints-1])
@@ -71,9 +69,8 @@ function updateScales() {
 // build the elements that will be contained within our main SVG
 const buildAxes = () => {
   let svg = select('.line-chart');
-  console.log(svg.attr("width"))
   let g = svg.append('g')
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+    .attr("transform", "translate(" +d3Config.margin.left + "," +d3Config.margin.top + ")");;
   
   g.append('g')
     .attr('class', 'line-chart-yaxis');
@@ -87,7 +84,7 @@ const buildLine = () => {
   select('.line-chart')
     .append('path')
     .attr('class', 'line-chart-line')
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" +d3Config.margin.left + "," +d3Config.margin.top + ")");
 };
 
 

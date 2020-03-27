@@ -1,19 +1,41 @@
 import React from 'react';
 import LineChart from './LineChart';
+import Messager from './Messager';
 import './App.css';
 
-function App() {
-  return (
-    <LineChart timeSeriesData={[5.0, 7.0, 10.0, -0.5, -1.0, 3, -5.0]} />
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //   </header>
-    // </div>
-  );
-}
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.numPoints = 500;
+    this.isMount = false;
+    this.state = {
+      data: {
+        tidalVolume: []
+      }
+    }
+    this.messager = new Messager(this.updateData.bind(this));
+  }
 
-export default App;
+  componentDidMount(){
+    this.isMount = true;
+  }
+
+  updateData(update) {
+    if (update.type === 'tidal volume'){
+      if (this.state.data.tidalVolume.length === this.numPoints){
+        this.state.data.tidalVolume.shift();
+      }
+      this.state.data.tidalVolume.push(update.value);
+    }
+
+    if (this.isMount) {
+      this.setState(this.state);
+    }
+  }
+
+  render() {
+    return (
+      <LineChart timeSeriesData={this.state.data.tidalVolume} />
+    );
+  }
+}

@@ -11,16 +11,15 @@ export default class LineChart extends React.Component {
   
     componentDidMount() {
 			const { timeSeriesData } = this.props;
-			console.log(timeSeriesData)
       initializeChart(timeSeriesData);
       window.addEventListener('resize', this.callSetWidth);
     }
   
     componentDidUpdate(prevProps) {
-			console.log('updating')
       const { timeSeriesData } = this.props;
-      if (prevProps.timeSeriesData !== timeSeriesData) 
-        handleNewData(timeSeriesData);
+      // if (JSON.stringify(prevProps.timeSeriesData) != JSON.stringify(timeSeriesData))  {
+        // console.log("HERE")
+      handleNewData(timeSeriesData);
     }
   
     componentWillUnmount() {
