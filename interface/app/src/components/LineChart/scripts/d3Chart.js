@@ -5,7 +5,6 @@ import {
   axisLeft,
   axisBottom,
 	scaleLinear,
-  active,
 	// format,
 } from 'd3';
 
@@ -26,7 +25,7 @@ function getSvgDims() {
 }
 
 // create x- and y-scales
-const numDataPoints = 500
+const numDataPoints = d3Config.numDataPoints
 const xScale =
   scaleLinear() // scales data to its position based on its input
     .domain([0, numDataPoints-1])
@@ -106,20 +105,6 @@ const drawLine = (data) => {
   select('.line-chart-line')
     .attr('d', line(data));
 }
-
-// const updateLine = (data) => {
-//   const line = d3Line()
-//     .x(scaleXData)
-//     .y(scaleYData)
-
-//   select('.line-chart-line')
-//     .attr('d', line(data))
-//     .attr("transform", null);
-  
-//   select('.line-chart-line').attr("transform", "translate(" + xScale(-1) + ",0)")
-//   .transition()
-// }
-
 
 // invoke functions to draw appropriate changes
 const renderChanges = (data) => {

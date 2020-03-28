@@ -72,8 +72,8 @@ function tick() {
 
   // Slide it to the left.
   d3.active(this)
-      .attr("transform", "translate(" + x(-1) + ",0)")
-    .transition()
+      // .attr("transform", "translate(" + x(-1) + ",0)")
+    // .transition()
       .on("start", tick);
 
   // Pop the old data point off the front.
