@@ -41,7 +41,7 @@ unsigned long lastPresReadTime;
 unsigned long currentTime;
 String mode = 'SETUP';
 
-// Data storage arrays
+// Data storage arrays, TODO: we could move them to init.h or init.c, or something?
 int flowArray[NUM_OF_FLOW_MEASUREMENTS]; // macro defined in init.h
 int pressureArray[NUM_OF_PRESSURE_MEASUREMENTS]; // assuming same number as measurement array
 
@@ -58,10 +58,11 @@ int blockingFlowReadings = 0; // Needed for asynchronous measurement taking
 int blockingPresReadings = 0;
 
 struct parameters {
-  String mode;
+  String mode;    // TODO: For parsing, it would be simpler to set mode to be an int
   int fiO2;
   int inspiratoryTime;
-  int exspiratoryTime;
+  int tidalVolumeGoal; // TODO: questionable, based on the protocol sheet
+  int expiratoryTime;
   int peakInspiratoryPressure;
   int peakExpiratoryPressure;
   
@@ -72,7 +73,7 @@ struct parameters {
     int highMinuteVentilationBound;
     int lowMinuteVentilationBound;
   }
-};
+};// struct parameters
 
 
 /*
@@ -94,7 +95,7 @@ void setup() {
   }
   else {
     keepAlarmRingingForever();
-}
+}// setup()
 
 /*
   Main Loop
@@ -110,20 +111,17 @@ void loop() {
 
 
 
-  if (mode.equals('SETUP')) {
+  if (mode.equals('SETUP')) { // TODO: for parsing parameters read from Pi, we should change this to an int
     // Continously waits for the setup parameters from pi.
     struct parameters params = initializeParametersFromPi();
     mode = params.mode;
   }
 
-  // Error checking variables
-  // @ALL: Were we going to do an error checking function at the end or make each function self-checking?
-  int reading_success = 0;
 
   //we will re-set system time every breath cycle is complete and when this happens we will let the pi know so that it can check breaths per minute
-  //struct measurements readings = getAllReadings();
+
  
-  // ===== getAllReadings v2 ====
+  // ===== Take readings ====
   currentTime = millis();
   if( ((currentTime - lastPresReadTime) >= PRES_READ_RATE) && (!blockingPresReadings)  ) {
     getFlowReading();
@@ -153,7 +151,21 @@ void loop() {
     waitForConfirmation();
   }
 
-  // send info to the pi including the I am alive data, and reset data storage stuff
+  //====== Update PID ======
+  // TODO: This example may be all we need to start? https://playground.arduino.cc/Code/PIDLibaryBasicExample/
+  // Do we need more than one of these?
+
+  /*
+  // TODO: Use this stuff if the example above is not a good start
+  int PIDSuccess = updatePID();
+  if !PIDSucess {
+    //TODO: throw an alarm?
+  }
+  */
+
+  //====== Send Data to the Pi ======
+  // including the I-am-alive data
+  // TODO: encapsulate the stuff in this if-statement
   if (pressureDataCount == NUM_OF_PRES_MEASUREMENTS) && (flowDataCount == NUM_OF_FLOW_MEASUREMENTS){
 
     // take average pressure
@@ -161,17 +173,33 @@ void loop() {
     avgPressureArray[avgPressureCount] = avgPressure;
     avgPressureCount = (avgPressureCount + 1) % NUM_OF_PRES_MEASUREMENTS; // trying to intelligently ensure this doesnt become a massive number
 
-
     // take average flow
     double avgFlow = arrayAverage(flowArray);
     avgFlowArray[avgPressureCount] = avgFlow;
     avgFlowCount = (avgFlowCount + 1) % NUM_OF_FLOW_MEASUREMENTS; 
 
-
     sendData(avgPressure, avgFlow);
 
+    // TODO: Check if data was recieved properly
+    int sendTimeout = 0;
+    while Serial.available(){ // TODO: I'm not totally sure of using this function - James
+      piResp = Serial.readStringUntil('\n');
+
+      if !piResp.equals('G'){ // bad response
+        sendData(avgPressure, avgFlow); // send again
+        sendTimeout++;
+        if (sendTimeout == SEND_DATA_TIMEOUT){
+          // TODO: Throw an alarm
+        }
+      }
+    }
+    
+    // Reset blocking flags
+    blockingFlowReadings = 0;
+    blockingPresReadings = 0;
+    
   }
-}
+}// loop()
 
 /*
   Runs a breath cycle.
@@ -179,4 +207,4 @@ void loop() {
 void runBreathCycle(){
 
   return;
-}
+}// runBreathCycle

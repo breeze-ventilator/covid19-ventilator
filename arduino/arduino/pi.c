@@ -8,6 +8,14 @@
   TODO: Arduino is the first to talk, and the Pi responds
 
 */
+
+#include "controls.h" // for the param update
+#include "utilities.h"
+
+
+/*
+  Handshake/elbowbump with Pi
+*/
 int initializePiCommunication(int maxWaitTime) {
   Serial.begin(9600);
   int count = 0;
@@ -45,51 +53,54 @@ int initializeParametersFromPi(){
 
 
 /*
-  Packaged and send our data to Pi, and reset the storage stuff, put in comms.c
+  Package and send data to Pi, and reset the storage stuff. Error checking is done elsewhere.
 */
 void sendData(pressureAvg, flowAvg){
 
-  // Compile string + data?
+  int data[2] = {pressureAvg, flowAvg};
+  int checksum = createCheckSum(data, 2); // TODO: this function must be implemented
 
-  // Transmit all the stuff we need
-  //// Can we have multiple lines of data
-  
-  // Confirm transmit success
+  Serial.write('D');
+  Serial.write(checksum);
+  Serial.write(pressureAvg);
+  Serial.write(flowAvg);
+  Serial.write(status); // TODO; status must be implemented (either 'G', or an error code)
+  Serial.write('\n');
 
-  // Reset blocking flags
-  blockingFlowReadings = 0;
-  blockingPresReadings = 0;
-  
   return; 
 }
 
-
- Function to parse string from Pi, put in comms.c
+/*
+ Function to parse string from Pi
  */
 void parsePiString(String piString){
 
   // verify checksum
   checksumVal = piString[0];
+  if (checksumVal != 0) {
+    // RAISE ALARM
+  
+  }
 
   // get number of Params
   paramNumber = piString[1];
 
-  // Based on length, how get params
+  // Based on length, now get all of the params
   for (int i = 0; i < paramNumber; i++){
-    char identity[2]
+    char identity[2];
+    int val; // do we want this to be a double?
+
     // want to read first two chars
-    identity[0] = ;
-    identity[1] = ; 
+    identity[0] = piString[1+i];
+    identity[1] = piString[1+(i+1)];  // weird way to write it, but kinda sorta better readability
 
     // want the new value
+    val = piString[1+(i+2)];
 
-    // find the relevant struct param
-    // will likely be best to use a case-structure
-
-    // update the relevant struct param
-
-
-
+    result = setParam(identity, val);
+    if (result == -1){
+      // TODO: THROW AN ALARM, the identiTy string didn't match any of the OPTION
+    }
   }
 
   return;

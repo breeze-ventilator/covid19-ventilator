@@ -10,6 +10,8 @@
 #define NUM_OF_PRESSURE_MEASUREMENTS 10 
 #define NUM_OF_FLOW_MEASUREMENTS 10 
 
+#define SEND_DATA_TIMEOUT 10
+
 // https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/
 
 // Input pin numbers

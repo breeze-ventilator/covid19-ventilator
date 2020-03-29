@@ -2,6 +2,6 @@
 #define CONTROLS_H
 
 int turnOffAlarms();
-
 void keepAlarmRunningForever();
+
 #endif
