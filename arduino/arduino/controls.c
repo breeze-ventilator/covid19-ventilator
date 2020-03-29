@@ -4,15 +4,11 @@
   @params:
     bool set - Turn on or off alarm.
 */
-int alarmSet(bool set){
-  if (set) {
-    // Turn On Alarm
-  }
-  else if(!set) {
-    // Turn Off Alarm
-  }
-  else {
-    return 0;
-  }
-  return 1;
+
+int turnOffAlarm(){
+  // Turn Off Alarm
+}
+
+void keepAlarmRunningForever() {
+  while(1) {}
 }

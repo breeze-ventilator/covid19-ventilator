@@ -1,54 +1,75 @@
 #include <Stepper.h>
+#include <Servo.h>
 
-//Servo blowerFan;
-//Servo airIntake;
-
-int stepsPerRevolution = 100; // this is dependent on the motor and should be updated
 // these need to be global
-Stepper blowerFan(stepsPerRevolution, 8, 9, 10, 11);
-Stepper airIntake(stepsPerRevolution, 8, 9, 10, 11); 
-Stepper O2Valve(stepsPerRevolution, O2_CONT_PIN0,O2_CONT_PIN1,O2_CONT_PIN2,O2_CONT_PIN3);
+Servo blowerFan;  
+Servo airIntake;
 
-int initializePins() {
+#define STEPS_PER_REVOLUTION  100 // this is dependent on the motor and should be updated, will move to init.h 
+Stepper O2Valve(STEPS_PER_REVOLUTION, O2_CONT_PIN0, O2_CONT_PIN1, O2_CONT_PIN2, O2_CONT_PIN3);
+
+/*
+  Initializes the pins for the arduino.
+*/
+void initializePins() {
   // https://www.arduino.cc/en/Tutorial/DigitalPins
 
-  // inputs
-  pinMode(PRESSURE_PIN, input);
-  pinMode(FLOW_PIN, input);
-  pinMode(BATT_PIN, input);
-  pinMode(FAN_SENS_PIN, input);
-  
-  // outputs
-  blowerFan.attach(BLOWER_PIN);
-  airIntake(AIR_CONT_PIN);
-  pinMode(ALARM_PIN, output);
-  pinMode(O2_CONT_PIN0, output); // Why is the macro name red...
-  pinMode(O2_CONT_PIN1, output); // Why is the macro name red...
-  pinMode(O2_CONT_PIN2, output); // Why is the macro name red...
-  pinMode(O2_CONT_PIN3, output); // Why is the macro name red...
+  // inputs/measurements
+  pinMode(PRESSURE_PIN, INPUT);
+  pinMode(FLOW_PIN, INPUT);
+  pinMode(BATTERY_PIN, INPUT); // TODO: What is the battery pin?
+  pinMode(FAN_SENSOR_PIN, INPUT); // TODO: Clarify with Simon how fan pins work?
 
-
-  return 1; // no way to error check?
+  // outputs/controls
+  pinMode(ALARM_PIN, OUTPUT);
+  pinMode(BLOWER_PIN, OUTPUT); // TODO: Are we controlling two fans?
+  pinMode(O2_CONTROL_PIN0, OUTPUT);
+  pinMode(O2_CONTROL_PIN1, OUTPUT);
+  pinMode(O2_CONTROL_PIN2, OUTPUT);
+  pinMode(O2_CONTROL_PIN3, OUTPUT);
+  pinMode(AIR_CONTROL_PIN, OUTPUT);
 }
 
+/*
+  Initializes Stepper for O2 Valve.
+*/
 int initializeStepperMotor() {
-  // When you start machine, have to establish the 0 for the stepper to do this:
-  // measuring stepper's current and turn it in a known direction  until we hit mechanical nstop.
-  // Once we reach that current spikes up and know we hit 0.
-
   // https://www.instructables.com/id/Control-DC-and-stepper-motors-with-L298N-Dual-Moto/
   // Recommends example code from Stepper library: stepper_oneRevolution.ino
-  // CONNECT
-  O2Valve.setSpeed(60); // 60 rpm
-  direction = -1; // -1 for ccw, 1 for cw
 
-  // ZERO MOTOR (if the pin goes high, we are zero'd?)
-  zeroSense = digitalRead(STEP_MOTOR_ZERO_PIN)
-  while zeroSense {
-    myStepper.step(direction);
+  O2Valve.setSpeed(O2_STEPPER_SPEED); // TODO: Does the stepper speed change?
+
+  // Zero motor to know where the zero point is
+  // (if the pin goes high, we are zero'd)
+  int errCount = 0;  // how many?
+
+  // TODO: Check if this is the right way to zero a stepper
+  zeroSense = digitalRead(STEP_MOTOR_ZERO_PIN); // to see if already at 0
+  while (zeroSense) {
+    myStepper.step(-1); // -1 for counterclockwise, 1 for clockwise, TODO: Ask Simon which
     zeroSense = digitalRead(STEP_MOTOR_ZERO_PIN);
-    delay(1); // lets the motor settle, may be unncessary
+    delay(1); // lets the motor settle, may be unncessary (1ms?)
+    count++;
+
+    if (count == STEPPER_INITIALIZATION_TIMEOUT){
+      return 0;
+    }
   }
 
-  return 1; // we need error checking
+  return 1; // we need error checking?
+}
+
+
+int initializeServos() {
+  // See Arduino example file in IDE: Examples > Servo > Knob
+  blowerFan.attach(BLOWER_PIN);
+  blowerFan.write(BLOW_FAN_INITIAL_POSITION); //// https://www.arduino.cc/en/Reference/ServoWrite
+
+
+  airIntake.attach(AIR_CONTROL_PIN);
+  airIntake.write(AIR_INTAKE_INITIAL_POSITION);
+
+  // TODO: Need to set the default position. Do these needs to be zero'd?
+
+  return 1;
 }

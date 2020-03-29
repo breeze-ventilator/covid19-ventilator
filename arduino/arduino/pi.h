@@ -7,4 +7,13 @@
 int initializePiCommunication();
 
 
+
+
+void sendData(pressureAvg, flowAvg);
+
+String getPiString();
+
+void parsePiString( String recievedString);
+
+
 #endif
