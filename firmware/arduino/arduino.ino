@@ -25,7 +25,6 @@
 #include "controls.c"
 #include "comms.h"
 
-
 // 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
 // (eepRom: for bootup, a read-only memory whose contents can be erased and reprogrammed using a pulsed voltage.)
 
@@ -39,7 +38,6 @@
 unsigned long lastFlowReadTime;
 unsigned long lastPresReadTime;
 unsigned long currentTime;
-String mode = 'SETUP';
 
 // Data storage arrays, TODO: we could move them to init.h or init.c, or something?
 int flowArray[NUM_OF_FLOW_MEASUREMENTS]; // macro defined in init.h
@@ -61,10 +59,10 @@ struct parameters {
   String mode;    // TODO: For parsing, it would be simpler to set mode to be an int
   int fiO2;
   int inspiratoryTime;
-  int tidalVolumeGoal; // TODO: questionable, based on the protocol sheet
   int expiratoryTime;
   int peakInspiratoryPressure;
   int peakExpiratoryPressure;
+  int sensitivity;
   
   struct alarms {
     int highPressureBound;
@@ -75,6 +73,8 @@ struct parameters {
   }
 };// struct parameters
 
+struct parameters currentParams;
+struct parameters newParams;
 
 /*
   On startup, initializes pins and ensures Pi sends message.
@@ -83,9 +83,9 @@ struct parameters {
 */
 void setup() {
   initializePins();
-  bool piConnected = initializePiCommunication(PI_MAX_WAIT_TIME); 
   bool servosConnected = initializeServos();
   bool stepperConnected = initializeStepperMotor(); // needs a timeout
+  bool piConnected = initializePiCommunication(PI_MAX_WAIT_TIME); 
 
   if (piConnected && servosConnected && stepperConnected) {
     turnOffAlarms();
@@ -95,26 +95,35 @@ void setup() {
   }
   else {
     keepAlarmRingingForever();
-}// setup()
+}
 
 /*
   Main Loop
 */
+
+/*
+  PseudoCode:
+  
+  vars:
+    newParams: - contains new parameters to run
+    currentParams: - contains currently running parameters (updates to new-params after every breath cycle)
+
+  loop:
+    # Setting Parameters
+      if there is data read data from pi
+        sets newParams;
+    # Get Sensor readings
+    if not in SETUP:
+      # PID
+    
+    # If 200 ms have gone by, send
+    
+*/
 void loop() {
-
-  // ===== Check for Params ====
-
-  if Serial.available(){
-    String recievedString = Serial.readStringUntil("\n"); // reads up-to-but-not-including '\n' char
-    parsePiString(recievedString);
-  }
-
-
-
-  if (mode.equals('SETUP')) { // TODO: for parsing parameters read from Pi, we should change this to an int
-    // Continously waits for the setup parameters from pi.
-    struct parameters params = initializeParametersFromPi();
-    mode = params.mode;
+  // ===== Check for Params =====
+  if (Serial.available()) {
+    String receivedString = Serial.readStringUntil("\n"); // reads up-to-but-not-including '\n' char
+    setNewParameters(receivedString, *newParams);
   }
 
 
@@ -132,16 +141,30 @@ void loop() {
   }
 
   // ===== Breathing cycle ====
-  if inhale{
-    inhalation();
-  }
-  if exhale{
-    exhalation();
-  }
 
+  // == Check for patient breath (change in airflow)
+ 
+  if (mode == controlled) //TODO: this is psuedocode
+    if inhale{
+      controlledInhalation();
+    }
+    if exhale{  // TODO: This is probably isn't needed, as the fan shuts off and the patient exhales on their own, right?
+      exhalation();
+    }
+ else if (mode == spontaneous){  //TODO: this is psuedocode for breath triggered
 
-  if(patientTriggered){//if in patient triggered mode look for breath attempt
-    resetSystemTime();
+    int inhale = checkForFlow(); // check the flow sensor for delta-flow
+
+    if inhale{
+      controlledInhalation();
+    }
+    else if exhale{  // TODO: This is probably isn't needed, as the fan shuts off and the patient exhales on their own, right?
+      exhalation();
+    }
+ }
+
+  if(mode == patientTriggered){//if in patient triggered mode look for breath attempt?
+    resetSystemTime(); // @ALL: is system time a thing? Is it for making sure we get a minimum # of breaths per minute?
   }
   //  setPressure(inhalePressure);
 
@@ -185,11 +208,12 @@ void loop() {
     while Serial.available(){ // TODO: I'm not totally sure of using this function - James
       piResp = Serial.readStringUntil('\n');
 
-      if !piResp.equals('G'){ // bad response
+      if !piResp.equals('G'){ // bad response (TODO: we don't need the Arduino to know the Pi's state, right? Or )
         sendData(avgPressure, avgFlow); // send again
         sendTimeout++;
         if (sendTimeout == SEND_DATA_TIMEOUT){
-          // TODO: Throw an alarm
+          // TODO: Throw an alarm, is this the right alarm to call? do we need more functionality?
+          keepAlarmRingingForever(); 
         }
       }
     }
@@ -201,10 +225,33 @@ void loop() {
   }
 }// loop()
 
-/*
-  Runs a breath cycle.
-*/
-void runBreathCycle(){
 
+/*
+  Sets the new parameters based on the parameters string.
+
+  https://docs.google.com/document/d/17tNHzC1KAyru91LCRugWpDMOWfZAJPe1F5hpNLfNYW8/edit#
+*/
+void setNewParameters(String piString, struct parameters *newParams){
+  if (!isChecksumValid(piString)) {
+    // @TODO: Determine what to do if checksum wrong.
+    return;
+  }
+
+  // Set parameters.
+  newParams->mode = piString.charAt(1)
+  newParams->fiO2 = piString.charAt(2)
+  newParams->inspiratoryTime = piString.charAt(3)
+  newParams->expiratoryTime = piString.charAt(4)
+  newParams->peakInspiratoryPressure = piString.charAt(5)
+  newParams->peakExpiratoryPressure = piString.charAt(6)
+  newParams->sensitivity = piString.charAt(7)
+  newParams->alarms.highPressureBound = piString.charAt(8)
+  newParams->alarms.lowPressureBound = piString.charAt(9)
+  newParams->alarms.highMinuteVentilationBound = piString.charAt(10)
+  newParams->alarms.lowMinuteVentilationBound = piString.charAt(11)
+  
   return;
-}// runBreathCycle
+}
+
+int isIn
+

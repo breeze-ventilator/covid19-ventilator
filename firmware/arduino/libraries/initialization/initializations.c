@@ -65,7 +65,6 @@ int initializeServos() {
   blowerFan.attach(BLOWER_PIN);
   blowerFan.write(BLOW_FAN_INITIAL_POSITION); //// https://www.arduino.cc/en/Reference/ServoWrite
 
-
   airIntake.attach(AIR_CONTROL_PIN);
   airIntake.write(AIR_INTAKE_INITIAL_POSITION);
 

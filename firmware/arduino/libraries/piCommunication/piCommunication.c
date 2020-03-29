@@ -8,7 +8,7 @@
   TODO: Arduino is the first to talk, and the Pi responds
 
 */
-
+#include "piCommunication.h"
 #include "controls.h" // for the param update
 #include "utilities.h"
 
@@ -39,11 +39,12 @@ int initializePiCommunication(int maxWaitTime, int pingInterval) {
   }
 
   if (Serial.available() > 0) {
-    String response = getPiString(); // doesn't include '/n'
-    if (response.equals("elbowbump")){
+    String response = Serial.readStringUntil('\n'); // doesn't include '/n'
+    if (response.equals('elbowbump')){
       return 1;
     }
   }
+
   return 0;
 }
 
@@ -52,7 +53,7 @@ int initializePiCommunication(int maxWaitTime, int pingInterval) {
   Gets initial setup parameters from pi.
 */
 int setupInitialParametersFromPi() {
-    initialParameterString = getPiString();
+    String initialParameterString = getPiString();
     parsePiString(initialParameterString);
     return 1;
 }
@@ -80,7 +81,6 @@ void sendData(pressureAvg, flowAvg){
   Helper function to verify checksum from first character of string.
 */
 int isChecksumValid(String piString) {
-
   int checkSumVal = piString.charAt(0); // ^ XOR
   
   int testVal = byte(piString.charAt(1));
@@ -95,34 +95,17 @@ int isChecksumValid(String piString) {
 }
 
 /*
-  Reads in the parameter string from the Pi, 12 characters long including \n
+  Rasp Pi sends N-length string, this function returns N-1 character long String object.
+  Drops the '\n' at the end of the message.
 */
 String getPiString(){
-  // Reads until \n, and returns string without '\n'
   String msg = Serial.readStringUntil('\n');
   return msg;
 }
 
-/*
-  Parses the 11 characters recieved by the Pi.
-  
-  Note: getPiString() drops the '\n' char at the end
-*/
-void parsePiString(){
-/* 
-Position   PARAM
-  1       Checksum 
-  2       Mode (1, 2, or 3)
-  3       Exhalation time (tells us the rate if controlled)
-  4       FiO2
-  5       Inspiration time
-  6       PEEP (exhalation pressure)
-  7       Inhalation pressure
-  8       High pressure alarm setting
-  9       Low pressure alarm settings
-  10       High, minute ventilation alarm settings
-  11      Low, minute Ventilation alarm settings
-*/
-  
 
+void parsePiString(String str){
+  char ch;
+
+    return -1;
 }

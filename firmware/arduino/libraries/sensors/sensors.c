@@ -1,4 +1,5 @@
 
+#include "sensors.h"
 /*
   Get a flow reading. put in inputs.c?
 */
