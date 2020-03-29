@@ -1,6 +1,7 @@
 import React from 'react';
-import LineChart from '../LineChart/LineChart';
+import Vitals from '../Vitals/Vitals';
 import ValueChart from '../ValueChart/ValueChart';
+import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNavigation';
 import Messager from '../../handlers/Messager';
 import d3Config from '../LineChart/scripts/d3Config.js'
 import './css/App.css';
@@ -38,11 +39,12 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-      <LineChart timeSeriesData={this.state.data.tidalVolume} />
+      <Vitals timeSeriesData={this.state.data.tidalVolume} />
       <ValueChart
           progress={40}
           color="#3c71d0"
       />
+      <SimpleBottomNavigation />
       </div>
     );
   }
