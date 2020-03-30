@@ -12,7 +12,7 @@ class ParameterInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: this.props.startingValue,
+            value: this.props.startingValue + this.props.unit,
         };
     }
 
@@ -28,27 +28,28 @@ class ParameterInput extends React.Component {
 
     onValueChange = (event) => {
         this.setState({
-            value: +event.target.value
+            value: +event.target.value + this.props.unit
         });
+        event.target.value = event.target.value + this.props.unit;
     }
 
     render() {
       return (
         <div>
             <mobiscroll.FormGroup inset>
-                <mobiscroll.Stepper 
-                    onClick={this.tap} 
-                    onChange={this.onValueChange} 
-                    ref="stepper" 
-                    className={this.props.className} 
-                    data-role="stepper" 
-                    min={this.props.min} 
-                    max={this.props.max} 
-                    step={this.props.step} 
-                    value={this.state.value} 
+                <mobiscroll.Stepper
+                    onClick={this.tap}
+                    onChange={this.onValueChange}
+                    ref="stepper"
+                    className={this.props.className}
+                    data-role="stepper"
+                    min={this.props.min}
+                    max={this.props.max}
+                    step={this.props.step}
+                    value={this.state.value + this.props.unit}
                     readOnly />
             </mobiscroll.FormGroup>
-           
+
             <mobiscroll.Numpad
                 className="md-numpad"
                 ref="numpad"
@@ -59,6 +60,7 @@ class ParameterInput extends React.Component {
                 type="hidden"
                 value={this.state.value}
                 onSet={this.onSet}
+                suffix={this.props.unit}
             />
         </div>
       );
@@ -78,7 +80,8 @@ ParameterInput.propTypes = {
     min: PropTypes.number,
     max: PropTypes.number,
     step: PropTypes.number,
-    className: PropTypes.string
+    className: PropTypes.string,
+    unit: PropTypes.string
 };
 
 export default ParameterInput;
