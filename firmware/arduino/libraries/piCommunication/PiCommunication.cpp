@@ -19,33 +19,38 @@
 
   Returns 1 if connected, 0 if not.
 */
-int initializePiCommunication(int maxWaitTime, int pingInterval) {
+int initializePiCommunication(int maxSerialWaitTime, int maxPiWaitTime, int pingInterval) {
   int BAUD_RATE = 9600 // move
   Serial.begin(BAUD_RATE);
   
+  int count = 0;
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
+    count++;
+    delay(1);
+    if (count > maxSerialWaitTime){
+      return TIMEOUT_ERROR;
+    }
   }
 
-  // Sends message to pi until it gets a response
-  int count = 0;
+  // Arduino sends message to pi until it gets a response
+  count = 0;
   while (Serial.available() <= 0) { // Serial.available says how many bytes available to read
-    Serial.print('elbowbump\n');   // send a capital A
+    Serial.print('elbowbump\n');
     count += pingInterval;
     delay(pingInterval);
     if (count > maxWaitTime) {
-      return 0;
+      return TIMEOUT_ERROR;
     }
   }
-
-  if (Serial.available() > 0) {
-    String response = Serial.readStringUntil('\n'); // doesn't include '/n'
-    if (response.equals('elbowbump')){
-      return 1;
-    }
+  delay(50);
+  String response = Serial.readStringUntil('\n'); // doesn't include '/n'
+  if (response.equals('elbowbump')) {
+    return 1;
   }
-
-  return 0;
+  else {
+    return PI_SENT_WRONG_CODE_ERROR;
+  }
 }
 
 

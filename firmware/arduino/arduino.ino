@@ -21,8 +21,8 @@
 #include "pi.h"
 #include "init.h"
 #include "utilities.h"
-#include "sensors.h"
-#include "controls.c"
+#include "PressureSensor.h"
+#include "controls.h"
 #include "comms.h"
 
 // 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
@@ -61,21 +61,35 @@ struct Parameters {
 
 struct SensorData {
   unsigned int batteryVoltage;
-  unsigned int lastFlowValue;
+  float lastFlowValue;
   unsigned int peakFlowValueInCurrentBreath; // needed for switching to exhalation
   struct ForPID {
-    unsigned int[FLOW_HISTORY_LENGTH_FOR_PID] flowValues;
+    float[FLOW_HISTORY_LENGTH_FOR_PID] flowValues;
     unsigned int[PRESSURE_HISTORY_LENGTH_FOR_PID] presureValues;
     unsigned int currentFlowValuesIndex;
     unsigned int currentPressureValuesIndex;
   } forPID;
   struct ForPI {
-    unsigned int flowSum;
+    float flowSum;
     unsigned int pressureSum;
     unsigned int numFlowMeasurements;
     unsigned int numPressureMeasurements;
+    unsigned int numFlowErros;
+    unsigned int numPressureErrors;
   } forPI;
 } data;
+
+struct Sensors {
+  MainPressureSensor *mainPressureSensor;
+  OxygenPressureSensor *oxygenPressureSensor;
+  FlowSensor *flowSensor;
+  BatteryVoltageSensor *batteryVoltageSensor;
+} sensors;
+
+struct ContrallableThings {
+  OxygenValveStepper *oxygenValveStepper;
+  
+} contrallableThings;
 
 struct Parameters currentParams;
 struct Parameters newParams;
@@ -87,20 +101,18 @@ struct Parameters newParams;
 */
 void setup() {
   initializeDigitalPins();
+  turnOffAlarms();
+  
   initializeFlow();
   initializeServos();
-  bool stepperConnected = initializeStepperMotor(STEPPER_MAX_INITIALIZATION_TIME); // needs a timeout
+  bool stepperConnected = initializeStepperMotor(STEPPER_MAX_INITIALIZATION_TIME);
   bool piConnected = initializePiCommunication(PI_MAX_WAIT_TIME); 
-
-  if (piConnected && servosConnected && stepperConnected) {
-    turnOffAlarms();
-
-    unsigned long currentTime = millis();
-    updateLastFlowReadTime(currentTime);
-    updateLastPressureReadTime(currentTime);
+  if (!piConnected) {
+    turnOnAlarm();
   }
-  else {
-    keepAlarmRingingForever();
+
+  if (!servosConnected || !stepperConnected) {
+    sendErrorToPi();
   }
   initializeState(&state);
   currentParams.mode = WAITING_FOR_PARAMETERS;
@@ -116,18 +128,7 @@ void loop() {
     setNewParameters(receivedString, &newParams);
   }
 
-  // take sensor readings
-  if (isTimeToReadFlow()) {
-    int flowValue = getFlowReading();
-    saveFlowReading(flowValue, &data);
-  }
-  if (isTimeToReadPressure()) {
-    unsigned int pressureValue = getPressureReading(); // analog read (difference between this pressure and atmospheric pressure)
-    savePressureReading(flowValue, &data);
-  }
-  if (isTimeToReadBatteryVoltage()) {
-    data.batteryVoltage = getBatteryVoltage();
-  }
+  readSensorsIfAvailableAndSaveSensorData(&data);
 
   updateState(&state, currentParams);
 
@@ -136,9 +137,7 @@ void loop() {
     updateCurrentParameters(&currentParams, &newParams);
   }
 
-  oxygenControl(currentParams);
-
-  if (curentParams.mode == PRESSURE_SUPPORT_MODE &&  state.isStartingNewBreath) {
+  if (curentParams.mode == PRESSURE_SUPPORT_MODE && state.isStartingNewBreath) {
     // we will re-set system time every breath cycle is complete and when
     // this happens we will let the pi know so that it can check breaths per minut
     tellPiThatStartingNewBreath(&piMessageQueue);
@@ -146,7 +145,7 @@ void loop() {
 
   // breathing cycle
   if (state.breathingStage == INHALATION) {
-    inhilationControl(&data, currentParams);
+    inhalationControl(&data, currentParams);
   }
   else if (state.breathingStage == EXHALATION) {
     exhalationControl(&data, currentParams);
@@ -169,61 +168,61 @@ void updateState(struct State *state, struct Parameters currentParams) {
 
 
 
-// Other stuff:
+// // Other stuff:
 
-//====== Send Data to the Pi ======
-  // including the I-am-alive data
-  // TODO: encapsulate the stuff in this if-statement
-  if (pressureDataCount == NUM_OF_PRES_MEASUREMENTS) && (flowDataCount == NUM_OF_FLOW_MEASUREMENTS){
+// //====== Send Data to the Pi ======
+//   // including the I-am-alive data
+//   // TODO: encapsulate the stuff in this if-statement
+//   if (pressureDataCount == NUM_OF_PRES_MEASUREMENTS) && (flowDataCount == NUM_OF_FLOW_MEASUREMENTS){
 
-    // take average pressure
-    double avgPressure = arrayAverage(pressureArray); 
-    avgPressureArray[avgPressureCount] = avgPressure;
-    avgPressureCount = (avgPressureCount + 1) % NUM_OF_PRES_MEASUREMENTS; // trying to intelligently ensure this doesnt become a massive number
+//     // take average pressure
+//     double avgPressure = arrayAverage(pressureArray); 
+//     avgPressureArray[avgPressureCount] = avgPressure;
+//     avgPressureCount = (avgPressureCount + 1) % NUM_OF_PRES_MEASUREMENTS; // trying to intelligently ensure this doesnt become a massive number
 
-    // take average flow
-    double avgFlow = arrayAverage(flowArray);
-    avgFlowArray[avgPressureCount] = avgFlow;
-    avgFlowCount = (avgFlowCount + 1) % NUM_OF_FLOW_MEASUREMENTS; 
+//     // take average flow
+//     double avgFlow = arrayAverage(flowArray);
+//     avgFlowArray[avgPressureCount] = avgFlow;
+//     avgFlowCount = (avgFlowCount + 1) % NUM_OF_FLOW_MEASUREMENTS; 
 
-    sendData(avgPressure, avgFlow);
+//     sendData(avgPressure, avgFlow);
 
-    // TODO: Check if data was recieved properly
-    int sendTimeout = 0;
-    while Serial.available(){ // TODO: I'm not totally sure of using this function - James
-      piResp = Serial.readStringUntil('\n');
+//     // TODO: Check if data was recieved properly
+//     int sendTimeout = 0;
+//     while Serial.available(){ // TODO: I'm not totally sure of using this function - James
+//       piResp = Serial.readStringUntil('\n');
 
-      if !piResp.equals('G'){ // bad response (TODO: we don't need the Arduino to know the Pi's state, right? Or )
-        sendData(avgPressure, avgFlow); // send again
-        sendTimeout++;
-        if (sendTimeout == SEND_DATA_TIMEOUT){
-          // TODO: Throw an alarm, is this the right alarm to call? do we need more functionality?
-          keepAlarmRingingForever(); 
-        }
-      }
-    }
+//       if !piResp.equals('G'){ // bad response (TODO: we don't need the Arduino to know the Pi's state, right? Or )
+//         sendData(avgPressure, avgFlow); // send again
+//         sendTimeout++;
+//         if (sendTimeout == SEND_DATA_TIMEOUT){
+//           // TODO: Throw an alarm, is this the right alarm to call? do we need more functionality?
+//           keepAlarmRingingForever(); 
+//         }
+//       }
+//     }
     
-  }
+//   }
 
-// ===== Take readings ====
-  currentTime = millis();
-  if( ((currentTime - lastPresReadTime) >= PRES_READ_RATE)) {
-    getFlowReading();
-  }
-  currentTime = millis();
-  if( ((currentTime - lastFlowReadTime) >= FLOW_READ_RATE) ){
-    getPressureReading();
-  }
-
-
-  if (mode == patientTriggered){//if in patient triggered mode look for breath attempt?
-    resetSystemTime(); // @ALL: is system time a thing? Is it for making sure we get a minimum # of breaths per minute?
-  }
-  //  setPressure(inhalePressure);
+// // ===== Take readings ====
+//   currentTime = millis();
+//   if( ((currentTime - lastPresReadTime) >= PRES_READ_RATE)) {
+//     getFlowReading();
+//   }
+//   currentTime = millis();
+//   if( ((currentTime - lastFlowReadTime) >= FLOW_READ_RATE) ){
+//     getPressureReading();
+//   }
 
 
+//   if (mode == patientTriggered){//if in patient triggered mode look for breath attempt?
+//     resetSystemTime(); // @ALL: is system time a thing? Is it for making sure we get a minimum # of breaths per minute?
+//   }
+//   //  setPressure(inhalePressure);
 
-  sendAlarm(alarmMessage); //send the alarm to the pi    @ALL: why is this placed here?
-  while (systemTime < howLongIWantToWait){
-    waitForConfirmation();
-  }
+
+
+//   sendAlarm(alarmMessage); //send the alarm to the pi    @ALL: why is this placed here?
+//   while (systemTime < howLongIWantToWait){
+//     waitForConfirmation();
+//   }

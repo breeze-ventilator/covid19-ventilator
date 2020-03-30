@@ -5,6 +5,11 @@
 
   https://docs.google.com/document/d/17tNHzC1KAyru91LCRugWpDMOWfZAJPe1F5hpNLfNYW8/edit#
 */
+
+void initializeSensors(struct Sensors *sensors) {
+	
+}
+
 void setNewParameters(String piString, struct parameters *newParams){
   if (!isChecksumValid(piString)) {
     // @TODO: Determine what to do if checksum wrong.
