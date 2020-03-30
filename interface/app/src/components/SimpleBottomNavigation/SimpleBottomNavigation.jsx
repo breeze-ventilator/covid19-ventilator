@@ -39,36 +39,35 @@ export default class SimpleBottomNavigation extends React.Component{
         <BottomNavigationAction
           label="Parameters"
           icon={<RestoreIcon />}
-          onPress={() => this.setState(
-            { page: <Vitals timeSeriesData={this.state.data.tidalVolume} />,
-             viewForm: true
-           }
-            )}
+          component = { <Link to="/parameters" />}
+
           />
 
         <BottomNavigationAction
           label="Diagnostics"
           icon={<FavoriteIcon />}
-          onPress={() => this.setState(
-            { page: <Vitals timeSeriesData={this.state.data.tidalVolume} />,
-            viewForm: true }
-            )}
+          component = { <Link to="/diagnostics" />}
+
         />
 
         <BottomNavigationAction
           label="Alarms"
           icon={<LocationOnIcon />}
-          onPress={() => this.setState(
-            { page: <Vitals timeSeriesData={this.state.data.tidalVolume} />,
-            viewForm: true }
-            )}
+          component = { <Link to="/alarms" />}
           />
-
-        <div>
-          {(this.state.viewForm) ?
-          this.page : this.page}
-        </div>
       </BottomNavigation>
+
+      <Switch>
+      <Route path="/parameters">
+        <Parameters />
+      </Route>
+      <Route path="/diagnostics">
+        <Vitals />
+      </Route>
+      <Route path="/alarms">
+        <Alarms />
+      </Route>
+      </Switch>
     );
   }
 }
