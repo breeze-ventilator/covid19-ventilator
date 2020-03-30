@@ -1,17 +1,17 @@
 /*
-  SFM3000wedo.cpp - Library for reading values from flowmeter Sensirion SFM3000wedo
+  FlowSensor.cpp - Library for reading values from flowmeter Sensirion FlowSensor
   https://www.sensirion.com/en/flow-sensors/mass-flow-meters-for-high-precise-measurement-of-gases/low-pressure-drop-mass-flow-meter/
   Created by WeDo, Zuerich 20170616
   
   Released into the public domain.
 */
 
-#include "SFM3000wedo.h"
+#include "FlowSensor.h"
 #include <Wire.h>
 
  
-//SFM3000wedo::SFM3000wedo(uint8_t i2cAddress)
-SFM3000wedo::SFM3000wedo(int i2cAddress, int offset, float scale)
+//FlowSensor::FlowSensor(uint8_t i2cAddress)
+FlowSensor::FlowSensor(int i2cAddress, int offset, float scale)
 {
   //: mI2cAddress(i2cAddress)
   mI2cAddress = i2cAddress;
@@ -19,9 +19,8 @@ SFM3000wedo::SFM3000wedo(int i2cAddress, int offset, float scale)
 	mscale = scale;
 }
 
-void SFM3000wedo::init()
+void FlowSensor::begin()
 {
- 
   Wire.begin();
   delay(1000);
   Wire.beginTransmission(byte(mI2cAddress)); // transmit to device with I2C mI2cAddress
@@ -34,7 +33,7 @@ void SFM3000wedo::init()
   
 }
  
-float SFM3000wedo::getvalue(int *errorType)
+float FlowSensor::getvalue(int *errorType)
 {
   *errorType = NO_ERROR;
 	Wire.requestFrom(mI2cAddress, 3); // read 3 bytes from device with address 0x40
@@ -70,7 +69,7 @@ float SFM3000wedo::getvalue(int *errorType)
 }
 
 // cyclic redundancy check
-uint8_t SFM3000wedo::crc8(const uint8_t data, uint8_t crc)
+uint8_t FlowSensor::crc8(const uint8_t data, uint8_t crc)
 {
 	crc ^= data;
 	for ( uint8_t i = 8; i; --i ) {
