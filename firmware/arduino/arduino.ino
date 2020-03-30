@@ -18,12 +18,11 @@
 #include <Servo.h>
 #include <Stepper.h>
 #include <math.h> // TODO: only used in utilities.c, do we still need it here?
-#include "pi.h"
+
 #include "init.h"
-#include "utilities.h"
-#include "PressureSensor.h"
-#include "controls.h"
-#include "comms.h"
+#include "Data.h"
+#include "Sensors.h"
+#include "Controller.h"
 
 // 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
 // (eepRom: for bootup, a read-only memory whose contents can be erased and reprogrammed using a pulsed voltage.)
@@ -59,49 +58,19 @@ struct Parameters {
   } alarms;
 };
 
-struct SensorData {
-  unsigned int batteryVoltage;
-  float lastFlowValue;
-  unsigned int peakFlowValueInCurrentBreath; // needed for switching to exhalation
-  struct ForPID {
-    float[FLOW_HISTORY_LENGTH_FOR_PID] flowValues;
-    unsigned int[PRESSURE_HISTORY_LENGTH_FOR_PID] presureValues;
-    unsigned int currentFlowValuesIndex;
-    unsigned int currentPressureValuesIndex;
-  } forPID;
-  struct ForPI {
-    float flowSum;
-    unsigned int pressureSum;
-    unsigned int numFlowMeasurements;
-    unsigned int numPressureMeasurements;
-    unsigned int numFlowErros;
-    unsigned int numPressureErrors;
-  } forPI;
-} data;
-
-struct Sensors {
-  MainPressureSensor *mainPressureSensor;
-  OxygenPressureSensor *oxygenPressureSensor;
-  FlowSensor *flowSensor;
-  BatteryVoltageSensor *batteryVoltageSensor;
-} sensors;
-
-struct ContrallableThings {
-  OxygenValveStepper *oxygenValveStepper;
-  
-} contrallableThings;
-
 struct Parameters currentParams;
 struct Parameters newParams;
 
+Data data;
+Sensors sensors;
+Controller controller;
 /*
   On startup, initializes pins and ensures Pi sends message.
 
   On failure, hangs forever.
 */
 void setup() {
-  initializeDigitalPins();
-  turnOffAlarms();
+  stopArduinoAlarm();
   
   initializeFlow();
   initializeServos();

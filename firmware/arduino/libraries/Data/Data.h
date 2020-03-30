@@ -18,6 +18,7 @@ class Data {
         unsigned int _numPressureMeasurements;
         unsigned int _numFlowErros;
         unsigned int _numPressureErrors;
+        unsigned int _batteryPercentage;
 }
 
 #endif

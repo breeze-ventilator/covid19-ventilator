@@ -4,18 +4,24 @@ Alarm::Alarm(int pin) {
   pinMode(pin, OUTPUT);
 }
 
-void Alarm::turnAlarmOn() {
+void Alarm::startAlarm() {
 	// Simon TODO
 }
 
-void Alarm::turnAlarmOff() {
+void Alarm::stopAlarm() {
 
 }
 
 void Alarm::keepAlarmRunningForever() {
+  if (!_isAlarmOn) {
+    startAlarm();
+  }
+  runForever();
+  
+}
+void Alarm::runForever() {
   while(1) {
     ;
   }
-  return;
 }
 

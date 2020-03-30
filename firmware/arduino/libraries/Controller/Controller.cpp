@@ -20,32 +20,17 @@ Controller::Controller() {
     blowerPID();
 }
 
-void Controller::inhilationControl(struct Data *data, struct Parameters currentParams) {
- oxygenControl(struct Data *data, struct Parameters currentParams) {
-  // modify steps on stepper motor to get desired flow rate (which then gives concentration)
+void Controller::stopArduinoAlarm() {
+  alarm.stopAlarm();
 }
 
-void readSensorsIfAvailableAndSaveSensorData(struct SensorData *data){
-  // take sensor readings
-  if (isTimeToReadFlow()) {
-    float flowValue = getFlowReading();
-    saveFlowReading(flowValue, &data);
-  }
-  if (isTimeToReadOxygenPressure()) {
-    unsigned int pressureValue = getOxygenPressureReading(); // analog read (difference between this pressure and atmospheric pressure)
-    saveOxygenPressureReading(pressureValue, &data);
-  }
-  if (isTimeToReadMainPressure()) {
-    unsigned int pressureValue = getMainPressureReading(); // analog read (difference between this pressure and atmospheric pressure)
-    saveMainPressureReading(pressureValue, &data);
-  }
-  if (isTimeToReadBatteryVoltage()) {
-    unsigned int batteryVoltage = getBatteryVoltage();
-    saveBatteryVoltage(batteryVoltage, &data);
-  }
-  if (isTimeToReadFan()){
-    
-  }
+void Controller::startArduinoAlarm() {
+  alarm.keepAlarmRunningForever();
+}
+
+void Controller::inhilationControl(Data *data, struct Parameters currentParams) {
+ oxygenControl(struct Data *data, struct Parameters currentParams) {
+  // modify steps on stepper motor to get desired flow rate (which then gives concentration)
 }
 
 void controlOutputsIfAvailable() {

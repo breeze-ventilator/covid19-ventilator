@@ -9,3 +9,10 @@ int BatteryVoltageSensor::read() {
   int batteryVoltage = floor((float)mV / 0.286); //voltage divider network
   return batteryVoltage;
 }
+
+int BatteryVoltageSensor::readPercentage() {
+  int batteryVoltage = read();
+  // TODO: SIMON convert
+  //int batteryPercentage = 
+  return batteryPercentage;
+}
