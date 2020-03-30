@@ -6,7 +6,10 @@ import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Vitals from '../Vitals/Vitals';
-import { Link } from 'react-router-dom';
+import Settings from '../Settings/Settings';
+import Alarms from '../Alarms/Alarms';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
 
 
 export default class SimpleBottomNavigation extends React.Component{
@@ -28,7 +31,8 @@ export default class SimpleBottomNavigation extends React.Component{
 
   render() {
     return(
-  <BottomNavigation
+      <div>
+<BottomNavigation
         value={this.state.value}
         onChange={(event, newValue) => {
           this.state.value = newValue;
@@ -37,37 +41,39 @@ export default class SimpleBottomNavigation extends React.Component{
         className={this.state.classes.root}
       >
         <BottomNavigationAction
-          label="Parameters"
+          label="Settings"
           icon={<RestoreIcon />}
-          component = { <Link to="/parameters" />}
-
+          component = { Link }
+          to="/settings"
           />
 
         <BottomNavigationAction
           label="Diagnostics"
           icon={<FavoriteIcon />}
-          component = { <Link to="/diagnostics" />}
-
+          component = { Link  }
+          to="/diagnostics"
         />
 
         <BottomNavigationAction
           label="Alarms"
           icon={<LocationOnIcon />}
-          component = { <Link to="/alarms" />}
+          component = { Link }
+          to="/alarms"
           />
       </BottomNavigation>
 
-      <Switch>
-      <Route path="/parameters">
-        <Parameters />
-      </Route>
-      <Route path="/diagnostics">
-        <Vitals />
-      </Route>
-      <Route path="/alarms">
-        <Alarms />
-      </Route>
-      </Switch>
+    <Switch>
+        <Route path="/settings">
+          <Settings />
+        </Route>
+        <Route path="/diagnostics">
+          <Vitals />
+        </Route>
+        <Route path="/alarms">
+          <Alarms />
+        </Route>
+        </Switch>
+      </div>
     );
   }
 }

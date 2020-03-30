@@ -5,6 +5,7 @@ import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNaviga
 import Messager from '../../handlers/Messager';
 import d3Config from '../LineChart/scripts/d3Config.js'
 import './css/App.css';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -39,12 +40,16 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
+
       <Vitals timeSeriesData={this.state.data.tidalVolume} />
       <ValueChart
           progress={40}
           color="#3c71d0"
       />
-      <SimpleBottomNavigation />
+      <Router>
+        <SimpleBottomNavigation />
+      </Router>
+
       </div>
     );
   }
