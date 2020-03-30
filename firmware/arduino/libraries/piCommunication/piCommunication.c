@@ -95,17 +95,32 @@ int isChecksumValid(String piString) {
 }
 
 /*
-  Rasp Pi sends N-length string, this function returns N-1 character long String object.
-  Drops the '\n' at the end of the message.
+  Reads in the parameter string from the Pi, 12 characters long including \n
 */
 String getPiString(){
+  // Reads until \n, and returns string without '\n'
   String msg = Serial.readStringUntil('\n');
   return msg;
 }
 
-
-void parsePiString(String str){
-  char ch;
-
-    return -1;
-}
+/*
+  Parses the 11 characters recieved by the Pi.
+  
+  Note: getPiString() drops the '\n' char at the end
+*/
+void parsePiString(){
+/* 
+Position   PARAM
+  1       Checksum 
+  2       Mode (1, 2, or 3)
+  3       Exhalation time (tells us the rate if controlled)
+  4       FiO2
+  5       Inspiration time
+  6       PEEP (exhalation pressure)
+  7       Inhalation pressure
+  8       High pressure alarm setting
+  9       Low pressure alarm settings
+  10      High, minute ventilation alarm settings
+  11      Low, minute Ventilation alarm settings
+*/
+  

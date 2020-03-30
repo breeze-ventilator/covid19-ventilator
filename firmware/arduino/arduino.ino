@@ -35,28 +35,14 @@
   - derivative: linear fit over n values, where each value is an average of n datapoints (needs last n**2 datapoints)
 */
 
-unsigned long lastFlowReadTime;
-unsigned long lastPresReadTime;
-unsigned long currentTime;
+struct State {
+  bool isStartingNewBreath;
+  unsigned long startTime;
+  int breathingStage; // inhilation or exhilation
+} state;
 
-// Data storage arrays, TODO: we could move them to init.h or init.c, or something?
-int flowArray[NUM_OF_FLOW_MEASUREMENTS]; // macro defined in init.h
-int pressureArray[NUM_OF_PRESSURE_MEASUREMENTS]; // assuming same number as measurement array
-
-int avgFlowArray[NUM_OF_FLOW_MEASUREMENTS];
-int avgPressureArray[NUM_OF_PRESSURE_MEASUREMENTS];
-
-int pressureDataCount = 0;  // data storage index, for iterating through storage arrays
-int flowDataCount = 0;    // same
-
-int avgPressureCount = 0; // count to keep track of the PID's averaging arrays
-int avgFlowCount = 0;
-
-int blockingFlowReadings = 0; // Needed for asynchronous measurement taking
-int blockingPresReadings = 0;
-
-struct parameters {
-  String mode;    // TODO: For parsing, it would be simpler to set mode to be an int
+struct Parameters {
+  int mode;
   int fiO2;
   int inspiratoryTime;
   int expiratoryTime;
@@ -64,17 +50,34 @@ struct parameters {
   int peakExpiratoryPressure;
   int sensitivity;
   
-  struct alarms {
+  struct Alarms {
     int highPressureBound;
     int lowPressureBound;
 
     int highMinuteVentilationBound;
     int lowMinuteVentilationBound;
-  }
-};// struct parameters
+  } alarms;
+};
 
-struct parameters currentParams;
-struct parameters newParams;
+struct Data {
+  int lastFlowValue;
+  int peakFlowValueInCurrentBreath; // needed for switching to exhalation
+  struct ForPID {
+    int[FLOW_HISTORY_LENGTH_FOR_PID] flowValues;
+    int[PRESSURE_HISTORY_LENGTH_FOR_PID] presureValues;
+    int currentFlowValuesIndex;
+    int currentPressureValuesIndex;
+  } forPID;
+  struct ForPI {
+    int flowSum;
+    int pressureSum;
+    int numFlowMeasurements;
+    int numPressureMeasurements;
+  } forPI;
+} data;
+
+struct Parameters currentParams;
+struct Parameters newParams;
 
 /*
   On startup, initializes pins and ensures Pi sends message.
@@ -83,110 +86,98 @@ struct parameters newParams;
 */
 void setup() {
   initializePins();
+  Stepper O2
   bool servosConnected = initializeServos();
-  bool stepperConnected = initializeStepperMotor(); // needs a timeout
+  bool stepperConnected = initializeStepperMotor(STEPPER_MAX_INITIALIZATION_TIME); // needs a timeout
   bool piConnected = initializePiCommunication(PI_MAX_WAIT_TIME); 
 
   if (piConnected && servosConnected && stepperConnected) {
     turnOffAlarms();
-    currentTime = millis(); 
-    lastFlowReadTime = currentTime;
-    lastPresReadTime = currentTime;
+
+    unsigned long currentTime = millis();
+    updateLastFlowReadTime(currentTime);
+    updateLastPressureReadTime(currentTime);
   }
   else {
     keepAlarmRingingForever();
+  }
+  initializeState(&state);
+  currentParams.mode = WAITING_FOR_PARAMETERS;
 }
 
 /*
   Main Loop
 */
 
-/*
-  PseudoCode:
-  
-  vars:
-    newParams: - contains new parameters to run
-    currentParams: - contains currently running parameters (updates to new-params after every breath cycle)
-
-  loop:
-    # Setting Parameters
-      if there is data read data from pi
-        sets newParams;
-    # Get Sensor readings
-    if not in SETUP:
-      # PID
-    
-    # If 200 ms have gone by, send
-    
-*/
 void loop() {
-  // ===== Check for Params =====
+  // Check for Params 
   if (Serial.available()) {
     String receivedString = Serial.readStringUntil("\n"); // reads up-to-but-not-including '\n' char
-    setNewParameters(receivedString, *newParams);
+    setNewParameters(receivedString, &newParams);
   }
 
-
-  //we will re-set system time every breath cycle is complete and when this happens we will let the pi know so that it can check breaths per minute
-
- 
-  // ===== Take readings ====
-  currentTime = millis();
-  if( ((currentTime - lastPresReadTime) >= PRES_READ_RATE) && (!blockingPresReadings)  ) {
-    getFlowReading();
+  // take sensor readings
+  if (isTimeToReadFlow()) {
+    int flowValue = getFlowReading();
+    saveFlowReading(flowValue, &data);
   }
-  currentTime = millis();
-  if( ((currentTime - lastFlowReadTime) >= FLOW_READ_RATE)&& (!blockingFlowReadings)  ){
-    getPressureReading();
+  if (isTimeToReadPressure()) {
+    int pressureValue = getPressureReading();
+    savePressureReading(flowValue, &data);
   }
 
-  // ===== Breathing cycle ====
+  updateState(&state, currentParams);
 
-  // == Check for patient breath (change in airflow)
- 
-  if (mode == controlled) //TODO: this is psuedocode
-    if inhale{
-      controlledInhalation();
+  // only update parameters when breath is over
+  if (newParamsHaveArrived() && state.isStartingNewBreath) {
+    updateCurrentParameters(&currentParams, &newParams);
+  }
+
+  // breathing cycle
+  if (currentParams.mode == PRESSURE_CONTROL_MODE) { // ventilator triggers breaths
+    if (state.breathingStage == INHALATION) {
+      pressureControlInhalation(&data);
     }
-    if exhale{  // TODO: This is probably isn't needed, as the fan shuts off and the patient exhales on their own, right?
-      exhalation();
+    else if (state.breathingStage == EXHALATION) {
+      pressureControlExhalation(&data);
     }
- else if (mode == spontaneous){  //TODO: this is psuedocode for breath triggered
-
-    int inhale = checkForFlow(); // check the flow sensor for delta-flow
-
-    if inhale{
-      controlledInhalation();
+  }
+  else if (currentParams.mode == PRESSURE_SUPPORT_MODE) { // patient triggers breaths (spontaneous)
+    // How does this work again?
+    // trigger inhalation by dip in flow
+    // trigger exhalation by flow reaching a particular value
+    if (state.isStartingNewBreath) {
+      // we will re-set system time every breath cycle is complete and when
+      // this happens we will let the pi know so that it can check breaths per minut
+      tellPiThatStartingNewBreath(&piMessageQueue);
     }
-    else if exhale{  // TODO: This is probably isn't needed, as the fan shuts off and the patient exhales on their own, right?
-      exhalation();
+    if (state.breathingStage == INHALATION) {
+      pressureSupportInhalation(&data);
     }
- }
-
-  if(mode == patientTriggered){//if in patient triggered mode look for breath attempt?
-    resetSystemTime(); // @ALL: is system time a thing? Is it for making sure we get a minimum # of breaths per minute?
+    else if (state.breathingStage == EXHALATION) {
+      pressureSupportExhalation(&data);
+    }
   }
-  //  setPressure(inhalePressure);
-
-
-  sendAlarm(alarmMessage); //send the alarm to the pi    @ALL: why is this placed here?
-  while (systemTime < howLongIWantToWait){
-    waitForConfirmation();
+  if (isTimeToSendDataToPi(&data)) { // need to make sure pressure and flow are BOTH full
+    sendDataToPi(&data);
+    clearData(&(data.forPI));
   }
+}// loop()
 
-  //====== Update PID ======
-  // TODO: This example may be all we need to start? https://playground.arduino.cc/Code/PIDLibaryBasicExample/
-  // Do we need more than one of these?
-
-  /*
-  // TODO: Use this stuff if the example above is not a good start
-  int PIDSuccess = updatePID();
-  if !PIDSucess {
-    //TODO: throw an alarm?
+void updateState(struct State *state, struct Parameters currentParams) {
+  if (currentParams.mode == PRESSURE_CONTROL_MODE) {
+    pressureControlUpdateState(&state); // checks time to see if time to switch from inhilation to exhilation
   }
-  */
+  else if (currentParams.mode == PRESSURE_SUPPORT_MODE) {
+    pressureSupportUpdateState(&state, currentParams); // should use state.lastFlowValue, state.peakFlowValueInCurrentBreath
+  }
+}
 
-  //====== Send Data to the Pi ======
+
+
+// Other stuff:
+
+//====== Send Data to the Pi ======
   // including the I-am-alive data
   // TODO: encapsulate the stuff in this if-statement
   if (pressureDataCount == NUM_OF_PRES_MEASUREMENTS) && (flowDataCount == NUM_OF_FLOW_MEASUREMENTS){
@@ -218,40 +209,27 @@ void loop() {
       }
     }
     
-    // Reset blocking flags
-    blockingFlowReadings = 0;
-    blockingPresReadings = 0;
-    
-  }
-}// loop()
-
-
-/*
-  Sets the new parameters based on the parameters string.
-
-  https://docs.google.com/document/d/17tNHzC1KAyru91LCRugWpDMOWfZAJPe1F5hpNLfNYW8/edit#
-*/
-void setNewParameters(String piString, struct parameters *newParams){
-  if (!isChecksumValid(piString)) {
-    // @TODO: Determine what to do if checksum wrong.
-    return;
   }
 
-  // Set parameters.
-  newParams->mode = piString.charAt(1)
-  newParams->fiO2 = piString.charAt(2)
-  newParams->inspiratoryTime = piString.charAt(3)
-  newParams->expiratoryTime = piString.charAt(4)
-  newParams->peakInspiratoryPressure = piString.charAt(5)
-  newParams->peakExpiratoryPressure = piString.charAt(6)
-  newParams->sensitivity = piString.charAt(7)
-  newParams->alarms.highPressureBound = piString.charAt(8)
-  newParams->alarms.lowPressureBound = piString.charAt(9)
-  newParams->alarms.highMinuteVentilationBound = piString.charAt(10)
-  newParams->alarms.lowMinuteVentilationBound = piString.charAt(11)
-  
-  return;
-}
+// ===== Take readings ====
+  currentTime = millis();
+  if( ((currentTime - lastPresReadTime) >= PRES_READ_RATE)) {
+    getFlowReading();
+  }
+  currentTime = millis();
+  if( ((currentTime - lastFlowReadTime) >= FLOW_READ_RATE) ){
+    getPressureReading();
+  }
 
-int isIn
 
+  if (mode == patientTriggered){//if in patient triggered mode look for breath attempt?
+    resetSystemTime(); // @ALL: is system time a thing? Is it for making sure we get a minimum # of breaths per minute?
+  }
+  //  setPressure(inhalePressure);
+
+
+
+  sendAlarm(alarmMessage); //send the alarm to the pi    @ALL: why is this placed here?
+  while (systemTime < howLongIWantToWait){
+    waitForConfirmation();
+  }
