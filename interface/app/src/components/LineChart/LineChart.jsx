@@ -17,8 +17,6 @@ export default class LineChart extends React.Component {
 
     componentDidUpdate(prevProps) {
       const { timeSeriesData } = this.props;
-      // if (JSON.stringify(prevProps.timeSeriesData) != JSON.stringify(timeSeriesData))  {
-        // console.log("HERE")
       handleNewData(timeSeriesData);
     }
 
