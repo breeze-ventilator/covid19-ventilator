@@ -5,10 +5,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import Vitals from '../Vitals/Vitals';
-import Settings from '../Settings/Settings';
-import Alarms from '../Alarms/Alarms';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 
@@ -61,18 +58,6 @@ export default class SimpleBottomNavigation extends React.Component{
           to="/alarms"
           />
       </BottomNavigation>
-
-    <Switch>
-        <Route path="/settings">
-          <Settings />
-        </Route>
-        <Route path="/diagnostics">
-          <Vitals />
-        </Route>
-        <Route path="/alarms">
-          <Alarms />
-        </Route>
-        </Switch>
       </div>
     );
   }
