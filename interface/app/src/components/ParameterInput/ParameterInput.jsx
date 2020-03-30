@@ -40,7 +40,7 @@ class ParameterInput extends React.Component {
                     onClick={this.tap} 
                     onChange={this.onValueChange} 
                     ref="stepper" 
-                    className="md-price" 
+                    className={this.props.className} 
                     data-role="stepper" 
                     min={this.props.min} 
                     max={this.props.max} 
@@ -71,12 +71,14 @@ ParameterInput.defaultProps = {
     min: 0,
     max: 100,
     step: 10,
+    className: 'default-input'
 };
 ParameterInput.propTypes = {
     startingValue: PropTypes.number,
     min: PropTypes.number,
     max: PropTypes.number,
     step: PropTypes.number,
+    className: PropTypes.string
 };
 
 export default ParameterInput;

@@ -24,8 +24,12 @@ export default class App extends React.Component {
     this.messager = new Messager(5000);
 
     this.messager.sampleTidalVolumeDataListener(this.updateData.bind(this));
+    this.messager.tidalVolumeListener(this.updateTidalVolume)
   }
 
+  updateTidalVolume(tidal_volume){
+    console.log(tidal_volume);
+  }
   componentDidMount(){
     this.isMount = true;
   }

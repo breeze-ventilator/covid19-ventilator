@@ -14,7 +14,7 @@ module.exports = class ClientMessager {
 	handleSocketIOConnection(socket){
 		console.log('Client connected');
 
-		socket.on('parameter-change', (newParameters) => this.top.handleNewParameters(newParameters)); // should we be using socketio or routes here?
+		socket.on('parameter-change', (newParameters) => this.top.handleNewParameters(newParameters));
 		socket.on('disconnect', () => this.handleDisconnect());
 	}
 	

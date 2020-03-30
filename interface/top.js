@@ -13,8 +13,8 @@ module.exports = class Top {
     this.baudRate = 9600;
     this.maxArduinoPingTime = 1500;
 
-    this.expressApp = express();
-    this.httpServer = http.createServer(this.expressApp);
+    // this.expressApp = express();
+    // this.httpServer = http.createServer(this.expressApp);
 
     this.client = new ClientMessager(this);
     // this.arduino = new ArduinoMessager(this);
