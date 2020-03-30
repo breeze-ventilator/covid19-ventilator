@@ -23,13 +23,22 @@ export default class Messager {
 
     sampleTidalVolumeDataListener(cb){
         setInterval(() => {
-			let val = Math.random()*10.0 - 5.0;
+			let val = Math.floor(Math.random() * 250) + 1;
 			cb({
 				type: 'tidal volume',
 				value: val
 			})
-		}, 1000/60)
+		}, 1000)
     }
 
+    samplePressureDataListener(cb){
+        setInterval(() => {
+			let val = Math.floor(Math.random() * 250) + 1;
+			cb({
+				type: 'pressure',
+				value: val
+			})
+		}, 800)
+    }
     
 }

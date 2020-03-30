@@ -18,28 +18,27 @@ export default class App extends React.Component {
     this.isMount = false;
     this.state = {
       data: {
-        tidalVolume: [],
+        tidalVolume: 5,
+        pressure: 5
       }
     }
     this.messager = new Messager(5000);
 
     this.messager.sampleTidalVolumeDataListener(this.updateData.bind(this));
-    this.messager.tidalVolumeListener(this.updateTidalVolume)
+    this.messager.samplePressureDataListener(this.updateData.bind(this));
+
   }
 
-  updateTidalVolume(tidal_volume){
-    console.log(tidal_volume);
-  }
   componentDidMount(){
     this.isMount = true;
   }
 
   updateData(update) {
     if (update.type === 'tidal volume'){
-      if (this.state.data.tidalVolume.length === this.numPoints){
-        this.state.data.tidalVolume.shift();
-      }
-      this.state.data.tidalVolume.push(update.value);
+      this.state.data.tidalVolume = update.value;
+    }
+    if(update.type === 'pressure'){
+      this.state.data.pressure = update.value;
     }
 
     if (this.isMount) {
@@ -64,7 +63,7 @@ export default class App extends React.Component {
           <Settings />
         </Route>
         <Route path="/diagnostics">
-          <Vitals timeSeriesData={this.state.data.tidalVolume}/>
+          <Vitals allData={this.state.data}/>
         </Route>
         <Route path="/alarms">
           <Alarms />

@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+.MuiBottomNavigation-root {
+  background-color: #282C34 !important;
+  color:white !important;
+}
+.MuiBottomNavigationAction-root {
+  color:#CCDBDC !important;
+
+
+}
+.MuiBottomNavigationAction-root.Mui-selected {
+  background-color: #1F2228;
+}
