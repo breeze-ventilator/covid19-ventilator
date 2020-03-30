@@ -3,7 +3,7 @@
 /*
   Get a flow reading. put in inputs.c?
 */
-void getFlowReading(){
+void getFlowReading() {
   pressureArray[pressureDataCount] = analogRead(FLOW_PIN);
   lastPresReadtime = millis();
   pressureDataCount = (pressureDataCount + 1) % NUM_OF_PRES_MEASUREMENTS; // is this dumb
@@ -19,7 +19,7 @@ void getFlowReading(){
 /*
   Get a pressure reading. put in inputs.c?
 */
-void getPressureReading(){
+void getPressureReading() {
   flowArray[flowDataCount] = analogRead(PRESSURE_PIN);
   lastFlowReadTime = millis();
   flowDataCount = (flowDataCount + 1) % NUM_OF_FLOW_MEASUREMENTS;

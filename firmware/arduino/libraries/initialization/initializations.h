@@ -32,6 +32,9 @@
 #define O2_CONTROL_PIN2 A8
 #define O2_CONTROL_PIN3 A9
 
+#define O2_ENABLE1_PIN PWM
+#define O2_ENABLE2_PIN PWM
+
 // Stepper and Servo initialization
 #define O2_STEPPER_SPEED 60 // rpm (TODO: Arbitrary value)
 
@@ -42,9 +45,7 @@
 #define BLOW_FAN_INITIAL_POSITION 90  // 0 = min, 180 = max, 90 = midpoint (TODO: this is currently arbitrary)
 #define AIR_INTAKE_INITIAL_POSITION 90 // 0 = min, 180 = max, 90 = midpoint (TODO: arbitraty)
 
-int initializePins();
-int initializeStepperMotor();
-void initializeStorage(double flow[], double pressure[]);
+#define TIMEOUT_ERROR -1
 
 
 #endif

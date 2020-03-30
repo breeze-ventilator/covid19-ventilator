@@ -4,25 +4,25 @@
 
 Servo blowerFan, airIntake;
 
-int initializeBlowerFan() {
+void initializeBlowerFan() {
   blowerFan.attach(BLOWER_PIN);
-  blowerFan.write(BLOW_FAN_INITIAL_POSITION); //// https://www.arduino.cc/en/Reference/ServoWrite
-
-  return 1
+  // Initialzie the esc by giving 100% power wait for beep then 0% power and wait for beep
+  blowerFan.write(0); // https://www.arduino.cc/en/Reference/ServoWrite
+  delay(100);
+  blowerFan.write(180);
+  delay(2000);
+  blowerFan.write(0);
+  delay(2000);
 }
 
-int initializeAirIntake() {
+void initializeAirIntake() {
   // See Arduino example file in IDE: Examples > Servo > Knob
   airIntake.attach(AIR_CONTROL_PIN);
-  airIntake.write(AIR_INTAKE_INITIAL_POSITION);
-
-  // TODO: Need to set the default position. Do these needs to be zero'd?
-
-  return 1;
+  delay(10);
+  airIntake.write(AIR_INTAKE_ZERO_POINT);
 }
 
-int initializeServos() {
+void initializeServos() {
   initializeAirIntake();
   initializeBlowerFan();
-  return 1;
 }

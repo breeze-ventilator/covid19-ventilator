@@ -38,41 +38,42 @@
 struct State {
   bool isStartingNewBreath;
   unsigned long startTime;
-  int breathingStage; // inhilation or exhilation
+  unsigned int breathingStage; // inhilation or exhilation
 } state;
 
 struct Parameters {
-  int mode;
-  int fiO2;
-  int inspiratoryTime;
-  int expiratoryTime;
-  int peakInspiratoryPressure;
-  int peakExpiratoryPressure;
-  int sensitivity;
+  unsigned int mode;
+  unsigned int fiO2;
+  unsigned int inspiratoryTime;
+  unsigned int expiratoryTime;
+  unsigned int peakInspiratoryPressure;
+  unsigned int peakExpiratoryPressure;
+  unsigned int sensitivity;
   
   struct Alarms {
-    int highPressureBound;
-    int lowPressureBound;
+    unsigned int highPressureBound;
+    unsigned int lowPressureBound;
 
-    int highMinuteVentilationBound;
-    int lowMinuteVentilationBound;
+    unsigned int highMinuteVentilationBound;
+    unsigned int lowMinuteVentilationBound;
   } alarms;
 };
 
-struct Data {
-  int lastFlowValue;
-  int peakFlowValueInCurrentBreath; // needed for switching to exhalation
+struct SensorData {
+  unsigned int batteryVoltage;
+  unsigned int lastFlowValue;
+  unsigned int peakFlowValueInCurrentBreath; // needed for switching to exhalation
   struct ForPID {
-    int[FLOW_HISTORY_LENGTH_FOR_PID] flowValues;
-    int[PRESSURE_HISTORY_LENGTH_FOR_PID] presureValues;
-    int currentFlowValuesIndex;
-    int currentPressureValuesIndex;
+    unsigned int[FLOW_HISTORY_LENGTH_FOR_PID] flowValues;
+    unsigned int[PRESSURE_HISTORY_LENGTH_FOR_PID] presureValues;
+    unsigned int currentFlowValuesIndex;
+    unsigned int currentPressureValuesIndex;
   } forPID;
   struct ForPI {
-    int flowSum;
-    int pressureSum;
-    int numFlowMeasurements;
-    int numPressureMeasurements;
+    unsigned int flowSum;
+    unsigned int pressureSum;
+    unsigned int numFlowMeasurements;
+    unsigned int numPressureMeasurements;
   } forPI;
 } data;
 
@@ -85,9 +86,9 @@ struct Parameters newParams;
   On failure, hangs forever.
 */
 void setup() {
-  initializePins();
-  Stepper O2
-  bool servosConnected = initializeServos();
+  initializeDigitalPins();
+  initializeFlow();
+  initializeServos();
   bool stepperConnected = initializeStepperMotor(STEPPER_MAX_INITIALIZATION_TIME); // needs a timeout
   bool piConnected = initializePiCommunication(PI_MAX_WAIT_TIME); 
 
@@ -108,7 +109,6 @@ void setup() {
 /*
   Main Loop
 */
-
 void loop() {
   // Check for Params 
   if (Serial.available()) {
@@ -122,8 +122,11 @@ void loop() {
     saveFlowReading(flowValue, &data);
   }
   if (isTimeToReadPressure()) {
-    int pressureValue = getPressureReading();
+    unsigned int pressureValue = getPressureReading(); // analog read (difference between this pressure and atmospheric pressure)
     savePressureReading(flowValue, &data);
+  }
+  if (isTimeToReadBatteryVoltage()) {
+    data.batteryVoltage = getBatteryVoltage();
   }
 
   updateState(&state, currentParams);
@@ -133,36 +136,27 @@ void loop() {
     updateCurrentParameters(&currentParams, &newParams);
   }
 
+  oxygenControl(currentParams);
+
+  if (curentParams.mode == PRESSURE_SUPPORT_MODE &&  state.isStartingNewBreath) {
+    // we will re-set system time every breath cycle is complete and when
+    // this happens we will let the pi know so that it can check breaths per minut
+    tellPiThatStartingNewBreath(&piMessageQueue);
+  }
+
   // breathing cycle
-  if (currentParams.mode == PRESSURE_CONTROL_MODE) { // ventilator triggers breaths
-    if (state.breathingStage == INHALATION) {
-      pressureControlInhalation(&data);
-    }
-    else if (state.breathingStage == EXHALATION) {
-      pressureControlExhalation(&data);
-    }
+  if (state.breathingStage == INHALATION) {
+    inhilationControl(&data, currentParams);
   }
-  else if (currentParams.mode == PRESSURE_SUPPORT_MODE) { // patient triggers breaths (spontaneous)
-    // How does this work again?
-    // trigger inhalation by dip in flow
-    // trigger exhalation by flow reaching a particular value
-    if (state.isStartingNewBreath) {
-      // we will re-set system time every breath cycle is complete and when
-      // this happens we will let the pi know so that it can check breaths per minut
-      tellPiThatStartingNewBreath(&piMessageQueue);
-    }
-    if (state.breathingStage == INHALATION) {
-      pressureSupportInhalation(&data);
-    }
-    else if (state.breathingStage == EXHALATION) {
-      pressureSupportExhalation(&data);
-    }
+  else if (state.breathingStage == EXHALATION) {
+    exhalationControl(&data, currentParams);
   }
+
   if (isTimeToSendDataToPi(&data)) { // need to make sure pressure and flow are BOTH full
     sendDataToPi(&data);
     clearData(&(data.forPI));
   }
-}// loop()
+}
 
 void updateState(struct State *state, struct Parameters currentParams) {
   if (currentParams.mode == PRESSURE_CONTROL_MODE) {
