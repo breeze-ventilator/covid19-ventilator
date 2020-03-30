@@ -13,12 +13,8 @@ module.exports = class ClientMessager {
 	handleSocketIOConnection(socket){
 		console.log('Client connected');
 
-		socket.on('parameter-change', (newParameters) => this.handleParameterChange(newParameters)); // should we be using socketio or routes here?
+		socket.on('parameter-change', (newParameters) => this.top.handleNewParameters(newParameters)); // should we be using socketio or routes here?
 		socket.on('disconnect', () => this.handleDisconnect());
-	}
-
-	handleParameterChange(newParameters){
-		// ship the new parameters to the arduino
 	}
 	
 	handleDisconnect() {
@@ -26,21 +22,33 @@ module.exports = class ClientMessager {
 	}
 
 	/* Handlers from Arduino Data */
-	
+	handleNewReadings(pressure, flow, batteryVoltage, error){
+		if(error != 0){
+			handleError(error);
+		}
+		handlePressure(pressure);
+		handleFlow(flow);
+		handleBatteryVoltage(batteryVoltage);
+	}
+
 	// tidalVolume = {time: DateTime, volume: volume}
-	// TODO: Aggregate values depending on freq., for frontend
-	handleTidalVolumeData(tidalVolume) {
-		this.sendToClient(tidalVolume);
+	// TODO: Aggregate values depending on freq., for frontend ?
+	handlePressure(pressure){
+		socket.emit('pressure', { pressure: pressure });
 	}
 
-	handleFiO2Data(fiO2) {
-		this.sendToClient(fiO2);
+	handleFlow(flow){
+		socket.emit('flow', { flow: flow });
 	}
 
-	handleMinuteVentilationData(minuteVentilation) {
-		this.sendToClient(minuteVentilation);
+	handleBatteryVoltage(batteryVoltage){
+		socket.emit('batteryVoltage', { batteryVoltage: batteryVoltage});
 	}
 	
+	handleError(error){
+		// Depending on error, either send to frontend or nothing.
+	}
+
 	sendToClient(message) {
 		this.io.emit(message);
 	}
