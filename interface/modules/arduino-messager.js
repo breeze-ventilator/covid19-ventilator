@@ -57,6 +57,7 @@ module.exports = class ArduinoMessager {
 	}
 
 	parseArduinoReadings(data){
+		// TODO: Add breath time parsing.
 		if(isArduinoTimedOut()){
 			this.handleArduinoTimeout();
 		}

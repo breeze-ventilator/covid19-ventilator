@@ -1,5 +1,7 @@
 import React from 'react';
 import Messager from '../../handlers/Messager';
+import SocketListeners from '../../handlers/SocketListeners'
+
 import d3Config from '../LineChart/scripts/d3Config.js'
 import './css/App.css';
 
@@ -21,6 +23,7 @@ export default class App extends React.Component {
       }
     }
     this.messager = new Messager(this.updateData.bind(this));
+    this.listeners = new SocketListeners(5000);
   }
 
   componentDidMount(){

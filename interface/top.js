@@ -8,7 +8,7 @@ const ClientMessager = require('./modules/client-messager.js');
 module.exports = class Top {
   constructor() {
     // TODO: move to config file
-    this.port = 3000;
+    this.port = 5000;
     this.serialPort = '/dev/ttyACM0';
     this.baudRate = 9600;
     this.maxArduinoPingTime = 1500;
@@ -16,16 +16,10 @@ module.exports = class Top {
     this.expressApp = express();
     this.httpServer = http.createServer(this.expressApp);
 
-    this.setupExpressApp();
-    this.setupHttpServer();
-
-    this.handleNewParameters = handleNewParameters;
-    this.handleNewReadings = handleNewReadings;
-
     this.client = new ClientMessager(this);
-    this.arduino = new ArduinoMessager(this);
+    // this.arduino = new ArduinoMessager(this);
 
-    this.client.setupIO();
+    this.client.setupIO(this.port);
   }
 
   // TODO: change newParameters to the params.
@@ -35,19 +29,6 @@ module.exports = class Top {
 
   handleNewReadings(pressure, flow, batteryVoltage, error){
     this.client.handleNewReadings(pressure, flow, batteryVoltage, error);
-  }
-
-  setupExpressApp() {
-    // if we can load '/', we know that server is running
-    this.expressApp.get('/', (req, res) => {
-      res.send({response: "Running express app."}).status(200);
-    });
-  }
-
-  setupHttpServer() {
-    this.httpServer.listen(this.port, () => {
-      console.log('Listening on port', this.port);
-    })
   }
 
 }

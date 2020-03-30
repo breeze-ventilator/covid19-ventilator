@@ -6,8 +6,9 @@ module.exports = class ClientMessager {
 		this.io = io(this.top.httpServer);
 	}
  
-	setupIO() {
+	setupIO(port) {
 		this.io.on('connection', socket => this.handleSocketIOConnection(socket));
+		this.io.listen(port);
     }
     
 	handleSocketIOConnection(socket){
