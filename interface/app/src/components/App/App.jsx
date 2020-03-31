@@ -57,6 +57,9 @@ export default class App extends React.Component {
     return (
       <div>
       <Router>
+        <div class="battery">
+          <div class="battery-level alert" style={{height : "25%"}}></div>
+        </div>
         <SimpleBottomNavigation />
         <Switch>
         <Route path="/settings">
