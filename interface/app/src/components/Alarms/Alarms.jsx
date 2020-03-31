@@ -40,7 +40,10 @@ export default class Vitals extends React.Component {
           NotificationManager.warning('Warning message', 'Close after 3000ms', 3000);
           break;
         case 'error':
-          NotificationManager.error(`Tidal volume is ${this.state.data.tidalVolume}`, 'Error!', 5000, () => {
+          // NotificationManager.error(`Tidal volume is ${this.state.data.tidalVolume}`, 'Error!', 5000, () => {
+          //   alert('callback');
+          // });
+          NotificationManager.error('Currently 9L/min', 'Minute ventilation too high', 5000, () => {
             alert('callback');
           });
           break;
