@@ -11,7 +11,6 @@ export default class Settings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: "patientSupport",
       isPatientControlState: true
     }
   }
@@ -20,6 +19,7 @@ export default class Settings extends React.Component {
       this.setState({
         isPatientControlState: !this.state.isPatientControlState
       });
+
       console.log(this.state.isPatientControlState)
     }
 
@@ -33,7 +33,7 @@ export default class Settings extends React.Component {
                   <Grid container justify="space-evenly" spacing={3} direction="row">
                   {/* TODO: MAKE TOGGLE BUTTON WORK AND CHANGE PARAMETERS SHOWN */}
                   <ToggleButtonGroup
-                      value={this.state.type}
+                      value={this.state.isPatientControlState ? "patientSupport" : "patientControl" }
                       exclusive
                       aria-label="text alignment"
                       onChange={this.togglePatientControlState}
