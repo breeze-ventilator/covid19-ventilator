@@ -20,6 +20,13 @@ export default class App extends React.Component {
       data: {
         tidalVolume: 5,
         pressure: 5
+      },
+      parameters: {
+        fiO2: 80,
+        peep: 20,
+        sensitivity: 0,
+        inspiratoryTime: 10,
+        pressureSupportPoint: 20
       }
     }
     this.messager = new Messager(5000);
@@ -60,7 +67,7 @@ export default class App extends React.Component {
 
         <Switch>
         <Route path="/settings">
-          <Settings />
+          <Settings allParameters={this.state.parameters}/>
         </Route>
         <Route path="/diagnostics">
           <Vitals allData={this.state.data}/>

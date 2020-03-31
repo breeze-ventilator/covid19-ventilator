@@ -5,6 +5,10 @@ export default class Messager {
         this.socket = socketIOClient('http://localhost:' + port);
     }
 
+	sendParametersToBackend(params){
+		this.socket.emit('parameterChange', params)
+	}
+
     pressureListener(cb){
         this.socket.on('pressure', pressure => cb(pressure))
     }

@@ -43,9 +43,44 @@
 }
 .MuiBottomNavigationAction-root {
   color:#CCDBDC !important;
-
-
 }
 .MuiBottomNavigationAction-root.Mui-selected {
   background-color: #1F2228;
+}
+
+.inputField {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 50px;
+}
+
+.mbsc-form-group-inset {
+  display:inline-block;
+  width:80%;
+}
+.MuiContainer-maxWidthLg {
+  height:100%;
+}
+
+.parameterHelpText {
+  padding-bottom: 5px;
+  color: #1F2228;
+}
+
+.parameterName {
+  color: #1F2228;
+}
+
+.mbsc-stepper input {
+  width: 6em !important;
+  left: 7em !important;
+}
+.mbsc-segmented-item {
+  width: 6em !important;
+}
+
+.setParametersButton {
+  width:100%;
 }
