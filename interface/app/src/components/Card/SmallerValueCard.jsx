@@ -24,7 +24,7 @@ export default class ValueCard extends React.Component{
                   transform: 'scale(0.8)',
                 },
                 title: {
-                  fontSize: 48,
+                  fontSize: 10,
                 },
                 pos: {
                   marginBottom: 12,
@@ -41,14 +41,16 @@ export default class ValueCard extends React.Component{
 
     render() {
         return(
-            <div className='value-card'>
-                <Card className={this.state.classes.root}>
+            <div className='smaller-value-card'>
+                <Card style={{ backgroundColor: "#deeeef" }} className={this.state.classes.root}>
+
+                    
                 <CardContent>
                     <Typography className={this.state.classes.title} color="textSecondary" gutterBottom>
                     {this.props.name}
                     </Typography>
                     <Grid container justify="space-between" alignItems='flex-end'>  
-                        <Typography  display="inline" align="left" variant="h2" component="h2">
+                        <Typography  display="inline" align="left" variant="h5" component="h5">
                             {this.state.value} 
                         </Typography>
                         <Typography display="inline" align="right" variant="h6">
@@ -56,6 +58,8 @@ export default class ValueCard extends React.Component{
                         </Typography>
                     </Grid>  
                 </CardContent>
+
+
                 </Card>
             </div>
     );

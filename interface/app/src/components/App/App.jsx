@@ -77,7 +77,7 @@ export default class App extends React.Component {
           <Settings allParameters={this.state.parameters} setParameters={this.setParameters}/>
         </Route>
         <Route path="/diagnostics">
-          <Vitals allData={this.state.data}/>
+          <Vitals allData={this.state.data} allParameters={this.state.parameters}/>
         </Route>
         <Route path="/alarms">
           <Alarms allData={this.state.data} />

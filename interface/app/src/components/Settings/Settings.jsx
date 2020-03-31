@@ -55,11 +55,7 @@ export default class Settings extends React.Component {
     }
     this.setState(this.state)
   }
-//CONTROL
-// resp. rate, inspiratory time, peak pressure, peep, fio2
 
-//SUPPORT
-// apnea time, sensitivity, peak pressure, peep, fio2
   render() {
     return (
       <Box component="span" m={1}>
