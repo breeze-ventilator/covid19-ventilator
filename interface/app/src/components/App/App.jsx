@@ -72,9 +72,6 @@ export default class App extends React.Component {
       <div>
       <Router>
         <SimpleBottomNavigation />
-        <div class="battery">
-          <div class="battery-level" style={{height : "75%"}}></div>
-        </div>
         <Switch>
         <Route path="/settings">
           <Settings allParameters={this.state.parameters} setParameters={this.setParameters}/>
@@ -88,7 +85,9 @@ export default class App extends React.Component {
         </Switch>
         <Redirect from="/" to="settings" />
       </Router>
-
+      <div class="battery">
+          <div class="battery-level" style={{height : "75%"}}></div>
+        </div>
       </div>
     );
   }

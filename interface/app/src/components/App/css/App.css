@@ -92,6 +92,8 @@
   padding: 2px;
   border-radius: 4px;
   position: relative;
+  bottom: 40px;
+  left: 90%;
   margin: 15px 0;
   transform: rotate(90deg);
 }
