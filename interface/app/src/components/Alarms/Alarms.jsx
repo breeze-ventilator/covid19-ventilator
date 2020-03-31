@@ -11,6 +11,8 @@ export default class Vitals extends React.Component {
     super(props);
   }
 
+  /*TODO: Add an alarm history! */
+
   render() {
     return (
       <Box component="span" m={1}>

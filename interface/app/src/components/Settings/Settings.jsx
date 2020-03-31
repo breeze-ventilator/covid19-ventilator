@@ -15,16 +15,16 @@ export default class Settings extends React.Component {
     }
   }
 
-  
-
   render() {
     return (
       <Box component="span" m={1}>
         <Container>
+        <br></br>
             <Grid container alignItems="stretch"justify="space-between" spacing={3} direction="column">
                 <Grid item xl={6} md={6} sm={12} xs={12}>
                   <Grid container justify="space-evenly" spacing={3} direction="row">
                   {/* TODO: MAKE TOGGLE BUTTON WORK AND CHANGE PARAMETERS SHOWN */}
+                  
                   <ToggleButtonGroup
                       value={this.state.type}
                       exclusive
@@ -35,12 +35,13 @@ export default class Settings extends React.Component {
                   </ToggleButtonGroup>
                   </Grid>
                 </Grid>
+                <br></br><br></br>
                 <ParameterInput parameterName="FiO2" parameterHelpText="ⓘ Ventilator initiates breathing." startingValue={80} step={2} min={21} max={100} unit={"%"}/>
                 <ParameterInput parameterName="PEEP" parameterHelpText="ⓘ Ventilator initiates breathing." startingValue={20} step={2} unit={" cmH2O"}/>
                 <ParameterInput parameterName="Sensitivity" parameterHelpText="ⓘ Ventilator initiates breathing." startingValue={80} step={2} />
                 <ParameterInput parameterName="Pressure support point" parameterHelpText="ⓘ Ventilator initiates breathing."  startingValue={20} step={2} unit={" cmH2O"} />
                 <ParameterInput parameterName="Inspiratory Time" parameterHelpText="ⓘ Ventilator initiates breathing." startingValue={0.3} step={2} unit={" L"} />
-                
+                <br></br>
                 <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
                   {/* TODO: ON BUTTON CLICK, need to get all of the above object's state values and call function in messager */}
                   <Button className="setParametersButton" variant="contained" align="center" color="primary">
