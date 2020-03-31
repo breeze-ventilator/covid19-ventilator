@@ -1,5 +1,4 @@
 import React from 'react';
-import ValueChart from '../ValueChart/ValueChart';
 
 import ParameterInput from '../ParameterInput/ParameterInput'
 import Box from '@material-ui/core/Box';

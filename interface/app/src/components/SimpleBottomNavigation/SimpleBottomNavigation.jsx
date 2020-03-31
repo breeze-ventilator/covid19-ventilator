@@ -2,9 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import RestoreIcon from '@material-ui/icons/Restore';
+import TuneIcon from '@material-ui/icons/Tune';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import { Link } from 'react-router-dom';
 
 
@@ -39,7 +39,7 @@ export default class SimpleBottomNavigation extends React.Component{
       >
         <BottomNavigationAction
           label="Settings"
-          icon={<RestoreIcon />}
+          icon={<TuneIcon />}
           component = { Link }
           to="/settings"
           />
@@ -53,7 +53,7 @@ export default class SimpleBottomNavigation extends React.Component{
 
         <BottomNavigationAction
           label="Alarms"
-          icon={<LocationOnIcon />}
+          icon={<NotificationsActiveIcon />}
           component = { Link }
           to="/alarms"
           />
