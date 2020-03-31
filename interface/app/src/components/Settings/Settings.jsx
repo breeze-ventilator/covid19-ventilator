@@ -11,11 +11,18 @@ export default class Settings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: "patientSupport"
+      isPatientControlState: true
     }
   }
 
-  
+  togglePatientControlState = () => {
+      this.setState({
+        isPatientControlState: !this.state.isPatientControlState
+      });
+
+      console.log(this.state.isPatientControlState)
+    }
+
 
   render() {
     return (
@@ -26,9 +33,10 @@ export default class Settings extends React.Component {
                   <Grid container justify="space-evenly" spacing={3} direction="row">
                   {/* TODO: MAKE TOGGLE BUTTON WORK AND CHANGE PARAMETERS SHOWN */}
                   <ToggleButtonGroup
-                      value={this.state.type}
+                      value={this.state.isPatientControlState ? "patientSupport" : "patientControl" }
                       exclusive
                       aria-label="text alignment"
+                      onChange={this.togglePatientControlState}
                     >
                     <ToggleButton value="patientSupport" variant="contained" color="primary">Patient Support</ToggleButton>
                     <ToggleButton value="patientControl" variant="contained" color="secondary">Patient Control</ToggleButton>
@@ -40,7 +48,7 @@ export default class Settings extends React.Component {
                 <ParameterInput parameterName="Sensitivity" parameterHelpText="ⓘ Ventilator initiates breathing." startingValue={80} step={2} />
                 <ParameterInput parameterName="Pressure support point" parameterHelpText="ⓘ Ventilator initiates breathing."  startingValue={20} step={2} unit={" cmH2O"} />
                 <ParameterInput parameterName="Inspiratory Time" parameterHelpText="ⓘ Ventilator initiates breathing." startingValue={0.3} step={2} unit={" L"} />
-                
+                {!this.state.isPatientControlState && <ParameterInput parameterName="Respiratory Time" parameterHelpText="ⓘ Ventilator initiates breathing." startingValue={0.3} step={2} unit={" L"} />}
                 <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
                   {/* TODO: ON BUTTON CLICK, need to get all of the above object's state values and call function in messager */}
                   <Button className="setParametersButton" variant="contained" align="center" color="primary">
