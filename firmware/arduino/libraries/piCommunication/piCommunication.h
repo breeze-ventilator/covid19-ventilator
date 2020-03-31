@@ -4,16 +4,9 @@
 //Define functions that will be called in other files here
 
 //
-int initializePiCommunication();
-
-
-
-
-void sendData(pressureAvg, flowAvg);
-
-String getPiString();
-
-void parsePiString( String recievedString);
-
+class PiCommunication {
+    public: 
+        
+}
 
 #endif

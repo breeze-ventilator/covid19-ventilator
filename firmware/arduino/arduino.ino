@@ -23,6 +23,7 @@
 #include "Data.h"
 #include "Sensors.h"
 #include "Controller.h"
+#include "State.h"
 
 // 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
 // (eepRom: for bootup, a read-only memory whose contents can be erased and reprogrammed using a pulsed voltage.)
@@ -34,104 +35,67 @@
   - derivative: linear fit over n values, where each value is an average of n datapoints (needs last n**2 datapoints)
 */
 
-struct State {
-  bool isStartingNewBreath;
-  unsigned long startTime;
-  unsigned int breathingStage; // inhilation or exhilation
-} state;
-
-struct Parameters {
-  unsigned int mode;
-  unsigned int fiO2;
-  unsigned int inspiratoryTime;
-  unsigned int expiratoryTime;
-  unsigned int peakInspiratoryPressure;
-  unsigned int peakExpiratoryPressure;
-  unsigned int sensitivity;
-  
-  struct Alarms {
-    unsigned int highPressureBound;
-    unsigned int lowPressureBound;
-
-    unsigned int highMinuteVentilationBound;
-    unsigned int lowMinuteVentilationBound;
-  } alarms;
-};
-
-struct Parameters currentParams;
-struct Parameters newParams;
-
-Data data;
-Sensors sensors;
-Controller controller;
+Data data();
+Sensors sensors();
+Controller controller();
+PiCommunication piCommunications();
+State state();
+Parameters parameters();
 /*
   On startup, initializes pins and ensures Pi sends message.
 
   On failure, hangs forever.
 */
 void setup() {
-  stopArduinoAlarm();
-  
-  initializeFlow();
-  initializeServos();
-  bool stepperConnected = initializeStepperMotor(STEPPER_MAX_INITIALIZATION_TIME);
-  bool piConnected = initializePiCommunication(PI_MAX_WAIT_TIME); 
-  if (!piConnected) {
-    turnOnAlarm();
+  controller.stopArduinoAlarm();
+  sensors.init();
+  int servosConnectedErrorCode = controller.init();
+  int piCommunicationErrorCode = piCommunications.initCommunication(MAX_SERIAL_CONNECTION_WAIT_TIME, PI_MAX_WAIT_TIME, PI_PING_INTERVAL);
+  if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_CODE_ERROR
+    controller.ringAlarmForever();
   }
 
-  if (!servosConnected || !stepperConnected) {
-    sendErrorToPi();
-  }
-  initializeState(&state);
+  // if (servosConnectedErrorCode != NO_ERROR) {
+  //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
+  // }
+
   currentParams.mode = WAITING_FOR_PARAMETERS;
 }
 
-/*
-  Main Loop
-*/
+
 void loop() {
   // Check for Params 
   if (Serial.available()) {
     String receivedString = Serial.readStringUntil("\n"); // reads up-to-but-not-including '\n' char
-    setNewParameters(receivedString, &newParams);
+    parameters.getNewParameters(receivedString);
   }
 
-  readSensorsIfAvailableAndSaveSensorData(&data);
+  sensors.readSensorsIfAvailableAndSaveSensorData(&data);
 
-  updateState(&state, currentParams);
+  state.updateState(&currentParams);
 
   // only update parameters when breath is over
   if (newParamsHaveArrived() && state.isStartingNewBreath) {
-    updateCurrentParameters(&currentParams, &newParams);
+    parameters.updateCurrentParameters();
   }
 
   if (curentParams.mode == PRESSURE_SUPPORT_MODE && state.isStartingNewBreath) {
     // we will re-set system time every breath cycle is complete and when
     // this happens we will let the pi know so that it can check breaths per minut
-    tellPiThatStartingNewBreath(&piMessageQueue);
+    piCommunications.tellPiThatStartingNewBreath();
   }
 
   // breathing cycle
   if (state.breathingStage == INHALATION) {
-    inhalationControl(&data, currentParams);
+    control.inhalationControl(&data, &parameters);
   }
   else if (state.breathingStage == EXHALATION) {
-    exhalationControl(&data, currentParams);
+    control.exhalationControl(&data, &parameters);
   }
 
   if (isTimeToSendDataToPi(&data)) { // need to make sure pressure and flow are BOTH full
-    sendDataToPi(&data);
-    clearData(&(data.forPI));
-  }
-}
-
-void updateState(struct State *state, struct Parameters currentParams) {
-  if (currentParams.mode == PRESSURE_CONTROL_MODE) {
-    pressureControlUpdateState(&state); // checks time to see if time to switch from inhilation to exhilation
-  }
-  else if (currentParams.mode == PRESSURE_SUPPORT_MODE) {
-    pressureSupportUpdateState(&state, currentParams); // should use state.lastFlowValue, state.peakFlowValueInCurrentBreath
+    piCommunications.sendDataToPi(&data);
+    data.resetPiData();
   }
 }
 

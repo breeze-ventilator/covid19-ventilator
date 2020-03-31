@@ -30,3 +30,14 @@ void Data::saveBatteryPercentage(unsigned int batteryPercentage) {
 void Data::saveOxygenPressureReading(unsigned int pressureValue) {
   // TODO
 }
+
+void Data::resetPiData() {
+  _flowSum = 0.0;
+  _pressureSum = 0;
+  _numFlowMeasurements = 0;
+  _numPressureMeasurements = 0;
+  _numFlowErros = 0;
+  _numPressureErrors = 0;
+  _batteryPercentage = 0;
+  return;
+}

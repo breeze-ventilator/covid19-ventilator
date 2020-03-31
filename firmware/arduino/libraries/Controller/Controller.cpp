@@ -20,16 +20,27 @@ Controller::Controller() {
     blowerPID();
 }
 
+int Controller::init() {
+  int error = oxygenValveStepper.moveOxygenStepperToZeroPosition();
+  airIntake.begin();
+  return error;
+}
+
 void Controller::stopArduinoAlarm() {
   alarm.stopAlarm();
 }
 
-void Controller::startArduinoAlarm() {
+void Controller::ringAlarmForever() {
   alarm.keepAlarmRunningForever();
 }
 
-void Controller::inhilationControl(Data *data, struct Parameters currentParams) {
- oxygenControl(struct Data *data, struct Parameters currentParams) {
+void Controller::inhilationControl(Data *data, Parameters *parameters) {
+ oxygenControl(&data, &parameters);
+  // modify steps on stepper motor to get desired flow rate (which then gives concentration)
+}
+
+void Controller::exhalationControl(Data *data, Parameters *parameters) {
+ oxygenControl(&data, &parameters);
   // modify steps on stepper motor to get desired flow rate (which then gives concentration)
 }
 

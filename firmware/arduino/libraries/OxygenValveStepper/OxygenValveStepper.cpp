@@ -28,11 +28,6 @@ OxygenValveStepper::OxygenValveStepper(int motorInterfaceType, int pin0, int pin
   analogWrite(oxygenEnable2Pin, 100);
 }
 
-void OxygenValveStepper::begin(int maxWaitTime) {
-  
-  return moveOxygenStepperToZeroPosition(maxWaitTime);
-}
-
 void OxygenValveStepper::moveOxygenStepperToZeroPosition(int maxWaitTime) {
   int count = 0;
   // Make the Stepper move CW until the switch is activated   

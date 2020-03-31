@@ -21,12 +21,12 @@
   
 
 BlowerPID::BlowerPID(Servo blowerFan, double actualPressure, double pressureSetPoint, double blowerPower) {
+	: _blowerControl(&actualPressure, &blowerPower, &pressureSetPoint, DIRECT); // PID
 	_actualPressure = actualPressure;
 	_pressureSetPoint = pressureSetPoint;
 	_blowerPower = blowerPower;
 	_blowerFan = blowerFan;
 
-	_blowerControl(&actualPressure, &blowerPower, &pressureSetPoint, DIRECT); // PID
 	_blowerControl.SetSampleTime(PID_TIME);
   _blowerControl.SetMode(AUTOMATIC);
 }

@@ -23,6 +23,10 @@ Sensors::Sensors(int flowReadingFrequency,
   _batteryVoltageReadTime = 0;
 }
 
+void Sensors::init() {
+  flowSensor.init();
+}
+
 void Sensors::readSensorsIfAvailableAndSaveSensorData(Data *data) {
   // take sensor readings
   if (isTimeToReadFlow()) {
