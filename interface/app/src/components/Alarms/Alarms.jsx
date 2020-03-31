@@ -5,17 +5,57 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 export default class Vitals extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      data: {
+        tidalVolume: 5,
+        pressure: 5
+      }
+    }
   }
 
+  componentDidUpdate(prevProps){
+    const { allData } = this.props;
+    this.state.data = allData
+    if (this.isMount) {
+      this.setState(this.state);
+    }
+  }
+
+  createNotification = (type) => {
+    return () => {
+      switch (type) {
+        case 'info':
+          NotificationManager.info('Info message');
+          break;
+        case 'success':
+          NotificationManager.success('Success message', 'Title here');
+          break;
+        case 'warning':
+          NotificationManager.warning('Warning message', 'Close after 3000ms', 3000);
+          break;
+        case 'error':
+          // NotificationManager.error(`Tidal volume is ${this.state.data.tidalVolume}`, 'Error!', 5000, () => {
+          //   alert('callback');
+          // });
+          NotificationManager.error('Currently 9L/min', 'Minute ventilation too high', 5000, () => {
+            alert('callback');
+          });
+          break;
+      }
+    };
+  };
   /*TODO: Add an alarm history! */
 
   render() {
     return (
-      <Box component="span" m={1}>
+      <div>
+<Box component="span" m={1}>
       <Container>
           <Grid container alignItems="stretch"justify="space-between" spacing={3} direction="column">
               <Grid item xl={6} md={6} sm={12} xs={12}>
@@ -35,10 +75,16 @@ export default class Vitals extends React.Component {
                 <Button className="setParametersButton" variant="contained" align="center" color="primary">
                   Save Changes
                 </Button>
+                <Button className="btn btn-info" onClick={this.createNotification('error')}>
+                  Warning
+                </Button>
               </Grid>
         </Grid>
+        <NotificationContainer />
       </Container>
     </Box>
+      </div>
+
 
     );
   }
