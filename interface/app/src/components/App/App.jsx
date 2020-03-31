@@ -56,15 +56,8 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-
-      {/* <Vitals timeSeriesData={this.state.data.tidalVolume} />
-      <ValueChart
-          progress={40}
-          color="#3c71d0"
-      /> */}
       <Router>
         <SimpleBottomNavigation />
-
         <Switch>
         <Route path="/settings">
           <Settings allParameters={this.state.parameters}/>
@@ -73,7 +66,7 @@ export default class App extends React.Component {
           <Vitals allData={this.state.data}/>
         </Route>
         <Route path="/alarms">
-          <Alarms />
+          <Alarms allData={this.state.data} />
         </Route>
         </Switch>
       </Router>
