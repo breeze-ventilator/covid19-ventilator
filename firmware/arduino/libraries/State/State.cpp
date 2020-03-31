@@ -7,15 +7,15 @@ State::State() {
   breathingStage = INHILATION_STAGE;
 }
 
-State::updateState(Parameters parameters) {
+void State::updateState(Parameters *parameters) {
   unsigned long currentTime = millis();
   if (parameters.mode == PRESSURE_CONTROL_MODE) {
     // checks time to see if time to switch from inhilation to exhilation
-    if (breathingStage == INHILATION_STAGE && finishedInspiratoryStage(currentTime)) {
+    if (breathingStage == INHILATION_STAGE && finishedInspiratoryStage(currentTime, &parameters)) {
       endInhilationAndStartExhalation();
       startTime = currentTime;
     }
-    else if (breathingStage == EXHALATION_STAGE && finishedExpiratoryStage(currentTime)) {
+    else if (breathingStage == EXHALATION_STAGE && finishedExpiratoryStage(currentTime, &parameters)) {
       endExhalationAndStartInhilation();
       startTime = currentTime;
     } else if (isStartingNewBreath) {
@@ -27,23 +27,23 @@ State::updateState(Parameters parameters) {
   }
 }
 
-State::endInhilationAndStartExhalation() {
+void State::endInhilationAndStartExhalation() {
   breathingStage = EXHALATION_STAGE;
 }
 
-State::endExhalationAndStartInhilation() {
+void State::endExhalationAndStartInhilation() {
   breathingStage = INHILATION_STAGE;
   isStartingNewBreath = true;
 }
 
-State::finishedInspiratoryStage(currentTime) {
-  if (currentTime - startTime > currentParams.inspiratoryTime) {
+int State::finishedInspiratoryStage(unsigned long currentTime, Parameters *parameters) {
+  if (currentTime - startTime > parameters.inspiratoryTime) {
     return 1;
   } else {return 0;}
 }
 
-State::finishedExpiratoryStage(currentTime) {
-  if (currentTime - startTime > currentParams.expiratoryTime) {
+int State::finishedExpiratoryStage(unsigned long currentTime, Parameters *parameters) {
+  if (currentTime - startTime > parameters.expiratoryTime) {
     return 1;
   } else {return 0;}
 }

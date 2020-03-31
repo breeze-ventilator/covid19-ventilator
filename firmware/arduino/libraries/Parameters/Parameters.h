@@ -3,12 +3,16 @@
 
 class Parameters {
     public:
+        Parameters();
+        void getNewParameters(String receivedString);
+        void updateCurrentParameters();
+
         unsigned int currentMode;
-        unsigned int currentMiO2;
+        unsigned int currentFiO2;
         unsigned int currentInspiratoryTime;
-        unsigned int currentMxpiratoryTime;
+        unsigned int currentExpiratoryTime;
         unsigned int currentPeakInspiratoryPressure;
-        unsigned int currentPeakExpiratoryPressure;
+        unsigned int currentPEEP;
         unsigned int currentSensitivity;
     private:
         unsigned int _newMode;
@@ -16,8 +20,8 @@ class Parameters {
         unsigned int _newInspiratoryTime;
         unsigned int _newExpiratoryTime;
         unsigned int _newPeakInspiratoryPressure;
-        unsigned int _newPeakExpiratoryPressure;
+        unsigned int _newPEEP;
         unsigned int _newSensitivity;
-}
+};
 
 #endif

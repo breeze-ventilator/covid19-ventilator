@@ -17,9 +17,7 @@
 
 #include <Servo.h>
 #include <Stepper.h>
-#include <math.h> // TODO: only used in utilities.c, do we still need it here?
-
-#include "init.h"
+#include "initializations.h"
 #include "Data.h"
 #include "Sensors.h"
 #include "Controller.h"
@@ -93,64 +91,3 @@ void loop() {
     }
   }
 }
-
-
-
-// // Other stuff:
-
-// //====== Send Data to the Pi ======
-//   // including the I-am-alive data
-//   // TODO: encapsulate the stuff in this if-statement
-//   if (pressureDataCount == NUM_OF_PRES_MEASUREMENTS) && (flowDataCount == NUM_OF_FLOW_MEASUREMENTS){
-
-//     // take average pressure
-//     double avgPressure = arrayAverage(pressureArray); 
-//     avgPressureArray[avgPressureCount] = avgPressure;
-//     avgPressureCount = (avgPressureCount + 1) % NUM_OF_PRES_MEASUREMENTS; // trying to intelligently ensure this doesnt become a massive number
-
-//     // take average flow
-//     double avgFlow = arrayAverage(flowArray);
-//     avgFlowArray[avgPressureCount] = avgFlow;
-//     avgFlowCount = (avgFlowCount + 1) % NUM_OF_FLOW_MEASUREMENTS; 
-
-//     sendData(avgPressure, avgFlow);
-
-//     // TODO: Check if data was recieved properly
-//     int sendTimeout = 0;
-//     while Serial.available(){ // TODO: I'm not totally sure of using this function - James
-//       piResp = Serial.readStringUntil('\n');
-
-//       if !piResp.equals('G'){ // bad response (TODO: we don't need the Arduino to know the Pi's state, right? Or )
-//         sendData(avgPressure, avgFlow); // send again
-//         sendTimeout++;
-//         if (sendTimeout == SEND_DATA_TIMEOUT){
-//           // TODO: Throw an alarm, is this the right alarm to call? do we need more functionality?
-//           keepAlarmRingingForever(); 
-//         }
-//       }
-//     }
-    
-//   }
-
-// // ===== Take readings ====
-//   currentTime = millis();
-//   if( ((currentTime - lastPresReadTime) >= PRES_READ_RATE)) {
-//     getFlowReading();
-//   }
-//   currentTime = millis();
-//   if( ((currentTime - lastFlowReadTime) >= FLOW_READ_RATE) ){
-//     getPressureReading();
-//   }
-
-
-//   if (mode == patientTriggered){//if in patient triggered mode look for breath attempt?
-//     resetSystemTime(); // @ALL: is system time a thing? Is it for making sure we get a minimum # of breaths per minute?
-//   }
-//   //  setPressure(inhalePressure);
-
-
-
-//   sendAlarm(alarmMessage); //send the alarm to the pi    @ALL: why is this placed here?
-//   while (systemTime < howLongIWantToWait){
-//     waitForConfirmation();
-//   }

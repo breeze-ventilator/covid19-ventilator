@@ -24,6 +24,5 @@ void BlowerFanServo::turnOff() {
 }
 
 void BlowerFanServo::writeBlowerPower(double blowerPower) {
-  write(map(blowerPower, 0, 256, 15, 180));
-  return;
+  _blowerFan.write(map(blowerPower, 0, 256, 15, 180));
 }

@@ -11,13 +11,13 @@
 #include "PiCommunication.h"
 #include "Data.h"
 #include "State.h"
-#define LITERS_TO_MILLILITERS 1000
+
 
 PiCommunication::PiCommunication(int baudRate) {
   _baudRate = baudRate;
 }
 
-PiCommunication::initCommunication(int maxSerialWaitTime, int maxPiWaitTime, int pingInterval) {
+int PiCommunication::initCommunication(int maxSerialWaitTime, int maxPiWaitTime, int pingInterval) {
   Serial.begin(_baudRate);
   
   int count = 0;
@@ -57,9 +57,10 @@ int PiCommunication::isDataAvailable() {
 String PiCommunication::getData() {
   String receivedString = Serial.readStringUntil("\n"); // reads up-to-but-not-including '\n' char
   tellPiThatWeGotData();
+  return receivedString;
 }
 
-void tellPiThatWeGotData() {
+void PiCommunication::tellPiThatWeGotData() {
   Serial.print('G\n');
 }
 
@@ -73,19 +74,21 @@ void PiCommunication::sendData(Data *data, State *state) {
   // Send running average flow
   // Send “G” for good or “E**” for error and error number
   // Send “\n”
-  int checkSum = 0;
-  unsigned int averagePressure = data.pressureSum / data.numPressureMeasurements;
-  int breathCompleted = state.isStartingNewBreath;
-  int flowIntegral;
+  unsigned char checkSum = 0;
+  unsigned char averagePressure = (unsigned char) data.pressureSum / data.numPressureMeasurements;
+  unsigned char batteryPercentage = (unsigned char) data.batteryPercentage;
+  unsigned char breathCompleted = (unsigned char) state.isStartingNewBreath;
+  short flowIntegral;
   if (state.isStartingNewBreath) {
-    flowIntegral = (int) floor(LITERS_TO_MILLILITERS*data.flowIntegral); // mL/min
+    flowIntegral = (short) floor(LITERS_TO_MILLILITERS*data.flowIntegral); // mL/min
   } else {
     flowIntegral = 0;
   }
-  
   int error = "G"; // TODO: make better
+  
   Serial.write(checkSum);
   Serial.write(averagePressure);
+  Serial.write(batteryPercentage);
   Serial.write(breathCompleted);
   Serial.write(flowIntegral);
   Serial.write(error);
@@ -98,13 +101,6 @@ void PiCommunication::sendData(Data *data, State *state) {
 //     piCommunications.finishedBreath(&data);
 //   }
 
-void PiCommunication::finishedBreath(Data *data) {
-  int checkSum = 0;
-  Serial.write(checkSum);
-
-  Serial.write(flowIntegral);
-}
-  
 /*
   Helper function to verify checksum from first character of string.
 */

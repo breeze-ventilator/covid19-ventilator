@@ -1,10 +1,8 @@
 #include "Sensors.h"
-#include "OxygenValveStepper.h"
-#include "AirIntakeServo.h"
-#include "BlowerFanServo.h"
-
-#define SECONDS_TO_MILLISECONDS 1000
-#define MINUTES_TO_MILLISECONDS 60000
+#include "OxygenPressureSensor.h"
+#include "FlowSensor.h"
+#include "BatteryVoltageSensor.h"
+#include "MainPressureSensor.h"
 
 Sensors::Sensors(int flowReadingFrequency,
                  int mainPressureReadingFrequency,
@@ -36,37 +34,37 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data *data) {
     data.saveFlowReading(flowValue, delta_time);
     _lastFlowReadTime = millis();
   }
-  if (isTimeToReadOxygenPressure()) {
-    unsigned int pressureValue = oxygenPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
-    data.saveOxygenPressureReading(pressureValue);
-    _lastOxygenPressureReadTime = millis();
-  }
+  // if (isTimeToReadOxygenPressure()) {
+  //   unsigned int pressureValue = oxygenPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
+  //   data.saveOxygenPressureReading(pressureValue);
+  //   _lastOxygenPressureReadTime = millis();
+  // }
   if (isTimeToReadMainPressure()) {
     unsigned int pressureValue = mainPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
     data.saveMainPressureReading(pressureValue);
     _lastMainPressureReadTime = millis();
   }
   if (isTimeToReadBatteryPercentage()) {
-    unsigned int batteryPercentage = getBatteryPercentage();
+    unsigned int batteryPercentage = batteryVoltageSensor.readPercentage();
     data.saveBatteryPercentage(batteryPercentage);
     _lastBatteryPercentageReadTime = millis();
   }
 }
 
-int isTimeToReadFlow() {
+int Sensors::isTimeToReadFlow() {
   return isTimeToRead(_lastFlowReadTime, _timeBetweenFlowReadings);
 }
-int isTimeToReadMainPressure() {
+int Sensors::isTimeToReadMainPressure() {
   return isTimeToRead(_lastMainPressureReadTime, _timeBetweenMainPressureReadings);
 }
-int isTimeToReadOxygenPressure() {
+int Sensors::isTimeToReadOxygenPressure() {
   return isTimeToRead(_lastOxygenPressureReadTime, _timeBetweenOxygenPressureReadings);
 }
-int isTimeToReadBatteryPercentage() {
+int Sensors::isTimeToReadBatteryPercentage() {
   return isTimeToRead(_lastBatteryPercentageReadTime, _timeBetweenBatteryPercentageReadings);
 }
 
-int isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings) {
+int Sensors::isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings) {
   unsigned long currentTime = millis();
   unsigned long timeDifference = curentTime - _lastFlowReadTime;
   if (timeDifference >= _timeBetweenReadings) {

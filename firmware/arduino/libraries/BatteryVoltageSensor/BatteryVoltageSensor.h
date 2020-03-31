@@ -13,41 +13,14 @@
   
 */
 
-#ifndef FlowSensor_h
-#define FlowSensor_h
+#ifndef BATTERY_VOLTAGE_SENSOR_H
+#define BATTERY_VOLTAGE_SENSOR_H
 
-#if !defined(NO_ERROR)
-#define NO_ERROR 0
-#endif
-
-#if !defined(SENSOR_DEAD_OR_NEEDS_RESET_ERROR)
-#define SENSOR_DEAD_OR_NEEDS_RESET_ERROR 1
-#endif
-
-#if !defined(NOISY_READING_ERROR)
-#define NOISY_READING_ERROR 2
-#endif
-
-#if ARDUINO >= 100
-  #include "Arduino.h"
-#else
-  #include "WProgram.h"
-  #include "pins_arduino.h"
-  #include "WConstants.h"
-#endif
- 
-
-class FlowSensor {
+class BatteryVoltageSensor {
   public:
-	  FlowSensor(int i2cAddress, int offset, float scale);
-    void begin();
-    float getvalue(int *errorType);
-    
-  private:
-	  int mI2cAddress;
-    int moffset;
-    int mscale;
-	  uint8_t crc8(const uint8_t data, uint8_t crc);
+	  BatteryVoltageSensor(int pin);
+    int read();
+    int readPercentage();
 };
  
 #endif

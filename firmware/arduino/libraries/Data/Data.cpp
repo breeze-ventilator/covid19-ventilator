@@ -1,26 +1,29 @@
 #include "Data.h"
 #include <list>
 
-Data::Data(int flowHistoryLengthForPID, int pressureHistoryLengthForPID) {
-  flowHistoryLengthForPID = flowHistoryLengthForPID;
-  pressureHistoryLengthForPID = pressureHistoryLengthForPID;
+Data::Data() {
 }
 
 void Data::saveFlowReading(float flowValue, float delta_time) {
-  flowValues.push_back(flowValue);
-  if (flowValues.size() > flowHistoryLengthForPID) {
-    flowValues.pop_front();
-  }
   flowIntegral += flowValue*delta_time;
 }
 
 void Data::saveMainPressureReading(unsigned int pressureValue) {
   pressureValues.push_back(pressureValue);
-  if (pressureValues.size() > pressureHistoryLengthForPID) {
+  if (pressureValues.size() > PRESSURE_HISTORY_LENGTH_FOR_PID) {
     pressureValues.pop_front();
   }
   pressureSum += pressureValue;
-  numPressureMeasurements += 
+  numPressureMeasurements += 1;
+}
+
+float Data::getMainPressureAverageForPID() {
+  float average = 0;
+  for (float i=0; i<pressureValues.size(); i++) {
+    average += pressureValues;
+  }
+  average /= pressureValues.size();
+  return average;
 }
 
 void Data::saveBatteryPercentage(unsigned int batteryPercentage) {

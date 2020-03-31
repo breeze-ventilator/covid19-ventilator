@@ -16,8 +16,8 @@ OxygenValveStepper::OxygenValveStepper(int motorInterfaceType, int pin0, int pin
       int pin2, int pin3, int limitSwitchPin, int maxStepperSpeed, int stepperAcceleration,
       int oxygenEnable1Pin, int oxygenEnable2Pin) {
   
-  _oxygenStepper = AccelStepper(motorInterfaceType, pin0, pin1, pin2, pin3);
-  _limitSwitchPin = limitSwitchPin
+  _oxygenStepper(motorInterfaceType, pin0, pin1, pin2, pin3);
+  _limitSwitchPin = limitSwitchPin;
   pinMode(_limitSwitchPin, INPUT_PULLUP); // TODO: simon need better naming here
   
   _oxygenStepper.setMaxSpeed(maxStepperSpeed); // Slower to get better accuracy
@@ -30,9 +30,19 @@ OxygenValveStepper::OxygenValveStepper(int motorInterfaceType, int pin0, int pin
 
 void OxygenValveStepper::moveOxygenStepperToZeroPosition(int maxWaitTime) {
   int count = 0;
-  // Make the Stepper move CW until the switch is activated   
-  while (digitalRead(HOME_SWITCH)) {
+  while (!digitalRead(_limitSwitchPin)){
     _oxygenStepper.moveTo(_oxygenStepper.currentPosition() + 1);  // Set the position to move to
+    _oxygenStepper.run(); // Start moving the stepper
+    delay(5);
+    count += 5;
+    if (count > maxWaitTime) {
+      return TIMEOUT_ERROR;
+    }
+  }
+  count = 0;
+  // Make the Stepper move CCW until the switch is activated   
+  while (digitalRead(_limitSwitchPin)) {
+    _oxygenStepper.moveTo(_oxygenStepper.currentPosition() - 1);  // Set the position to move to
     _oxygenStepper.run(); // Start moving the stepper
     delay(5);
     count += 5;
@@ -47,8 +57,13 @@ void OxygenValveStepper::moveOxygenStepperToZeroPosition(int maxWaitTime) {
 void OxygenValveStepper::stepOxygenFlow(float flow, float pressure) {
   float highFlow = (pressure/AMBIENT_PRESSURE) * flow;
   _oxygenStepper.moveTo(floor(FLOW_COEFFICIENT * highFlow));
+  _oxygenStepper.run(); //this only moves one step soooo
+ 
+  return; //need to calll this function offten like 100 hz
+}
+
+void OxygenValveStepper::runOneStep(){
   _oxygenStepper.run();
-  return;
 }
 
 // pressure in psi = 0.1354*(volts) + 1.01

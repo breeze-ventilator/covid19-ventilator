@@ -1,24 +1,23 @@
 #include "Alarm.h"
 
 Alarm::Alarm(int pin) {
-  pinMode(pin, OUTPUT);
+  _pin = pin;
+  pinMode(_pin, OUTPUT);
 }
 
 void Alarm::startAlarm() {
-	// Simon TODO
+  digitalWrite(_pin, LOW);
 }
 
 void Alarm::stopAlarm() {
-
+  digitalWrite(_pin, HIGH);
 }
 
 void Alarm::keepAlarmRunningForever() {
-  if (!_isAlarmOn) {
-    startAlarm();
-  }
+  startAlarm();
   runForever();
-  
 }
+
 void Alarm::runForever() {
   while(1) {
     ;

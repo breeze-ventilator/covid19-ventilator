@@ -1,15 +1,12 @@
-#ifndef SENSORS_H
-#define SENSORS_H
+#ifndef OXYGEN_PRESSURE_SENSOR_H
+#define OXYGEN_PRESSURE_SENSOR_H
 
 class OxygenPressureSensor {
   public:
 	  OxygenPressureSensor();
-    
+    unsigned int read();
   private:
-	  int mI2cAddress;
-    int moffset;
-    int mscale;
-	  uint8_t crc8(const uint8_t data, uint8_t crc);
+    int _pin;
 };
 
 #endif

@@ -1,11 +1,13 @@
-#ifndef SENSORS_H
-#define SENSORS_H
+#ifndef BLOWER_FAN_SERVO_H
+#define BLOWER_FAN_SERVO_H
 
-
-#include <Servo.h>
 class BlowerFanServo {
     public:
-        Servo blowerFan;
+        BlowerFanServo(int pin);
+        void begin();
+        void turnOff();
+        void writeBlowerPower(double blowerPower);
+        Servo _blowerFan;
 };
 
 #endif
