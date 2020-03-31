@@ -4,7 +4,7 @@ import Messager from '../../handlers/Messager';
 import d3Config from '../LineChart/scripts/d3Config.js'
 import './css/App.css';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 import Vitals from '../Vitals/Vitals';
 import Settings from '../Settings/Settings';
@@ -22,11 +22,14 @@ export default class App extends React.Component {
         pressure: 5
       },
       parameters: {
-        fiO2: 80,
-        peep: 20,
-        sensitivity: 0,
-        inspiratoryTime: 10,
-        pressureSupportPoint: 20
+        isPressureControlState: true,
+        fiO2: 80, // Control + Support
+        peep: 20, // Control + Support
+        peakPressure: 20, // Control + Support
+        sensitivity: 80, // Support
+        apneaTime: 20, // Support
+        inspiratoryTime: 0, // Control
+        respiratoryRate: 0 // Control
       }
     }
     this.messager = new Messager(5000);
@@ -34,6 +37,17 @@ export default class App extends React.Component {
     this.messager.sampleTidalVolumeDataListener(this.updateData.bind(this));
     this.messager.samplePressureDataListener(this.updateData.bind(this));
 
+    this.setParameters = this.setParameters.bind(this);
+
+  }
+
+  setParameters(parameters){
+    this.state.parameters = parameters;
+    this.setState(this.state);
+    console.log("IN APP: ")
+    console.log(this.state)
+
+    // TODO: SHIP with messager to arduino!
   }
 
   componentDidMount(){
@@ -67,7 +81,7 @@ export default class App extends React.Component {
 
         <Switch>
         <Route path="/settings">
-          <Settings allParameters={this.state.parameters}/>
+          <Settings allParameters={this.state.parameters} setParameters={this.setParameters}/>
         </Route>
         <Route path="/diagnostics">
           <Vitals allData={this.state.data}/>
@@ -76,6 +90,7 @@ export default class App extends React.Component {
           <Alarms />
         </Route>
         </Switch>
+        <Redirect from="/" to="settings" />
       </Router>
 
       </div>
