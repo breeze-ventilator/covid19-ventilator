@@ -71,10 +71,10 @@ export default class App extends React.Component {
     return (
       <div>
       <Router>
-        <div class="battery">
-          <div class="battery-level alert" style={{height : "25%"}}></div>
-        </div>
         <SimpleBottomNavigation />
+        <div class="battery">
+          <div class="battery-level" style={{height : "75%"}}></div>
+        </div>
         <Switch>
         <Route path="/settings">
           <Settings allParameters={this.state.parameters} setParameters={this.setParameters}/>
