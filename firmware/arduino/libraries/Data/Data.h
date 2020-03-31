@@ -1,24 +1,35 @@
-#ifndef SENSORS_H
-#define SENSORS_H
+#ifndef DATA_H
+#define DATA_H
+
+#define PRESSURE_HISTORY_LENGTH_FOR_PID 10 //TODO: change
 
 class Data {
-    private:
-        unsigned int _batteryVoltage;
-        float _lastFlowValue;
-        unsigned int _peakFlowValueInCurrentBreath; // needed for switching to exhalation
+    public:
+        Data();
+        void saveFlowReading(float flowValue, float delta_time);
+        void saveMainPressureReading(unsigned int pressureValue);
+        float getMainPressureAverageForPID();
+        void saveBatteryPercentage(unsigned int batteryPercentage);
+        void saveOxygenPressureReading(unsigned int pressureValue);
+        void resetPiDataExceptFlow();
+        void resetPiFlowData();
+
+        int pressureHistoryLengthForPID;
+
+        unsigned int batteryPercentage;
+        float lastFlowValue;
+        unsigned int peakFlowValueInCurrentBreath; // needed for switching to exhalation
         
         // for PID
-        std::list<float> _flowValues;
-        std::list<unsigned int> _pressureValues;
+        std::list<unsigned int> pressureValues;
         
         // for Pi
-        float _flowSum;
-        unsigned int _pressureSum;
-        unsigned int _numFlowMeasurements;
-        unsigned int _numPressureMeasurements;
-        unsigned int _numFlowErros;
-        unsigned int _numPressureErrors;
-        unsigned int _batteryPercentage;
-}
+        float flowIntegral;
+        unsigned int pressureSum;
+        unsigned int numPressureMeasurements;
+        unsigned int numFlowErros;
+        unsigned int numPressureErrors;
+        unsigned int batteryPercentage;
+};
 
 #endif

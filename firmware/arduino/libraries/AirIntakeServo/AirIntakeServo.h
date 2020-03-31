@@ -1,11 +1,12 @@
-#ifndef SENSORS_H
-#define SENSORS_H
+#ifndef AIR_INTAKE_SERVO_H
+#define AIR_INTAKE_SERVO_H
 
-class BlowerFanServo {
+class AirIntakeServo {
     public:
-        Servo blowerFan;
-        Servo airIntake;
+        AirIntakeServo(int pin, int zeroPoint);
+        void setOpening(int percent);
+    private:
+        Servo _airIntake;
 };
-
 
 #endif

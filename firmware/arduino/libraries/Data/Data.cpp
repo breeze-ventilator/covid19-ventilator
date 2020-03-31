@@ -1,32 +1,50 @@
 #include "Data.h"
-#include "OxygenValveStepper.h"
-#include "AirIntakeServo.h"
-#include "BlowerFanServo.h"
 #include <list>
 
-Data::Data(int flowHistoryLengthForPID, int pressureHistoryLengthForPID) {
-  _flowHistoryLengthForPID = flowHistoryLengthForPID;
-  _pressureHistoryLengthForPID = pressureHistoryLengthForPID;
+Data::Data() {
 }
 
-void Data::saveFlowReading(float flowValue) {
-  _flowValues.push_back(flowValue);
-  if (_flowValues.size() > _flowHistoryLengthForPID) {
-    _flowValues.pop_front();
-  }
+void Data::saveFlowReading(float flowValue, float delta_time) {
+  flowIntegral += flowValue*delta_time;
 }
 
 void Data::saveMainPressureReading(unsigned int pressureValue) {
-  _pressureValues.push_back(flowValue);
-  if (_pressureValues.size() > _pressureHistoryLengthForPID) {
-    _pressureValues.pop_front();
+  pressureValues.push_back(pressureValue);
+  if (pressureValues.size() > PRESSURE_HISTORY_LENGTH_FOR_PID) {
+    pressureValues.pop_front();
   }
+  pressureSum += pressureValue;
+  numPressureMeasurements += 1;
+}
+
+float Data::getMainPressureAverageForPID() {
+  float average = 0;
+  for (float i=0; i<pressureValues.size(); i++) {
+    average += pressureValues;
+  }
+  average /= pressureValues.size();
+  return average;
 }
 
 void Data::saveBatteryPercentage(unsigned int batteryPercentage) {
-  _batteryPercentage = batteryPercentage;
+  batteryPercentage = batteryPercentage;
 }
 
 void Data::saveOxygenPressureReading(unsigned int pressureValue) {
   // TODO
+}
+
+void Data::resetPiDataExceptFlow() {
+  pressureSum = 0;
+  numFlowMeasurements = 0;
+  numPressureMeasurements = 0;
+  numFlowErros = 0;
+  numPressureErrors = 0;
+  batteryPercentage = 0;
+  return;
+}
+
+// when breath finished
+void Data::resetPiFlowData() {
+  flowIntegral = 0.0;
 }

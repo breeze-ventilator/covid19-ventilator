@@ -50,6 +50,7 @@ export default class Vitals extends React.Component {
       }
     };
   };
+  /*TODO: Add an alarm history! */
 
   render() {
     return (

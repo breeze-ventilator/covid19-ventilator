@@ -143,5 +143,9 @@
       content: '';
       display: inline-block;
       position: absolute;
-    }
+  }
 
+
+html, body {
+  overflow:hidden;
+}

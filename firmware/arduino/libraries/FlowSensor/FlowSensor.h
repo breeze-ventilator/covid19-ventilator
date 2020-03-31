@@ -35,12 +35,12 @@
   #include "pins_arduino.h"
   #include "WConstants.h"
 #endif
- 
+
 
 class FlowSensor {
   public:
 	  FlowSensor(int i2cAddress, int offset, float scale);
-    void begin();
+    void init();
     float getvalue(int *errorType);
     
   private:

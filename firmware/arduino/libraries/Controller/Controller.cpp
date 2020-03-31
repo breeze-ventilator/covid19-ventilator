@@ -2,6 +2,10 @@
 #include "OxygenValveStepper.h"
 #include "AirIntakeServo.h"
 #include "BlowerFanServo.h"
+#include "Data.h"
+#include "Parameters.h"
+#include "State.h"
+#include "Alarm.h"
 
 Controller::Controller() {
   : oxygenValveStepper(OXYGEN_VALVE_MOTOR_INTERFACE_TYPE,
@@ -15,32 +19,87 @@ Controller::Controller() {
                        OXYGEN_VALVE_ENABLE1_PIN,
                        OXYGEN_VALVE_ENABLE2_PIN),
     alarm(ALARM_PIN),
-    airIntake(AIR_INTAKE_PIN),
-    blowerFan(BLOWER_FAN_PIN);
-    blowerPID();
+    airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
+    blowerFanServo(BLOWER_FAN_PIN),
+    blowerPID(kP, kD);
+  _lastOxygenControlTime = 0;
+  _lastAirControlTime = 0;
+}
+
+int Controller::init() {
+  int error = oxygenValveStepper.moveOxygenStepperToZeroPosition();
+  return error;
 }
 
 void Controller::stopArduinoAlarm() {
   alarm.stopAlarm();
 }
 
-void Controller::startArduinoAlarm() {
+void Controller::ringAlarmForever() {
   alarm.keepAlarmRunningForever();
 }
 
-void Controller::inhilationControl(Data *data, struct Parameters currentParams) {
- oxygenControl(struct Data *data, struct Parameters currentParams) {
+void Controller::inhilationControl(Data *data, Parameters *parameters, State *state) {
+  // modify steps on stepper motor to get desired flow rate (which then gives concentration)
+  if (isTimeToControlOxygen()) {
+    oxygenControl(&data, &parameters, &state);
+    _lastOxygenControlTime = millis();
+  }
+  if (isTimeToControlAir()) {
+   airControl(&parameters);
+   _lastAirControlTime = millis();
+  }
+  float setPressure = (float) parameters.currentPeakInspiratoryPressure; //TODO: Check units with below
+  float actualPressure = data.getMainPressureAverageForPID();
+  _blowerPID.control(setPressure, actualPressure);
+  _blowerPID.control(data);
+}
+
+void Controller::exhalationControl(Data *data, Parameters *parameters, State *state) {
+  if (isTimeToControlOxygen()) {
+    oxygenControl(&data, &parameters, &state);
+    _lastOxygenControlTime = millis();
+  }
+  if (isTimeToControlAir()) {
+   airControl(&parameters);
+   _lastAirControlTime = millis();
+  }
+  float setPressure = (float) parameters.currentPEEP; //TODO: Check units with below. Also, should be an int or float?
+  float actualPressure = data.getMainPressureAverageForPID();
+  _blowerPID.control(setPressure, actualPressure);
   // modify steps on stepper motor to get desired flow rate (which then gives concentration)
 }
 
-void controlOutputsIfAvailable() {
-  if (isTimeToControlBlower()){
-    controlBlower();
+void Controller::oxygenControl(Data *data, Parameters *parameters, State *state){
+  if (state.isStartingNewBreath) {
+    float flow = data.flowIntegral / (parameters.currentExpiratoryTime + parameters.currentInspiratoryTime); // TODO: should be of last breath not current breath
+    flow *= parameters.currentFiO2 * 1000;
+
+    oxygenValveStepper.stepOxygenFlow(flow, 90); //90 is psi of O2 implement real reading later
+          //the other part is the average flow over a breath in l/s
   }
-  if (isTimeToControlOxygen()){
-    controlOxygen();
+  oxygenValveStepper.runOneStep();
+}
+
+void Controller::airControl(Parameters *parameters) {
+  airIntakeServo.setOpening(100 - parameters.currentFiO2);
+}
+
+int Controller::isTimeToControlOxygen() {
+  return isTimeToRead(_lastOxygenControlTime, TIME_BETWEEN_OXYGEN_CONTROLS);
+}
+
+int Controller::isTimeToControlAir() {
+  return isTimeToRead(_lastAirControlTime, TIME_BETWEEN_AIR_CONTROLS);
+}
+
+int Controller::isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings) {
+  unsigned long currentTime = millis();
+  unsigned long timeDifference = curentTime - _lastFlowReadTime;
+  if (timeDifference >= _timeBetweenReadings) {
+    return 1;
   }
-  if (isTimeToControlAir()){
-    controlAir();
+  else {
+    return 0;
   }
 }

@@ -19,7 +19,7 @@ FlowSensor::FlowSensor(int i2cAddress, int offset, float scale)
 	mscale = scale;
 }
 
-void FlowSensor::begin()
+void FlowSensor::init()
 {
   Wire.begin();
   delay(1000);
