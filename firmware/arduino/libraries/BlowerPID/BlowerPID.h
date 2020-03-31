@@ -8,5 +8,9 @@
 
 class BlowerPID
     private:
-        PID _blowerControl
+        PID _blowerControl;
+        BlowerFanServo _blowerFan;
+        double _actualPressure;
+        double _blowerPower;
+        double _pressureSetPoint;
 #endif

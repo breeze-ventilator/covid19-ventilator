@@ -1,4 +1,5 @@
 #include "State.h"
+#include "Parameters.h"
 
 State::State() {
   isStartingNewBreath = false;
@@ -6,9 +7,9 @@ State::State() {
   breathingStage = INHILATION_STAGE;
 }
 
-State::updateState(struct Parameters currentParams) {
+State::updateState(Parameters parameters) {
   unsigned long currentTime = millis();
-  if (currentParams.mode == PRESSURE_CONTROL_MODE) {
+  if (parameters.mode == PRESSURE_CONTROL_MODE) {
     // checks time to see if time to switch from inhilation to exhilation
     if (breathingStage == INHILATION_STAGE && finishedInspiratoryStage(currentTime)) {
       endInhilationAndStartExhalation();
@@ -17,9 +18,11 @@ State::updateState(struct Parameters currentParams) {
     else if (breathingStage == EXHALATION_STAGE && finishedExpiratoryStage(currentTime)) {
       endExhalationAndStartInhilation();
       startTime = currentTime;
+    } else if (isStartingNewBreath) {
+      isStartingNewBreath = false;
     }
   }
-  else if (currentParams.mode == PRESSURE_SUPPORT_MODE) {
+  else if (parameters.mode == PRESSURE_SUPPORT_MODE) {
     // should use state.lastFlowValue, state.peakFlowValueInCurrentBreath
   }
 }
@@ -30,6 +33,7 @@ State::endInhilationAndStartExhalation() {
 
 State::endExhalationAndStartInhilation() {
   breathingStage = INHILATION_STAGE;
+  isStartingNewBreath = true;
 }
 
 State::finishedInspiratoryStage(currentTime) {

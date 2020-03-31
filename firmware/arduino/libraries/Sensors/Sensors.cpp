@@ -4,6 +4,7 @@
 #include "BlowerFanServo.h"
 
 #define SECONDS_TO_MILLISECONDS 1000
+#define MINUTES_TO_MILLISECONDS 60000
 
 Sensors::Sensors(int flowReadingFrequency,
                  int mainPressureReadingFrequency,
@@ -31,19 +32,24 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data *data) {
   // take sensor readings
   if (isTimeToReadFlow()) {
     float flowValue = flowSensor.read();
-    data.saveFlowReading(flowValue);
+    float delta_time = (millis() - _lastFlowReadTime)/MINUTES_TO_MILLISECONDS;
+    data.saveFlowReading(flowValue, delta_time);
+    _lastFlowReadTime = millis();
   }
   if (isTimeToReadOxygenPressure()) {
     unsigned int pressureValue = oxygenPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
     data.saveOxygenPressureReading(pressureValue);
+    _lastOxygenPressureReadTime = millis();
   }
   if (isTimeToReadMainPressure()) {
     unsigned int pressureValue = mainPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
     data.saveMainPressureReading(pressureValue);
+    _lastMainPressureReadTime = millis();
   }
   if (isTimeToReadBatteryPercentage()) {
     unsigned int batteryPercentage = getBatteryPercentage();
     data.saveBatteryPercentage(batteryPercentage);
+    _lastBatteryPercentageReadTime = millis();
   }
 }
 
@@ -60,7 +66,7 @@ int isTimeToReadBatteryPercentage() {
   return isTimeToRead(_lastBatteryPercentageReadTime, _timeBetweenBatteryPercentageReadings);
 }
 
-int isTimeToRead(unsigned long lastReadTime, int timeBetweenFlowReadings) {
+int isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings) {
   unsigned long currentTime = millis();
   unsigned long timeDifference = curentTime - _lastFlowReadTime;
   if (timeDifference >= _timeBetweenReadings) {

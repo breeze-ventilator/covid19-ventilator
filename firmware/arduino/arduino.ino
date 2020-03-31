@@ -58,44 +58,39 @@ void setup() {
   // if (servosConnectedErrorCode != NO_ERROR) {
   //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
   // }
-
-  currentParams.mode = WAITING_FOR_PARAMETERS;
 }
-
 
 void loop() {
   // Check for Params 
-  if (Serial.available()) {
-    String receivedString = Serial.readStringUntil("\n"); // reads up-to-but-not-including '\n' char
+  if (piCommunication.isDataAvailable()) {
+    String receivedString = piCommunication.getData();
     parameters.getNewParameters(receivedString);
   }
 
   sensors.readSensorsIfAvailableAndSaveSensorData(&data);
 
-  state.updateState(&currentParams);
+  state.updateState(&Parameters);
 
   // only update parameters when breath is over
   if (newParamsHaveArrived() && state.isStartingNewBreath) {
     parameters.updateCurrentParameters();
   }
 
-  if (curentParams.mode == PRESSURE_SUPPORT_MODE && state.isStartingNewBreath) {
-    // we will re-set system time every breath cycle is complete and when
-    // this happens we will let the pi know so that it can check breaths per minut
-    piCommunications.tellPiThatStartingNewBreath();
-  }
-
   // breathing cycle
   if (state.breathingStage == INHALATION) {
-    control.inhalationControl(&data, &parameters);
+    control.inhalationControl(&data, &parameters, &state);
   }
   else if (state.breathingStage == EXHALATION) {
-    control.exhalationControl(&data, &parameters);
+    control.exhalationControl(&data, &parameters, &state);
   }
 
   if (isTimeToSendDataToPi(&data)) { // need to make sure pressure and flow are BOTH full
-    piCommunications.sendDataToPi(&data);
-    data.resetPiData();
+    piCommunications.sendDataToPi(&data, &state);
+    data.resetPiDataExceptFlow();
+    
+    if (state.isStartingNewBreath) {
+      data.resetPiFlowData();
+    }
   }
 }
 

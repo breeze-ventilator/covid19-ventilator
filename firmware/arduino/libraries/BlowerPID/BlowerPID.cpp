@@ -1,39 +1,24 @@
-#include "pid.h"
+#include "BlowerPID.h"
 
-// TODO: May be able to replace this code using:   // https://playground.arduino.cc/Code/PIDLibrary/
-// int updatePID(){
+#define BLOWER_FAN_SERVO_PIN 9
 
-//   int pSuccess = updateP();
-//   int iSuccess = updateI();
-//   int dSuccess = updateD();
+BlowerPID::BlowerPID(double kP, double kD) {
+	_actualPressure = 0;
+	_blowerPower = 0;
+	_pressureSetPoint = 0;
 
-//   return (pSuccess && iSuccess && dSuccess); 
-// }
-// int updateP(){
-//   return 1;
-// }
-// int updateI(){
-//   return 1;
-// }
-// int updateD(){
-//   return 1;
-// }
-  
-
-BlowerPID::BlowerPID(Servo blowerFan, double actualPressure, double pressureSetPoint, double blowerPower) {
-	: _blowerControl(&actualPressure, &blowerPower, &pressureSetPoint, DIRECT); // PID
-	_actualPressure = actualPressure;
-	_pressureSetPoint = pressureSetPoint;
-	_blowerPower = blowerPower;
-	_blowerFan = blowerFan;
-
+	: _blowerFanServo(BLOWER_FAN_SERVO_PIN),
+		_blowerControl(&_actualPressure, &_blowerPower, &_pressureSetPoint, kP , 0, kD, DIRECT); // PID
+	
 	_blowerControl.SetSampleTime(PID_TIME);
   _blowerControl.SetMode(AUTOMATIC);
 }
 
-void BlowerPID::control(int setPressure){
+void BlowerPID::control(int setPressure, int actualPressure){
 	_pressureSetPoint = setPressure;
+	_actualPressure = actualPressure;
   if (_blowerControl.control()) {
-		_blowerFan.write(map(_blowerPower, 0, 256, 0, 180));
+		_blowerFanServo.writeBlowerPower(_blowerPower);
   }
+	return;
 }

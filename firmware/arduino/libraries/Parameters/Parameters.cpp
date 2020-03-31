@@ -1,6 +1,7 @@
 #include "Parameters.h"
 
 Parameters::Parameters() {
+  mode = WAITING_FOR_PARAMETERS;
 }
 
 /* 

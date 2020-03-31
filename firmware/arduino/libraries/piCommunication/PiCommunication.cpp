@@ -9,6 +9,9 @@
 
 */
 #include "PiCommunication.h"
+#include "Data.h"
+#include "State.h"
+#define LITERS_TO_MILLILITERS 1000
 
 PiCommunication::PiCommunication(int baudRate) {
   _baudRate = baudRate;
@@ -47,18 +50,60 @@ PiCommunication::initCommunication(int maxSerialWaitTime, int maxPiWaitTime, int
   }
 }
 
-PiCommunication::sendServosNotConnectedErrorToPi() {
+int PiCommunication::isDataAvailable() {
+  return Serial.available();
+}
+
+String PiCommunication::getData() {
+  String receivedString = Serial.readStringUntil("\n"); // reads up-to-but-not-including '\n' char
+  tellPiThatWeGotData();
+}
+
+void tellPiThatWeGotData() {
+  Serial.print('G\n');
+}
+
+void PiCommunication::sendServosNotConnectedErrorToPi() {
   // timeout error
 }
 
-
-/*
-  Parses the 11 characters recieved by the Pi.
+void PiCommunication::sendData(Data *data, State *state) {
+  // Send checksum (XOR)
+  // Send running average pressure (signed integer)
+  // Send running average flow
+  // Send “G” for good or “E**” for error and error number
+  // Send “\n”
+  int checkSum = 0;
+  unsigned int averagePressure = data.pressureSum / data.numPressureMeasurements;
+  int breathCompleted = state.isStartingNewBreath;
+  int flowIntegral;
+  if (state.isStartingNewBreath) {
+    flowIntegral = (int) floor(LITERS_TO_MILLILITERS*data.flowIntegral); // mL/min
+  } else {
+    flowIntegral = 0;
+  }
   
-  Note: getPiString() drops the '\n' char at the end
-*/
-// void parsePiString(){
+  int error = "G"; // TODO: make better
+  Serial.write(checkSum);
+  Serial.write(averagePressure);
+  Serial.write(breathCompleted);
+  Serial.write(flowIntegral);
+  Serial.write(error);
+  Serial.write('/n');
+}
 
+// if (curentParams.mode == PRESSURE_SUPPORT_MODE && state.isStartingNewBreath) {
+//     // we will re-set system time every breath cycle is complete and when
+//     // this happens we will let the pi know so that it can check breaths per minut
+//     piCommunications.finishedBreath(&data);
+//   }
+
+void PiCommunication::finishedBreath(Data *data) {
+  int checkSum = 0;
+  Serial.write(checkSum);
+
+  Serial.write(flowIntegral);
+}
   
 /*
   Helper function to verify checksum from first character of string.
