@@ -19,19 +19,25 @@ class ParameterInput extends React.Component {
         };
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if (prevState.value !== this.state.value) {
+            this.props.setParameter(this.props.parameterName, this.state.value)
+        }
+    }
+
     tap = () => {
         this.refs.numpad.instance.show();
     }
 
     onSet = (event, inst) => {
         this.setState({
-            value: inst.getVal() + this.props.unit
+            value: inst.getVal()
         });
     }
 
     onValueChange = (event) => {
         this.setState({
-            value: +event.target.value + this.props.unit
+            value: +event.target.value
         });
         event.target.value = event.target.value + this.props.unit;
     }
@@ -47,7 +53,7 @@ class ParameterInput extends React.Component {
                     
                     </div>
 
-                    <div class="inputField">
+                    <div className="inputField">
                         <mobiscroll.FormGroup inset>
                             <mobiscroll.Stepper
                                 onClick={this.tap}
@@ -76,7 +82,6 @@ class ParameterInput extends React.Component {
                         />
                     </div>
 
-      <div align="center" className="parameterHelpText">{this.props.parameterHelpText}</div>
                     </Card>
                 </Grid>
       );

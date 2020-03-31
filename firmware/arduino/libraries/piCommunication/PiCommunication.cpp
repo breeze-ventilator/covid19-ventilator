@@ -8,20 +8,17 @@
   TODO: Arduino is the first to talk, and the Pi responds
 
 */
-#include "piCommunication.h"
-#include "controls.h" // for the param update
-#include "utilities.h"
+#include "PiCommunication.h"
+#include "Data.h"
+#include "State.h"
 
 
-/*
-  Handshake/elbowbump with Pi.
-  Arduino -> Pi -> Arduino.
+PiCommunication::PiCommunication(int baudRate) {
+  _baudRate = baudRate;
+}
 
-  Returns 1 if connected, 0 if not.
-*/
-int initializePiCommunication(int maxSerialWaitTime, int maxPiWaitTime, int pingInterval) {
-  int BAUD_RATE = 9600 // move
-  Serial.begin(BAUD_RATE);
+int PiCommunication::initCommunication(int maxSerialWaitTime, int maxPiWaitTime, int pingInterval) {
+  Serial.begin(_baudRate);
   
   int count = 0;
   while (!Serial) {
@@ -53,41 +50,63 @@ int initializePiCommunication(int maxSerialWaitTime, int maxPiWaitTime, int ping
   }
 }
 
-
-/*
-  Gets initial setup parameters from pi.
-*/
-int setupInitialParametersFromPi() {
-    String initialParameterString = getPiString();
-    parsePiString(initialParameterString);
-    return 1;
+int PiCommunication::isDataAvailable() {
+  return Serial.available();
 }
 
-
-/*
-  Package and send data to Pi, and reset the storage stuff. Error checking is done elsewhere.
-*/
-void sendData(pressureAvg, flowAvg){
-
-  int data[2] = {pressureAvg, flowAvg};
-  int checksum = createCheckSum(data, 2); // TODO: this function must be implemented
-
-  Serial.write('D');
-  Serial.write(checksum);
-  Serial.write(pressureAvg);
-  Serial.write(flowAvg);
-  Serial.write(status); // TODO; status must be implemented (either 'G', or an error code)
-  Serial.write('\n');
-
-  return; 
+String PiCommunication::getData() {
+  String receivedString = Serial.readStringUntil("\n"); // reads up-to-but-not-including '\n' char
+  tellPiThatWeGotData();
+  return receivedString;
 }
+
+void PiCommunication::tellPiThatWeGotData() {
+  Serial.print('G\n');
+}
+
+void PiCommunication::sendServosNotConnectedErrorToPi() {
+  // timeout error
+}
+
+void PiCommunication::sendData(Data *data, State *state) {
+  // Send checksum (XOR)
+  // Send running average pressure (signed integer)
+  // Send running average flow
+  // Send “G” for good or “E**” for error and error number
+  // Send “\n”
+  unsigned char checkSum = 0;
+  unsigned char averagePressure = (unsigned char) data.pressureSum / data.numPressureMeasurements;
+  unsigned char batteryPercentage = (unsigned char) data.batteryPercentage;
+  unsigned char breathCompleted = (unsigned char) state.isStartingNewBreath;
+  short flowIntegral;
+  if (state.isStartingNewBreath) {
+    flowIntegral = (short) floor(LITERS_TO_MILLILITERS*data.flowIntegral); // mL/min
+  } else {
+    flowIntegral = 0;
+  }
+  int error = "G"; // TODO: make better
+  
+  Serial.write(checkSum);
+  Serial.write(averagePressure);
+  Serial.write(batteryPercentage);
+  Serial.write(breathCompleted);
+  Serial.write(flowIntegral);
+  Serial.write(error);
+  Serial.write('/n');
+}
+
+// if (curentParams.mode == PRESSURE_SUPPORT_MODE && state.isStartingNewBreath) {
+//     // we will re-set system time every breath cycle is complete and when
+//     // this happens we will let the pi know so that it can check breaths per minut
+//     piCommunications.finishedBreath(&data);
+//   }
 
 /*
   Helper function to verify checksum from first character of string.
 */
-int isChecksumValid(String piString) {
+int PiCommunication::isChecksumValid(String piString) {
   int checkSumVal = piString.charAt(0); // ^ XOR
-  
+
   int testVal = byte(piString.charAt(1));
   for (int i = 2; i < piString.length(); i++){
     testVal = testVal ^ byte(piString.charAt(i));
@@ -98,34 +117,3 @@ int isChecksumValid(String piString) {
   }
   return 0;
 }
-
-/*
-  Reads in the parameter string from the Pi, 12 characters long including \n
-*/
-String getPiString(){
-  // Reads until \n, and returns string without '\n'
-  String msg = Serial.readStringUntil('\n');
-  return msg;
-}
-
-/*
-  Parses the 11 characters recieved by the Pi.
-  
-  Note: getPiString() drops the '\n' char at the end
-*/
-void parsePiString(){
-/* 
-Position   PARAM
-  1       Checksum 
-  2       Mode (1, 2, or 3)
-  3       Exhalation time (tells us the rate if controlled)
-  4       FiO2
-  5       Inspiration time
-  6       PEEP (exhalation pressure)
-  7       Inhalation pressure
-  8       High pressure alarm setting
-  9       Low pressure alarm settings
-  10      High, minute ventilation alarm settings
-  11      Low, minute Ventilation alarm settings
-*/
-  

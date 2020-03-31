@@ -12,7 +12,6 @@ int BatteryVoltageSensor::read() {
 
 int BatteryVoltageSensor::readPercentage() {
   int batteryVoltage = read();
-  // TODO: SIMON convert
-  //int batteryPercentage = 
+  int batteryPercentage = constrain(map(batteryVoltage, 11000, 12800, 0, 100), 0, 100);
   return batteryPercentage;
 }

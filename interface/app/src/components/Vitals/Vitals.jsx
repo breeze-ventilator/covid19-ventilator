@@ -24,7 +24,7 @@ export default class Vitals extends React.Component {
 
   render() {
     return (
-      <div class="mainContainer">
+      <div className="mainContainer">
         <Grid
           container
           direction="row"

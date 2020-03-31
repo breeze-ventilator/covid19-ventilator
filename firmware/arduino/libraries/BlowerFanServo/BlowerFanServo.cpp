@@ -2,17 +2,27 @@
 #include <Servo.h>
 
 BlowerFanServo::BlowerFanServo(int pin) {
-  blowerFan.attach(pin);
+  _blowerFan.attach(pin);
 }
 
 void BlowerFanServo::begin() {
-  // Initialize the esc by giving 100% power wait for beep then 0% power and wait for beep
+  // Initialize the esc by giving 50% power wait for it to power up then 0% power and wait for beep then do an inaugural vroom for half a second
   // https://www.arduino.cc/en/Reference/ServoWrite
   // TODO: should we wait here?
-  blowerFan.write(0);
-  delay(100);
-  blowerFan.write(180);
-  delay(2000);
-  blowerFan.write(0);
-  delay(2000);
+  _blowerFan.write(900)
+  delay(700);
+  _blowerFan.write(15;
+  delay(3000);
+  _blowerFan.write(900);
+  delay(500);
+  _blowerFan.write(15);
+}
+
+void BlowerFanServo::turnOff() {
+  _blowerFan.write(15);
+  _blowerFan.write(15);
+}
+
+void BlowerFanServo::writeBlowerPower(double blowerPower) {
+  _blowerFan.write(map(blowerPower, 0, 256, 15, 180));
 }
