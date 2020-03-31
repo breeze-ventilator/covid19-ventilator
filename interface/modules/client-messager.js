@@ -14,7 +14,7 @@ module.exports = class ClientMessager {
 	handleSocketIOConnection(socket){
 		console.log('Client connected');
 
-		socket.on('parameter-change', (newParameters) => this.top.handleNewParameters(newParameters));
+		socket.on('parameterChange', (newParameters) => this.top.handleNewParameters(newParameters));
 		socket.on('disconnect', () => this.handleDisconnect());
 	}
 	
@@ -23,13 +23,13 @@ module.exports = class ClientMessager {
 	}
 
 	/* Handlers from Arduino Data */
-	handleNewReadings(pressure, flow, batteryVoltage, error){
+	handleNewReadings(pressure, tidalVolume, batteryPercentage, breathCompleted, error){
 		if(error != 0){
 			handleError(error);
 		}
 		handlePressure(pressure);
-		handleFlow(flow);
-		handleBatteryVoltage(batteryVoltage);
+		handleBatteryPercentage(batteryPercentage);
+		handleBreathCompleted(breathCompleted, tidalVolume); // Sends tidal volume if breath complete = 1;
 	}
 
 	// tidalVolume = {time: DateTime, volume: volume}
@@ -38,12 +38,14 @@ module.exports = class ClientMessager {
 		socket.emit('pressure', { pressure: pressure });
 	}
 
-	handleFlow(flow){
-		socket.emit('flow', { flow: flow });
+	handleBreathCompleted(breathCompleted, tidalVolume){
+		if(breathCompleted == 1){
+			socket.emit('tidalVolume', { tidalVolume: tidalVolume });
+		}
 	}
 
-	handleBatteryVoltage(batteryVoltage){
-		socket.emit('batteryVoltage', { batteryVoltage: batteryVoltage});
+	handleBatteryPercentage(batteryPercentage){
+		socket.emit('batteryPercentage', { batteryPercentage: batteryPercentage});
 	}
 	
 	handleError(error){

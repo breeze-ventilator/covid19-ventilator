@@ -62,23 +62,17 @@ module.exports = class ArduinoMessager {
 			this.handleArduinoTimeout();
 		}
 
-		let bufferData = Buffer.from(data, 'utf8');
-		
-		let checkSum = bufferData.readInt8(0);
-		let pressure = bufferData.readInt16BE(1);
-		let flow = bufferData.readInt16BE(3);
-		let batteryVoltage = bufferData.readInt8(5);
-		let error = bufferData.readInt8(6);
+		let flowBuffer = Buffer.from(data.slice(4,6))
 
-		testSum = pressure;
-		testSum ^= flow;
-		testSum ^= batteryVoltage;
-		testSum ^= error;
+		let checkSum = data.charChodeAt(0);
+		let pressure = data.charChodeAt(1);
+		let batteryPercentage = data.charChodeAt(2);
+		let breathCompleted = data.charChodeAt(3);
+		let tidalVolume = flowBuffer.readInt16BE(0);
+		let error = data.charChodeAt(6);
 
-		if(testSum === checkSum){
-			this.top.handleNewReadings(pressure, flow, batteryVoltage, error);
-		}
-		// Otherwise, should just wait for the next reading.
+		// NO CHECKSUM
+		this.top.handleNewReadings(pressure, tidalVolume, batteryPercentage, breathCompleted, error);
 	}
 
 	// TODO !

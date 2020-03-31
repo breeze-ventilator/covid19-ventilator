@@ -27,8 +27,8 @@ module.exports = class Top {
     this.arduino.handleNewParameters(newParameters)
   }
 
-  handleNewReadings(pressure, flow, batteryVoltage, error){
-    this.client.handleNewReadings(pressure, flow, batteryVoltage, error);
+  handleNewReadings(pressure, tidalVolume, batteryPercentage, breathCompleted, error){
+    this.client.handleNewReadings(pressure, tidalVolume, batteryPercentage, breathCompleted, error);
   }
 
 }

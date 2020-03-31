@@ -44,7 +44,7 @@ export default class Vitals extends React.Component {
           //   alert('callback');
           // });
           NotificationManager.error('Currently 9L/min', 'Minute ventilation too high', 5000, () => {
-            alert('callback');
+            // alert('MINUTE VENTIALTION IS TOO HIGH!');
           });
           break;
       }
@@ -72,12 +72,12 @@ export default class Vitals extends React.Component {
               <ParameterInput parameterName="High FiO2 Bound" startingValue={80} step={2} min={21} max={100} unit={"%"}/>
 
               <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
-                <Button className="setParametersButton" variant="contained" align="center" color="primary">
+                <Button className="setParametersButton" onClick={this.createNotification('error')} variant="contained" align="center" color="primary">
                   Save Changes
                 </Button>
-                <Button className="btn btn-info" onClick={this.createNotification('error')}>
-                  Warning
-                </Button>
+                {/* // <Button className="btn btn-info" onClick={this.createNotification('error')}>
+                //   Warning
+                // </Button> */}
               </Grid>
         </Grid>
         <NotificationContainer />

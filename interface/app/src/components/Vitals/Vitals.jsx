@@ -123,9 +123,9 @@ export default class Vitals extends React.Component {
           alignItems="center"
           justify="center"
         >
-          <Button className="standByButton" variant="contained" align="center" style={{ backgroundColor: "#F87B00" }}>
+          <Button className="standByButton" variant="contained" align="center" style={{ backgroundColor: "#D9A3DE" }}>
             <strong>
-            STANDBY
+            Turn on Standby
             </strong>
             
           </Button>
