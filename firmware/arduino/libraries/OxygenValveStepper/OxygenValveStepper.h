@@ -1,8 +1,10 @@
-#ifndef SENSORS_H
-#define SENSORS_H
+#ifndef OXYGEN_VALVE_STEPPER
+#define OXYGEN_VALVE_STEPPER
 
 #define AMBIENT_PRESSURE 15
 
+#include <AccelStepper.h> // Include the AccelStepper library:
+#include "Arduino.h"
 class OxygenValveStepper {
   public:
 	  OxygenValveStepper(int motorInterfaceType, int pin0, int pin1,

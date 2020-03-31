@@ -43,7 +43,6 @@
 // Stepper and Servo initialization
 #define O2_STEPPER_SPEED 60 // rpm (TODO: Arbitrary value)
 
-#define PI_MAX_WAIT_TIME 1000
 #define STEPPER_INITIALIZATION_TIMEOUT 360 // Assuming there are 360 steps in a rotation, one full rotation = timed out (TODO: Arbitrary value)
 
 // https://www.arduino.cc/en/Reference/ServoWrite
@@ -52,5 +51,16 @@
 
 #define TIMEOUT_ERROR -1
 
+#define FLOW_READING_FREQUENCY 500 // 500 Hz
+#define MAIN_PRESSURE_READING_FREQUENCY 500
+#define OXYGEN_PRESSURE_READING_FREQUENCY 100
+#define BATTERY_VOLTAGE_READING_FREQUENCY 1
+
+// Pi Comms
+#define BAUD_RATE 9600
+#define TIME_BETWEEN_PI_SENDING 100
+#define MAX_SERIAL_CONNECTION_WAIT_TIME 1000
+#define PI_MAX_WAIT_TIME 1000000
+#define PI_PING_INTERVAL 100
 
 #endif

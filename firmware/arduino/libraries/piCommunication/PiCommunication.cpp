@@ -9,15 +9,15 @@
 
 */
 #include "PiCommunication.h"
-#include "Data.h"
-#include "State.h"
 
 
-PiCommunication::PiCommunication(int baudRate) {
+PiCommunication::PiCommunication(int baudRate, int timeBetweenPiSending) {
   _baudRate = baudRate;
+  _lastSentDataTime = millis();
+  _timeBetweenPiSending = timeBetweenPiSending;
 }
 
-int PiCommunication::initCommunication(int maxSerialWaitTime, int maxPiWaitTime, int pingInterval) {
+int PiCommunication::initCommunication(int32_t maxSerialWaitTime, int32_t maxPiWaitTime, int pingInterval) {
   Serial.begin(_baudRate);
   
   int count = 0;
@@ -36,7 +36,7 @@ int PiCommunication::initCommunication(int maxSerialWaitTime, int maxPiWaitTime,
     Serial.print('elbowbump\n');
     count += pingInterval;
     delay(pingInterval);
-    if (count > maxWaitTime) {
+    if (count > maxPiWaitTime) {
       return TIMEOUT_ERROR;
     }
   }
@@ -47,6 +47,16 @@ int PiCommunication::initCommunication(int maxSerialWaitTime, int maxPiWaitTime,
   }
   else {
     return PI_SENT_WRONG_CODE_ERROR;
+  }
+}
+
+int PiCommunication::isTimeToSendDataToPi() {
+  unsigned long timeDifference = _lastSentDataTime - millis();
+  if (timeDifference > _timeBetweenPiSending) {
+    return 1;
+  }
+  else {
+    return 0;
   }
 }
 
@@ -93,6 +103,8 @@ void PiCommunication::sendData(Data *data, State *state) {
   Serial.write(flowIntegral);
   Serial.write(error);
   Serial.write('/n');
+
+  _lastSentDataTime = millis();
 }
 
 // if (curentParams.mode == PRESSURE_SUPPORT_MODE && state.isStartingNewBreath) {

@@ -1,4 +1,6 @@
-#include <AccelStepper.h> // Include the AccelStepper library:
+// #ifndef OXYGEN_PRESSURE_SENSOR_H
+// #define OXYGEN_PRESSURE_SENSOR_H
+
 #include "OxygenValveStepper.h"
 
 // #define ACCEL_STEPPER_MOTOR_INTERFACE_TYPE 4 //leave this here
@@ -16,7 +18,7 @@ OxygenValveStepper::OxygenValveStepper(int motorInterfaceType, int pin0, int pin
       int pin2, int pin3, int limitSwitchPin, int maxStepperSpeed, int stepperAcceleration,
       int oxygenEnable1Pin, int oxygenEnable2Pin) {
   
-  _oxygenStepper(motorInterfaceType, pin0, pin1, pin2, pin3);
+  : _oxygenStepper(motorInterfaceType, pin0, pin1, pin2, pin3);
   _limitSwitchPin = limitSwitchPin;
   pinMode(_limitSwitchPin, INPUT_PULLUP); // TODO: simon need better naming here
   
@@ -67,3 +69,4 @@ void OxygenValveStepper::runOneStep(){
 }
 
 // pressure in psi = 0.1354*(volts) + 1.01
+#endif

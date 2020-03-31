@@ -1,8 +1,8 @@
 #include "Sensors.h"
-#include "OxygenPressureSensor.h"
-#include "FlowSensor.h"
-#include "BatteryVoltageSensor.h"
-#include "MainPressureSensor.h"
+// #include "../OxygenPressureSensor/OxygenPressureSensor.h"
+// #include "../FlowSensor/FlowSensor.h"
+// #include "../BatteryVoltageSensor/BatteryVoltageSensor.h"
+// #include "../MainPressureSensor/MainPressureSensor.h"
 
 Sensors::Sensors(int flowReadingFrequency,
                  int mainPressureReadingFrequency,

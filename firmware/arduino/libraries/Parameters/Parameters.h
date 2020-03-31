@@ -6,6 +6,7 @@ class Parameters {
         Parameters();
         void getNewParameters(String receivedString);
         void updateCurrentParameters();
+        bool newParamsHaveArrived;
 
         unsigned int currentMode;
         unsigned int currentFiO2;

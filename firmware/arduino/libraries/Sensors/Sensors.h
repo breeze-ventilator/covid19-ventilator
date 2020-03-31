@@ -10,6 +10,13 @@
 #define OXYGEN_PRESSURE_SENSOR_PIN
 #define BATTERY_VOLTAGE_PIN
 
+#include "../OxygenPressureSensor/OxygenPressureSensor.h"
+#include "../FlowSensor/FlowSensor.h"
+#include "../BatteryVoltageSensor/BatteryVoltageSensor.h"
+#include "../MainPressureSensor/MainPressureSensor.h"
+#include "../Data/Data.h"
+
+
 class Sensors {
     public:
         Sensors(int flowReadingFrequency,

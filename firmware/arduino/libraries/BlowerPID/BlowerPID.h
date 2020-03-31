@@ -8,6 +8,10 @@
 #define BLOWER_FAN_SERVO_PIN 9
 #define PID_TIME 100
 
+#include "Arduino.h"
+#include <PID_v1.h>
+#include "../BlowerFanServo/BlowerFanServo.h"
+
 class BlowerPID {
     public:
         BlowerPID(double kP, double kD);

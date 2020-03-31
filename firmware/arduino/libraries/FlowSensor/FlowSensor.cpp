@@ -9,7 +9,6 @@
 #include "FlowSensor.h"
 #include <Wire.h>
 
- 
 //FlowSensor::FlowSensor(uint8_t i2cAddress)
 FlowSensor::FlowSensor(int i2cAddress, int offset, float scale)
 {

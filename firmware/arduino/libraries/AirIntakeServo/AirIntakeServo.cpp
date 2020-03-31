@@ -1,5 +1,5 @@
 #include "AirIntakeServo.h"
-#include <Servo.h>
+#include "Arduino.h"
 
 AirIntakeServo::AirIntakeServo(int pin, int zeroPoint) {
   _airIntake.attach(pin);

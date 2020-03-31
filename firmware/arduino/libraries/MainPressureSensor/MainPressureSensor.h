@@ -9,3 +9,4 @@ class MainPressureSensor {
     MainPressureSensor();
     unsigned int read();
 };
+#endif

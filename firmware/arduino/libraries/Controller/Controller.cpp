@@ -1,11 +1,5 @@
 #include "Controller.h"
-#include "OxygenValveStepper.h"
-#include "AirIntakeServo.h"
-#include "BlowerFanServo.h"
-#include "Data.h"
-#include "Parameters.h"
-#include "State.h"
-#include "Alarm.h"
+#include "Arduino.h"
 
 Controller::Controller() {
   : oxygenValveStepper(OXYGEN_VALVE_MOTOR_INTERFACE_TYPE,
@@ -20,7 +14,6 @@ Controller::Controller() {
                        OXYGEN_VALVE_ENABLE2_PIN),
     alarm(ALARM_PIN),
     airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
-    blowerFanServo(BLOWER_FAN_PIN),
     blowerPID(kP, kD);
   _lastOxygenControlTime = 0;
   _lastAirControlTime = 0;
@@ -39,7 +32,7 @@ void Controller::ringAlarmForever() {
   alarm.keepAlarmRunningForever();
 }
 
-void Controller::inhilationControl(Data *data, Parameters *parameters, State *state) {
+void Controller::inhalationControl(Data *data, Parameters *parameters, State *state) {
   // modify steps on stepper motor to get desired flow rate (which then gives concentration)
   if (isTimeToControlOxygen()) {
     oxygenControl(&data, &parameters, &state);

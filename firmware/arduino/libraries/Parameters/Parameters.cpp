@@ -5,6 +5,7 @@
 
 Parameters::Parameters() {
   currentMode = WAITING_FOR_PARAMETERS;
+  newParamsHaveArrived = false;
 }
 
 void Parameters::getNewParameters(String receivedString) {
@@ -15,6 +16,8 @@ void Parameters::getNewParameters(String receivedString) {
   _newPeakInspiratoryPressure = piString.charAt(5);
   _newPEEP = piString.charAt(6);
   _newSensitivity = piString.charAt(7);
+  
+  newParamsHaveArrived = true;
 	return;
 }
 
@@ -27,5 +30,7 @@ void Parameters::updateCurrentParameters() {
 	currentPeakInspiratoryPressure = _newPeakInspiratoryPressure;
 	currentPEEP = _newPEEP;
 	currentSensitivity = _newSensitivity;
+
+  newParamsHaveArrived = false;
 	return;
 }

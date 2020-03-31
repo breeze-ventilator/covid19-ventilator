@@ -1,5 +1,4 @@
 #include "BlowerFanServo.h"
-#include <Servo.h>
 
 BlowerFanServo::BlowerFanServo(int pin) {
   _blowerFan.attach(pin);

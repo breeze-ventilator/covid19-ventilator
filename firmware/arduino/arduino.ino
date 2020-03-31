@@ -17,11 +17,12 @@
 
 #include <Servo.h>
 #include <Stepper.h>
-#include "initializations.h"
-#include "Data.h"
-#include "Sensors.h"
-#include "Controller.h"
-#include "State.h"
+#include "libraries/initialization/initialization.h"
+#include "libraries/Data/Data.h"
+#include "libraries/Sensors/Sensors.h"
+#include "libraries/State/State.h"
+#include "libraries/Controller/Controller.h"
+#include "libraries/PiCommunication/PiCommunication.h"
 
 // 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
 // (eepRom: for bootup, a read-only memory whose contents can be erased and reprogrammed using a pulsed voltage.)
@@ -33,25 +34,28 @@
   - derivative: linear fit over n values, where each value is an average of n datapoints (needs last n**2 datapoints)
 */
 
-Data data();
-Sensors sensors();
-Controller controller();
-PiCommunication piCommunications();
-State state();
-Parameters parameters();
+Data data;
+Sensors sensors(FLOW_READING_FREQUENCY,
+                 MAIN_PRESSURE_READING_FREQUENCY,
+                 OXYGEN_PRESSURE_READING_FREQUENCY,
+                 BATTERY_VOLTAGE_READING_FREQUENCY);
+Controller controller;
+PiCommunication piCommunications(BAUD_RATE, TIME_BETWEEN_PI_SENDING);
+State state;
+Parameters parameters;
 /*
   On startup, initializes pins and ensures Pi sends message.
 
   On failure, hangs forever.
 */
-void setup() {
+void setup() {  
   controller.stopArduinoAlarm();
   sensors.init();
   int servosConnectedErrorCode = controller.init();
   int piCommunicationErrorCode = piCommunications.initCommunication(MAX_SERIAL_CONNECTION_WAIT_TIME, PI_MAX_WAIT_TIME, PI_PING_INTERVAL);
-  if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_CODE_ERROR
-    controller.ringAlarmForever();
-  }
+  // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_CODE_ERROR
+  //   controller.ringAlarmForever();
+  // }
 
   // if (servosConnectedErrorCode != NO_ERROR) {
   //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
@@ -60,29 +64,29 @@ void setup() {
 
 void loop() {
   // Check for Params 
-  if (piCommunication.isDataAvailable()) {
-    String receivedString = piCommunication.getData();
+  if (piCommunications.isDataAvailable()) {
+    String receivedString = piCommunications.getData();
     parameters.getNewParameters(receivedString);
   }
 
   sensors.readSensorsIfAvailableAndSaveSensorData(&data);
 
-  state.updateState(&Parameters);
+  state.updateState(&parameters);
 
   // only update parameters when breath is over
-  if (newParamsHaveArrived() && state.isStartingNewBreath) {
+  if (parameters.newParamsHaveArrived && state.isStartingNewBreath) {
     parameters.updateCurrentParameters();
   }
 
   // breathing cycle
-  if (state.breathingStage == INHALATION) {
-    control.inhalationControl(&data, &parameters, &state);
+  if (state.breathingStage == INHALATION_STAGE) {
+    controller.inhalationControl(&data, &parameters, &state);
   }
-  else if (state.breathingStage == EXHALATION) {
-    control.exhalationControl(&data, &parameters, &state);
+  else if (state.breathingStage == EXHALATION_STAGE) {
+    controller.exhalationControl(&data, &parameters, &state);
   }
 
-  if (isTimeToSendDataToPi(&data)) { // need to make sure pressure and flow are BOTH full
+  if (piCommunications.isTimeToSendDataToPi()) { // need to make sure pressure and flow are BOTH full
     piCommunications.sendDataToPi(&data, &state);
     data.resetPiDataExceptFlow();
     

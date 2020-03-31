@@ -1,5 +1,5 @@
-#ifndef CONTROLS_H
-#define CONTROLS_H
+#ifndef CONTROLLER_H
+#define CONTROLLER_H
 
 #define OXYGEN_VALVE_MOTOR_INTERFACE_TYPE 4
 #define OXYGEN_VALVE_PIN0 42
@@ -17,14 +17,23 @@
 #define TIME_BETWEEN_OXYGEN_CONTROLS 100 // ms
 #define TIME_BETWEEN_AIR_CONTROLS 100 // ms
 
+#include "../OxygenValveStepper/OxygenValveStepper.h"
+#include "../AirIntakeServo/AirIntakeServo.h"
+#include "../BlowerPID/BlowerPID.h"
+
+#include "../Data/Data.h"
+#include "../Parameters/Parameters.h"
+#include "../State/State.h"
+#include "../Alarm/Alarm.h"
+
 class Controller {
     public:
         Controller();
-        void init();
+        int init();
         void stopArduinoAlarm();
         void ringAlarmForever();
-        void inhilationControl(Data *data, Parameters *parameters, State *state);
-        void exhalationControl(Data *data, Parameters *parameters, State *state)
+        void inhalationControl(Data *data, Parameters *parameters, State *state);
+        void exhalationControl(Data *data, Parameters *parameters, State *state);
     private:
         void oxygenControl(Data *data, Parameters *parameters, State *state);
         void airControl(Parameters *parameters);
@@ -32,10 +41,9 @@ class Controller {
         int isTimeToControlAir();
         int isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings);
 
-        OxygenValveStepper OxygenValveStepper;
+        OxygenValveStepper oxygenValveStepper;
         Alarm alarm;
         AirIntakeServo airIntakeServo;
-        BlowerFanServo blowerFanServo; 
         BlowerPID blowerPID;
         int _lastOxygenControlTime;
         int _lastAirControlTime;

@@ -15,7 +15,7 @@
 
 #ifndef BATTERY_VOLTAGE_SENSOR_H
 #define BATTERY_VOLTAGE_SENSOR_H
-
+#include "Arduino.h"
 class BatteryVoltageSensor {
   public:
 	  BatteryVoltageSensor(int pin);
