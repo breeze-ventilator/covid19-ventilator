@@ -22,8 +22,8 @@ Controller::Controller()
 
 int Controller::init() {
   blowerPID.begin();
-  int error = oxygenValveStepper.moveOxygenStepperToZeroPosition(10000);
-  return error;
+  // int error = oxygenValveStepper.moveOxygenStepperToZeroPosition(10000);
+  return 0;
 }
 
 void Controller::stopArduinoAlarm() {

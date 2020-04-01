@@ -16,7 +16,7 @@ class BlowerPID {
     public:
         BlowerPID();
         void control(float setPressure, float actualPressure);
-        void begin() {
+        void begin();
     private:
         PID _blowerControl;
         BlowerFanServo _blowerFanServo;
