@@ -52,6 +52,14 @@ void setup() {
   controller.stopArduinoAlarm();
   sensors.init();
   int servosConnectedErrorCode = controller.init();
+  parameters.currentMode = PRESSURE_CONTROL_MODE;
+	parameters.currentFiO2 = 70;
+	parameters.currentInspiratoryTime = 1000;
+	parameters.currentExpiratoryTime = 3000;
+	parameters.currentPeakInspiratoryPressure = 30; // TODO: match pressure readings
+	parameters.currentPEEP = 7;
+	parameters.currentSensitivity = 0;
+
   // int piCommunicationErrorCode = piCommunications.initCommunication(MAX_SERIAL_CONNECTION_WAIT_TIME, PI_MAX_WAIT_TIME, PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_CODE_ERROR
   //   controller.ringAlarmForever();
@@ -64,19 +72,19 @@ void setup() {
 
 void loop() {
   // Check for Params 
-  if (piCommunications.isDataAvailable()) {
-    String receivedString = piCommunications.getData();
-    parameters.getNewParameters(receivedString);
-  }
+  // if (piCommunications.isDataAvailable()) {
+  //   String receivedString = piCommunications.getData();
+  //   parameters.getNewParameters(receivedString);
+  // }
 
   sensors.readSensorsIfAvailableAndSaveSensorData(data);
 
   state.updateState(parameters);
 
   // only update parameters when breath is over
-  if (parameters.newParamsHaveArrived && state.isStartingNewBreath) {
-    parameters.updateCurrentParameters();
-  }
+  // if (parameters.newParamsHaveArrived && state.isStartingNewBreath) {
+  //   parameters.updateCurrentParameters();
+  // }
 
   // breathing cycle
   if (state.breathingStage == INHALATION_STAGE) {
