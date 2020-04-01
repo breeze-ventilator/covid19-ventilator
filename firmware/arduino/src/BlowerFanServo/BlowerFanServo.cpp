@@ -9,13 +9,9 @@ BlowerFanServo::BlowerFanServo(int pin) {
 }
 void BlowerFanServo::begin() {
   _blowerFan.write(90);
-  delay(700);
+  delay(4000);
   _blowerFan.write(15);
-  delay(3000);
-  _blowerFan.write(90);
-  delay(500);
-  _blowerFan.write(15);
-  delay(500);
+  delay(2000);
 }
 
 void BlowerFanServo::turnOff() {

@@ -12,6 +12,7 @@ void BlowerPID::control(float setPressure, float actualPressure){
 	_pressureSetPoint = setPressure;
 	_actualPressure = actualPressure;
 	_blowerFanServo.write(60);
+	delay(3000);
   // 	if (_blowerControl.Compute()) {
 	// 	_blowerFanServo.writeBlowerPower(_blowerPower);
 	// }

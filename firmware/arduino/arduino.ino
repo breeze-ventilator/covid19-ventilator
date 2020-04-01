@@ -50,7 +50,7 @@ Parameters parameters;
 */
 void setup() {  
   controller.stopArduinoAlarm();
-  sensors.init();
+  // sensors.init();
   int servosConnectedErrorCode = controller.init();
   parameters.currentMode = PRESSURE_CONTROL_MODE;
 	parameters.currentFiO2 = 70;

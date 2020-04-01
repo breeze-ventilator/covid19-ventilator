@@ -44,8 +44,8 @@ void Controller::inhalationControl(Data data, Parameters parameters, State state
   //  airControl(parameters);
   //  _lastAirControlTime = millis();
   // }
-  float setPressure = (float) parameters.currentPeakInspiratoryPressure; //TODO: Check units with below
-  float actualPressure = data.getMainPressureAverageForPID();
+  float setPressure = 0;//(float) parameters.currentPeakInspiratoryPressure; //TODO: Check units with below
+  float actualPressure = 0;// data.getMainPressureAverageForPID();
   blowerPID.control(setPressure, actualPressure);
 }
 
