@@ -79,30 +79,30 @@ void PiCommunication::sendServosNotConnectedErrorToPi() {
 }
 
 void PiCommunication::sendDataToPi(Data data, State state) {
-  // Send checksum (XOR)
-  // Send running average pressure (signed integer)
-  // Send running average flow
-  // Send “G” for good or “E**” for error and error number
-  // Send “\n”
-  unsigned char checkSum = 0;
-  unsigned char averagePressure = (unsigned char) data.pressureSum / data.numPressureMeasurements;
-  unsigned char batteryPercentage = (unsigned char) data.batteryPercentage;
-  unsigned char breathCompleted = (unsigned char) state.isStartingNewBreath;
-  short flowIntegral;
-  if (state.isStartingNewBreath) {
-    flowIntegral = (short) floor(LITERS_TO_MILLILITERS*data.flowIntegral); // mL/min
-  } else {
-    flowIntegral = 0;
-  }
-  int error = "G"; // TODO: make better
+  // // Send checksum (XOR)
+  // // Send running average pressure (signed integer)
+  // // Send running average flow
+  // // Send “G” for good or “E**” for error and error number
+  // // Send “\n”
+  // unsigned char checkSum = 0;
+  // unsigned char averagePressure = (unsigned char) data.pressureSum / data.numPressureMeasurements;
+  // unsigned char batteryPercentage = (unsigned char) data.batteryPercentage;
+  // unsigned char breathCompleted = (unsigned char) state.isStartingNewBreath;
+  // short flowIntegral;
+  // if (state.isStartingNewBreath) {
+  //   flowIntegral = (short) floor(LITERS_TO_MILLILITERS*data.flowIntegral); // mL/min
+  // } else {
+  //   flowIntegral = 0;
+  // }
+  // int error = 'G'; // TODO: make better
   
-  Serial.write(checkSum);
-  Serial.write(averagePressure);
-  Serial.write(batteryPercentage);
-  Serial.write(breathCompleted);
-  Serial.write(flowIntegral);
-  Serial.write(error);
-  Serial.write('\n');
+  // Serial.write(checkSum);
+  // Serial.write(averagePressure);
+  // Serial.write(batteryPercentage);
+  // Serial.write(breathCompleted);
+  // Serial.write(flowIntegral);
+  // Serial.write(error);
+  // Serial.write('\n');
 
   _lastSentDataTime = millis();
 }

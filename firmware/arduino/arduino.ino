@@ -52,7 +52,7 @@ void setup() {
   controller.stopArduinoAlarm();
   sensors.init();
   int servosConnectedErrorCode = controller.init();
-  int piCommunicationErrorCode = piCommunications.initCommunication(MAX_SERIAL_CONNECTION_WAIT_TIME, PI_MAX_WAIT_TIME, PI_PING_INTERVAL);
+  // int piCommunicationErrorCode = piCommunications.initCommunication(MAX_SERIAL_CONNECTION_WAIT_TIME, PI_MAX_WAIT_TIME, PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_CODE_ERROR
   //   controller.ringAlarmForever();
   // }
