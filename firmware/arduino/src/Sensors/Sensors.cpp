@@ -30,13 +30,13 @@ void Sensors::init() {
 
 void Sensors::readSensorsIfAvailableAndSaveSensorData(Data data) {
   // take sensor readings
-  if (isTimeToReadFlow()) {
-    int error = 0;
-    float flowValue = flowSensor.read(&error); // we're not doing anything with this error yet
-    float delta_time = (millis() - _lastFlowReadTime)/MINUTES_TO_MILLISECONDS;
-    data.saveFlowReading(flowValue, delta_time);
-    _lastFlowReadTime = millis();
-  }
+  // if (isTimeToReadFlow()) {
+  //   int error = 0;
+  //   float flowValue = flowSensor.read(&error); // we're not doing anything with this error yet
+  //   float delta_time = (millis() - _lastFlowReadTime)/MINUTES_TO_MILLISECONDS;
+  //   data.saveFlowReading(flowValue, delta_time);
+  //   _lastFlowReadTime = millis();
+  // }
   // if (isTimeToReadOxygenPressure()) {
   //   unsigned int pressureValue = oxygenPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
   //   data.saveOxygenPressureReading(pressureValue);
@@ -47,11 +47,11 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data data) {
     data.saveMainPressureReading(pressureValue);
     _lastMainPressureReadTime = millis();
   }
-  if (isTimeToReadBatteryPercentage()) {
-    unsigned int batteryPercentage = batteryVoltageSensor.readPercentage();
-    data.saveBatteryPercentage(batteryPercentage);
-    _lastBatteryPercentageReadTime = millis();
-  }
+  // if (isTimeToReadBatteryPercentage()) {
+  //   unsigned int batteryPercentage = batteryVoltageSensor.readPercentage();
+  //   data.saveBatteryPercentage(batteryPercentage);
+  //   _lastBatteryPercentageReadTime = millis();
+  // }
 }
 
 int Sensors::isTimeToReadFlow() {

@@ -35,28 +35,28 @@ void Controller::ringAlarmForever() {
 
 void Controller::inhalationControl(Data data, Parameters parameters, State state) {
   // modify steps on stepper motor to get desired flow rate (which then gives concentration)
-  if (isTimeToControlOxygen()) {
-    oxygenControl(data, parameters, state);
-    _lastOxygenControlTime = millis();
-  }
-  if (isTimeToControlAir()) {
-   airControl(parameters);
-   _lastAirControlTime = millis();
-  }
+  // if (isTimeToControlOxygen()) {
+  //   oxygenControl(data, parameters, state);
+  //   _lastOxygenControlTime = millis();
+  // }
+  // if (isTimeToControlAir()) {
+  //  airControl(parameters);
+  //  _lastAirControlTime = millis();
+  // }
   float setPressure = (float) parameters.currentPeakInspiratoryPressure; //TODO: Check units with below
   float actualPressure = data.getMainPressureAverageForPID();
   blowerPID.control(setPressure, actualPressure);
 }
 
 void Controller::exhalationControl(Data data, Parameters parameters, State state) {
-  if (isTimeToControlOxygen()) {
-    oxygenControl(data, parameters, state);
-    _lastOxygenControlTime = millis();
-  }
-  if (isTimeToControlAir()) {
-   airControl(parameters);
-   _lastAirControlTime = millis();
-  }
+  // if (isTimeToControlOxygen()) {
+  //   oxygenControl(data, parameters, state);
+  //   _lastOxygenControlTime = millis();
+  // }
+  // if (isTimeToControlAir()) {
+  //  airControl(parameters);
+  //  _lastAirControlTime = millis();
+  // }
   float setPressure = (float) parameters.currentPEEP; //TODO: Check units with below. Also, should be an int or float?
   float actualPressure = data.getMainPressureAverageForPID();
   blowerPID.control(setPressure, actualPressure);

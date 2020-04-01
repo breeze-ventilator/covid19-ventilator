@@ -51,13 +51,13 @@ Parameters parameters;
 void setup() {  
   controller.stopArduinoAlarm();
   sensors.init();
-  int servosConnectedErrorCode = controller.init();
+  // int servosConnectedErrorCode = controller.init();
   parameters.currentMode = PRESSURE_CONTROL_MODE;
 	parameters.currentFiO2 = 70;
 	parameters.currentInspiratoryTime = 1000;
 	parameters.currentExpiratoryTime = 3000;
-	parameters.currentPeakInspiratoryPressure = 30; // TODO: match pressure readings
-	parameters.currentPEEP = 7;
+	parameters.currentPeakInspiratoryPressure = 10000; // TODO: match pressure readings
+	parameters.currentPEEP = 5000;
 	parameters.currentSensitivity = 0;
 
   // int piCommunicationErrorCode = piCommunications.initCommunication(MAX_SERIAL_CONNECTION_WAIT_TIME, PI_MAX_WAIT_TIME, PI_PING_INTERVAL);
