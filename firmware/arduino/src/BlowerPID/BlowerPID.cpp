@@ -12,7 +12,8 @@ BlowerPID::BlowerPID()
 void BlowerPID::control(float setPressure, float actualPressure){
 	_pressureSetPoint = setPressure;
 	_actualPressure = actualPressure;
-  	if (_blowerControl.Compute()) {
-		_blowerFanServo.writeBlowerPower(_blowerPower);
-	}
+	_blowerFanServo.writeBlowerPower(60);
+  // 	if (_blowerControl.Compute()) {
+	// 	_blowerFanServo.writeBlowerPower(_blowerPower);
+	// }
 }

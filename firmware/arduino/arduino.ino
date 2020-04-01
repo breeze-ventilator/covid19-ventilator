@@ -87,12 +87,12 @@ void loop() {
   // }
 
   // breathing cycle
-  if (state.breathingStage == INHALATION_STAGE) {
-    controller.inhalationControl(data, parameters, state);
-  }
-  else if (state.breathingStage == EXHALATION_STAGE) {
-    controller.exhalationControl(data, parameters, state);
-  }
+  // if (state.breathingStage == INHALATION_STAGE) {
+  controller.inhalationControl(data, parameters, state);
+  // }
+  // else if (state.breathingStage == EXHALATION_STAGE) {
+  //   controller.exhalationControl(data, parameters, state);
+  // }
 
   if (piCommunications.isTimeToSendDataToPi()) { // need to make sure pressure and flow are BOTH full
     piCommunications.sendDataToPi(data, state);

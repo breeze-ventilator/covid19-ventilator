@@ -5,11 +5,11 @@ BlowerFanServo::BlowerFanServo(int pin) {
   // Initialize the esc by giving 50% power wait for it to power up then 0% power and wait for beep then do an inaugural vroom for half a second
   // https://www.arduino.cc/en/Reference/ServoWrite
   // TODO: should we wait here?
-  _blowerFan.write(900);
+  _blowerFan.write(90);
   delay(700);
   _blowerFan.write(15);
   delay(3000);
-  _blowerFan.write(900);
+  _blowerFan.write(90);
   delay(500);
   _blowerFan.write(15);
 }
