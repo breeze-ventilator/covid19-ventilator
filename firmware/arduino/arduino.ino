@@ -17,12 +17,12 @@
 
 #include <Servo.h>
 #include <Stepper.h>
-#include "libraries/initialization/initialization.h"
-#include "libraries/Data/Data.h"
-#include "libraries/Sensors/Sensors.h"
-#include "libraries/State/State.h"
-#include "libraries/Controller/Controller.h"
-#include "libraries/PiCommunication/PiCommunication.h"
+#include "src/initialization/initialization.h"
+#include "src/Data/Data.h"
+#include "src/Sensors/Sensors.h"
+#include "src/State/State.h"
+#include "src/Controller/Controller.h"
+#include "src/PiCommunication/PiCommunication.h"
 
 // 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
 // (eepRom: for bootup, a read-only memory whose contents can be erased and reprogrammed using a pulsed voltage.)
@@ -69,9 +69,9 @@ void loop() {
     parameters.getNewParameters(receivedString);
   }
 
-  sensors.readSensorsIfAvailableAndSaveSensorData(&data);
+  sensors.readSensorsIfAvailableAndSaveSensorData(data);
 
-  state.updateState(&parameters);
+  state.updateState(parameters);
 
   // only update parameters when breath is over
   if (parameters.newParamsHaveArrived && state.isStartingNewBreath) {
@@ -80,14 +80,14 @@ void loop() {
 
   // breathing cycle
   if (state.breathingStage == INHALATION_STAGE) {
-    controller.inhalationControl(&data, &parameters, &state);
+    controller.inhalationControl(data, parameters, state);
   }
   else if (state.breathingStage == EXHALATION_STAGE) {
-    controller.exhalationControl(&data, &parameters, &state);
+    controller.exhalationControl(data, parameters, state);
   }
 
   if (piCommunications.isTimeToSendDataToPi()) { // need to make sure pressure and flow are BOTH full
-    piCommunications.sendDataToPi(&data, &state);
+    piCommunications.sendDataToPi(data, state);
     data.resetPiDataExceptFlow();
     
     if (state.isStartingNewBreath) {
