@@ -22,6 +22,10 @@ void BlowerFanServo::turnOff() {
   _blowerFan.write(15);
 }
 
+void BlowerFanServo::write(int x) {
+  _blowerFan.write(x);
+}
+
 void BlowerFanServo::writeBlowerPower(double blowerPower) {
   _blowerFan.write(map(blowerPower, 0, 256, 15, 90)); // 15 to 90 instead of 15 to 180
 }
