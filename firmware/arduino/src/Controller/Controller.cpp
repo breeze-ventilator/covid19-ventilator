@@ -21,6 +21,7 @@ Controller::Controller()
 }
 
 int Controller::init() {
+  blowerPID.begin();
   int error = oxygenValveStepper.moveOxygenStepperToZeroPosition(10000);
   return error;
 }
