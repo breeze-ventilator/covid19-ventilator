@@ -1,6 +1,7 @@
 import React from 'react';
 import Messager from '../../handlers/Messager';
 
+import 'semantic-ui-css/semantic.min.css'
 import d3Config from '../LineChart/scripts/d3Config.js'
 import './css/App.css';
 
@@ -9,7 +10,9 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import Vitals from '../Vitals/Vitals';
 import Settings from '../Settings/Settings';
 import Alarms from '../Alarms/Alarms';
+import Setup from '../Setup/Setup';
 import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNavigation';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -30,7 +33,8 @@ export default class App extends React.Component {
         apneaTime: 20, // Support
         inspiratoryTime: 0, // Control
         respiratoryRate: 0 // Control
-      }
+      },
+      setup: true
     }
     this.messager = new Messager(5000);
 
@@ -38,7 +42,7 @@ export default class App extends React.Component {
     this.messager.samplePressureDataListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
-
+    this.doneSetup = this.doneSetup.bind(this);
   }
 
   setParameters(parameters){
@@ -67,12 +71,19 @@ export default class App extends React.Component {
     }
   }
 
+  doneSetup(){
+    this.state.setup = false;
+    this.setState(this.state);
+  }
   render() {
     return (
       <div>
       <Router>
-        <SimpleBottomNavigation />
+        <SimpleBottomNavigation setup={this.state.setup} />
         <Switch>
+        <Route path="/setup">
+          <Setup allParameters={this.state.parameters} setParameters={this.setParameters} doneSetup={this.doneSetup}/>
+        </Route>
         <Route path="/settings">
           <Settings allParameters={this.state.parameters} setParameters={this.setParameters}/>
         </Route>
@@ -83,7 +94,7 @@ export default class App extends React.Component {
           <Alarms allData={this.state.data} />
         </Route>
         </Switch>
-        <Redirect from="/" to="settings" />
+        {/* <Redirect from="/" to="settings" /> */}
       </Router>
       <div class="battery">
           <div class="battery-level" style={{height : "75%"}}></div>

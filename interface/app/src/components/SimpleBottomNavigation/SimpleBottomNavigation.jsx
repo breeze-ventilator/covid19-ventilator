@@ -29,7 +29,8 @@ export default class SimpleBottomNavigation extends React.Component{
   render() {
     return(
       <div>
-<BottomNavigation
+        {!this.props.setup &&
+        <BottomNavigation
         value={this.state.value}
         onChange={(event, newValue) => {
           this.state.value = newValue;
@@ -58,6 +59,8 @@ export default class SimpleBottomNavigation extends React.Component{
           to="/alarms"
           />
       </BottomNavigation>
+        }
+
       </div>
     );
   }

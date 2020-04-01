@@ -85,6 +85,10 @@
   width:100%;
 }
 
+.setParametersButton {
+  width: 50%;
+}
+
 .battery {
   border: 3px solid #333;
   width: 18px;
