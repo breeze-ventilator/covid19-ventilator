@@ -15,6 +15,7 @@ void BlowerFanServo::begin() {
   _blowerFan.write(90);
   delay(500);
   _blowerFan.write(15);
+  delay(500);
 }
 
 void BlowerFanServo::turnOff() {

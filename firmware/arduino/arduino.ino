@@ -77,9 +77,9 @@ void loop() {
   //   parameters.getNewParameters(receivedString);
   // }
 
-  sensors.readSensorsIfAvailableAndSaveSensorData(data);
+  // sensors.readSensorsIfAvailableAndSaveSensorData(data);
 
-  state.updateState(parameters);
+  // state.updateState(parameters);
 
   // only update parameters when breath is over
   // if (parameters.newParamsHaveArrived && state.isStartingNewBreath) {
@@ -94,12 +94,12 @@ void loop() {
   //   controller.exhalationControl(data, parameters, state);
   // }
 
-  if (piCommunications.isTimeToSendDataToPi()) { // need to make sure pressure and flow are BOTH full
-    piCommunications.sendDataToPi(data, state);
-    data.resetPiDataExceptFlow();
+  // if (piCommunications.isTimeToSendDataToPi()) { // need to make sure pressure and flow are BOTH full
+  //   piCommunications.sendDataToPi(data, state);
+  //   data.resetPiDataExceptFlow();
     
-    if (state.isStartingNewBreath) {
-      data.resetPiFlowData();
-    }
-  }
+  //   if (state.isStartingNewBreath) {
+  //     data.resetPiFlowData();
+  //   }
+  // }
 }
