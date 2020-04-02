@@ -53,7 +53,7 @@ export default class Settings extends React.Component {
     else if(parameterName =="Respiratory Rate"){
       this.state.respiratoryRate = value;
     }
-    this.setState(this.state)
+    this.setState(this.state);
   }
 
   render() {
@@ -71,8 +71,8 @@ export default class Settings extends React.Component {
                       aria-label="text alignment"
                       onChange={this.togglePatientControlState}
                     >
-                    <ToggleButton value="patientSupport" variant="contained" color="primary">Pressure Support</ToggleButton>
-                    <ToggleButton value="patientControl" variant="contained" color="secondary">Pressure Control</ToggleButton>
+                    <ToggleButton value="patientSupport" variant="contained" color="primary">Pressure Control</ToggleButton>
+                    <ToggleButton value="patientControl" variant="contained" color="secondary">Pressure Support</ToggleButton>
                   </ToggleButtonGroup>
                   </Grid>
                 </Grid>
@@ -97,7 +97,7 @@ export default class Settings extends React.Component {
                 }
 
                 {/* SHARED PARAMETERS */}
-                <ParameterInput parameterName="FiO2" setParameter={this.setStateValue} parameterHelpText="" startingValue={this.props.allParameters.fiO2} step={2} min={21} max={100} unit={"%"}/>
+                <ParameterInput parameterName="FiO2" setParameter={this.setStateValue} parameterHelpText="" startingValue={this.props.allParameters.fiO2} step={10} min={0} max={100} unit={"%"}/>
                 <ParameterInput parameterName="PEEP" setParameter={this.setStateValue} parameterHelpText="" startingValue={this.props.allParameters.peep} step={2} unit={" cmH2O"}/>
                 <ParameterInput parameterName="Peak Pressure" setParameter={this.setStateValue} parameterHelpText=""  startingValue={this.props.allParameters.peakPressure} step={2} unit={" cmH2O"} />
                 <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>

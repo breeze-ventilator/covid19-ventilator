@@ -44,9 +44,9 @@ export default class Vitals extends React.Component {
           justify="space-around"
           alignItems="center"
         >
-          <h1>
+          <h2 className="currentParametersHeader">
             Current Parameters
-          </h1>
+          </h2>
         </Grid>
         <Grid
           container

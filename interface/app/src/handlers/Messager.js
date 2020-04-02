@@ -27,7 +27,7 @@ export default class Messager {
 
     sampleTidalVolumeDataListener(cb){
         setInterval(() => {
-			let val = Math.floor(Math.random() * 250) + 1;
+			let val = Math.floor(4*Math.random() + 10) + 1;
 			cb({
 				type: 'tidal volume',
 				value: val
@@ -35,14 +35,14 @@ export default class Messager {
 		}, 1000)
     }
 
-    samplePressureDataListener(cb){
+    samplePressureDataListener(cb) {
         setInterval(() => {
-			let val = Math.floor(Math.random() * 250) + 1;
+			let val = Math.floor(3*Math.random() + 25 ) + 1;
 			cb({
 				type: 'pressure',
 				value: val
 			})
-		}, 800)
+		}, 2000)
     }
     
 }

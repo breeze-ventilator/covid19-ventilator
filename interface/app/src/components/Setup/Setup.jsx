@@ -57,32 +57,32 @@ export default class Setup extends React.Component {
                     <div style={mainDivStyle}>
                         <div style={divStyle}>
                             <Message info>
-                            <Message.Header>Was this what you wanted?</Message.Header>
-                            <p>Did you know it's been a while? Did you know it's been a while? Did you know it's been a while?</p>
+                            <Message.Header>Did you assemble the ventilator circuit?</Message.Header>
+                            <p>You need to put together the circuit, HME filter, and Tracheal suction.</p>
                             </Message>
                         </div>
                         <div style={divStyle}>
                             <Message info>
-                            <Message.Header>Was this what you wanted?</Message.Header>
-                            <p>Did you know it's been a while? Did you know it's been a while? Did you know it's been a while?</p>
+                            <Message.Header>Did you perform the initial validation tests?</Message.Header>
+                            <p className="runValTestsButton" align="center">
+                              <Button variant="contained" align="center" color="default">
+                              Run Validation Tests
+                              </Button>
+                            </p>
                             </Message>
                         </div>
                         <div style={divStyle}>
                             <Message info>
-                            <Message.Header>Was this what you wanted?</Message.Header>
-                            <p>Did you know it's been a while? Did you know it's been a while? Did you know it's been a while?</p>
-                            </Message>
-                        </div>
-                        <div style={divStyle}>
-                            <Message info>
-                            <Message.Header>Was this what you wanted?</Message.Header>
-                            <p>Did you know it's been a while? Did you know it's been a while? Did you know it's been a while?</p>
+                            <Message.Header>Did you hear the backup alarm when starting up the machine?</Message.Header>
+                            <p>If not, the backup alarm may not be functioning.</p>
                             </Message>
                         </div>
                     </div>
+                    <div align="right">
                     <Button className="continueButton" onClick={() => {this.props.doneSetup(); this.state.text = "Done Setup!"; this.state.done = true}} variant="contained" align="center" color="primary">
                               Continue
                     </Button>
+                    </div>
                     </div>
           }
 

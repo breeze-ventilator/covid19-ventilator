@@ -96,7 +96,7 @@ export default class App extends React.Component {
         </Switch>
         {/* <Redirect from="/" to="settings" /> */}
       </Router>
-      <div class="battery">
+        <div class="battery">
           <div class="battery-level" style={{height : "75%"}}></div>
         </div>
       </div>

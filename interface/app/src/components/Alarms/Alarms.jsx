@@ -47,6 +47,8 @@ export default class Vitals extends React.Component {
             // alert('MINUTE VENTIALTION IS TOO HIGH!');
           });
           break;
+        default:
+          break;
       }
     };
   };
@@ -62,14 +64,14 @@ export default class Vitals extends React.Component {
                 <Grid container justify="space-evenly" spacing={3} direction="row">
                 </Grid>
               </Grid>
-              <ParameterInput parameterName="Patient Body Weight" startingValue={80} step={2} min={21} max={100} unit={"%"}/>
+              <ParameterInput parameterName="Patient Body Weight" startingValue={80} step={2} min={0} max={100} unit={"pounds"}/>
               {/*TODO: Make the lower parameters appear only once the weight has been entered, and change startingValue accordingly. */}
               <br></br><br></br>
-              <ParameterInput parameterName="Low Volume Bound" startingValue={80} step={2} min={21} max={100} unit={"%"}/>
-              <ParameterInput parameterName="High Volume Bound" startingValue={80} step={2} min={21} max={100} unit={"%"}/>
+              <ParameterInput parameterName="Low Minute Ventilation Alarm" startingValue={5} step={2} min={0} max={100} unit={"%"}/>
+              <ParameterInput parameterName="High Minute Ventilation Alarm" startingValue={10} step={2} min={0} max={100} unit={"%"}/>
               <br></br><br></br>
-              <ParameterInput parameterName="Low FiO2 Bound" startingValue={80} step={2} min={21} max={100} unit={"%"}/>
-              <ParameterInput parameterName="High FiO2 Bound" startingValue={80} step={2} min={21} max={100} unit={"%"}/>
+              <ParameterInput parameterName="Low Pressure Alarm" startingValue={4} step={2} min={0} max={100} unit={"%"}/>
+              <ParameterInput parameterName="High Pressure Alarm" startingValue={40} step={2} min={0} max={100} unit={"%"}/>
 
               <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
                 <Button className="setParametersButton" onClick={this.createNotification('error')} variant="contained" align="center" color="primary">

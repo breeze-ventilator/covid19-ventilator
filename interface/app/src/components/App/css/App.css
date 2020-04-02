@@ -73,6 +73,10 @@
   color: #1F2228;
 }
 
+.currentParametersHeader {
+  margin-top: 30px !important;
+}
+
 .mbsc-stepper input {
   width: 6em !important;
   left: 7em !important;
@@ -86,7 +90,16 @@
 }
 
 .continueButton {
-  width: 50%;
+  width: 30%;
+  margin-top: 30px !important;
+  margin-right: 15px !important;
+}
+
+.runValTestsButton {
+  margin-top: 12px !important;
+  margin-bottom: 8px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .battery {
@@ -95,8 +108,8 @@
   height: 28px;
   padding: 2px;
   border-radius: 4px;
-  position: relative;
-  bottom: 40px;
+  position: absolute;
+  bottom: 10px;
   left: 90%;
   margin: 15px 0;
   transform: rotate(90deg);
@@ -106,7 +119,7 @@
   content: '';
   height: 3px;
   width: 18px;
-  background: #333;
+  /* background: #333; */
   display: block;
   position: absolute;
   top: -6px;

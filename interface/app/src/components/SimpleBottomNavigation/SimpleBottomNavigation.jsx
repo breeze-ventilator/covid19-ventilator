@@ -46,7 +46,7 @@ export default class SimpleBottomNavigation extends React.Component{
           />
 
         <BottomNavigationAction
-          label="Diagnostics"
+          label="Monitoring"
           icon={<FavoriteIcon />}
           component = { Link  }
           to="/diagnostics"
