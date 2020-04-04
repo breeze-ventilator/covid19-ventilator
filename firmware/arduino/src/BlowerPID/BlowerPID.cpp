@@ -21,7 +21,7 @@ void BlowerPID::control(float setPressure, float actualPressure){
 }
 
 void BlowerPID::begin() {
-	_blowerFanServo.attach(9);
+  _blowerFanServo.attach(9);
   _blowerFanServo.write(90);
   delay(4000);
   _blowerFanServo.write(15);

@@ -47,7 +47,7 @@ float FlowSensor::read(int *errorType)
 		crc = Wire.read(); // crc value stored here
 	}
 	else {
-		// *errorType = SENSOR_DEAD_OR_NEEDS_RESET_ERROR; // should restart
+		*errorType = SENSOR_DEAD_OR_NEEDS_RESET_ERROR; // should restart
 		Flow = 0;
 		return Flow;
 	}

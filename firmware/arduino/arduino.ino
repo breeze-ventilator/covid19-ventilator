@@ -15,14 +15,12 @@
  * 1 = good, 0 = bad
  */
 
-#include <Servo.h>
-#include <Stepper.h>
-#include "src/initialization/initialization.h"
-#include "src/Data/Data.h"
-#include "src/Sensors/Sensors.h"
-#include "src/State/State.h"
+// #include "src/initialization/initialization.h"
+// #include "src/Data/Data.h"
+// #include "src/Sensors/Sensors.h"
+// #include "src/State/State.h"
 #include "src/Controller/Controller.h"
-#include "src/PiCommunication/PiCommunication.h"
+// #include "src/PiCommunication/PiCommunication.h"
 
 // 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
 // (eepRom: for bootup, a read-only memory whose contents can be erased and reprogrammed using a pulsed voltage.)
@@ -34,15 +32,15 @@
   - derivative: linear fit over n values, where each value is an average of n datapoints (needs last n**2 datapoints)
 */
 
-Data data;
-Sensors sensors(FLOW_READING_FREQUENCY,
-                 MAIN_PRESSURE_READING_FREQUENCY,
-                 OXYGEN_PRESSURE_READING_FREQUENCY,
-                 BATTERY_VOLTAGE_READING_FREQUENCY);
+// Data data;
+// Sensors sensors(FLOW_READING_FREQUENCY,
+//                  MAIN_PRESSURE_READING_FREQUENCY,
+//                  OXYGEN_PRESSURE_READING_FREQUENCY,
+//                  BATTERY_VOLTAGE_READING_FREQUENCY);
 Controller controller;
-PiCommunication piCommunications(BAUD_RATE, TIME_BETWEEN_PI_SENDING);
-State state;
-Parameters parameters;
+// PiCommunication piCommunications(BAUD_RATE, TIME_BETWEEN_PI_SENDING);
+// State state;
+// Parameters parameters;
 /*
   On startup, initializes pins and ensures Pi sends message.
 
@@ -52,13 +50,13 @@ void setup() {
   controller.stopArduinoAlarm();
   // sensors.init();
   int servosConnectedErrorCode = controller.init();
-  parameters.currentMode = PRESSURE_CONTROL_MODE;
-	parameters.currentFiO2 = 70;
-	parameters.currentInspiratoryTime = 1000;
-	parameters.currentExpiratoryTime = 3000;
-	parameters.currentPeakInspiratoryPressure = 10000; // TODO: match pressure readings
-	parameters.currentPEEP = 5000;
-	parameters.currentSensitivity = 0;
+  // parameters.currentMode = PRESSURE_CONTROL_MODE;
+	// parameters.currentFiO2 = 70;
+	// parameters.currentInspiratoryTime = 1000;
+	// parameters.currentExpiratoryTime = 3000;
+	// parameters.currentPeakInspiratoryPressure = 10000; // TODO: match pressure readings
+	// parameters.currentPEEP = 5000;
+	// parameters.currentSensitivity = 0;
 
   // int piCommunicationErrorCode = piCommunications.initCommunication(MAX_SERIAL_CONNECTION_WAIT_TIME, PI_MAX_WAIT_TIME, PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_CODE_ERROR
