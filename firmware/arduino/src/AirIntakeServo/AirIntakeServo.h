@@ -4,9 +4,12 @@
 class AirIntakeServo {
     public:
         AirIntakeServo(int pin, int zeroPoint);
+        void begin();
         void setOpening(int percent);
     private:
         Servo _airIntake;
+        int _pin;
+        int _zeroPoint;
 };
 
 #endif

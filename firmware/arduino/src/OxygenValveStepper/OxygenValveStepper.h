@@ -10,6 +10,7 @@ class OxygenValveStepper {
 	  OxygenValveStepper(int motorInterfaceType, int pin0, int pin1,
       int pin2, int pin3, int limitSwitchPin, int maxStepperSpeed, int stepperAcceleration,
       int oxygenEnable1Pin, int oxygenEnable2Pin);
+    void begin();
     int moveOxygenStepperToZeroPosition(int maxWaitTime);
     void stepOxygenFlow(float flow, float pressure);
     void runOneStep();
@@ -17,6 +18,10 @@ class OxygenValveStepper {
   private:
 	  AccelStepper _oxygenStepper;
     int _limitSwitchPin;
+    int _maxStepperSpeed;
+    int _stepperAcceleration;
+    int _oxygenEnable1Pin;
+    int _oxygenEnable2Pin;
 };
 
 #endif

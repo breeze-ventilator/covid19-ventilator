@@ -10,7 +10,7 @@ void BlowerFanServo::begin() {
   // TODO: should we wait here?
   _blowerFan.attach(_pin);
   _blowerFan.write(90);
-  delay(700);
+  delay(3000);
   _blowerFan.write(15);
   delay(3000);
 }

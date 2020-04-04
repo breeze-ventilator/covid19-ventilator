@@ -23,6 +23,5 @@ class BlowerPID {
         double _actualPressure = 0;
 	    double _blowerPower = 0;
 	    double _pressureSetPoint = 0;
-
 };
 #endif

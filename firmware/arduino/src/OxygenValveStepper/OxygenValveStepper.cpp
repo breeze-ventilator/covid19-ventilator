@@ -20,14 +20,21 @@ OxygenValveStepper::OxygenValveStepper(int motorInterfaceType, int pin0, int pin
   : _oxygenStepper(motorInterfaceType, pin0, pin1, pin2, pin3)
 {
   _limitSwitchPin = limitSwitchPin;
+  _oxygenEnable1Pin = oxygenEnable1Pin;
+  _oxygenEnable2Pin = oxygenEnable2Pin;
+  _maxStepperSpeed = maxStepperSpeed;
+  _stepperAcceleration = stepperAcceleration;
+}
+
+void OxygenValveStepper::begin() {
   pinMode(_limitSwitchPin, INPUT_PULLUP); // TODO: simon need better naming here
   
-  _oxygenStepper.setMaxSpeed(maxStepperSpeed); // Slower to get better accuracy
-  _oxygenStepper.setAcceleration(stepperAcceleration);
-
+  _oxygenStepper.setMaxSpeed(_maxStepperSpeed); // Slower to get better accuracy
+  _oxygenStepper.setAcceleration(_stepperAcceleration);
+  
   // enable the power to the stepper at about half power
-  analogWrite(oxygenEnable1Pin, 100);
-  analogWrite(oxygenEnable2Pin, 100);
+  analogWrite(_oxygenEnable1Pin, 100);
+  analogWrite(_oxygenEnable2Pin, 100);
 }
 
 int OxygenValveStepper::moveOxygenStepperToZeroPosition(int maxWaitTime) {
