@@ -21,9 +21,11 @@ Controller::Controller()
   _lastAirControlTime = 0;
 }
 
-int Controller::init() {
+int Controller::init(Servo blowerFan) {
   Serial.println("Controller init");
-  blowerPID.begin();
+  blowerFan.attach(9);
+  blowerFan.write(90);
+  // blowerPID.begin();
   // int error = oxygenValveStepper.moveOxygenStepperToZeroPosition(10000);
   return 0;
 }
@@ -49,7 +51,7 @@ void Controller::inhalationControl() {
   Serial.println("inhalation control");
   float setPressure = 100;//(float) parameters.currentPeakInspiratoryPressure; //TODO: Check units with below
   float actualPressure = 0;// data.getMainPressureAverageForPID();
-  blowerPID.control(setPressure, actualPressure);
+  // blowerPID.control(setPressure, actualPressure);
 }
 
 void Controller::exhalationControl(Data data, Parameters parameters, State state) {

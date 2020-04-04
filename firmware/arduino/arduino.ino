@@ -20,6 +20,7 @@
 // #include "src/Sensors/Sensors.h"
 // #include "src/State/State.h"
 #include "src/Controller/Controller.h"
+#include <Servo.h>
 // #include "src/PiCommunication/PiCommunication.h"
 
 // 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
@@ -46,11 +47,12 @@ Controller controller;
 
   On failure, hangs forever.
 */
+Servo blowerFan;
 void setup() {  
   Serial.begin(9600);
   controller.stopArduinoAlarm();
   // sensors.init();
-  int servosConnectedErrorCode = controller.init();
+  int servosConnectedErrorCode = controller.init(blowerFan);
   // parameters.currentMode = PRESSURE_CONTROL_MODE;
 	// parameters.currentFiO2 = 70;
 	// parameters.currentInspiratoryTime = 1000;

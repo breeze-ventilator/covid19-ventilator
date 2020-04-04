@@ -30,7 +30,7 @@
 class Controller {
     public:
         Controller();
-        int init();
+        int init(Servo blowerFan);
         void stopArduinoAlarm();
         void ringAlarmForever();
         void inhalationControl();
