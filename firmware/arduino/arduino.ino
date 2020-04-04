@@ -46,7 +46,6 @@ Controller controller;
 
   On failure, hangs forever.
 */
-Servo blowerFan;
 void setup() {  
   Serial.begin(9600);
   controller.stopArduinoAlarm();

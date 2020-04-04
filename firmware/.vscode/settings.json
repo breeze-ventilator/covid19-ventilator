@@ -2,6 +2,8 @@
     "files.associations": {
         "controls.h": "c",
         "ostream": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "ios": "cpp",
+        "random": "cpp"
     }
 }

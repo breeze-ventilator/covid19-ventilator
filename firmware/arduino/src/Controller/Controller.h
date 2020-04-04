@@ -45,8 +45,7 @@ class Controller {
         // OxygenValveStepper oxygenValveStepper;
         Alarm alarm;
         // AirIntakeServo airIntakeServo;
-        // BlowerPID blowerPID;
-        Servo blowerFan;
+        BlowerPID blowerPID;
         int _lastOxygenControlTime;
         int _lastAirControlTime;
 };

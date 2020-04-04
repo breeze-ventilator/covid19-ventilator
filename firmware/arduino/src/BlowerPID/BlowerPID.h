@@ -10,17 +10,19 @@
 
 #include "Arduino.h"
 #include <PID_v1.h>
-#include <Servo.h>
+#include "../BlowerFanServo/BlowerFanServo.h"
 
-class BlowerPID : public Servo {
+class BlowerPID {
     public:
         BlowerPID();
         void control(float setPressure, float actualPressure);
         void begin();
     private:
-        // PID _blowerControl;
+        PID _blowerControl;
+        BlowerFanServo _blowerFanServo;
         double _actualPressure = 0;
 	    double _blowerPower = 0;
 	    double _pressureSetPoint = 0;
+
 };
 #endif

@@ -13,9 +13,9 @@ Controller::Controller()
   //                      OXYGEN_VALVE_STEPPER_ACCELERATION,
   //                      OXYGEN_VALVE_ENABLE1_PIN,
   //                      OXYGEN_VALVE_ENABLE2_PIN),
-    : alarm(ALARM_PIN)
+    : alarm(ALARM_PIN),
     // airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
-    // blowerPID()
+    blowerPID()
 {
   _lastOxygenControlTime = 0;
   _lastAirControlTime = 0;
@@ -23,9 +23,7 @@ Controller::Controller()
 
 int Controller::init() {
   Serial.println("Controller init");
-  blowerFan.attach(9);
-  blowerFan.write(90);
-  // blowerPID.begin();
+  blowerPID.begin();
   // int error = oxygenValveStepper.moveOxygenStepperToZeroPosition(10000);
   return 0;
 }

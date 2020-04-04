@@ -11,7 +11,8 @@ class BlowerFanServo {
         void turnOff();
         void writeBlowerPower(double blowerPower);
         Servo _blowerFan;
-        void write(int x);
+    private:
+        int _pin;
 };
 
 #endif
