@@ -19,7 +19,6 @@ class BlowerPID {
         void begin();
     private:
         // PID _blowerControl;
-        Servo _blowerFanServo;
         double _actualPressure = 0;
 	    double _blowerPower = 0;
 	    double _pressureSetPoint = 0;
