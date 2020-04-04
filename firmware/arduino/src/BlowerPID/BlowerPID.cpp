@@ -10,6 +10,7 @@ BlowerPID::BlowerPID()
 }
 
 void BlowerPID::control(float setPressure, float actualPressure){
+	Serial.println("BlowerPID control");
 	_pressureSetPoint = setPressure;
 	_actualPressure = actualPressure;
 	_blowerFanServo.write(60);
@@ -21,7 +22,9 @@ void BlowerPID::control(float setPressure, float actualPressure){
 }
 
 void BlowerPID::begin() {
+  Serial.println("BlowerPID begin");
   _blowerFanServo.attach(9);
+  delay(1000);
   _blowerFanServo.write(90);
   delay(4000);
   _blowerFanServo.write(15);

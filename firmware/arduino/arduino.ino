@@ -47,6 +47,7 @@ Controller controller;
   On failure, hangs forever.
 */
 void setup() {  
+  Serial.begin(9600);
   controller.stopArduinoAlarm();
   // sensors.init();
   int servosConnectedErrorCode = controller.init();
@@ -86,6 +87,7 @@ void loop() {
 
   // breathing cycle
   // if (state.breathingStage == INHALATION_STAGE) {
+  Serial.println("loop");
   controller.inhalationControl();
   // }
   // else if (state.breathingStage == EXHALATION_STAGE) {

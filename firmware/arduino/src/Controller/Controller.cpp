@@ -22,6 +22,7 @@ Controller::Controller()
 }
 
 int Controller::init() {
+  Serial.println("Controller init");
   blowerPID.begin();
   // int error = oxygenValveStepper.moveOxygenStepperToZeroPosition(10000);
   return 0;
@@ -45,6 +46,7 @@ void Controller::inhalationControl() {
   //  airControl(parameters);
   //  _lastAirControlTime = millis();
   // }
+  Serial.println("inhalation control");
   float setPressure = 100;//(float) parameters.currentPeakInspiratoryPressure; //TODO: Check units with below
   float actualPressure = 0;// data.getMainPressureAverageForPID();
   blowerPID.control(setPressure, actualPressure);
