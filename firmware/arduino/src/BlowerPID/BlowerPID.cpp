@@ -1,7 +1,4 @@
 #include "BlowerPID.h"
-#include <Servo.h>
-
-Servo _blowerFanServo;
 
 BlowerPID::BlowerPID()
 	// 	_blowerControl(&_actualPressure, &_blowerPower, &_pressureSetPoint, BLOWER_KP , 0, BLOWER_KD, DIRECT) // PID
@@ -25,8 +22,8 @@ void BlowerPID::control(float setPressure, float actualPressure){
 
 void BlowerPID::begin() {
   Serial.println("BlowerPID begin");
-  _blowerFanServo.attach(9);
-  _blowerFanServo.write(90);
+  attach(9);
+  write(90);
   Serial.println("it began");
 
 }

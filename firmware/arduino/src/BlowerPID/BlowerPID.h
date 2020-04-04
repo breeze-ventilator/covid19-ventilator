@@ -12,7 +12,7 @@
 #include <PID_v1.h>
 #include <Servo.h>
 
-class BlowerPID {
+class BlowerPID : public Servo {
     public:
         BlowerPID();
         void control(float setPressure, float actualPressure);
