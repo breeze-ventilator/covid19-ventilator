@@ -1,7 +1,7 @@
 #include "BlowerPID.h"
 
 BlowerPID::BlowerPID()
-	// : 
+	: _blowerFanServo()
 	// 	_blowerControl(&_actualPressure, &_blowerPower, &_pressureSetPoint, BLOWER_KP , 0, BLOWER_KD, DIRECT) // PID
 {
 	// _blowerFanServo.attach(9);
