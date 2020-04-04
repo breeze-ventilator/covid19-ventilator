@@ -30,7 +30,7 @@
 class Controller {
     public:
         Controller();
-        int init(Servo blowerFan);
+        int init();
         void stopArduinoAlarm();
         // void ringAlarmForever();
         // void inhalationControl();
@@ -46,6 +46,7 @@ class Controller {
         Alarm alarm;
         // AirIntakeServo airIntakeServo;
         // BlowerPID blowerPID;
+        Servo blowerFan;
         int _lastOxygenControlTime;
         int _lastAirControlTime;
 };

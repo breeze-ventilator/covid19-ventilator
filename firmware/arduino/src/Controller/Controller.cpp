@@ -21,7 +21,7 @@ Controller::Controller()
   _lastAirControlTime = 0;
 }
 
-int Controller::init(Servo blowerFan) {
+int Controller::init() {
   Serial.println("Controller init");
   blowerFan.attach(9);
   blowerFan.write(90);

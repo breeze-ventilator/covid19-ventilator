@@ -20,7 +20,6 @@
 // #include "src/Sensors/Sensors.h"
 // #include "src/State/State.h"
 #include "src/Controller/Controller.h"
-#include <Servo.h>
 // #include "src/PiCommunication/PiCommunication.h"
 
 // 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
@@ -52,9 +51,7 @@ void setup() {
   Serial.begin(9600);
   controller.stopArduinoAlarm();
   // sensors.init();
-  blowerFan.attach(9);
-  blowerFan.write(90);
-  // int servosConnectedErrorCode = controller.init(blowerFan);
+  int servosConnectedErrorCode = controller.init();
   // parameters.currentMode = PRESSURE_CONTROL_MODE;
 	// parameters.currentFiO2 = 70;
 	// parameters.currentInspiratoryTime = 1000;
@@ -91,7 +88,7 @@ void loop() {
 
   // breathing cycle
   // if (state.breathingStage == INHALATION_STAGE) {
-  Serial.println("loop");
+  // Serial.println("loop");
   // controller.inhalationControl();
   // }
   // else if (state.breathingStage == EXHALATION_STAGE) {
