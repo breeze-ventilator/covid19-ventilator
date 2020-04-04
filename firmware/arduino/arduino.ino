@@ -52,7 +52,9 @@ void setup() {
   Serial.begin(9600);
   controller.stopArduinoAlarm();
   // sensors.init();
-  int servosConnectedErrorCode = controller.init(blowerFan);
+  blowerFan.attach(9);
+  blowerFan.write(90);
+  // int servosConnectedErrorCode = controller.init(blowerFan);
   // parameters.currentMode = PRESSURE_CONTROL_MODE;
 	// parameters.currentFiO2 = 70;
 	// parameters.currentInspiratoryTime = 1000;
@@ -90,7 +92,7 @@ void loop() {
   // breathing cycle
   // if (state.breathingStage == INHALATION_STAGE) {
   Serial.println("loop");
-  controller.inhalationControl();
+  // controller.inhalationControl();
   // }
   // else if (state.breathingStage == EXHALATION_STAGE) {
   //   controller.exhalationControl(data, parameters, state);
