@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "controls.h": "c"
+        "controls.h": "c",
+        "ostream": "cpp",
+        "*.tcc": "cpp"
     }
 }

@@ -32,20 +32,20 @@ class Controller {
         Controller();
         int init(Servo blowerFan);
         void stopArduinoAlarm();
-        void ringAlarmForever();
-        void inhalationControl();
-        void exhalationControl(Data data, Parameters parameters, State state);
+        // void ringAlarmForever();
+        // void inhalationControl();
+        // void exhalationControl(Data data, Parameters parameters, State state);
     private:
-        void oxygenControl(Data data, Parameters parameters, State state);
-        void airControl(Parameters parameters);
-        int isTimeToControlOxygen();
-        int isTimeToControlAir();
-        int isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings);
+        // void oxygenControl(Data data, Parameters parameters, State state);
+        // void airControl(Parameters parameters);
+        // int isTimeToControlOxygen();
+        // int isTimeToControlAir();
+        // int isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings);
 
-        OxygenValveStepper oxygenValveStepper;
+        // OxygenValveStepper oxygenValveStepper;
         Alarm alarm;
-        AirIntakeServo airIntakeServo;
-        BlowerPID blowerPID;
+        // AirIntakeServo airIntakeServo;
+        // BlowerPID blowerPID;
         int _lastOxygenControlTime;
         int _lastAirControlTime;
 };
