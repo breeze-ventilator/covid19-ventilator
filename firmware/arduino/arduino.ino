@@ -86,7 +86,7 @@ void loop() {
 
   // breathing cycle
   // if (state.breathingStage == INHALATION_STAGE) {
-  controller.inhalationControl(data, parameters, state);
+  controller.inhalationControl();
   // }
   // else if (state.breathingStage == EXHALATION_STAGE) {
   //   controller.exhalationControl(data, parameters, state);

@@ -1,20 +1,21 @@
-#include "Controller.h"
 #include "Arduino.h"
 
+#include "Controller.h"
+
 Controller::Controller()
-  // : oxygenValveStepper(OXYGEN_VALVE_MOTOR_INTERFACE_TYPE,
-  //                      OXYGEN_VALVE_PIN0,
-  //                      OXYGEN_VALVE_PIN1,
-  //                      OXYGEN_VALVE_PIN2,
-  //                      OXYGEN_VALVE_PIN2,
-  //                      OXYGEN_VALVE_LIMIT_SWITCH_PIN,
-  //                      OXYGEN_VALVE_MAX_STEPPER_SPEED,
-  //                      OXYGEN_VALVE_STEPPER_ACCELERATION,
-  //                      OXYGEN_VALVE_ENABLE1_PIN,
-  //                      OXYGEN_VALVE_ENABLE2_PIN),
-  //   alarm(ALARM_PIN),
-  //   airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
-    : blowerPID()
+  : oxygenValveStepper(OXYGEN_VALVE_MOTOR_INTERFACE_TYPE,
+                       OXYGEN_VALVE_PIN0,
+                       OXYGEN_VALVE_PIN1,
+                       OXYGEN_VALVE_PIN2,
+                       OXYGEN_VALVE_PIN2,
+                       OXYGEN_VALVE_LIMIT_SWITCH_PIN,
+                       OXYGEN_VALVE_MAX_STEPPER_SPEED,
+                       OXYGEN_VALVE_STEPPER_ACCELERATION,
+                       OXYGEN_VALVE_ENABLE1_PIN,
+                       OXYGEN_VALVE_ENABLE2_PIN),
+    alarm(ALARM_PIN),
+    airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
+    blowerPID()
 {
   _lastOxygenControlTime = 0;
   _lastAirControlTime = 0;
@@ -34,7 +35,7 @@ void Controller::ringAlarmForever() {
   alarm.keepAlarmRunningForever();
 }
 
-void Controller::inhalationControl(Data data, Parameters parameters, State state) {
+void Controller::inhalationControl() {
   // modify steps on stepper motor to get desired flow rate (which then gives concentration)
   // if (isTimeToControlOxygen()) {
   //   oxygenControl(data, parameters, state);
@@ -44,7 +45,7 @@ void Controller::inhalationControl(Data data, Parameters parameters, State state
   //  airControl(parameters);
   //  _lastAirControlTime = millis();
   // }
-  float setPressure = 0;//(float) parameters.currentPeakInspiratoryPressure; //TODO: Check units with below
+  float setPressure = 100;//(float) parameters.currentPeakInspiratoryPressure; //TODO: Check units with below
   float actualPressure = 0;// data.getMainPressureAverageForPID();
   blowerPID.control(setPressure, actualPressure);
 }
