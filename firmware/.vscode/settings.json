@@ -4,6 +4,11 @@
         "ostream": "cpp",
         "*.tcc": "cpp",
         "ios": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "array": "cpp",
+        "iterator": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "vector": "cpp"
     }
 }
