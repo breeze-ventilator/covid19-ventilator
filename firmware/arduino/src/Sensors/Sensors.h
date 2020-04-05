@@ -29,7 +29,7 @@ class Sensors {
         // BatteryVoltageSensor batteryVoltageSensor;
         
         void init();
-        void readSensorsIfAvailableAndSaveSensorData(Data data);
+        void readSensorsIfAvailableAndSaveSensorData(Data &data);
 
     private:
         int isTimeToReadFlow();

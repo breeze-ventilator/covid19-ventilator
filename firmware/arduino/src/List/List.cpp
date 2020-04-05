@@ -13,16 +13,15 @@ List::List(int capacity) {
 void List::push(unsigned int value) {
     // pops value if list too big
     _data[_currentIdx] = value;
-    _currentIdx = _currentIdx + 1;
+    _currentIdx++;
     _currentIdx = _currentIdx % _capacity;
     size++;
     size = min(size, _capacity);
-    
+
     Serial.println("current idx");
     Serial.println(_currentIdx);
     Serial.println("size");
     Serial.println(size);
-
 }
 
 float List::getMean() {

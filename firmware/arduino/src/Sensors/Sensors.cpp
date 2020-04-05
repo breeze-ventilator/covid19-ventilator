@@ -28,7 +28,7 @@ void Sensors::init() {
   // flowSensor.init();
 }
 
-void Sensors::readSensorsIfAvailableAndSaveSensorData(Data data) {
+void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
   // take sensor readings
   // if (isTimeToReadFlow()) {
   //   int error = 0;
