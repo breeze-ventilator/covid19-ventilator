@@ -23,10 +23,10 @@ class Sensors {
                  int mainPressureReadingFrequency,
                  int oxygenPressureReadingFrequency,
                  int batteryVoltageReadingFrequency);
-        FlowSensor flowSensor;
+        // FlowSensor flowSensor;
         MainPressureSensor mainPressureSensor;
-        OxygenPressureSensor oxygenPressureSensor;
-        BatteryVoltageSensor batteryVoltageSensor;
+        // OxygenPressureSensor oxygenPressureSensor;
+        // BatteryVoltageSensor batteryVoltageSensor;
         
         void init();
         void readSensorsIfAvailableAndSaveSensorData(Data data);

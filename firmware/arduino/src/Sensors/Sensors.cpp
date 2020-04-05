@@ -8,10 +8,10 @@ Sensors::Sensors(int flowReadingFrequency,
                  int mainPressureReadingFrequency,
                  int oxygenPressureReadingFrequency,
                  int batteryVoltageReadingFrequency)
-    : flowSensor(FLOW_IC2_ADDRESS, FLOW_OFFSET, FLOW_SCALE),
-    mainPressureSensor(),
-    oxygenPressureSensor(OXYGEN_PRESSURE_SENSOR_PIN),
-    batteryVoltageSensor(BATTERY_VOLTAGE_PIN)
+    : // flowSensor(FLOW_IC2_ADDRESS, FLOW_OFFSET, FLOW_SCALE),
+    mainPressureSensor()
+    // oxygenPressureSensor(OXYGEN_PRESSURE_SENSOR_PIN),
+    // batteryVoltageSensor(BATTERY_VOLTAGE_PIN)
   {
   _timeBetweenFlowReadings = 1/flowReadingFrequency * SECONDS_TO_MILLISECONDS;
   _timeBetweenMainPressureReadings = 1/mainPressureReadingFrequency * SECONDS_TO_MILLISECONDS;
@@ -25,7 +25,7 @@ Sensors::Sensors(int flowReadingFrequency,
 }
 
 void Sensors::init() {
-  flowSensor.init();
+  // flowSensor.init();
 }
 
 void Sensors::readSensorsIfAvailableAndSaveSensorData(Data data) {
@@ -45,6 +45,7 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data data) {
   if (isTimeToReadMainPressure()) {
     unsigned int pressureValue = mainPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
     data.saveMainPressureReading(pressureValue);
+    Serial.println(pressureValue);
     _lastMainPressureReadTime = millis();
   }
   // if (isTimeToReadBatteryPercentage()) {

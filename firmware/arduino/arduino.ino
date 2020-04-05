@@ -17,7 +17,7 @@
 
 // #include "src/initialization/initialization.h"
 // #include "src/Data/Data.h"
-// #include "src/Sensors/Sensors.h"
+#include "src/Sensors/Sensors.h"
 // #include "src/State/State.h"
 #include "src/Controller/Controller.h"
 // #include "src/PiCommunication/PiCommunication.h"
@@ -32,11 +32,11 @@
   - derivative: linear fit over n values, where each value is an average of n datapoints (needs last n**2 datapoints)
 */
 
-// Data data;
-// Sensors sensors(FLOW_READING_FREQUENCY,
-//                  MAIN_PRESSURE_READING_FREQUENCY,
-//                  OXYGEN_PRESSURE_READING_FREQUENCY,
-//                  BATTERY_VOLTAGE_READING_FREQUENCY);
+Data data;
+Sensors sensors(FLOW_READING_FREQUENCY,
+                 MAIN_PRESSURE_READING_FREQUENCY,
+                 OXYGEN_PRESSURE_READING_FREQUENCY,
+                 BATTERY_VOLTAGE_READING_FREQUENCY);
 Controller controller;
 // PiCommunication piCommunications(BAUD_RATE, TIME_BETWEEN_PI_SENDING);
 // State state;
@@ -49,8 +49,9 @@ Controller controller;
 void setup() {  
   Serial.begin(9600);
   controller.stopArduinoAlarm();
-  // sensors.init();
+  sensors.init();
   int servosConnectedErrorCode = controller.init();
+
   // parameters.currentMode = PRESSURE_CONTROL_MODE;
 	// parameters.currentFiO2 = 70;
 	// parameters.currentInspiratoryTime = 1000;
@@ -76,7 +77,7 @@ void loop() {
   //   parameters.getNewParameters(receivedString);
   // }
 
-  // sensors.readSensorsIfAvailableAndSaveSensorData(data);
+  sensors.readSensorsIfAvailableAndSaveSensorData(data);
 
   // state.updateState(parameters);
 
