@@ -12,7 +12,7 @@ class List {
     private:
         int _capacity;
         int _currentIdx;
-        int *_data;
+        unsigned int *_data;
 };
 
 #endif

@@ -6,7 +6,7 @@ List::List(int capacity) {
     _capacity = capacity;
     size = 0;
 
-    _data = new int[_capacity](); // initializes to 0
+    _data = new unsigned int[_capacity](); // initializes to 0
     _currentIdx = 0;
 }
 
