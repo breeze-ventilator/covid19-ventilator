@@ -15,6 +15,7 @@ void List::push(unsigned int value) {
     _data[_currentIdx] = value;
     _currentIdx++;
     _currentIdx = _currentIdx % _capacity;
+    Serial.println("current idx");
     Serial.println(_currentIdx);
     
     size++;

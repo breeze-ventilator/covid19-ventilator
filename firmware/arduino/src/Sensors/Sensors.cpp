@@ -43,6 +43,7 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data data) {
   //   _lastOxygenPressureReadTime = millis();
   // }
   if (isTimeToReadMainPressure()) {
+    Serial.println("");
     unsigned int pressureValue = mainPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
     data.saveMainPressureReading(pressureValue);
     Serial.println(pressureValue);
