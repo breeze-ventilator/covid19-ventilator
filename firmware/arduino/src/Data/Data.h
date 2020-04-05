@@ -1,7 +1,7 @@
 #ifndef DATA_H
 #define DATA_H
-// #include <list>
-// using namespace std;
+#include "../List/List.h"
+#include "Arduino.h"
 
 #define PRESSURE_HISTORY_LENGTH_FOR_PID 10 //TODO: change
 class Data {
@@ -15,14 +15,11 @@ class Data {
         void resetPiDataExceptFlow();
         void resetPiFlowData();
 
-        int pressureHistoryLengthForPID;
-
         float lastFlowValue;
         unsigned int peakFlowValueInCurrentBreath; // needed for switching to exhalation
         
         // for PID
         // TODO CHANGE std::list<unsigned int> pressureValues;
-        int pressureValues;
         
         // for Pi
         float flowIntegral;
@@ -31,6 +28,10 @@ class Data {
         unsigned int numFlowErros;
         unsigned int numPressureErrors;
         unsigned int batteryPercentage;
+
+    private:
+        List _pressureValues;
+
 };
 
 #endif

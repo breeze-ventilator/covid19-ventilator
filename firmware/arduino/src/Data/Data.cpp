@@ -1,7 +1,9 @@
 #include "Data.h"
-// #include <list>
-#include "Arduino.h"
-Data::Data() {
+
+Data::Data()
+  : _pressureValues(PRESSURE_HISTORY_LENGTH_FOR_PID)
+{
+
 }
 
 void Data::saveFlowReading(float flowValue, float delta_time) {
@@ -9,24 +11,16 @@ void Data::saveFlowReading(float flowValue, float delta_time) {
 }
 
 void Data::saveMainPressureReading(unsigned int pressureValue) {
-  // TODO change back to list
-  // pressureValues.push_back(pressureValue);
-  // if (pressureValues.size() > PRESSURE_HISTORY_LENGTH_FOR_PID) {
-  //   pressureValues.pop_front();
-  // }
-  pressureValues = pressureValue;
+  // for PID
+  _pressureValues.push(pressureValue);
+
+  // for Pi
   pressureSum += pressureValue;
-  numPressureMeasurements += 1;
+  numPressureMeasurements++;
 }
 
 float Data::getMainPressureAverageForPID() {
-  return (float) pressureValues;
-  // float average = 0;
-  // for (float i=0; i<pressureValues.size(); i++) {
-  //   average += pressureValues;
-  // }
-  // average /= pressureValues.size();
-  // return average;
+  return _pressureValues.getMean();
 }
 
 void Data::saveBatteryPercentage(unsigned int newBatteryPercentage) {
