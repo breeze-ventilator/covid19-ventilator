@@ -46,6 +46,9 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data data) {
     unsigned int pressureValue = mainPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
     data.saveMainPressureReading(pressureValue);
     Serial.println(pressureValue);
+    float mean = getMainPressureAverageForPID();
+    Serial.println("mean");
+    Serial.println(mean);
     _lastMainPressureReadTime = millis();
   }
   // if (isTimeToReadBatteryPercentage()) {
