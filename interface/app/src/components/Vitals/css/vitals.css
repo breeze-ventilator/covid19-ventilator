@@ -1,7 +1,8 @@
-.mainContainer{
-    padding-top:50px;
-}
-
 body {
   background-color: #9AD1D4;
+}
+
+.bottom {
+  position: fixed;
+  bottom: 0px;
 }
