@@ -1,5 +1,6 @@
 import React from 'react';
 import ValueCard from '../Card/Card';
+import FlexValueCard from '../Card/FlexValueCard';
 import Grid from "@material-ui/core/Grid";
 import './css/vitals.css'
 import SmallValueCard from '../Card/SmallerValueCard';
@@ -28,26 +29,49 @@ export default class Vitals extends React.Component {
   render() {
     return (
       <div className="mainContainer">
-        <Grid
-          container
-          direction="row"
-          justify="space-around"
-          alignItems="center"
-        >
+        {/* Header Observables */}
+        <Grid container direction="row">
+          <Grid item xs={6}>
+              <FlexValueCard value={this.state.data.tidalVolume} unit='mL' prominence="h1" name='Tidal Volume'/>
+          </Grid>
+          <Grid item xs={6}>
+              <FlexValueCard value={this.state.data.pressure} prominence="h1" unit='kPa' name='Pressure'/>
+          </Grid>
+        </Grid>
 
-          <ValueCard value={this.state.data.tidalVolume} unit='mL' name='Tidal Volume'/>
-          <ValueCard value={this.state.data.pressure} unit='kPa' name='Pressure'/>
+        {/* TODO: Graphs go here */}
+        
+        {/* Footer modifiables */}
+        <Grid container className="bottom">
+          <Grid container direction="row">
+            <Grid item xs={4}>
+              <FlexValueCard value="ON" unit=" " prominence="h2" name="Pressure Control" />
+            </Grid>
+            <Grid item xs={4}>
+              <FlexValueCard value="80" unit="%" prominence="h2" name="FiO2" />
+            </Grid>
+            <Grid item xs={4}>
+              <FlexValueCard value="12" unit="rpm" prominence="h2" name="Respiratory Rate" />
+            </Grid>
+          </Grid>
+          <Grid container direction="row">
+            <Grid item xs={4}>
+              <FlexValueCard value="5" unit="cm H2O" prominence="h2" name="PEEP" />
+            </Grid>
+            <Grid item xs={4}>
+              <FlexValueCard value="1.0" unit="s" prominence="h2" name="Inspiratory Time" />
+            </Grid>
+            <Grid item xs={4}>
+              <FlexValueCard value="20" unit="cm H2O" prominence="h2" name="Peak Pressure" />
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid
-          container
-          direction="row"
-          justify="space-around"
-          alignItems="center"
-        >
-          <h2 className="currentParametersHeader">
-            Current Parameters
-          </h2>
-        </Grid>
+      </div>
+    )}
+}
+/*
+
+
         <Grid
           container
           direction="row"
@@ -57,7 +81,7 @@ export default class Vitals extends React.Component {
           <Grid item direction="column" spacing={1} justify="space-around" alignItems="center">
 
           <Grid item>
-          {/* CONTROL ONLY */}
+
           {this.props.allParameters.isPressureControlState
             &&
             <SmallValueCard value="ON" unit='' name='Pressure Control'/>
@@ -78,7 +102,6 @@ export default class Vitals extends React.Component {
           </Grid>
 
           <Grid item>
-          {/* SUPPORT ONLY */}
           {!this.props.allParameters.isPressureControlState
             &&
             <SmallValueCard value="ON" unit='' name='Pressure Support'/>
@@ -102,7 +125,6 @@ export default class Vitals extends React.Component {
 
           <Grid item direction="column" spacing={1} justify="space" alignItems="center">
           
-          {/* SHARED */}
             <Grid item>
             <SmallValueCard value={this.props.allParameters.fiO2} unit='%' name='FiO2'/>
             </Grid>
@@ -135,3 +157,4 @@ export default class Vitals extends React.Component {
     );
   }
 }
+*/
