@@ -5,8 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron .",
-    "install": "electron-rebuild"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -24,9 +23,5 @@
     "serialport": "^8.0.7",
     "socket.io": "^2.3.0",
     "utf-8-validate": "^5.0.2"
-  },
-  "devDependencies": {
-    "electron": "^8.2.1",
-    "electron-rebuild": "^1.10.1"
   }
 }
