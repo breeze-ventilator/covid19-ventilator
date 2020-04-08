@@ -17,3 +17,18 @@ top
 */
 const Top = require('./top.js');
 const top = new Top();
+const { app, BrowserWindow } = require('electron');
+
+function createWindow() {
+  const win = new BrowserWindow({
+    width: 480,
+    height: 800,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  })
+  
+  win.loadURL("http://localhost:3000/setup")
+}
+
+app.on("ready", createWindow)
