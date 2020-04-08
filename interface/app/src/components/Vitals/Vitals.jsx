@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import './css/vitals.css'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import StatusBar from '../StatusBar/StatusBar';
 
 export default class Vitals extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ export default class Vitals extends React.Component {
   render() {
     let footer;
     if (this.props.allParameters.isPressureControlState) {
-      footer = ( 
+      footer = (
       <Grid container className="bottom">
           <Grid container direction="row">
             <Grid item xs={4}>

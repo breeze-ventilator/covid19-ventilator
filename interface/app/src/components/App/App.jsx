@@ -12,7 +12,7 @@ import Settings from '../Settings/Settings';
 import Alarms from '../Alarms/Alarms';
 import Setup from '../Setup/Setup';
 import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNavigation';
-
+import StatusBar from '../StatusBar/StatusBar';
 
 export default class App extends React.Component {
   constructor(props) {
