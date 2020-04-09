@@ -39,13 +39,6 @@ export default class SimpleBottomNavigation extends React.Component{
         className={this.state.classes.root}
       >
         <BottomNavigationAction
-          label="Settings"
-          icon={<TuneIcon />}
-          component = { Link }
-          to="/settings"
-          />
-
-        <BottomNavigationAction
           label="Monitoring"
           icon={<FavoriteIcon />}
           component = { Link  }

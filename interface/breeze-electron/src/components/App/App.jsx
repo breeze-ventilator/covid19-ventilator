@@ -7,11 +7,8 @@ import './css/App.css';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 import Vitals from '../Vitals/Vitals';
-import Settings from '../Settings/Settings';
 import Alarms from '../Alarms/Alarms';
-import Setup from '../Setup/Setup';
 import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNavigation';
-
 
 export default class App extends React.Component {
   constructor(props) {
@@ -74,18 +71,13 @@ export default class App extends React.Component {
     this.state.setup = false;
     this.setState(this.state);
   }
+
   render() {
     return (
       <div>
       <Router>
-        <SimpleBottomNavigation setup={this.state.setup} />
+        <SimpleBottomNavigation setup={false} />
         <Switch>
-        <Route exact path="/">
-          <Setup allParameters={this.state.parameters} setParameters={this.setParameters} doneSetup={this.doneSetup}/>
-        </Route>
-        <Route path="/settings">
-          <Settings allParameters={this.state.parameters} setParameters={this.setParameters}/>
-        </Route>
         <Route path="/diagnostics">
           <Vitals allData={this.state.data} allParameters={this.state.parameters}/>
         </Route>
@@ -93,7 +85,8 @@ export default class App extends React.Component {
           <Alarms allData={this.state.data} />
         </Route>
         </Switch>
-        <Redirect from="" to="/" />
+        <Redirect from="" to="/diagnostics" />
+        <Redirect from="/" to="/diagnostics" />
       </Router>
         <div class="battery">
           <div class="battery-level" style={{height : "75%"}}></div>
