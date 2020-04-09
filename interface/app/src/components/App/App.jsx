@@ -27,12 +27,12 @@ export default class App extends React.Component {
       parameters: {
         isPressureControlState: true,
         fiO2: 80, // Control + Support
-        peep: 20, // Control + Support
+        peep: 5, // Control + Support
         peakPressure: 20, // Control + Support
-        sensitivity: 80, // Support
+        sensitivity: 0.5, // Support
         apneaTime: 20, // Support
-        inspiratoryTime: 0, // Control
-        respiratoryRate: 0 // Control
+        inspiratoryTime: 1.0, // Control
+        respiratoryRate: 12 // Control
       },
       setup: true
     }
