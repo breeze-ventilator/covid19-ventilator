@@ -33,7 +33,7 @@ class Controller {
         int init();
         void stopArduinoAlarm();
         // void ringAlarmForever();
-        // void inhalationControl();
+        void inhalationControl(Data &data);
         // void exhalationControl(Data data, Parameters parameters, State state);
     private:
         // void oxygenControl(Data data, Parameters parameters, State state);

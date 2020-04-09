@@ -12,18 +12,18 @@
 //FlowSensor::FlowSensor(uint8_t i2cAddress)
 FlowSensor::FlowSensor(int i2cAddress, int offset, float scale)
 {
-  //: mI2cAddress(i2cAddress)
-  mI2cAddress = i2cAddress;
-	moffset = offset;
-	mscale = scale;
+  //: _i2cAddress(i2cAddress)
+  _i2cAddress = i2cAddress;
+	_offset = offset;
+	_scale = scale;
 }
 
 void FlowSensor::init()
 {
   Wire.begin();
   delay(1000);
-  Wire.beginTransmission(byte(mI2cAddress)); // transmit to device with I2C mI2cAddress
-  Wire.beginTransmission(byte(mI2cAddress)); // transmit to device with I2C mI2cAddress
+  Wire.beginTransmission(byte(_i2cAddress)); // transmit to device with I2C _i2cAddress
+  Wire.beginTransmission(byte(_i2cAddress)); // transmit to device with I2C _i2cAddress
   Wire.write(byte(0x10));
   Wire.write(byte(0x00));
   Wire.endTransmission();
@@ -34,42 +34,46 @@ void FlowSensor::init()
  
 float FlowSensor::read(int *errorType)
 {
-  uint16_t a;
-  uint8_t b;
+  uint16_t reading = 0;
   uint8_t crc;
-  
-  float Flow;
+  float flow;
   *errorType = NO_ERROR;
-	Wire.requestFrom(mI2cAddress, 3); // read 3 bytes from device with address 0x40
-	if (3 <= Wire.available()) { // if 3 bytes were received
-		a = Wire.read(); // first received byte stored here. The variable "uint16_t" can hold 2 bytes, this will be relevant later
-		b = Wire.read(); // second received byte stored here
-		crc = Wire.read(); // crc value stored here
-	}
+
+	Wire.requestFrom(_i2cAddress, 3); // read 3 bytes
+	
+  if (3 <= Wire.available()) { // if 3 bytes were received
+    reading = Wire.read();  // receive high byte
+    reading = reading << 8;    // shift high byte to be high 8 bits
+    reading |= Wire.read(); // receive low byte as lower 8 bits
+    crc = Wire.read(); // cyclic redundancy check
+  }
+  
 	else {
 		*errorType = SENSOR_DEAD_OR_NEEDS_RESET_ERROR; // should restart
-		Flow = 0;
-		return Flow;
+		flow = -1;
+		return flow;
 	}
   
-	
-	uint8_t mycrc = 0xFF; // initialize crc variable
-  mycrc = crc8(a, mycrc); // let first byte through CRC calculation
-  mycrc = crc8(b, mycrc); // and the second byte too
+	// uint8_t mycrc = 0xFF; // initialize crc variable
+  // mycrc = crc8(a, mycrc); // let first byte through CRC calculation
+  // mycrc = crc8(b, mycrc); // and the second byte too
+
+  // Serial.println("crc");
+  // Serial.println(crc);
+  // Serial.println("mycrc");
+  // Serial.println(mycrc);
+  // Serial.println(' ');
 	
 	// Error check
-	if (mycrc != crc) { // check if the calculated and the received CRC byte matches
+	// if (mycrc != crc) { // check if the calculated and the received CRC byte matches
 
-		*errorType = NOISY_READING_ERROR; // noisy reading
-	  Flow = 0;
-		return Flow;
-  }
-  a = (a << 8) | b; // combine the two received bytes to a 16bit integer value
-  // a >>= 2; // remove the two least significant bits
-  //float Flow = (float)a;
-  unsigned int result = a;
-  Flow = ((float)result - moffset) / mscale; // numbers given upon initilization
-  return Flow;
+	// 	*errorType = NOISY_READING_ERROR; // noisy reading
+	//   flow = -2;
+	// 	return flow;
+  // }
+  flow = (float) reading;
+  flow = (flow - _offset) / _scale; // numbers given upon initilization
+  return flow;
 }
 
 // cyclic redundancy check

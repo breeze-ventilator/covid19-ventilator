@@ -13,7 +13,6 @@ void BlowerFanServo::begin() {
   delay(3000);
   _blowerFan.write(15);
   delay(3000);
-  _blowerFan.write(90);
 }
 
 void BlowerFanServo::turnOff() {
@@ -21,7 +20,7 @@ void BlowerFanServo::turnOff() {
 }
 
 void BlowerFanServo::writeBlowerPower(double blowerPower) {
-  if (blowerPower < 90) {
+  if (blowerPower <= 90) {
     _blowerFan.write(blowerPower);
   }
 }

@@ -8,7 +8,7 @@ Sensors::Sensors(int flowReadingFrequency,
                  int mainPressureReadingFrequency,
                  int oxygenPressureReadingFrequency,
                  int batteryVoltageReadingFrequency)
-    : // flowSensor(FLOW_IC2_ADDRESS, FLOW_OFFSET, FLOW_SCALE),
+    : flowSensor(FLOW_IC2_ADDRESS, FLOW_OFFSET, FLOW_SCALE),
     mainPressureSensor()
     // oxygenPressureSensor(OXYGEN_PRESSURE_SENSOR_PIN),
     // batteryVoltageSensor(BATTERY_VOLTAGE_PIN)
@@ -17,26 +17,29 @@ Sensors::Sensors(int flowReadingFrequency,
   _timeBetweenMainPressureReadings = 1.0/mainPressureReadingFrequency * SECONDS_TO_MILLISECONDS;
   _timeBetweenOxygenPressureReadings = 1.0/oxygenPressureReadingFrequency * SECONDS_TO_MILLISECONDS;
   _timeBetweenBatteryPercentageReadings = 1.0/batteryVoltageReadingFrequency * SECONDS_TO_MILLISECONDS;
+  _timeBetweenPrints = 100;
 
   _lastFlowReadTime = 0;
   _lastMainPressureReadTime = 0;
   _lastOxygenPressureReadTime = 0;
   _lastBatteryPercentageReadTime = 0;
+  _lastPrintTime = 0;
 }
 
 void Sensors::init() {
-  // flowSensor.init();
+  flowSensor.init();
 }
 
 void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
   // take sensor readings
-  // if (isTimeToReadFlow()) {
-  //   int error = 0;
-  //   float flowValue = flowSensor.read(&error); // we're not doing anything with this error yet
-  //   float delta_time = (millis() - _lastFlowReadTime)/MINUTES_TO_MILLISECONDS;
-  //   data.saveFlowReading(flowValue, delta_time);
-  //   _lastFlowReadTime = millis();
-  // }
+  if (isTimeToReadFlow()) {
+    int error = 0;
+    float flowValue = flowSensor.read(&error); // we're not doing anything with this error yet
+    Serial.println(flowValue);
+    // float delta_time = (millis() - _lastFlowReadTime) / MINUTES_TO_MILLISECONDS;
+    // data.saveFlowReading(flowValue, delta_time);
+    _lastFlowReadTime = millis();
+  }
   // if (isTimeToReadOxygenPressure()) {
   //   unsigned int pressureValue = oxygenPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
   //   data.saveOxygenPressureReading(pressureValue);
@@ -44,10 +47,14 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
   // }
   if (isTimeToReadMainPressure()) {
     unsigned int pressureValue = mainPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
-    data.saveMainPressureReading(pressureValue);
-    Serial.println(pressureValue);
-    float mean = data.getMainPressureAverageForPID();
-    _lastMainPressureReadTime = millis();
+    if (pressureValue < 1000) {
+      data.saveMainPressureReading(pressureValue);
+      // if (isTimeToRead(_lastPrintTime, _timeBetweenPrints)) {
+      //   Serial.println(data.getMainPressureAverageForPID());
+      //   _lastPrintTime = millis();
+      // }
+      _lastMainPressureReadTime = millis();
+    }
   }
   // if (isTimeToReadBatteryPercentage()) {
   //   unsigned int batteryPercentage = batteryVoltageSensor.readPercentage();

@@ -2,7 +2,7 @@
 
 BlowerPID::BlowerPID()
 	: _blowerFanServo(BLOWER_FAN_SERVO_PIN),
-	  _blowerControl(&_actualPressure, &_blowerPower, &_pressureSetPoint, BLOWER_KP , 0, BLOWER_KD, DIRECT) // PID
+	  _blowerControl(&_actualPressure, &_blowerPower, &_pressureSetPoint, BLOWER_KP , BLOWER_KI, BLOWER_KD, DIRECT) // PID
 {
 }
 

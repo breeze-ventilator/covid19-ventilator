@@ -44,9 +44,9 @@ class FlowSensor {
     float read(int *errorType);
     
   private:
-	  int mI2cAddress;
-    int moffset;
-    int mscale;
+	  int _i2cAddress;
+    int _offset;
+    int _scale;
 	  uint8_t crc8(const uint8_t data, uint8_t crc);
 };
  

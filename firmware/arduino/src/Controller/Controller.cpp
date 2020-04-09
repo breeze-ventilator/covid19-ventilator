@@ -22,7 +22,7 @@ Controller::Controller()
 }
 
 int Controller::init() {
-  Serial.println("Controller init");
+  // Serial.println("Controller init");
   blowerPID.begin();
   // oxygenValveStepper.begin();
   // int error = oxygenValveStepper.moveOxygenStepperToZeroPosition(10000);
@@ -38,21 +38,20 @@ void Controller::stopArduinoAlarm() {
 //   alarm.keepAlarmRunningForever();
 // }
 
-// void Controller::inhalationControl() {
-//   // modify steps on stepper motor to get desired flow rate (which then gives concentration)
-//   // if (isTimeToControlOxygen()) {
-//   //   oxygenControl(data, parameters, state);
-//   //   _lastOxygenControlTime = millis();
-//   // }
-//   // if (isTimeToControlAir()) {
-//   //  airControl(parameters);
-//   //  _lastAirControlTime = millis();
-//   // }
-//   Serial.println("inhalation control");
-//   float setPressure = 100;//(float) parameters.currentPeakInspiratoryPressure; //TODO: Check units with below
-//   float actualPressure = 0;// data.getMainPressureAverageForPID();
-//   // blowerPID.control(setPressure, actualPressure);
-// }
+void Controller::inhalationControl(Data &data) {
+  // modify steps on stepper motor to get desired flow rate (which then gives concentration)
+  // if (isTimeToControlOxygen()) {
+  //   oxygenControl(data, parameters, state);
+  //   _lastOxygenControlTime = millis();
+  // }
+  // if (isTimeToControlAir()) {
+  //  airControl(parameters);
+  //  _lastAirControlTime = millis();
+  // }
+  float setPressure = 40;//(float) parameters.currentPeakInspiratoryPressure; //TODO: Check units with below
+  float actualPressure = data.getMainPressureAverageForPID();
+  blowerPID.control(setPressure, actualPressure);
+}
 
 // void Controller::exhalationControl(Data data, Parameters parameters, State state) {
 //   // if (isTimeToControlOxygen()) {

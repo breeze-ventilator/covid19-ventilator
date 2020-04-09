@@ -1,9 +1,9 @@
 #ifndef BLOWERPID_H
 #define BLOWERPID_H
 
-#define BLOWER_KI 0.0
-#define BLOWER_KP 10
-#define BLOWER_KD 1
+#define BLOWER_KI 0
+#define BLOWER_KP 4
+#define BLOWER_KD 0.25
 #define PID_TIME 100
 #define BLOWER_FAN_SERVO_PIN 9
 #define PID_TIME 100

@@ -3,7 +3,7 @@
 #include "../List/List.h"
 #include "Arduino.h"
 
-#define PRESSURE_HISTORY_LENGTH_FOR_PID 10 //TODO: change
+#define PRESSURE_HISTORY_LENGTH_FOR_PID 50 //TODO: change
 class Data {
     public:
         Data();

@@ -3,7 +3,7 @@
  *
  * It will get signals from the pi and send signals back to make sure everything is ok at a certain frequency
  * To make sure everything is legit at the begining of the loop we generate an aray  of 0s
- * every critical function will set one of the 0 to a 1 and at the end of the loop we will send it to the pi to show its funcitoning as intended
+ * every cr1itical function will set one of the 0 to a 1 and at the end of the loop we will send it to the pi to show its funcitoning as intended
  *
  * Similarly the pi will send info over and we will read that to see that everything is good
  *
@@ -89,7 +89,7 @@ void loop() {
   // breathing cycle
   // if (state.breathingStage == INHALATION_STAGE) {
   // Serial.println("loop");
-  // controller.inhalationControl();
+  controller.inhalationControl(data);
   // }
   // else if (state.breathingStage == EXHALATION_STAGE) {
   //   controller.exhalationControl(data, parameters, state);
