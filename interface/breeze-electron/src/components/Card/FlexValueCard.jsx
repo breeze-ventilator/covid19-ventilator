@@ -24,6 +24,12 @@ class FlexValueCard extends React.Component {
             value: 0,
             viewForm: false
         }
+
+      this.openModal = this.openModal.bind(this);
+    }
+
+    openModal() {
+        this.props.onClickHandler(this.props.name, this.props.value, this.props.unit)
     }
 
     componentDidUpdate(prevProps) {
@@ -35,7 +41,7 @@ class FlexValueCard extends React.Component {
         const { classes } = this.props;
         return(
             <Card className = {classes.root}>
-                <CardActionArea>            
+                <CardActionArea onClick={this.openModal}>            
                     <Typography variant="subtitle1">
                         {this.props.name}
                     </Typography>

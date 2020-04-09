@@ -3,7 +3,7 @@ const io = require('socket.io');
 module.exports = class ClientMessager {
 	constructor(top) {
 		this.top = top;
-		this.io = io(this.top.httpServer);
+		this.io = io(this.top.httpServer, { serveClient: false });
 	}
  
 	setupIO(port) {

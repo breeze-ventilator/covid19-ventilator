@@ -5,6 +5,9 @@ module.exports = {
    */
   entry: './src/main.js',
   // Put your normal webpack config below here
+  externals : {
+    uws: "uws"
+  },
   module: {
     rules: require('./webpack.rules'),
   },
