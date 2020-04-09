@@ -13,10 +13,10 @@ Sensors::Sensors(int flowReadingFrequency,
     // oxygenPressureSensor(OXYGEN_PRESSURE_SENSOR_PIN),
     // batteryVoltageSensor(BATTERY_VOLTAGE_PIN)
   {
-  _timeBetweenFlowReadings = 1/flowReadingFrequency * SECONDS_TO_MILLISECONDS;
-  _timeBetweenMainPressureReadings = 1/mainPressureReadingFrequency * SECONDS_TO_MILLISECONDS;
-  _timeBetweenOxygenPressureReadings = 1/oxygenPressureReadingFrequency * SECONDS_TO_MILLISECONDS;
-  _timeBetweenBatteryPercentageReadings = 1/batteryVoltageReadingFrequency * SECONDS_TO_MILLISECONDS;
+  _timeBetweenFlowReadings = 1.0/flowReadingFrequency * SECONDS_TO_MILLISECONDS;
+  _timeBetweenMainPressureReadings = 1.0/mainPressureReadingFrequency * SECONDS_TO_MILLISECONDS;
+  _timeBetweenOxygenPressureReadings = 1.0/oxygenPressureReadingFrequency * SECONDS_TO_MILLISECONDS;
+  _timeBetweenBatteryPercentageReadings = 1.0/batteryVoltageReadingFrequency * SECONDS_TO_MILLISECONDS;
 
   _lastFlowReadTime = 0;
   _lastMainPressureReadTime = 0;
@@ -43,13 +43,10 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
   //   _lastOxygenPressureReadTime = millis();
   // }
   if (isTimeToReadMainPressure()) {
-    Serial.println("");
     unsigned int pressureValue = mainPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
     data.saveMainPressureReading(pressureValue);
     Serial.println(pressureValue);
     float mean = data.getMainPressureAverageForPID();
-    Serial.println("mean");
-    Serial.println(mean);
     _lastMainPressureReadTime = millis();
   }
   // if (isTimeToReadBatteryPercentage()) {
@@ -72,7 +69,7 @@ int Sensors::isTimeToReadBatteryPercentage() {
   return isTimeToRead(_lastBatteryPercentageReadTime, _timeBetweenBatteryPercentageReadings);
 }
 
-int Sensors::isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings) {
+int Sensors::isTimeToRead(unsigned long lastReadTime, unsigned int timeBetweenReadings) {
   unsigned long currentTime = millis();
   unsigned long timeDifference = currentTime - lastReadTime;
   if (timeDifference >= timeBetweenReadings) {

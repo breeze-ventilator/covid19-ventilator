@@ -17,11 +17,6 @@ void List::push(unsigned int value) {
     _currentIdx = _currentIdx % _capacity;
     size++;
     size = min(size, _capacity);
-
-    Serial.println("current idx");
-    Serial.println(_currentIdx);
-    Serial.println("size");
-    Serial.println(size);
 }
 
 float List::getMean() {

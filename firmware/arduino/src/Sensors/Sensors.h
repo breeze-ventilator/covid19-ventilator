@@ -36,16 +36,16 @@ class Sensors {
         int isTimeToReadMainPressure();
         int isTimeToReadOxygenPressure();
         int isTimeToReadBatteryPercentage();
-        int isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings);
+        int isTimeToRead(unsigned long lastReadTime, unsigned int timeBetweenReadings);
         
-        int _timeBetweenFlowReadings;
-        int _timeBetweenMainPressureReadings;
-        int _timeBetweenOxygenPressureReadings;
-        int _timeBetweenBatteryPercentageReadings;
-        int _lastFlowReadTime;
-        int _lastMainPressureReadTime;
-        int _lastOxygenPressureReadTime;
-        int _lastBatteryPercentageReadTime;
+        unsigned int _timeBetweenFlowReadings;
+        unsigned int _timeBetweenMainPressureReadings;
+        unsigned int _timeBetweenOxygenPressureReadings;
+        unsigned int _timeBetweenBatteryPercentageReadings;
+        unsigned long _lastFlowReadTime;
+        unsigned long _lastMainPressureReadTime;
+        unsigned long _lastOxygenPressureReadTime;
+        unsigned long _lastBatteryPercentageReadTime;
 
 };
 
