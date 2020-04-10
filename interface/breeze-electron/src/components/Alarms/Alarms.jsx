@@ -1,5 +1,4 @@
 import React from 'react';
-
 import ParameterInput from '../ParameterInput/ParameterInput'
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
@@ -40,54 +39,73 @@ export default class Vitals extends React.Component {
           NotificationManager.warning('Warning message', 'Close after 3000ms', 3000);
           break;
         case 'error':
-          // NotificationManager.error(`Tidal volume is ${this.state.data.tidalVolume}`, 'Error!', 5000, () => {
-          //   alert('callback');
-          // });
-          NotificationManager.error('Currently 9L/min', 'Minute ventilation too high', 5000, () => {
-            // alert('MINUTE VENTIALTION IS TOO HIGH!');
-          });
+          NotificationManager.error('Error message', 'Close after 3000ms', 3000);
           break;
         default:
           break;
       }
     };
   };
-  /*TODO: Add an alarm history! */
 
   render() {
     return (
       <div>
-<Box component="span" m={1}>
-      <Container>
-          <Grid container alignItems="stretch"justify="space-between" spacing={3} direction="column">
-              <Grid item xl={6} md={6} sm={12} xs={12}>
-                <Grid container justify="space-evenly" spacing={3} direction="row">
+        <Box component="span" m={1}>
+          <Container>
+            <Grid 
+              container
+              alignItems="stretch"
+              justify="space-between"
+              spacing={3}
+              direction="column"
+            >
+              <ParameterInput
+                parameterName="Low Minute Ventilation Alarm"
+                startingValue={5}
+                step={2}
+                min={0}
+                max={100}
+                unit={"%"}
+              />
+              <ParameterInput
+                parameterName="High Minute Ventilation Alarm"
+                startingValue={10}
+                step={2}
+                min={0}
+                max={100}
+                unit={"%"}
+              />
+              <ParameterInput
+                parameterName="Low Pressure Alarm"
+                startingValue={4}
+                step={2}
+                min={0}
+                max={100}
+                unit={"%"}
+              />
+              <ParameterInput
+                parameterName="High Pressure Alarm"
+                startingValue={40}
+                step={2} 
+                min={0} 
+                max={100} 
+                unit={"%"}
+              />
+
+                <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
+                  <Button 
+                    className="setParametersButton"
+                    variant="contained"
+                    align="center"
+                    color="primary">
+                      Save Changes
+                  </Button>
                 </Grid>
               </Grid>
-              <ParameterInput parameterName="Patient Body Weight" startingValue={80} step={2} min={0} max={100} unit={"pounds"}/>
-              {/*TODO: Make the lower parameters appear only once the weight has been entered, and change startingValue accordingly. */}
-              <br></br><br></br>
-              <ParameterInput parameterName="Low Minute Ventilation Alarm" startingValue={5} step={2} min={0} max={100} unit={"%"}/>
-              <ParameterInput parameterName="High Minute Ventilation Alarm" startingValue={10} step={2} min={0} max={100} unit={"%"}/>
-              <br></br><br></br>
-              <ParameterInput parameterName="Low Pressure Alarm" startingValue={4} step={2} min={0} max={100} unit={"%"}/>
-              <ParameterInput parameterName="High Pressure Alarm" startingValue={40} step={2} min={0} max={100} unit={"%"}/>
-
-              <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
-                <Button className="setParametersButton" onClick={this.createNotification('error')} variant="contained" align="center" color="primary">
-                  Save Changes
-                </Button>
-                {/* // <Button className="btn btn-info" onClick={this.createNotification('error')}>
-                //   Warning
-                // </Button> */}
-              </Grid>
-        </Grid>
-        <NotificationContainer />
-      </Container>
-    </Box>
+            <NotificationContainer />
+          </Container>
+        </Box>
       </div>
-
-
     );
   }
 }

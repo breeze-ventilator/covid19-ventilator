@@ -8,6 +8,7 @@ import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
 import Vitals from '../Vitals/Vitals';
 import Alarms from '../Alarms/Alarms';
+import AlarmsHandler from '../Alarms/AlarmsHandler';
 import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNavigation';
 
 export default class App extends React.Component {
@@ -77,6 +78,7 @@ export default class App extends React.Component {
       <div>
       <Router>
         <SimpleBottomNavigation setup={false} />
+        <AlarmsHandler allData={this.state.data} allParameters={this.state.parameters} />
         <Switch>
         <Route path="/diagnostics">
           <Vitals allData={this.state.data} allParameters={this.state.parameters}/>
