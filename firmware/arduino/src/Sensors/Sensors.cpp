@@ -9,9 +9,9 @@ Sensors::Sensors(int flowReadingFrequency,
                  int oxygenPressureReadingFrequency,
                  int batteryVoltageReadingFrequency)
     : flowSensor(FLOW_IC2_ADDRESS, FLOW_OFFSET, FLOW_SCALE),
-    mainPressureSensor()
+    mainPressureSensor(),
     // oxygenPressureSensor(OXYGEN_PRESSURE_SENSOR_PIN),
-    // batteryVoltageSensor(BATTERY_VOLTAGE_PIN)
+    batteryVoltageSensor(BATTERY_VOLTAGE_PIN)
   {
   _timeBetweenFlowReadings = 1.0/flowReadingFrequency * SECONDS_TO_MILLISECONDS;
   _timeBetweenMainPressureReadings = 1.0/mainPressureReadingFrequency * SECONDS_TO_MILLISECONDS;
@@ -35,9 +35,13 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
   if (isTimeToReadFlow()) {
     int error = 0;
     float flowValue = flowSensor.read(&error); // we're not doing anything with this error yet
-    Serial.println(flowValue);
-    // float delta_time = (millis() - _lastFlowReadTime) / MINUTES_TO_MILLISECONDS;
-    // data.saveFlowReading(flowValue, delta_time);
+    if (flowValue > 250) { // max range
+      flowValue = 0;
+    }
+    float delta_time = (float)(millis() - _lastFlowReadTime);
+    delta_time /= MINUTES_TO_MILLISECONDS;
+    
+    data.saveFlowReading(flowValue, delta_time);
     _lastFlowReadTime = millis();
   }
   // if (isTimeToReadOxygenPressure()) {
@@ -56,11 +60,12 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
       _lastMainPressureReadTime = millis();
     }
   }
-  // if (isTimeToReadBatteryPercentage()) {
-  //   unsigned int batteryPercentage = batteryVoltageSensor.readPercentage();
-  //   data.saveBatteryPercentage(batteryPercentage);
-  //   _lastBatteryPercentageReadTime = millis();
-  // }
+  if (isTimeToReadBatteryPercentage()) {
+    unsigned int batteryPercentage = batteryVoltageSensor.readPercentage();
+    data.saveBatteryPercentage(batteryPercentage);
+    // Serial.println(batteryPercentage);
+    _lastBatteryPercentageReadTime = millis();
+  }
 }
 
 int Sensors::isTimeToReadFlow() {

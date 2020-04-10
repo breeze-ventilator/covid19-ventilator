@@ -12,7 +12,6 @@
 //FlowSensor::FlowSensor(uint8_t i2cAddress)
 FlowSensor::FlowSensor(int i2cAddress, int offset, float scale)
 {
-  //: _i2cAddress(i2cAddress)
   _i2cAddress = i2cAddress;
 	_offset = offset;
 	_scale = scale;
@@ -23,56 +22,53 @@ void FlowSensor::init()
   Wire.begin();
   delay(1000);
   Wire.beginTransmission(byte(_i2cAddress)); // transmit to device with I2C _i2cAddress
-  Wire.beginTransmission(byte(_i2cAddress)); // transmit to device with I2C _i2cAddress
   Wire.write(byte(0x10));
   Wire.write(byte(0x00));
   Wire.endTransmission();
   
-  delay(5);
+  delay(50);
   
 }
  
 float FlowSensor::read(int *errorType)
-{
+{ 
   uint16_t reading = 0;
   uint8_t crc;
   float flow;
   *errorType = NO_ERROR;
 
+  // Wire.beginTransmission(byte(_i2cAddress)); // transmit to device with I2C _i2cAddress
+  // Wire.write(byte(0x10));
+  // Wire.write(byte(0x00));
+  // Wire.endTransmission();
+  // delay(2);
+
 	Wire.requestFrom(_i2cAddress, 3); // read 3 bytes
 	
   if (3 <= Wire.available()) { // if 3 bytes were received
-    reading = Wire.read();  // receive high byte
-    reading = reading << 8;    // shift high byte to be high 8 bits
+    reading = Wire.read(); // receive high byte and shift to be high 8 bits
+    reading = reading << 8;  
     reading |= Wire.read(); // receive low byte as lower 8 bits
     crc = Wire.read(); // cyclic redundancy check
-  }
-  
+  }  
 	else {
 		*errorType = SENSOR_DEAD_OR_NEEDS_RESET_ERROR; // should restart
 		flow = -1;
 		return flow;
 	}
   
-	// uint8_t mycrc = 0xFF; // initialize crc variable
-  // mycrc = crc8(a, mycrc); // let first byte through CRC calculation
-  // mycrc = crc8(b, mycrc); // and the second byte too
+	// // uint8_t mycrc = 0xFF; // initialize crc variable
+  // // mycrc = crc8(a, mycrc); // let first byte through CRC calculation
+  // // mycrc = crc8(b, mycrc); // and the second byte too
 
-  // Serial.println("crc");
-  // Serial.println(crc);
-  // Serial.println("mycrc");
-  // Serial.println(mycrc);
-  // Serial.println(' ');
-	
-	// Error check
-	// if (mycrc != crc) { // check if the calculated and the received CRC byte matches
+	// // Error check
+	// // if (mycrc != crc) { // check if the calculated and the received CRC byte matches
 
-	// 	*errorType = NOISY_READING_ERROR; // noisy reading
-	//   flow = -2;
-	// 	return flow;
-  // }
-  flow = (float) reading;
-  flow = (flow - _offset) / _scale; // numbers given upon initilization
+	// // 	*errorType = NOISY_READING_ERROR; // noisy reading
+	// //   flow = -2;
+	// // 	return flow;
+  // // }
+  flow = (float)(reading - _offset) / _scale; // numbers given upon initilization
   return flow;
 }
 

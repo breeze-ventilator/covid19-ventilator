@@ -48,6 +48,7 @@ Controller controller;
 */
 void setup() {  
   Serial.begin(9600);
+  delay(500); // let serial settle
   controller.stopArduinoAlarm();
   sensors.init();
   int servosConnectedErrorCode = controller.init();

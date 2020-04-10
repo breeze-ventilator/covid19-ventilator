@@ -5,8 +5,8 @@
 #define MINUTES_TO_MILLISECONDS 60000
 
 #define FLOW_IC2_ADDRESS 64//TODO: SIMON
-#define FLOW_OFFSET 32768
-#define FLOW_SCALE 120
+#define FLOW_OFFSET 32768// 32000//32768
+#define FLOW_SCALE 120 // for air, 142.8 for O2
 #define OXYGEN_PRESSURE_SENSOR_PIN 7
 #define BATTERY_VOLTAGE_PIN 8
 
@@ -26,7 +26,7 @@ class Sensors {
         FlowSensor flowSensor;
         MainPressureSensor mainPressureSensor;
         // OxygenPressureSensor oxygenPressureSensor;
-        // BatteryVoltageSensor batteryVoltageSensor;
+        BatteryVoltageSensor batteryVoltageSensor;
         
         void init();
         void readSensorsIfAvailableAndSaveSensorData(Data &data);

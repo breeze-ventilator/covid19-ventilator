@@ -1,13 +1,6 @@
 #ifndef INIT_H
 #define INIT_H
 
-// TODO: Simon are these valid?
-
-//=========== Global PARAMS  ===============//
-// Define reading rates (ms)
-#define FLOW_READ_RATE 100
-#define PRESSURE_READ_RATE 2  // 500 Hz freq => 2 ms period
-
 // Defines size of global storage arrays
 #define NUM_OF_PRESSURE_MEASUREMENTS 10 
 #define NUM_OF_FLOW_MEASUREMENTS 10 
@@ -51,10 +44,10 @@
 
 #define TIMEOUT_ERROR -1
 
-#define FLOW_READING_FREQUENCY 500 // 500 Hz
+#define FLOW_READING_FREQUENCY 50 // 500 Hz
 #define MAIN_PRESSURE_READING_FREQUENCY 500// 500 TODO: change
 #define OXYGEN_PRESSURE_READING_FREQUENCY 100
-#define BATTERY_VOLTAGE_READING_FREQUENCY 1
+#define BATTERY_VOLTAGE_READING_FREQUENCY 5
 
 // Pi Comms
 #define BAUD_RATE 9600

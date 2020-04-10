@@ -3,7 +3,7 @@
 Data::Data()
   : _pressureValues(PRESSURE_HISTORY_LENGTH_FOR_PID)
 {
-
+  flowIntegral = 0;
 }
 
 void Data::saveFlowReading(float flowValue, float delta_time) {

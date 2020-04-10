@@ -5,8 +5,10 @@ BatteryVoltageSensor::BatteryVoltageSensor(int pin) {
 }
 
 int BatteryVoltageSensor::read() {
-  int mV = map(analogRead(_pin), 0, 1023, 0, 5000);
-  int batteryVoltage = floor((float)mV / 0.286); //voltage divider network
+  Serial.println(analogRead(_pin));
+  float mV = (float) map(analogRead(_pin), 0, 1023, 0, 5000);
+  int batteryVoltage = floor(mV / 0.286); //voltage divider network
+  // Serial.println(batteryVoltage);
   return batteryVoltage;
 }
 
