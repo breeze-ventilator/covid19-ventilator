@@ -6,14 +6,15 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import SimpleModal from '../Modal/SimpleModal';
 import ParameterInput from '../ParameterInput/ParameterInput';
+import LineChart from '../LineChart/LineChart';
 
 export default class Vitals extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: {
-        tidalVolume: 5,
-        pressure: 5,
+        tidalVolume: this.props.allData.tidalVolume,
+        pressure: this.props.allData.pressure,
       },
       parameters: {
         isPressureControlState: this.props.allParameters.isPressureControlState,
@@ -201,8 +202,11 @@ export default class Vitals extends React.Component {
           </Grid>
         </Grid>
 
-        {/* TODO: Graphs go here */} 
-        {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
+        {/* TODO: Graphs go here */}
+        <LineChart chartTitle="Tidal Volume" titleClass="tidalVolumeGraphTitle" lineClass="tidalVolumeLine" timeSeriesData={this.props.timeSeriesData.tidalVolume} containerId="container-1" lineChartId="lineChart-1" numDataPoints={this.props.graphSettings.numTidalVolumePoints} yMin="11" yMax="14" />
+        <LineChart chartTitle="Pressure" titleClass="pressureGraphTitle" lineClass="pressureLine" timeSeriesData={this.props.timeSeriesData.pressure} containerId="container-2" lineChartId="lineChart-2" numDataPoints={this.props.graphSettings.numPressurePoints} yMin="26" yMax="29" />
+        <LineChart chartTitle="Flow" titleClass="flowGraphTitle" lineClass="flowLine" timeSeriesData={this.props.timeSeriesData.tidalVolume} containerId="container-3" lineChartId="lineChart-3" numDataPoints={this.props.graphSettings.numTidalVolumePoints} yMin="11" yMax="14" />
+
 
         {/* Footer modifiables */}
         { footer }

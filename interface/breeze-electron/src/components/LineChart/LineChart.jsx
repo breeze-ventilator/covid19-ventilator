@@ -1,23 +1,25 @@
 import React from 'react';
-import {initializeChart, handleNewData, setWidth} from './scripts/d3Chart';
+import d3Chart from './scripts/d3ChartCustom';
 import d3Config from './scripts/d3Config'
+import Typography from '@material-ui/core/Typography';
+
 
 export default class LineChart extends React.Component {
     constructor(props) {
       super(props);
 
       this.callSetWidth = this.callSetWidth.bind(this);
+      this.chart = new d3Chart(this.props.containerId, this.props.lineChartId, this.props.numDataPoints, this.props.yMin, this.props.yMax);
     }
 
     componentDidMount() {
-			const { timeSeriesData } = this.props;
-      initializeChart(timeSeriesData);
+      this.chart.initializeChart(this.props.timeSeriesData);
       window.addEventListener('resize', this.callSetWidth);
     }
 
     componentDidUpdate(prevProps) {
-      const { timeSeriesData } = this.props;
-      handleNewData(timeSeriesData);
+      this.chart.handleNewData(this.props.timeSeriesData);
+
     }
 
     componentWillUnmount() {
@@ -25,14 +27,18 @@ export default class LineChart extends React.Component {
     }
 
     callSetWidth() {
-      const { timeSeriesData } = this.props;
-      setWidth(timeSeriesData);
+      this.chart.setWidth(this.props.timeSeriesData);
     }
 
     render() {
       return (
-        <div id='line-chart-container'>
-          <svg className="line-chart" width="100%" height={d3Config.svgDefaultHeight} />
+        <div className="chart">
+          <Typography variant="h3" align="center" color="inherit" className={this.props.titleClass}>
+              {this.props.chartTitle}
+          </Typography>
+          <div id={this.props.containerId}>
+            <svg id={this.props.lineChartId} className={this.props.lineClass} width="100%" height="250px" />
+          </div>
         </div>
       );
     }

@@ -13,12 +13,21 @@ import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNaviga
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.numPoints = d3Config.numDataPoints;
+
+    this.graphSettings = {
+      numTidalVolumePoints: 100,
+      numPressurePoints: 50,
+    }
+
     this.isMount = false;
     this.state = {
       data: {
-        tidalVolume: 5,
-        pressure: 5
+        tidalVolume: 10,
+        pressure: 5,
+      },
+      series: {
+        tidalVolume: [],
+        pressure: []
       },
       parameters: {
         isPressureControlState: true,
@@ -57,9 +66,19 @@ export default class App extends React.Component {
   updateData(update) {
     if (update.type === 'tidal volume'){
       this.state.data.tidalVolume = update.value;
+      if (this.state.series.tidalVolume.length === this.graphSettings.numTidalVolumePoints){
+        this.state.series.tidalVolume.shift();
+      }
+      this.state.series.tidalVolume.push(update.value);
     }
-    if(update.type === 'pressure'){
+    else if(update.type === 'pressure'){
       this.state.data.pressure = update.value;
+
+      if (this.state.series.pressure.length === this.graphSettings.numPressurePoints){
+        this.state.series.pressure.shift();
+      }
+      this.state.series.pressure.push(update.value);
+
     }
 
     if (this.isMount) {
@@ -79,7 +98,7 @@ export default class App extends React.Component {
         <SimpleBottomNavigation setup={false} />
         <Switch>
         <Route path="/diagnostics">
-          <Vitals allData={this.state.data} allParameters={this.state.parameters}/>
+          <Vitals timeSeriesData={this.state.series} allData={this.state.data} allParameters={this.state.parameters} graphSettings={this.graphSettings}/>
         </Route>
         <Route path="/alarms">
           <Alarms allData={this.state.data} />
@@ -88,8 +107,8 @@ export default class App extends React.Component {
         <Redirect from="" to="/diagnostics" />
         <Redirect from="/" to="/diagnostics" />
       </Router>
-        <div class="battery">
-          <div class="battery-level" style={{height : "75%"}}></div>
+        <div className="battery">
+          <div className="battery-level" style={{height : "75%"}}></div>
         </div>
       </div>
     );

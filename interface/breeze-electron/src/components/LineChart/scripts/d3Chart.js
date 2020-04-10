@@ -33,7 +33,7 @@ const xScale =
 
 const yScale =
   scaleLinear()
-    .domain([-10, 10])
+    .domain([11,14])
     //.range([defaultSvgDims.height, 0]);
 
 // scale data points according to their respective domain/range configuration

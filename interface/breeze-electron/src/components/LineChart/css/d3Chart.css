@@ -1,13 +1,61 @@
-.line-chart-line {
+
+.chart {
+    background-color: white;
+    width:100%;
+    padding: 15px;
+}
+.tidalVolumeGraphTitle {
+    color: black!important;
+}
+
+.tidalVolumeLine {
     fill: none;
-    stroke: #000;
-    stroke-width: 1.5px;
+    stroke: #EB9A72;
+    stroke-width: 3px;
     /* transform: translate(10px, 40px); */
 }
 
-/* .line-chart-xaxis {
-    transform: translate(10px, 300px);
-} */
+
+.pressureGraphTitle {
+    color: black!important;
+}
+
+.pressureLine {
+    fill: none;
+    stroke: #EA22A8;
+    stroke-width: 3px;
+    /* transform: translate(10px, 40px); */
+}
+
+.flowGraphTitle {
+    color: black!important;
+}
+
+.flowLine {
+    fill: none;
+    stroke: #BA86F5;
+    stroke-width: 3px;
+    /* transform: translate(10px, 40px); */
+}
+
+
+.line-chart-xaxis {
+    stroke-width: 1px;
+}
+
+.line-chart-xaxis text{
+    stroke: black !important;
+}
+
+
+.line-chart-yaxis text{
+    stroke: black !important;
+}
+
+
+.line-chart-yaxis {
+    stroke-width: 1px;
+}
 /* 
 .line-chart-yaxis {
     transform: translate(40px, 40px);

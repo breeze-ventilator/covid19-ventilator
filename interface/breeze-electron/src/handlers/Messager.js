@@ -32,7 +32,7 @@ export default class Messager {
 				type: 'tidal volume',
 				value: val
 			})
-		}, 1000)
+		}, 40)
     }
 
     samplePressureDataListener(cb) {
@@ -42,7 +42,7 @@ export default class Messager {
 				type: 'pressure',
 				value: val
 			})
-		}, 2000)
+		}, 50)
     }
     
 }
