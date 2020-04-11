@@ -194,10 +194,10 @@ export default class Vitals extends React.Component {
         {/* Header Observables */}
         <Grid container direction="row">
           <Grid item xs={6}>
-              <FlexValueCard value={this.state.data.tidalVolume} unit='mL' prominence="h1" name='Tidal Volume'/>
+              <FlexValueCard good value={this.state.data.tidalVolume} unit='mL' prominence="h1" name='Tidal Volume'/>
           </Grid>
           <Grid item xs={6}>
-              <FlexValueCard value={"1:3"} prominence="h1" unit='ratio' name='I:E Ratio'/>
+              <FlexValueCard warn value={"1:3"} prominence="h1" unit='ratio' name='I:E Ratio'/>
           </Grid>
         </Grid>
 

@@ -13,6 +13,15 @@ const useStyles = theme => ({
     borderRadius: 0,
     textAlign: "center",
     margin: "dense",
+  },
+  good: {
+    background: "#a5d6a7"
+  },
+  warn: {
+    background: "#ffd54f"
+  },
+  alarm: {
+    background: "#e57373"
   }
 });
 
@@ -39,8 +48,20 @@ class FlexValueCard extends React.Component {
 
     render() {
         const { classes } = this.props;
+
+        let classNames;
+        if (this.props.good) {
+          classNames = `${classes.root} ${classes.good}`
+        } else if (this.props.warn) {
+          classNames = `${classes.root} ${classes.warn}`
+        } else if (this.props.alarm) {
+          classNames = `${classes.root} ${classes.alarm}`
+        } else {
+          classNames = `${classes.root}`
+        }
+
         return(
-            <Card className = {classes.root}>
+            <Card className = {classNames}>
                 <CardActionArea onClick={this.openModal}>            
                     <Typography variant="subtitle1">
                         {this.props.name}
