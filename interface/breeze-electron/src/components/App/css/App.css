@@ -109,7 +109,7 @@
   padding: 2px;
   border-radius: 4px;
   position: absolute;
-  bottom: 10px;
+  top: 0;
   left: 90%;
   margin: 15px 0;
   transform: rotate(90deg);

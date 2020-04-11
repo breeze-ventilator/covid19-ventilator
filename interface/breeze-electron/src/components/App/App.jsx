@@ -91,7 +91,9 @@ export default class App extends React.Component {
         <div class="battery">
           <div class="battery-level" style={{height : "75%"}}></div>
         </div>
+
       </div>
     );
   }
 }
+

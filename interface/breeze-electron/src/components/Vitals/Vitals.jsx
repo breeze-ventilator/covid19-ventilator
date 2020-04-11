@@ -1,11 +1,11 @@
 import React from 'react';
 import FlexValueCard from '../Card/FlexValueCard';
-import Grid from "@material-ui/core/Grid";
 import './css/vitals.css'
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import SimpleModal from '../Modal/SimpleModal';
 import ParameterInput from '../ParameterInput/ParameterInput';
+import PatientProfile from '../PatientProfile/PatientProfile';
+import Grid from "@material-ui/core/Grid";
 
 export default class Vitals extends React.Component {
   constructor(props) {
@@ -133,6 +133,11 @@ export default class Vitals extends React.Component {
     this.setState(this.state);
   }
 
+  modalOpen(){
+    this.state.modal.open = true;
+    this.setState(this.state); 
+  }
+
   render() {
     let footer;
     if (this.props.allParameters.isPressureControlState) {
@@ -190,8 +195,10 @@ export default class Vitals extends React.Component {
       )};
  
     return (
+
       <div className="mainContainer">
         {/* Header Observables */}
+
         <Grid container direction="row">
           <Grid item xs={6}>
               <FlexValueCard value={this.state.data.tidalVolume} unit='mL' prominence="h1" name='Tidal Volume'/>
@@ -202,10 +209,21 @@ export default class Vitals extends React.Component {
         </Grid>
 
         {/* TODO: Graphs go here */} 
+
+        {/*Patient Profile*/}
+        <div className="patientProfileContainer">
+          <PatientProfile />
+        </div>
+
+
+         {/*Add the buttons for gender, covid (y/n); need material ui diff button*/}
+        {/*<Button color="primary" onClick={this.toggle}>Save Here</Button>*/}
+
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
 
         {/* Footer modifiables */}
         { footer }
+
         <SimpleModal modalClose={this.modalClose} open={this.state.modal.open}>
           <div>
             <ParameterInput parameterName={this.state.modal.parameterName} setParameter={this.setParameterStateValue} startingValue={this.state.modal.startingValue} step={this.state.modal.step} min={this.state.modal.min} max={this.state.modal.max} unit={this.state.modal.unit}/>
