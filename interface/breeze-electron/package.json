@@ -86,7 +86,7 @@
         "@material-ui/core": "^4.9.9",
         "@material-ui/icons": "^4.9.1",
         "@material-ui/lab": "^4.0.0-alpha.48",
-        "@mobiscroll/react": "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-4.10.3.tgz",
+        "@mobiscroll/react": "file:./src/lib/mobiscroll-package/mobiscroll-react-4.10.3.tgz",
         "electron-squirrel-startup": "^1.0.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",

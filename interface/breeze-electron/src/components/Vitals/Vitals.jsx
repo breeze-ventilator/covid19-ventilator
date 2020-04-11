@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import SimpleModal from '../Modal/SimpleModal';
 import ParameterInput from '../ParameterInput/ParameterInput';
+import ParameterInputCustom from '../ParameterInput/ParameterInputCustom';
+
 
 export default class Vitals extends React.Component {
   constructor(props) {
@@ -208,7 +210,7 @@ export default class Vitals extends React.Component {
         { footer }
         <SimpleModal modalClose={this.modalClose} open={this.state.modal.open}>
           <div>
-            <ParameterInput parameterName={this.state.modal.parameterName} setParameter={this.setParameterStateValue} startingValue={this.state.modal.startingValue} step={this.state.modal.step} min={this.state.modal.min} max={this.state.modal.max} unit={this.state.modal.unit}/>
+            <ParameterInputCustom parameterName={this.state.modal.parameterName} setParameter={this.setParameterStateValue} startingValue={this.state.modal.startingValue} step={this.state.modal.step} min={this.state.modal.min} max={this.state.modal.max} unit={this.state.modal.unit}/>
           </div>
         </SimpleModal>
      </div>
