@@ -31,6 +31,16 @@ export default class App extends React.Component {
         inspiratoryTime: 0, // Control
         respiratoryRate: 0 // Control
       },
+      alarms: {
+        minuteVentilation: {
+          min: 6,
+          max: 10
+        },
+        pressure: {
+          min: 0,
+          max: 35
+        }
+      },
       setup: true
     }
     this.messager = new Messager(5000);
@@ -39,6 +49,7 @@ export default class App extends React.Component {
     this.messager.samplePressureDataListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
+    this.setAlarms = this.setAlarms.bind(this);
     this.doneSetup = this.doneSetup.bind(this);
   }
 
@@ -53,6 +64,11 @@ export default class App extends React.Component {
 
   componentDidMount(){
     this.isMount = true;
+  }
+
+  setAlarms(alarms) {
+    this.setState({alarms: alarms})
+    console.log(this.state.alarms)
   }
 
   updateData(update) {
@@ -78,13 +94,17 @@ export default class App extends React.Component {
       <div>
       <Router>
         <SimpleBottomNavigation setup={false} />
-        <AlarmsHandler allData={this.state.data} allParameters={this.state.parameters} />
+        <AlarmsHandler
+            alarms={this.state.alarms}
+            allData={this.state.data}
+            allParameters={this.state.parameters}
+        />
         <Switch>
         <Route path="/diagnostics">
           <Vitals allData={this.state.data} allParameters={this.state.parameters}/>
         </Route>
         <Route path="/alarms">
-          <Alarms allData={this.state.data} />
+          <Alarms alarms={this.state.alarms} setAlarms={this.setAlarms} />
         </Route>
         </Switch>
         <Redirect from="" to="/diagnostics" />

@@ -7,23 +7,14 @@ import Button from '@material-ui/core/Button';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
-export default class Vitals extends React.Component {
+export default class Alarms extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {
-        tidalVolume: 5,
-        pressure: 5
-      }
+      alarms: this.props.alarms
     }
-  }
-
-  componentDidUpdate(prevProps){
-    const { allData } = this.props;
-    this.state.data = allData
-    if (this.isMount) {
-      this.setState(this.state);
-    }
+    this.setParameterStateValue = this.setParameterStateValue.bind(this);
+    this.saveAlarms = this.saveAlarms.bind(this);
   }
 
   createNotification = (type) => {
@@ -47,6 +38,27 @@ export default class Vitals extends React.Component {
     };
   };
 
+  saveAlarms() {
+    this.props.setAlarms(this.state.alarms)
+  }
+
+  setParameterStateValue(parameterName, value) {
+    let alarms = this.state.alarms;
+    if (parameterName == "Low Minute Ventilation Alarm") {
+      alarms["minuteVentilation"].min = value
+    }
+    else if (parameterName == "High Minute Ventilation Alarm") {
+      alarms["minuteVentilation"].max = value
+    }
+    else if (parameterName == "Low Pressure Alarm") {
+      alarms["pressure"].min = value
+    }
+    else if (parameterName == "High Pressure Alarm") {
+      alarms["pressure"].max = value
+    }
+    this.setState({alarms: alarms})
+  }
+
   render() {
     return (
       <div>
@@ -61,7 +73,8 @@ export default class Vitals extends React.Component {
             >
               <ParameterInput
                 parameterName="Low Minute Ventilation Alarm"
-                startingValue={5}
+                startingValue={this.props.alarms.minuteVentilation.min}
+                setParameter={this.setParameterStateValue}
                 step={2}
                 min={0}
                 max={100}
@@ -69,7 +82,8 @@ export default class Vitals extends React.Component {
               />
               <ParameterInput
                 parameterName="High Minute Ventilation Alarm"
-                startingValue={10}
+                startingValue={this.props.alarms.minuteVentilation.max}
+                setParameter={this.setParameterStateValue}
                 step={2}
                 min={0}
                 max={100}
@@ -77,7 +91,8 @@ export default class Vitals extends React.Component {
               />
               <ParameterInput
                 parameterName="Low Pressure Alarm"
-                startingValue={4}
+                startingValue={this.props.alarms.pressure.min}
+                setParameter={this.setParameterStateValue}
                 step={2}
                 min={0}
                 max={100}
@@ -85,7 +100,8 @@ export default class Vitals extends React.Component {
               />
               <ParameterInput
                 parameterName="High Pressure Alarm"
-                startingValue={40}
+                startingValue={this.props.alarms.pressure.max}
+                setParameter={this.setParameterStateValue}
                 step={2} 
                 min={0} 
                 max={100} 
@@ -94,6 +110,7 @@ export default class Vitals extends React.Component {
 
                 <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
                   <Button 
+                    onClick={this.saveAlarms}
                     className="setParametersButton"
                     variant="contained"
                     align="center"

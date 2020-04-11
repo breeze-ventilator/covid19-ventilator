@@ -44,23 +44,28 @@ export default class AlarmsHandler extends React.Component {
   alarm(data, severity) {
     if (this.state.currentlyAlarming.includes(data)) return
 
+    let newAlarms = this.state.currentlyAlarming.concat([data])
+    this.setState({ currentlyAlarming: newAlarms });
+ 
     if (severity === "high") {
       NotificationManager.error("Warning!", data)
     } else {
       NotificationManager.warning("Warning!", data)
     }
-
-    let newAlarms = this.state.currentlyAlarming.concat([data])
-    this.setState({ currentlyAlarming: newAlarms });
   }
 
 
   checkData() {
-    for (var data in this.props.allData) {
-      let val = this.props.allData[data];
-      let range = acceptableRanges[data]; 
+    let alarmRanges = Object.assign(acceptableRanges, this.props.alarms);
+    let dataPieces = Object.assign(this.props.allData, this.props.allParameters);
+
+    for (var data in dataPieces) {
+      let val = dataPieces[data];
+      let range = alarmRanges[data]; 
+
+      if (range === undefined) continue;
+
       if (!inRange(val, range)) {
-        console.log(`Alert - ${data}`);
         this.alarm(data, "high");
       }
     }

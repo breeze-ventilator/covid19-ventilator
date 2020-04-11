@@ -197,7 +197,7 @@ export default class Vitals extends React.Component {
               <FlexValueCard value={this.state.data.tidalVolume} unit='mL' prominence="h1" name='Tidal Volume'/>
           </Grid>
           <Grid item xs={6}>
-              <FlexValueCard value={this.state.data.pressure} prominence="h1" unit='kPa' name='Pressure'/>
+              <FlexValueCard value={"1:3"} prominence="h1" unit='ratio' name='I:E Ratio'/>
           </Grid>
         </Grid>
 
