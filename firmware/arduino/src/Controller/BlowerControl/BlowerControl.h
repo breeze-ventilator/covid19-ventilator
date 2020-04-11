@@ -1,5 +1,5 @@
-#ifndef BLOWERPID_H
-#define BLOWERPID_H
+#ifndef BLOWER_CONTROL_H
+#define BLOWER_CONTROL_H
 
 #define BLOWER_KI 0
 #define BLOWER_KP 4
@@ -10,11 +10,11 @@
 
 #include "Arduino.h"
 #include <PID_v1.h>
-#include "../BlowerFanServo/BlowerFanServo.h"
+#include "BlowerFanServo/BlowerFanServo.h"
 
-class BlowerPID {
+class BlowerControl {
     public:
-        BlowerPID();
+        BlowerControl();
         void control(float setPressure, float actualPressure);
         void begin();
     private:

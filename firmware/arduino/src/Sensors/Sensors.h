@@ -10,10 +10,11 @@
 #define OXYGEN_PRESSURE_SENSOR_PIN 7
 #define BATTERY_VOLTAGE_PIN 8
 
-#include "../OxygenPressureSensor/OxygenPressureSensor.h"
-#include "../FlowSensor/FlowSensor.h"
-#include "../BatteryVoltageSensor/BatteryVoltageSensor.h"
-#include "../MainPressureSensor/MainPressureSensor.h"
+#include "OxygenPressureSensor/OxygenPressureSensor.h"
+#include "FlowSensor/FlowSensor.h"
+#include "BatteryVoltageSensor/BatteryVoltageSensor.h"
+#include "MainPressureSensor/MainPressureSensor.h"
+
 #include "../Data/Data.h"
 #include "Arduino.h"
 
