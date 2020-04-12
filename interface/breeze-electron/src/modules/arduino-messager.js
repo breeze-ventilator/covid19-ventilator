@@ -50,7 +50,7 @@ module.exports = class ArduinoMessager {
 		}
 		else {
 			this.parseArduinoReadings(data);
-			if(this.newParameters && this.readingCount == this.readingMapping.length-1) {
+			if(this.newParameters && this.readingCount == 0) {
 				this.port.write(this.newParameters);
 				this.newParameters = undefined;
 			}
