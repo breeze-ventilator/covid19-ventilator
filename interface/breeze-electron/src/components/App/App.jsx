@@ -69,7 +69,7 @@ export default class App extends React.Component {
 
   doneSetup(){
     this.state.setup = false;
-    this.setState(this.state);
+    this.setState(this.state);ß
   }
 
   render() {
