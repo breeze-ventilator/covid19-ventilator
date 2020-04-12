@@ -26,6 +26,7 @@ int PiCommunication::initCommunication(int pingInterval) {
 
   // Arduino sends message to pi until it gets a response
   while (Serial.available() <= 0) { // Serial.available says how many bytes available to read
+    // Will send bytes
     Serial.print("elbowbump\n");
     delay(pingInterval);
   }
@@ -47,8 +48,31 @@ int PiCommunication::isTimeToSendDataToPi() {
   return isTime(_lastSentDataTime, _timeBetweenPiSending);
 }
 
+int PiCommunication::isPiSendingUsNewParameters() {
+  byte[] buffer;
+
+  if (Serial.available() == PARAMETER_BYTE_LENGTH) {
+    // read the whole thing and check first character
+    Serial.readBytes(buffer, PARAMETER_BYTE_LENGTH);
+  }
+  return 0;
+}
+
+
+int PiCommunication::isPiTellingUsThatItsAwake() {
+  if  (Serial.available() == PI_AWAKE_BYTE_LENGTH){
+    // read and check
+  }
+  return 0
+}
+
 int PiCommunication::isDataAvailable() {
-  return Serial.available();
+  if (Serial.available() <= 0) {
+    return 0;
+  }
+  else {
+    return 1;
+  }
 }
 
 String PiCommunication::getDataFromPi() {
@@ -58,7 +82,7 @@ String PiCommunication::getDataFromPi() {
 }
 
 void PiCommunication::tellPiThatWeGotParameters() {
-  Serial.print("G\n");
+  Serial.print("G");
 }
 
 void PiCommunication::sendDataToPi(Data &data, State &state) {
@@ -74,20 +98,20 @@ void PiCommunication::sendDataToPi(Data &data, State &state) {
   - Send “\n”
 
   */
-  uint8_t checkSum = 0;
-  uint8_t batteryPercentage = (uint8_t) data.batteryPercentage;
-  uint8_t breathCompleted = (uint8_t) state.breathCompleted;
+  uint16_t checkSum = 0;
+  uint16_t batteryPercentage = (uint16_t) data.batteryPercentage;
+  uint16_t breathCompleted = (uint16_t) state.breathCompleted;
   uint32_t tidalVolume;
   if (breathCompleted) {
-    tidalVolume = (uint32_t) round(LITERS_TO_MILLILITERS*data.tidalVolume); // mL/min
+    tidalVolume = (uint16_t) round(LITERS_TO_MILLILITERS*data.tidalVolume); // mL/min
   } else {
     tidalVolume = 0;
   }
 
-  uint8_t abnormalPressure = 0; // TODO: get it
-  uint8_t abnormalFiO2 = 0; // TODO: data.fiO2
+  uint16_t abnormalPressure = 0; // TODO: get it
+  uint16_t abnormalFiO2 = 0; // TODO: data.fiO2
   
-  uint8_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
+  uint16_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
   
   Serial.write(checkSum);
   Serial.write(batteryPercentage);
@@ -96,8 +120,6 @@ void PiCommunication::sendDataToPi(Data &data, State &state) {
   Serial.write(errorCode);
   Serial.write(abnormalPressure);
   Serial.write(abnormalFiO2);
-
-  Serial.write('\n');
 
   _lastSentDataTime = millis();
 }
