@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ParameterInput from '../ParameterInput/ParameterInputCustom'
+import ParameterInput from '../Alarms/AlarmsInput.jsx'
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -72,6 +72,8 @@ export default class Alarms extends React.Component {
               spacing={3}
               direction="column"
             >
+              <h2 style={{textAlign: "center"}}>Alarm Settings</h2>
+
               <ParameterInput
                 parameterName="Low Minute Ventilation Alarm"
                 startingValue={this.props.alarms.minuteVentilation.min}
@@ -80,7 +82,7 @@ export default class Alarms extends React.Component {
                 min={0}
                 max={100}
                 unit={"%"}
-              />
+              /> <br></br>
               <ParameterInput
                 parameterName="High Minute Ventilation Alarm"
                 startingValue={this.props.alarms.minuteVentilation.max}
@@ -89,7 +91,7 @@ export default class Alarms extends React.Component {
                 min={0}
                 max={100}
                 unit={"%"}
-              />
+              /> <br></br>
               <ParameterInput
                 parameterName="Low Pressure Alarm"
                 startingValue={this.props.alarms.pressure.min}
@@ -98,7 +100,7 @@ export default class Alarms extends React.Component {
                 min={0}
                 max={100}
                 unit={"%"}
-              />
+              /> <br></br>
               <ParameterInput
                 parameterName="High Pressure Alarm"
                 startingValue={this.props.alarms.pressure.max}
@@ -106,8 +108,8 @@ export default class Alarms extends React.Component {
                 step={2} 
                 min={0} 
                 max={100} 
-                unit={"%"}
-              />
+                unit={"%"} 
+              /> <br></br>
 
                 <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
                   <Button 

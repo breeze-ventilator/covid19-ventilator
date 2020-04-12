@@ -50,7 +50,7 @@ class ParameterInputCustom extends React.Component {
     handleDecrement(){
         if((this.state.value - this.props.step) >= this.props.min){
             this.state.value -= this.props.step;
-            this.setState(this.state);
+            this.setState(this.state);ß
         }
     }
 
@@ -63,9 +63,9 @@ class ParameterInputCustom extends React.Component {
       return (
         <Grid container justify="center">
             <Card align="center" style={{maxWidth: "65%"}}>
-                <Typography style={{marginTop: "10px"}}variant="subtitle1">
+                    <Typography style={{marginTop: "10px"}}variant="subtitle1">
                         {this.props.parameterName}
-                </Typography>
+                    </Typography>
                 <ButtonGroup style={{margin:"10px",marginBottom:"0px"}}size="medium"align="center" variant="contained" color="primary">
                     <Button style={{width: '60px', height:'40px', fontSize:"14px"}} onClick={this.handleDecrement}>-</Button>
                     <NumPad.Number
@@ -83,7 +83,6 @@ class ParameterInputCustom extends React.Component {
                     Usually from values of 80 - 30. :)
                 </Typography>
 
-                <Button style={{width: '250px', height:'40px', margin:"10px", fontSize:"16px", backgroundColor:"green",color:"white"}}variant="contained" onClick={this.setParameter}>Set Parameter</Button>
             </Card>
         </Grid>
       );

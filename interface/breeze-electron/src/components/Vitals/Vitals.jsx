@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import SimpleModal from '../Modal/SimpleModal';
 import ParameterInputCustom from '../ParameterInput/ParameterInputCustom';
+import PatientProfile from '../PatientProfile/PatientProfile';
 
 
 export default class Vitals extends React.Component {
@@ -223,6 +224,9 @@ export default class Vitals extends React.Component {
               />
           </Grid>
         </Grid>
+
+        {/*Parient Profile*/}
+        <PatientProfile />
 
         {/* TODO: Graphs go here */} 
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
