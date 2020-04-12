@@ -97,7 +97,6 @@ export default class PatientProfile extends React.Component {
             <>
               <br></br>
               <div style={buttonStyle}>
-              <Button variant="outlined" color="disabled" style={{backgroundColor: "#FF6400"}} disableElevation>Power Off</Button> {' '}
               <Button variant="outlined" color="disabled" style={{backgroundColor: "#6BD6F3"}}  onClick={() => this.setState({modalOneOpen: true, modalTwoOpen: false})}>Patient Profile</Button>
               </div>
               {/*Intro Page*/}
