@@ -89,6 +89,7 @@
         "electron-squirrel-startup": "^1.0.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
+        "react-moment": "^0.9.7",
         "react-notifications": "^1.6.0",
         "react-numpad": "^5.0.4",
         "react-router-dom": "^5.1.2",
