@@ -1,14 +1,18 @@
 const SerialPort = require('serialport');
 const ByteLength = require('@serialport/parser-byte-length')
 
-module.exports = class ArduinoMessager {
+export default class ArduinoMessager {
 	constructor(top) {
 		this.top = top;
 		this.port = new SerialPort(this.top.serialPort, {baudRate: this.top.baudRate});		
 		this.parser = this.port.pipe(new ByteLength({length: 1})); // breaks messages by 1 byte length
 		this.connected = false;
 		this.timeSinceLastArduinoMessage = new Date();
-		this.toSend = []
+		this.toSend = {}
+		this.readingMapping = ["checksum", "battery percentage", "breath complete", "tidal volume", "error code", "abnormal pressure", "abnormal FiO2"]
+		this.readingCount = 0;
+		this.numParameters = 15;
+		this.modes = ["Pressure Control", "Pressure Support", "Standby"]
 
 		this.port.on('open', () => this.handlePortOpen());
 		this.port.on('close', () => this.handlePortClose());
@@ -49,7 +53,6 @@ module.exports = class ArduinoMessager {
 	}
 
 	handshakeWithArduino(data){
-		console.log(data.toString('hex'));
 		if(data.readUInt8() == 1){
 			this.port.write('elbowbump\n')
 			this.connected = true;
@@ -62,16 +65,43 @@ module.exports = class ArduinoMessager {
 			this.handleArduinoTimeout();
 		}
 
-		this.toSend.push(data.readUInt8())
+		let key = this.readingMapping[this.readingCount]
+		this.toSend[key] = data.readUInt8()
 
-		if (this.toSend.length == 6){
+		console.log(key, this.toSend[key])
+
+		this.readingCount += 1;
+		
+		// reading count of 5 means all readings have been added to the dict
+		if (this.readingCount == length(this.readingMapping) - 1){
 			this.top.handleNewReadings(this.toSend)
 		}
 	}
 
 	// TODO !
 	handleNewParameters(newParameters){
+		let buf = Buffer.alloc(this.numParameters);
 
+		// push "P" and checksum params to buffer
+		buf.write('P', 0, 1) // offset 0, length 1
+		buf.writeInt8(0, 1) // write the number 0, offset 1
+
+		// buffer offset of 2 for the 2 params already written
+		let bufOffset = 2;
+		for (let key in newParameters.keys()) {
+			if(key == "mode") {
+				// change from string to 1,2,3 depending on mode
+				buf.writeInt8(this.modes.indexOf(newParameters[key]) + 1, bufOffset)
+			}
+			else{
+				buf.writeInt8(newParameters[key], bufOffset)
+			}
+			bufOffset += 1;
+		}
+
+		// lastly, write the new line charcter
+		buf.write('\n', bufOffset, 1);
+		this.port.write(buf)
 	}
 
 	// TODO !
