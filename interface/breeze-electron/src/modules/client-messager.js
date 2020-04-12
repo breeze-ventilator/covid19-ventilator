@@ -25,7 +25,7 @@ module.exports = class ClientMessager {
 	/* Handlers from Arduino Data */
 	handleNewReadings(paramDict){
 		if(paramDict["error code"] != 0){
-			handleError(paramDict["error code"], paramDict["error code addendum"]);
+			handleError(paramDict["error code"], paramDict["abnormal pressure"], paramDict["abnormal FiO2"]);
 		}
 		handleBatteryPercentage(paramDict["battery percentage"]);
 		handleBreathCompleted(paramDict["breath complete"], paramDict["tidal volume"]); // Sends tidal volume if breath complete = 1;
@@ -43,8 +43,8 @@ module.exports = class ClientMessager {
 		socket.emit('batteryPercentage', { batteryPercentage: batteryPercentage});
 	}
 	
-	handleError(errorCode, errorAddendum){
-		socket.emit('error', {errorCode:errorCode, errorAddendum:errorAddendum})
+	handleError(errorCode, abnormalPressure, abnormalFiO2){
+		socket.emit('error', {errorCode:errorCode, abnormalPressure:abnormalPressure, abnormalFiO2:abnormalFiO2})
 	}
 
 	sendToClient(message) {

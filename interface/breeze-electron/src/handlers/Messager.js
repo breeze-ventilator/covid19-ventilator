@@ -22,7 +22,7 @@ export default class Messager {
     }
 
     errorListener(cb){
-       this.socket.on('error', (errorCode, errorAddendum) => cb('error', errorCode, errorAddendum))
+       this.socket.on('error', (errorCode, abPressure, abFiO2) => cb('error', errorCode, abPressure, abFiO2))
     }
 
     sampleTidalVolumeDataListener(cb){

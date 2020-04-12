@@ -9,8 +9,10 @@ export default class ArduinoMessager {
 		this.connected = false;
 		this.timeSinceLastArduinoMessage = new Date();
 		this.toSend = {}
-		this.paramMapping = ["checksum", "battery percentage", "breath complete", "tidal volume", "error code", "error code addendum"]
-		this.paramCount = 0;
+		this.readingMapping = ["checksum", "battery percentage", "breath complete", "tidal volume", "error code", "abnormal pressure", "abnormal FiO2"]
+		this.readingCount = 0;
+		this.numParameters = 15;
+		this.modes = ["Pressure Control", "Pressure Support", "Standby"]
 
 		this.port.on('open', () => this.handlePortOpen());
 		this.port.on('close', () => this.handlePortClose());
@@ -63,31 +65,33 @@ export default class ArduinoMessager {
 			this.handleArduinoTimeout();
 		}
 
-		let key = this.paramMapping[this.paramCount]
+		let key = this.readingMapping[this.readingCount]
 		this.toSend[key] = data.readUInt8()
 
 		console.log(key, this.toSend[key])
 
-		if (this.paramCount == 5){
+		this.readingCount += 1;
+		
+		// reading count of 5 means all readings have been added to the dict
+		if (this.readingCount == length(this.readingMapping) - 1){
 			this.top.handleNewReadings(this.toSend)
 		}
-
-		this.paramCount += 1;
 	}
 
 	// TODO !
 	handleNewParameters(newParameters){
-		let buf = Buffer.alloc(15);
-		let modes = ["Pressure Control", "Pressure Support", "Standby"]
+		let buf = Buffer.alloc(this.numParameters);
 
-		// P and checksum
-		buf.write('P', 0, 1)
-		buf.writeInt8(0, 1)
+		// push "P" and checksum params to buffer
+		buf.write('P', 0, 1) // offset 0, length 1
+		buf.writeInt8(0, 1) // write the number 0, offset 1
 
+		// buffer offset of 2 for the 2 params already written
 		let bufOffset = 2;
 		for (let key in newParameters.keys()) {
 			if(key == "mode") {
-				buf.writeInt8(modes.indexOf(newParameters[key]), bufOffset)
+				// change from string to 1,2,3 depending on mode
+				buf.writeInt8(this.modes.indexOf(newParameters[key]) + 1, bufOffset)
 			}
 			else{
 				buf.writeInt8(newParameters[key], bufOffset)
@@ -95,6 +99,7 @@ export default class ArduinoMessager {
 			bufOffset += 1;
 		}
 
+		// lastly, write the new line charcter
 		buf.write('\n', bufOffset, 1);
 		this.port.write(buf)
 	}
