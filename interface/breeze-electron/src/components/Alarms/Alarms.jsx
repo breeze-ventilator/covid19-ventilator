@@ -72,7 +72,7 @@ export default class Alarms extends React.Component {
               spacing={3}
               direction="column"
             >
-              <h2 style={{textAlign: "center"}}>Alarm Settings</h2>
+              <h2 style={{textAlign: "center", color: "#fff"}}>Alarm Settings</h2>
 
               <ParameterInput
                 parameterName="Low Minute Ventilation Alarm"
@@ -109,7 +109,7 @@ export default class Alarms extends React.Component {
                 min={0} 
                 max={100} 
                 unit={"%"} 
-              /> <br></br>
+              /> 
 
                 <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
                   <Button 

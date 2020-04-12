@@ -94,7 +94,7 @@ export default class PatientProfile extends React.Component {
             <>
               <br></br>
               <div style={buttonStyle}>
-              <Button variant="contained" color="secondary" disableElevation onClick={() => this.setState({modalOneOpen: true, modalTwoOpen: false})}>Patient Profile</Button>
+              <Button variant="outlined" color="disabled" style={{backgroundColor: "#6BD6F3"}} disableElevation onClick={() => this.setState({modalOneOpen: true, modalTwoOpen: false})}>Patient Profile</Button>
               </div>
               {/*Intro Page*/}
               <SimpleModal open={this.state.modalOneOpen} modalClose={this.modalOneClose}>
@@ -107,8 +107,8 @@ export default class PatientProfile extends React.Component {
                     </Grid>
                     <div style={modalStyle}>
                   <h2 style={{textAlign: "center"}}><u>Setting Up Your Ventilator</u></h2>
-                  {'    '}<p>1. Has the ventilator circuit been assembled? (Circuit put together, HME filter, and tracheal suction)</p>
-                  {'    '}<p>2. Did you hear the backup alarm when starting the machine? (If not, it may not be functioning properly)</p>
+                  {'    '}<p style={{textAlign: "center"}}>1. Has the ventilator circuit been assembled? (Circuit put together, HME filter, and tracheal suction)</p>
+                  {'    '}<p style={{marginBottom: 241, textAlign: "center"}}>2. Did you hear the backup alarm when starting the machine? (If not, it may not be functioning properly)</p> 
                     </div>
                   <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
                   <div style={buttonStyle}>
@@ -133,9 +133,9 @@ export default class PatientProfile extends React.Component {
                         </Grid>
                         <div style={modalStyle}>
                         <h2 style={{textAlign: "center"}}><u>Flow Test</u></h2>
-                        <p>Connect the output tube to the ventilator, but not to the patient. Then press Begin Flow Test.</p>
+                        <p>Connect the output tube to the ventilator, but not to the patient. Then press Begin Flow Test.</p><br></br><br></br><br></br>
                         <div style={buttonStyle}>
-                        <Button variant="contained" color="primary" onClick={(e) => window.alert("Flow Test Running!")}>Begin Flow Test</Button>
+                        <Button variant="contained" color="primary" style={{marginBottom: 171}} onClick={(e) => window.alert("Flow Test Running!")}>Begin Flow Test</Button>
                         </div>
                         </div>
                         <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
@@ -163,9 +163,9 @@ export default class PatientProfile extends React.Component {
                         <div style={modalStyle}>
                         <h2 style={{textAlign: "center"}}><u>Pressure Test</u></h2>
                         <p>Keep the output tube connected to the ventilator, but not to the patient. Block the tube mouthpiece with a gloved hand. 
-                          Then press Begin Pressure Test. </p>
+                          Then press Begin Pressure Test. </p><br></br><br></br><br></br>
                         <div style={buttonStyle}>
-                        <Button variant="contained" color="primary" onClick={(e) => window.alert("Pressure Test Running!")}>Begin Pressure Test</Button>
+                        <Button variant="contained" color="primary" style={{marginBottom: 152}} onClick={(e) => window.alert("Pressure Test Running!")}>Begin Pressure Test</Button>
                         </div>
                         </div>
                         <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>

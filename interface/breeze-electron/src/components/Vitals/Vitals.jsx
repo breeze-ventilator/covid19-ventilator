@@ -202,7 +202,7 @@ export default class Vitals extends React.Component {
       )};
  
     return (
-      <div className="mainContainer">
+      <div className="mainContainer" style={{fontFamily: "Barlow"}}>
         {/* Header Observables */}
         <Grid container direction="row">
           <Grid item xs={6}>
