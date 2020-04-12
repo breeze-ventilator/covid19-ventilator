@@ -1,32 +1,28 @@
 #include "Data.h"
-// #include <list>
-#include "Arduino.h"
-Data::Data() {
+
+Data::Data()
+  : _pressureValues(PRESSURE_HISTORY_LENGTH_FOR_PID),
+    _flowValues(FLOW_HISTORY_LENGTH)
+{
+  tidalVolume = 0;
 }
 
 void Data::saveFlowReading(float flowValue, float delta_time) {
-  flowIntegral += flowValue*delta_time;
+  _flowValues.push(flowValue);
+  tidalVolume += flowValue*delta_time;
 }
 
 void Data::saveMainPressureReading(unsigned int pressureValue) {
-  // TODO change back to list
-  // pressureValues.push_back(pressureValue);
-  // if (pressureValues.size() > PRESSURE_HISTORY_LENGTH_FOR_PID) {
-  //   pressureValues.pop_front();
-  // }
-  pressureValues = pressureValue;
-  pressureSum += pressureValue;
-  numPressureMeasurements += 1;
+  // for PID
+  _pressureValues.push(pressureValue);
 }
 
 float Data::getMainPressureAverageForPID() {
-  return (float) pressureValues;
-  // float average = 0;
-  // for (float i=0; i<pressureValues.size(); i++) {
-  //   average += pressureValues;
-  // }
-  // average /= pressureValues.size();
-  // return average;
+  return _pressureValues.getMean();
+}
+
+float Data::getFlowRecentHistoryAverage() {
+  return _flowValues.getMean();
 }
 
 void Data::saveBatteryPercentage(unsigned int newBatteryPercentage) {
@@ -37,16 +33,7 @@ void Data::saveOxygenPressureReading(unsigned int pressureValue) {
   // TODO
 }
 
-void Data::resetPiDataExceptFlow() {
-  pressureSum = 0;
-  numPressureMeasurements = 0;
-  numFlowErros = 0;
-  numPressureErrors = 0;
-  batteryPercentage = 0;
-  return;
-}
-
 // when breath finished
-void Data::resetPiFlowData() {
-  flowIntegral = 0.0;
+void Data::resetTidalVolume() {
+  tidalVolume = 0.0;
 }

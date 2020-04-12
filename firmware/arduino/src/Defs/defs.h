@@ -1,12 +1,15 @@
 #ifndef INIT_H
 #define INIT_H
 
-// TODO: Simon are these valid?
+#define SECONDS_TO_MILLISECONDS 1000
+#define MINUTES_TO_MILLISECONDS 60000
+#define CENTIMETERS_TO_MILIMETERS 10
 
-//=========== Global PARAMS  ===============//
-// Define reading rates (ms)
-#define FLOW_READ_RATE 100
-#define PRESSURE_READ_RATE 2  // 500 Hz freq => 2 ms period
+#define OFF_MODE 0
+#define PRESSURE_CONTROL_MODE 1
+#define PRESSURE_SUPPORT_MODE 2
+#define INHALATION_STAGE 3
+#define EXHALATION_STAGE 4
 
 // Defines size of global storage arrays
 #define NUM_OF_PRESSURE_MEASUREMENTS 10 
@@ -49,18 +52,14 @@
 #define BLOW_FAN_INITIAL_POSITION 15  // 0 = min, 180 = max, 90 = midpoint (TODO: this is currently arbitrary)
 #define AIR_INTAKE_INITIAL_POSITION 110 // 0 = min, 180 = max, 90 = midpoint (TODO: arbitraty)
 
-#define TIMEOUT_ERROR -1
-
-#define FLOW_READING_FREQUENCY 500 // 500 Hz
-#define MAIN_PRESSURE_READING_FREQUENCY 500
+#define FLOW_READING_FREQUENCY 50 // 500 Hz
+#define MAIN_PRESSURE_READING_FREQUENCY 500// 500 TODO: change
 #define OXYGEN_PRESSURE_READING_FREQUENCY 100
-#define BATTERY_VOLTAGE_READING_FREQUENCY 1
+#define BATTERY_VOLTAGE_READING_FREQUENCY 5
 
 // Pi Comms
 #define BAUD_RATE 9600
-#define TIME_BETWEEN_PI_SENDING 100
-#define MAX_SERIAL_CONNECTION_WAIT_TIME 1000
-#define PI_MAX_WAIT_TIME 1000000
 #define PI_PING_INTERVAL 100
+#define TIME_BETWEEN_DATA_SENDING_TO_PI 100
 
 #endif

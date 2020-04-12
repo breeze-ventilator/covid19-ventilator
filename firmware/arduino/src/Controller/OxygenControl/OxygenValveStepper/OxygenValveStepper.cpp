@@ -20,30 +20,37 @@ OxygenValveStepper::OxygenValveStepper(int motorInterfaceType, int pin0, int pin
   : _oxygenStepper(motorInterfaceType, pin0, pin1, pin2, pin3)
 {
   _limitSwitchPin = limitSwitchPin;
-  pinMode(_limitSwitchPin, INPUT_PULLUP); // TODO: simon need better naming here
-  
-  _oxygenStepper.setMaxSpeed(maxStepperSpeed); // Slower to get better accuracy
-  _oxygenStepper.setAcceleration(stepperAcceleration);
-
-  // enable the power to the stepper at about half power
-  analogWrite(oxygenEnable1Pin, 100);
-  analogWrite(oxygenEnable2Pin, 100);
+  _oxygenEnable1Pin = oxygenEnable1Pin;
+  _oxygenEnable2Pin = oxygenEnable2Pin;
+  _maxStepperSpeed = maxStepperSpeed;
+  _stepperAcceleration = stepperAcceleration;
 }
 
-int OxygenValveStepper::moveOxygenStepperToZeroPosition(int maxWaitTime) {
+void OxygenValveStepper::begin() {
+  pinMode(_limitSwitchPin, INPUT_PULLUP); // TODO: simon need better naming here
+  
+  _oxygenStepper.setMaxSpeed(_maxStepperSpeed); // Slower to get better accuracy
+  _oxygenStepper.setAcceleration(_stepperAcceleration);
+  
+  // enable the power to the stepper at about half power
+  analogWrite(_oxygenEnable1Pin, 100);
+  analogWrite(_oxygenEnable2Pin, 100);
+}
+
+int OxygenValveStepper::moveToZeroPosition(int maxWaitTime) {
   int count = 0;
-  while (!digitalRead(_limitSwitchPin)){
-    _oxygenStepper.moveTo(_oxygenStepper.currentPosition() + 1);  // Set the position to move to
-    _oxygenStepper.run(); // Start moving the stepper
-    delay(5);
-    count += 5;
-    if (count > maxWaitTime) {
-      return TIMEOUT_ERROR;
-    } else {
-      return 1;
-    }
-  }
-  count = 0;
+  // while (!digitalRead(_limitSwitchPin)){ // 1 default, 0 when zeroed
+  //   _oxygenStepper.moveTo(_oxygenStepper.currentPosition() + 1);  // Set the position to move to
+  //   _oxygenStepper.run(); // Start moving the stepper
+  //   delay(5);
+  //   count += 5;
+  //   if (count > maxWaitTime) {
+  //     return TIMEOUT_ERROR;
+  //   } else {
+  //     return 1;
+  //   }
+  // }
+  // count = 0;
   // Make the Stepper move CCW until the switch is activated   
   while (digitalRead(_limitSwitchPin)) {
     _oxygenStepper.moveTo(_oxygenStepper.currentPosition() - 1);  // Set the position to move to
@@ -58,16 +65,19 @@ int OxygenValveStepper::moveOxygenStepperToZeroPosition(int maxWaitTime) {
   return 1;
 }
 
-void OxygenValveStepper::stepOxygenFlow(float flow, float pressure) {
-  float highFlow = (pressure/AMBIENT_PRESSURE) * flow;
-  _oxygenStepper.moveTo(floor(FLOW_COEFFICIENT * highFlow));
+void OxygenValveStepper::move(long value) {
+  _oxygenStepper.moveTo(value);
   _oxygenStepper.run(); //this only moves one step soooo
  
-  return; //need to calll this function offten like 100 hz
+  return; //need to calll this function often like 100 hz
 }
 
 void OxygenValveStepper::runOneStep(){
   _oxygenStepper.run();
+}
+
+long OxygenValveStepper::getCurrentPosition() {
+  return _oxygenStepper.currentPosition();
 }
 
 // pressure in psi = 0.1354*(volts) + 1.01

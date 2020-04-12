@@ -2,8 +2,13 @@
 #include "Arduino.h"
 
 AirIntakeServo::AirIntakeServo(int pin, int zeroPoint) {
-  _airIntake.attach(pin);
-  _airIntake.write(zeroPoint);
+  _pin = pin;
+  _zeroPoint = zeroPoint;
+}
+
+void AirIntakeServo::begin() {
+  _airIntake.attach(_pin);
+  _airIntake.write(_zeroPoint);
 }
 
 void AirIntakeServo::setOpening(int percent){ //percent open we want

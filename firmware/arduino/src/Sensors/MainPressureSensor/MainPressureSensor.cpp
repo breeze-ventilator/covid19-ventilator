@@ -8,8 +8,9 @@ MainPressureSensor::MainPressureSensor() {
 }
 
 unsigned int MainPressureSensor::read() {
-  int mV = map(analogRead(PRESSURE_PIN), 0, 1023, 0, 5000);
+  // mm H2O
+  float mV = map(analogRead(PRESSURE_PIN), 0, 1023, 0, 5000);
   float mA = mV / PRESSURE_SENSE_RESISTOR;
-  return floor((mA -4) * 25.4); // numbers set by datasheet
+  return floor((mA - 4) * 25.4); // numbers set by datasheet
 }
 
