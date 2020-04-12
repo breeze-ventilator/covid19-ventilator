@@ -1,5 +1,6 @@
 import React from 'react';
-import ParameterInput from '../ParameterInput/ParameterInput'
+
+import ParameterInput from '../ParameterInput/ParameterInputCustom'
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
