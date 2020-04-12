@@ -19,7 +19,8 @@ export default class App extends React.Component {
     this.state = {
       data: {
         tidalVolume: 5,
-        pressure: 5
+        pressure: 5, 
+        batteryPercentage:"75%"
       },
       parameters: {
         mode: "Pressure Control", // one of Pressure Control, Pressure Support, Standby
@@ -27,9 +28,13 @@ export default class App extends React.Component {
         peep: 20, // Control + Support
         peakPressure: 20, // Control + Support
         sensitivity: 80, // Support
-        apneaTime: 20, // Support
+        respiratoryRate: 0, // Control
         inspiratoryTime: 0, // Control
-        respiratoryRate: 0 // Control
+        flow: 0, //Support
+        apneaTime: 20, // Support
+        riseTime: 0,
+        highInspAlarm:0,
+        lowExpAlarm:0
       },
       alarms: {
         minuteVentilation: {
@@ -46,13 +51,14 @@ export default class App extends React.Component {
     }
     this.messager = new Messager(5000);
 
-    this.messager.sampleTidalVolumeDataListener(this.updateData.bind(this));
-    this.messager.samplePressureDataListener(this.updateData.bind(this));
+    this.messager.tidalVolumeListener(this.updateData.bind(this));
+    this.messager.batteryPercentageListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
     this.setAlarms = this.setAlarms.bind(this);
     this.setCurrentlyAlarming = this.setCurrentlyAlarming.bind(this);
     this.doneSetup = this.doneSetup.bind(this);
+    this.messager.sendParametersToBackend(this.state.parameters);
   }
 
   setParameters(parameters){
@@ -61,7 +67,7 @@ export default class App extends React.Component {
     console.log("IN APP: ")
     console.log(this.state)
 
-    // TODO: SHIP with messager to arduino!
+    // TODO: SHIP with messager to arduino! 
   }
 
   componentDidMount(){
@@ -76,12 +82,12 @@ export default class App extends React.Component {
     this.setState({currentlyAlarming});
   }
 
-  updateData(update) {
-    if (update.type === 'tidal volume'){
-      this.state.data.tidalVolume = update.value;
+  updateData(type, value) {
+    if (type === 'tidal volume'){
+      this.state.data.tidalVolume = value;
     }
-    if(update.type === 'pressure'){
-      this.state.data.pressure = update.value;
+    if(type === 'batteryPercentage'){
+      this.state.data.batteryPercentage = value.toString() + "%";
     }
 
     if (this.isMount) {
@@ -120,7 +126,7 @@ export default class App extends React.Component {
         <Redirect from="/" to="/diagnostics" />
       </Router>
         <div className="battery">
-          <div className="battery-level" style={{height : "75%"}}></div>
+          <div className="battery-level" style={{height : this.state.data.batteryPercentage}}></div>
         </div>
       </div>
     );

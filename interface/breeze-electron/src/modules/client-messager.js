@@ -23,21 +23,16 @@ module.exports = class ClientMessager {
 	}
 
 	/* Handlers from Arduino Data */
-	handleNewReadings(pressure, tidalVolume, batteryPercentage, breathCompleted, error){
-		if(error != 0){
-			handleError(error);
+	handleNewReadings(paramDict){
+		if(paramDict["error code"] != 0){
+			handleError(paramDict["error code"], paramDict["error code addendum"]);
 		}
-		handlePressure(pressure);
-		handleBatteryPercentage(batteryPercentage);
-		handleBreathCompleted(breathCompleted, tidalVolume); // Sends tidal volume if breath complete = 1;
+		handleBatteryPercentage(paramDict["battery percentage"]);
+		handleBreathCompleted(paramDict["breath complete"], paramDict["tidal volume"]); // Sends tidal volume if breath complete = 1;
 	}
 
 	// tidalVolume = {time: DateTime, volume: volume}
 	// TODO: Aggregate values depending on freq., for frontend ?
-	handlePressure(pressure){
-		socket.emit('pressure', { pressure: pressure });
-	}
-
 	handleBreathCompleted(breathCompleted, tidalVolume){
 		if(breathCompleted == 1){
 			socket.emit('tidalVolume', { tidalVolume: tidalVolume });
@@ -48,8 +43,8 @@ module.exports = class ClientMessager {
 		socket.emit('batteryPercentage', { batteryPercentage: batteryPercentage});
 	}
 	
-	handleError(error){
-		// Depending on error, either send to frontend or nothing.
+	handleError(errorCode, errorAddendum){
+		socket.emit('error', {errorCode:errorCode, errorAddendum:errorAddendum})
 	}
 
 	sendToClient(message) {
