@@ -85,7 +85,6 @@ module.exports = class ArduinoMessager {
 
 	// TODO !
 	handleNewParameters(newParameters) {
-		this.newParameters = newParameters;
 		if (this.connected) {
 			let buf = Buffer.alloc(this.numParameters);
 
