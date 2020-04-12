@@ -19,9 +19,12 @@ const modalStyle = {
   background: '#e0f7fa',
   radius: 8,
   borderRadius: 8,
-  paddingRight: 15,
+  marginRight: 25,
+  marginLeft: 25,
+  marginTop: -62,
   paddingLeft: 15,
-  textAlign: 'left'
+  paddingRight: 15,
+  height: 480,
 };
 
 const buttonStyle = {
@@ -94,7 +97,8 @@ export default class PatientProfile extends React.Component {
             <>
               <br></br>
               <div style={buttonStyle}>
-              <Button variant="outlined" color="disabled" style={{backgroundColor: "#6BD6F3"}} disableElevation onClick={() => this.setState({modalOneOpen: true, modalTwoOpen: false})}>Patient Profile</Button>
+              <Button variant="outlined" color="disabled" style={{backgroundColor: "#FF6400"}} disableElevation>Power Off</Button> {' '}
+              <Button variant="outlined" color="disabled" style={{backgroundColor: "#6BD6F3"}}  onClick={() => this.setState({modalOneOpen: true, modalTwoOpen: false})}>Patient Profile</Button>
               </div>
               {/*Intro Page*/}
               <SimpleModal open={this.state.modalOneOpen} modalClose={this.modalOneClose}>
@@ -108,14 +112,15 @@ export default class PatientProfile extends React.Component {
                     <div style={modalStyle}>
                   <h2 style={{textAlign: "center"}}><u>Setting Up Your Ventilator</u></h2>
                   {'    '}<p style={{textAlign: "center"}}>1. Has the ventilator circuit been assembled? (Circuit put together, HME filter, and tracheal suction)</p>
-                  {'    '}<p style={{marginBottom: 241, textAlign: "center"}}>2. Did you hear the backup alarm when starting the machine? (If not, it may not be functioning properly)</p> 
-                    </div>
-                  <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
+                  {'    '}<p style={{marginBottom: 249.5, textAlign: "center"}}>2. Did you hear the backup alarm when starting the machine? (If not, it may not be functioning properly)</p> 
                   <div style={buttonStyle}>
                   <Button variant="contained" color="secondary" disableElevation onClick={() => this.setState({modalOneOpen: false})}>Quit</Button> {'  '}
                   <Button variant="contained" color="default" onClick={() => this.setState({modalOneOpen: false, modalFourOpen: true})} >Skip</Button>{'  '}
                   <Button variant="contained" color="primary" onClick={() => this.setState({modalOneOpen: false, modalTwoOpen: true})}>Continue ➜ </Button>
                   </div>     
+                    </div>
+                  <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
+
                         </Grid>
                     </Grid>
                 </Container>
@@ -133,17 +138,17 @@ export default class PatientProfile extends React.Component {
                         </Grid>
                         <div style={modalStyle}>
                         <h2 style={{textAlign: "center"}}><u>Flow Test</u></h2>
-                        <p>Connect the output tube to the ventilator, but not to the patient. Then press Begin Flow Test.</p><br></br><br></br><br></br>
+                        <p style={{textAlign: "center"}}>Connect the output tube to the ventilator, but not to the patient. Then press Begin Flow Test.</p><br></br><br></br><br></br><br></br>
                         <div style={buttonStyle}>
-                        <Button variant="contained" color="primary" style={{marginBottom: 171}} onClick={(e) => window.alert("Flow Test Running!")}>Begin Flow Test</Button>
+                        <Button variant="contained" color="primary" onClick={(e) => window.alert("Flow Test Running!")}>Begin Flow Test</Button>
+                        </div>
+                        <div style={{textAlign: "center", paddingTop: 160}}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalOneOpen: true})} > Back </Button>{'  '}
+                        <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalThreeOpen: true})} >Continue ➜ </Button>
                         </div>
                         </div>
                         <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
-                        <div style={buttonStyle}>
-                        <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalOneOpen: true})} > Back </Button>{'  '}
-                        <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalThreeOpen: true})} >Continue ➜ </Button>
 
-                        </div>
                         </Grid>
                     </Grid>
                 </Container>
@@ -162,18 +167,17 @@ export default class PatientProfile extends React.Component {
                         </Grid>
                         <div style={modalStyle}>
                         <h2 style={{textAlign: "center"}}><u>Pressure Test</u></h2>
-                        <p>Keep the output tube connected to the ventilator, but not to the patient. Block the tube mouthpiece with a gloved hand. 
+                        <p style={{textAlign: "center"}}>Keep the output tube connected to the ventilator, but not to the patient. Block the tube mouthpiece with a gloved hand. 
                           Then press Begin Pressure Test. </p><br></br><br></br><br></br>
                         <div style={buttonStyle}>
-                        <Button variant="contained" color="primary" style={{marginBottom: 152}} onClick={(e) => window.alert("Pressure Test Running!")}>Begin Pressure Test</Button>
+                        <Button variant="contained" color="primary" onClick={(e) => window.alert("Pressure Test Running!")}>Begin Pressure Test</Button>
+                        </div>
+                        <div style={{textAlign: "center", paddingTop: 160}}>
+                        <Button variant="contained" color="primary" onClick={() => this.setState({modalThreeOpen: false, modalTwoOpen: true})} > Back </Button>{'  '}
+                        <Button variant="contained" color="primary" onClick={() => this.setState({modalThreeOpen: false, modalFourOpen: true})} >Continue ➜ </Button>
                         </div>
                         </div>
                         <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
-                        <div style={buttonStyle}>
-                        <Button variant="contained" color="primary" onClick={() => this.setState({modalThreeOpen: false, modalTwoOpen: true})} > Back </Button>{'  '}
-                        <Button variant="contained" color="primary" onClick={() => this.setState({modalThreeOpen: false, modalFourOpen: true})} >Continue ➜ </Button>
-
-                        </div>
                         </Grid>
                     </Grid>
                 </Container>
@@ -206,13 +210,13 @@ export default class PatientProfile extends React.Component {
                         <Numpad profileItemName="Patient Height" setItem={this.setItemStateValue} startingValue={180} step={1} min={30} max={300} unit={"cm"}/>
                         <br></br>
                         <Numpad profileItemName="Breathing Rate" setItem={this.setItemStateValue} startingValue={60} step={1} min={30} max={300} unit={""}/>
-                        <br></br><br></br>
-                        </div>
-                        <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
-                        <div style={buttonStyle}>
+                        <div style={{textAlign: "center", paddingTop: 46}}>
                         <Button variant="contained" color="primary" onClick={() => this.setState({modalFourOpen: false, modalThreeOpen: true})} > Back </Button>{'  '}
                         <Button variant="contained" color="default" onClick={() => this.setState({modalFiveOpen: true})} >Save Changes</Button>
                         </div>
+                        </div>
+                        <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
+
                         </Grid>
                     </Grid>
                 </Container>
@@ -228,7 +232,7 @@ export default class PatientProfile extends React.Component {
                     <Grid container justify="space-evenly" spacing={3} direction="row">
                     </Grid>
                   </Grid>
-              <div style={modalStyle}>
+              <div style={{background: '#e0f7fa', textAlign: "center", paddingLeft: 15, paddingRight: 15, borderRadius: 8}}>
               <p>Are you sure you wish to create a new patient profile?</p>
               <div style={buttonStyle}>
                 <Button variant="contained" color="primary" onClick={() => this.setState({modalFiveOpen: false})} > Go Back</Button>{'  '}
