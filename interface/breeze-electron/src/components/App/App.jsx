@@ -8,6 +8,7 @@ import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
 import Vitals from '../Vitals/Vitals';
 import Alarms from '../Alarms/Alarms';
+import AlarmsHandler from '../Alarms/AlarmsHandler';
 import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNavigation';
 
 export default class App extends React.Component {
@@ -30,6 +31,17 @@ export default class App extends React.Component {
         inspiratoryTime: 0, // Control
         respiratoryRate: 0 // Control
       },
+      alarms: {
+        minuteVentilation: {
+          min: 6,
+          max: 10
+        },
+        pressure: {
+          min: 0,
+          max: 35
+        }
+      },
+      currentlyAlarming: [],
       setup: true
     }
     this.messager = new Messager(5000);
@@ -38,6 +50,8 @@ export default class App extends React.Component {
     this.messager.samplePressureDataListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
+    this.setAlarms = this.setAlarms.bind(this);
+    this.setCurrentlyAlarming = this.setCurrentlyAlarming.bind(this);
     this.doneSetup = this.doneSetup.bind(this);
   }
 
@@ -52,6 +66,14 @@ export default class App extends React.Component {
 
   componentDidMount(){
     this.isMount = true;
+  }
+
+  setAlarms(alarms) {
+    this.setState({alarms});
+  }
+
+  setCurrentlyAlarming(currentlyAlarming) {
+    this.setState({currentlyAlarming});
   }
 
   updateData(update) {
@@ -77,12 +99,21 @@ export default class App extends React.Component {
       <div>
       <Router>
         <SimpleBottomNavigation setup={false} />
+        <AlarmsHandler
+            alarms={this.state.alarms}
+            allData={this.state.data}
+            allParameters={this.state.parameters}
+            setCurrentlyAlarming={this.setCurrentlyAlarming}
+        />
         <Switch>
         <Route path="/diagnostics">
-          <Vitals allData={this.state.data} allParameters={this.state.parameters}/>
+          <Vitals allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
         </Route>
         <Route path="/alarms">
-          <Alarms allData={this.state.data} />
+          <Alarms
+            alarms={this.state.alarms}
+            setAlarms={this.setAlarms}
+          />
         </Route>
         </Switch>
         <Redirect from="" to="/diagnostics" />
