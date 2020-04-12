@@ -37,7 +37,6 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
     }
     float delta_time = (float)(millis() - _lastFlowReadTime);
     delta_time /= MINUTES_TO_MILLISECONDS;
-    
     data.saveFlowReading(flowValue, delta_time);
     _lastFlowReadTime = millis();
   }

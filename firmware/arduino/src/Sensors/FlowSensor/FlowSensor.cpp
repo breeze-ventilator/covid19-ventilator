@@ -56,7 +56,11 @@ float FlowSensor::read(int *errorType)
 		flow = -1;
 		return flow;
 	}
-  flow = (float)(reading - _offset) / _scale; // numbers given upon initilization
+  // offset = 32768; we read 32704-32720
+  // print float of each
+  flow = ( ((float)reading) - ((float)(_offset)) / ((float)_scale); // numbers given upon initilization
+  // Serial.println(flow);
+
   return flow;
 
     
