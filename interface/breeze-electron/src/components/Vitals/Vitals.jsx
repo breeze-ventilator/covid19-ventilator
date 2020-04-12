@@ -2,10 +2,13 @@ import React from 'react';
 import FlexValueCard from '../Card/FlexValueCard';
 import Grid from "@material-ui/core/Grid";
 import './css/vitals.css'
+import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import SimpleModal from '../Modal/SimpleModal';
-import ParameterInput from '../ParameterInput/ParameterInput';
+import ParameterInputCustom from '../ParameterInput/ParameterInputCustom';
+
 
 export default class Vitals extends React.Component {
   constructor(props) {
@@ -16,7 +19,7 @@ export default class Vitals extends React.Component {
         pressure: 5,
       },
       parameters: {
-        isPressureControlState: this.props.allParameters.isPressureControlState,
+        mode: this.props.allParameters.mode, // one of Pressure Control, Pressure Support, Standby
         fiO2: this.props.allParameters.fiO2, // Control + Support
         peep: this.props.allParameters.peep, // Control + Support
         peakPressure: this.props.allParameters.peakPressure, // Control + Support
@@ -39,6 +42,7 @@ export default class Vitals extends React.Component {
     this.setModalStateValues = this.setModalStateValues.bind(this);
     this.modalClose = this.modalClose.bind(this);
     this.isAlarming = this.isAlarming.bind(this);
+    this.changeMode = this.changeMode.bind(this);
   }
 
   componentDidUpdate(prevProps){
@@ -54,10 +58,7 @@ export default class Vitals extends React.Component {
   }
 
   setParameterStateValue(parameterName,value){
-    if(parameterName == 'isPressureControlState'){
-      this.state.parameters.isPressureControlState = value;
-    }
-    else if(parameterName == 'FiO2'){
+    if(parameterName == 'FiO2'){
       this.state.parameters.fiO2 = value;
     }
     else if(parameterName == 'PEEP'){
@@ -84,12 +85,7 @@ export default class Vitals extends React.Component {
   }
 
   setModalStateValues(parameterName, value, unit){
-    if(parameterName == 'isPressureControlState'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'FiO2'){
+    if(parameterName == 'FiO2'){
       this.state.modal.step = 1;
       this.state.modal.min = 0;
       this.state.modal.max = 100;
@@ -130,6 +126,10 @@ export default class Vitals extends React.Component {
     this.state.modal.unit = unit;
     this.state.modal.open = true;
 
+    if(parameterName == "mode"){
+      this.state.parameters.mode = value
+    }
+
     this.setState(this.state);
   }
 
@@ -138,14 +138,20 @@ export default class Vitals extends React.Component {
     this.setState(this.state);
   }
 
+  changeMode(value){
+    this.state.parameters.mode = value;
+    this.state.modal.open = false;
+    this.setState(this.state)
+  }
+
   render() {
     let footer;
-    if (this.props.allParameters.isPressureControlState) {
+    if (this.state.parameters.mode == "Pressure Control") {
       footer = (
         <Grid container className="bottom">
           <Grid container direction="row">
             <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value="ON" unit=" " prominence="h2" name="Pressure Control" />
+              <FlexValueCard onClickHandler={this.setModalStateValues} value="Pressure Control" unit=" " prominence="h4" name="Mode"/>
             </Grid>
             <Grid item xs={4}>
               <FlexValueCard alarm={this.isAlarming("fiO2")} onClickHandler={this.setModalStateValues} value={this.state.parameters.fiO2} unit="%" prominence="h2" name="FiO2" />
@@ -166,12 +172,12 @@ export default class Vitals extends React.Component {
             </Grid>
           </Grid>
         </Grid>);
-    } else {
+    } else if(this.state.parameters.mode == "Pressure Support") {
       footer = (
         <Grid container className="bottom">
           <Grid container direction="row">
             <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value="ON" unit=" " prominence="h2" name="Pressure Support" />
+              <FlexValueCard onClickHandler={this.setModalStateValues} value="Pressure Support" unit=" " prominence="h4" name="Mode" />
             </Grid>
             <Grid item xs={4}>
               <FlexValueCard onClickHandler={this.setModalStateValues} value={this.state.parameters.fiO2} unit="%" prominence="h2" name="FiO2" />
@@ -223,11 +229,34 @@ export default class Vitals extends React.Component {
 
         {/* Footer modifiables */}
         { footer }
+        {this.state.modal.startingValue != 'Pressure Control' && this.state.modal.startingValue != "Pressure Support" &&
         <SimpleModal modalClose={this.modalClose} open={this.state.modal.open}>
           <div>
-            <ParameterInput parameterName={this.state.modal.parameterName} setParameter={this.setParameterStateValue} startingValue={this.state.modal.startingValue} step={this.state.modal.step} min={this.state.modal.min} max={this.state.modal.max} unit={this.state.modal.unit}/>
+            <ParameterInputCustom parameterName={this.state.modal.parameterName} setParameter={this.setParameterStateValue} modalClose = {this.modalClose} startingValue={parseInt(this.state.modal.startingValue)} step={this.state.modal.step} min={this.state.modal.min} max={this.state.modal.max} unit={this.state.modal.unit}/>
           </div>
         </SimpleModal>
+        }
+        {(this.state.modal.startingValue == 'Pressure Control' || this.state.modal.startingValue == "Pressure Support") &&
+        <SimpleModal modalClose={this.modalClose} open={this.state.modal.open}>
+          <div align="center">
+          <Card align="center" style={{maxWidth: "65%"}}>
+                <Typography variant="h3" style={{paddingTop:"10px"}}>
+                    Mode
+                </Typography>
+                <ButtonGroup
+                  orientation="vertical"
+                  align="center"
+                  style={{width: '65%'}}
+                >
+                    <Button  onClick={() => this.changeMode("Pressure Control")} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green"}} variant="contained">Pressure Control</Button>
+                    <Button  onClick={() => this.changeMode("Pressure Support")} style = {{marginBottom:"50px", height:"80px",fontSize:"20px",backgroundColor:"green"}} variant="contained">Pressure Support</Button>
+                    <Button onClick={() => this.changeMode("Standby")} style = {{marginBottom:"10px", height:"80px",fontSize:"20px",backgroundColor:"green"}} variant="contained">Standby</Button>
+                </ButtonGroup>
+            </Card>
+          </div>
+          
+        </SimpleModal>
+        }
      </div>
     )};
 }

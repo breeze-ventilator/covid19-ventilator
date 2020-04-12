@@ -22,7 +22,7 @@ export default class App extends React.Component {
         pressure: 5
       },
       parameters: {
-        isPressureControlState: true,
+        mode: "Pressure Control", // one of Pressure Control, Pressure Support, Standby
         fiO2: 80, // Control + Support
         peep: 20, // Control + Support
         peakPressure: 20, // Control + Support
@@ -119,8 +119,8 @@ export default class App extends React.Component {
         <Redirect from="" to="/diagnostics" />
         <Redirect from="/" to="/diagnostics" />
       </Router>
-        <div class="battery">
-          <div class="battery-level" style={{height : "75%"}}></div>
+        <div className="battery">
+          <div className="battery-level" style={{height : "75%"}}></div>
         </div>
       </div>
     );
