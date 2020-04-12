@@ -5,7 +5,7 @@ module.exports = class ArduinoMessager {
 	constructor(top) {
 		this.top = top;
 		this.port = new SerialPort(this.top.serialPort, {baudRate: this.top.baudRate});		
-		this.parser = this.port.pipe(new ByteLength({length: 2})); // breaks messages by 2 byte length
+		this.parser = this.port.pipe(new ByteLength({length: 1})); // breaks messages by 1 byte length
 		this.connected = false;
 		this.timeSinceLastArduinoMessage = new Date();
 		this.toSend = []
@@ -37,35 +37,34 @@ module.exports = class ArduinoMessager {
 	}
 
 	handleData(data) {
-		console.log('[Arduino Messager]: Received the following data:', data);
+		console.log('[Arduino Messager]: Received the following data:', data.readUInt8());
 
 		if(!this.connected){
-			handshakeWithArduino(data);
+			this.handshakeWithArduino(data);
 			this.timeSinceLastArduinoMessage = new Date();
 		}
-		
-		if(this.connected){
-			parseArduinoReadings(data);
+		else {
+			this.parseArduinoReadings(data);
 		}
 	}
 
 	handshakeWithArduino(data){
-		if(data.readUInt16BE() == 1){
-			port.write('elbowbump\n')
+		console.log(data.toString('hex'));
+		if(data.readUInt8() == 1){
+			this.port.write('elbowbump\n')
 			this.connected = true;
 		}
 	}
 
 	parseArduinoReadings(data){
 		// TODO: Add breath time parsing.
-		if(isArduinoTimedOut()){
+		if(this.isArduinoTimedOut()){
 			this.handleArduinoTimeout();
 		}
 
-		this.toSend.append(data.readUInt16BE())
-		console.log(data.readUInt16BE())
+		this.toSend.push(data.readUInt8())
 
-		if(this.toSend.length == 6){
+		if (this.toSend.length == 6){
 			this.top.handleNewReadings(this.toSend)
 		}
 	}
