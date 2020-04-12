@@ -27,8 +27,8 @@ module.exports = class ClientMessager {
 		if(paramDict["error code"] != 0){
 			this.handleError(paramDict["error code"], paramDict["abnormal pressure"], paramDict["abnormal FiO2"]);
 		}
-		this.handleBatteryPercentage(paramDict["battery percentage"]);
-		this.handleBreathCompleted(paramDict["breath complete"], paramDict["tidal volume"]); // Sends tidal volume if breath complete = 1;
+		handleBatteryPercentage(paramDict["battery percentage"]);
+		handleBreathCompleted(paramDict["breath complete"], paramDict["tidal volume"]); // Sends tidal volume if breath complete = 1;
 	}
 
 	// tidalVolume = {time: DateTime, volume: volume}

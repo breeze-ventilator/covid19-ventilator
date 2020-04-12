@@ -12,6 +12,7 @@ module.exports = class ArduinoMessager {
 		this.readingMapping = ["checksum", "battery percentage", "breath complete", "tidal volume", "error code", "abnormal pressure", "abnormal FiO2"]
 		this.readingCount = 0;
 		this.numParameters = 15;
+		this.newParameters = undefined;
 		this.modes = ["Pressure Control", "Pressure Support", "Standby"]
 
 		this.port.on('open', () => this.handlePortOpen());
@@ -49,8 +50,9 @@ module.exports = class ArduinoMessager {
 		}
 		else {
 			this.parseArduinoReadings(data);
-			
-			// if we have new parameters, send them; otherwise send 'G'
+			if(this.newParameters) {
+				this.port.write(this.newParameters)
+			}
 		}
 	}
 
@@ -104,9 +106,10 @@ module.exports = class ArduinoMessager {
 				bufOffset++;
 			}
 
-			// lastly, write the new line charcter
-			buf.write('\n', bufOffset, 1);
-			this.port.write(buf)	
+		// lastly, write the new line charcter
+		buf.write('\n', bufOffset, 1);
+
+		this.newParameters = buf;
 		}
 	}
 
