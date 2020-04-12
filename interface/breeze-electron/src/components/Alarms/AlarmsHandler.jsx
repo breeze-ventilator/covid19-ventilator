@@ -41,16 +41,17 @@ export default class AlarmsHandler extends React.Component {
     this.alarm = this.alarm.bind(this)
   }
   
-  alarm(data, severity) {
-    if (this.state.currentlyAlarming.includes(data)) return
+  alarm(dataAlarm) {
+    let newAlarms = dataAlarm.filter(alarm => !this.state.currentlyAlarming.includes(alarm))
+    let allAlarms = this.state.currentlyAlarming.concat(newAlarms)
 
-    let newAlarms = this.state.currentlyAlarming.concat([data])
-    this.setState({ currentlyAlarming: newAlarms });
+    if (newAlarms.length > 0) {
+      this.setState({ currentlyAlarming: allAlarms});
+      this.props.setCurrentlyAlarming(allAlarms);
+    }
  
-    if (severity === "high") {
-      NotificationManager.error("Warning!", data)
-    } else {
-      NotificationManager.warning("Warning!", data)
+    for (var data in newAlarms) {
+      NotificationManager.error("Warning!", newAlarms[data])
     }
   }
 
@@ -58,6 +59,7 @@ export default class AlarmsHandler extends React.Component {
   checkData() {
     let alarmRanges = Object.assign(acceptableRanges, this.props.alarms);
     let dataPieces = Object.assign(this.props.allData, this.props.allParameters);
+    let dataAlarm = [];
 
     for (var data in dataPieces) {
       let val = dataPieces[data];
@@ -66,9 +68,15 @@ export default class AlarmsHandler extends React.Component {
       if (range === undefined) continue;
 
       if (!inRange(val, range)) {
-        this.alarm(data, "high");
+        dataAlarm.push(data)
+      } else if (this.state.currentlyAlarming.includes(data)) {
+        let alarms = this.state.currentlyAlarming.filter(x => x != data)
+        this.setState({currentlyAlarming: alarms});
+        this.props.setCurrentlyAlarming(alarms);
       }
-    }
+    } 
+
+    this.alarm(dataAlarm);
   }
 
   componentDidUpdate(prevProps) {

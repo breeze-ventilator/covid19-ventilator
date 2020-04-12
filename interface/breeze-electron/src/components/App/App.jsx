@@ -41,6 +41,7 @@ export default class App extends React.Component {
           max: 35
         }
       },
+      currentlyAlarming: [],
       setup: true
     }
     this.messager = new Messager(5000);
@@ -50,6 +51,7 @@ export default class App extends React.Component {
 
     this.setParameters = this.setParameters.bind(this);
     this.setAlarms = this.setAlarms.bind(this);
+    this.setCurrentlyAlarming = this.setCurrentlyAlarming.bind(this);
     this.doneSetup = this.doneSetup.bind(this);
   }
 
@@ -67,8 +69,11 @@ export default class App extends React.Component {
   }
 
   setAlarms(alarms) {
-    this.setState({alarms: alarms})
-    console.log(this.state.alarms)
+    this.setState({alarms});
+  }
+
+  setCurrentlyAlarming(currentlyAlarming) {
+    this.setState({currentlyAlarming});
   }
 
   updateData(update) {
@@ -98,13 +103,17 @@ export default class App extends React.Component {
             alarms={this.state.alarms}
             allData={this.state.data}
             allParameters={this.state.parameters}
+            setCurrentlyAlarming={this.setCurrentlyAlarming}
         />
         <Switch>
         <Route path="/diagnostics">
-          <Vitals allData={this.state.data} allParameters={this.state.parameters}/>
+          <Vitals allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
         </Route>
         <Route path="/alarms">
-          <Alarms alarms={this.state.alarms} setAlarms={this.setAlarms} />
+          <Alarms
+            alarms={this.state.alarms}
+            setAlarms={this.setAlarms}
+          />
         </Route>
         </Switch>
         <Redirect from="" to="/diagnostics" />

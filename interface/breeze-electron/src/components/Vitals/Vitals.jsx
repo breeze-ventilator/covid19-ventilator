@@ -38,6 +38,7 @@ export default class Vitals extends React.Component {
     this.setParameterStateValue = this.setParameterStateValue.bind(this);
     this.setModalStateValues = this.setModalStateValues.bind(this);
     this.modalClose = this.modalClose.bind(this);
+    this.isAlarming = this.isAlarming.bind(this);
   }
 
   componentDidUpdate(prevProps){
@@ -46,6 +47,10 @@ export default class Vitals extends React.Component {
     if (this.isMount) {
       this.setState(this.state);
     }
+  }
+
+  isAlarming(value) {
+    return this.props.currentlyAlarming.includes(value)
   }
 
   setParameterStateValue(parameterName,value){
@@ -143,21 +148,21 @@ export default class Vitals extends React.Component {
               <FlexValueCard onClickHandler={this.setModalStateValues} value="ON" unit=" " prominence="h2" name="Pressure Control" />
             </Grid>
             <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value={this.state.parameters.fiO2} unit="%" prominence="h2" name="FiO2" />
+              <FlexValueCard alarm={this.isAlarming("fiO2")} onClickHandler={this.setModalStateValues} value={this.state.parameters.fiO2} unit="%" prominence="h2" name="FiO2" />
             </Grid>
             <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value={this.state.parameters.respiratoryRate} unit="" prominence="h2" name="Respiratory Rate" />
+              <FlexValueCard alarm={this.isAlarming("respiratoryRate")} onClickHandler={this.setModalStateValues} value={this.state.parameters.respiratoryRate} unit="" prominence="h2" name="Respiratory Rate" />
             </Grid>
           </Grid>
           <Grid container direction="row">
             <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value={this.state.parameters.peep} unit="cm H2O" prominence="h2" name="PEEP" />
+              <FlexValueCard alarm={this.isAlarming("peep")} onClickHandler={this.setModalStateValues} value={this.state.parameters.peep} unit="cm H2O" prominence="h2" name="PEEP" />
             </Grid>
             <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value={this.state.parameters.inspiratoryTime} unit="s" prominence="h2" name="Inspiratory Time" />
+              <FlexValueCard alarm={this.isAlarming("inspiratoryTime")} onClickHandler={this.setModalStateValues} value={this.state.parameters.inspiratoryTime} unit="s" prominence="h2" name="Inspiratory Time" />
             </Grid>
             <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value={this.state.parameters.peakPressure} unit="cm H2O" prominence="h2" name="Peak Pressure" />
+              <FlexValueCard alarm={this.isAlarming("peakPressure")} onClickHandler={this.setModalStateValues} value={this.state.parameters.peakPressure} unit="cm H2O" prominence="h2" name="Peak Pressure" />
             </Grid>
           </Grid>
         </Grid>);
@@ -194,10 +199,22 @@ export default class Vitals extends React.Component {
         {/* Header Observables */}
         <Grid container direction="row">
           <Grid item xs={6}>
-              <FlexValueCard good value={this.state.data.tidalVolume} unit='mL' prominence="h1" name='Tidal Volume'/>
+              <FlexValueCard
+                alarm={this.isAlarming("tidalVolume")} 
+                value={this.state.data.tidalVolume}
+                unit='mL'
+                prominence="h1"
+                name='Tidal Volume'
+              />
           </Grid>
           <Grid item xs={6}>
-              <FlexValueCard warn value={"1:3"} prominence="h1" unit='ratio' name='I:E Ratio'/>
+              <FlexValueCard
+                alarm={this.isAlarming("ie")}
+                value={"1:3"}
+                prominence="h1"
+                unit='ratio'
+                name='I:E Ratio'
+              />
           </Grid>
         </Grid>
 
