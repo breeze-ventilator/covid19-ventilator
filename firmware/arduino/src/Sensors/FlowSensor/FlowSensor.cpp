@@ -56,7 +56,10 @@ float FlowSensor::read(int *errorType)
 		flow = -1;
 		return flow;
 	}
-  
+  flow = (float)(reading - _offset) / _scale; // numbers given upon initilization
+  return flow;
+
+    
 	// // uint8_t mycrc = 0xFF; // initialize crc variable
   // // mycrc = crc8(a, mycrc); // let first byte through CRC calculation
   // // mycrc = crc8(b, mycrc); // and the second byte too
@@ -68,8 +71,6 @@ float FlowSensor::read(int *errorType)
 	// //   flow = -2;
 	// // 	return flow;
   // // }
-  flow = (float)(reading - _offset) / _scale; // numbers given upon initilization
-  return flow;
 }
 
 // cyclic redundancy check

@@ -4,33 +4,29 @@
 #include "Arduino.h"
 
 #define PRESSURE_HISTORY_LENGTH_FOR_PID 50 //TODO: change
+#define FLOW_HISTORY_LENGTH 10
 class Data {
     public:
         Data();
         void saveFlowReading(float flowValue, float delta_time);
         void saveMainPressureReading(unsigned int pressureValue);
         float getMainPressureAverageForPID();
+        float getFlowRecentHistoryAverage();
         void saveBatteryPercentage(unsigned int newBatteryPercentage);
         void saveOxygenPressureReading(unsigned int pressureValue);
-        void resetPiDataExceptFlow();
-        void resetPiFlowData();
+        void resetTidalVolume();
 
-        float lastFlowValue;
-        unsigned int peakFlowValueInCurrentBreath; // needed for switching to exhalation
-        
-        // for PID
-        // TODO CHANGE std::list<unsigned int> pressureValues;
+        float peakFlowValueInCurrentBreath; // needed for switching to exhalation
         
         // for Pi
-        float flowIntegral;
-        unsigned int pressureSum;
-        unsigned int numPressureMeasurements;
-        unsigned int numFlowErros;
-        unsigned int numPressureErrors;
-        unsigned int batteryPercentage;
+        float tidalVolume;
+        uint32_t numFlowErros;
+        uint32_t numPressureErrors;
+        uint8_t batteryPercentage;
 
     private:
         List _pressureValues;
+        List _flowValues;
 
 };
 

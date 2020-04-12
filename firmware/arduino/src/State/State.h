@@ -1,25 +1,27 @@
 #ifndef STATE_H
 #define STATE_H
 
-#define PRESSURE_SUPPORT_MODE 1
-#define PRESSURE_CONTROL_MODE 2
-#define INHALATION_STAGE 3
-#define EXHALATION_STAGE 4
-
 #include "../Parameters/Parameters.h"
+#include "../Defs/defs.h"
+#include "../Helpers/helpers.h"
 
 class State {
     public:
         State();
-        bool isStartingNewBreath;
+        bool breathCompleted;
         unsigned long startTime;
-        unsigned int breathingStage; // inhalation or exhilation
-        void updateState(Parameters parameters);
+        int breathingStage; // inhalation or exhilation
+        uint32_t desiredPressure;
+        
+        void updateState(Parameters &parameters);
+    
     private:
-        void endinhalationAndStartExhalation();
-        void endExhalationAndStartinhalation();
-        int finishedInspiratoryStage(unsigned long currentTime, Parameters parameters);
-        int finishedExpiratoryStage(unsigned long currentTime, Parameters parameters);
+        void setDesiredPressure(Parameters &parameters);
+        void setBreathCompletedToFalse();
+        void endInhalationAndStartExhalation();
+        void endExhalationAndStartInhalation();
+        int isFinishedInspiratoryStageInPressureControl(Parameters &parameters);
+        int isFinishedExpiratoryStageInPressureControl(Parameters &parameters);
 };
 
 #endif

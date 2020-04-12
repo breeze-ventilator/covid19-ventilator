@@ -1,15 +1,9 @@
 
 /*
   Checks if Serial is available and initializes Raspberry Pi Communication
-  
-  @params:
-  int maxWaitTime - Amount of time to wait for pi to start (milliseconds).
-
-  TODO: Arduino is the first to talk, and the Pi responds
 
 */
 #include "PiCommunication.h"
-
 
 PiCommunication::PiCommunication(int baudRate, int timeBetweenPiSending) {
   _baudRate = baudRate;
@@ -17,42 +11,99 @@ PiCommunication::PiCommunication(int baudRate, int timeBetweenPiSending) {
   _timeBetweenPiSending = timeBetweenPiSending;
 }
 
-int PiCommunication::initCommunication(int32_t maxSerialWaitTime, int32_t maxPiWaitTime, int pingInterval) {
+int PiCommunication::initCommunication(int pingInterval) {
   Serial.begin(_baudRate);
   
   int count = 0;
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-    count++;
+    // wait for serial port to connect. Needed for native USB port only
     delay(1);
-    if (count > maxSerialWaitTime){
-      return TIMEOUT_ERROR;
+    if (count > MAX_SERIAL_WAIT_TIME) {
+      return SERIAL_TIMEOUT_ERROR;
     }
+    count++;
   }
 
   // Arduino sends message to pi until it gets a response
-  count = 0;
   while (Serial.available() <= 0) { // Serial.available says how many bytes available to read
     Serial.print("elbowbump\n");
-    count += pingInterval;
     delay(pingInterval);
-    if (count > maxPiWaitTime) {
-      return TIMEOUT_ERROR;
-    }
   }
+
   delay(50);
   String response = Serial.readStringUntil('\n');
+  
   if (response.equals("elbowbump")) {
-    return 1;
+    Serial.print("connected\n");
+    return NO_ERROR;
   }
   else {
+    Serial.print("wrongmsg\n");
     return PI_SENT_WRONG_CODE_ERROR;
   }
 }
 
 int PiCommunication::isTimeToSendDataToPi() {
-  unsigned long timeDifference = _lastSentDataTime - millis();
-  if (timeDifference > _timeBetweenPiSending) {
+  return isTime(_lastSentDataTime, _timeBetweenPiSending);
+}
+
+int PiCommunication::isDataAvailable() {
+  return Serial.available();
+}
+
+String PiCommunication::getDataFromPi() {
+  String receivedString = Serial.readStringUntil('\n'); // reads up-to-but-not-including '\n' char
+  tellPiThatWeGotParameters();
+  return receivedString;
+}
+
+void PiCommunication::tellPiThatWeGotParameters() {
+  Serial.print("G\n");
+}
+
+void PiCommunication::sendDataToPi(Data &data, State &state) {
+  /*
+  What we send:
+  - Checksum (XOR) (8 bits)
+  - Battery percentage (8 bit unsigned integer)
+  - Breath complete (8 bit unsigned integer): 0 or 1
+  - Tidal Volume in mL (32 bit unsigned integer). Only use this value if breath complete == 1.
+  - Error code (8 bit unsigned integer). If 0, it’s fine.
+  - Average pressure
+  - O2
+  - Send “\n”
+
+  */
+  uint8_t checkSum = 0;
+  uint8_t batteryPercentage = (uint8_t) data.batteryPercentage;
+  uint8_t breathCompleted = (uint8_t) state.breathCompleted;
+  uint32_t tidalVolume;
+  if (breathCompleted) {
+    tidalVolume = (uint32_t) round(LITERS_TO_MILLILITERS*data.tidalVolume); // mL/min
+  } else {
+    tidalVolume = 0;
+  }
+
+  uint8_t abnormalPressure = 0; // TODO: get it
+  uint8_t abnormalFiO2 = 0; // TODO: data.fiO2
+  
+  uint8_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
+  
+  Serial.write(checkSum);
+  Serial.write(batteryPercentage);
+  Serial.write(breathCompleted);
+  Serial.write(tidalVolume);
+  Serial.write(errorCode);
+  Serial.write(abnormalPressure);
+  Serial.write(abnormalFiO2);
+
+  Serial.write('\n');
+
+  _lastSentDataTime = millis();
+}
+
+int PiCommunication::doesMessageContainNewParameters(String receivedString) {
+  if (receivedString.charAt(0) == 'P') {
     return 1;
   }
   else {
@@ -60,51 +111,13 @@ int PiCommunication::isTimeToSendDataToPi() {
   }
 }
 
-int PiCommunication::isDataAvailable() {
-  return Serial.available();
-}
-
-String PiCommunication::getData() {
-  String receivedString = Serial.readStringUntil('\n'); // reads up-to-but-not-including '\n' char
-  tellPiThatWeGotData();
-  return receivedString;
-}
-
-void PiCommunication::tellPiThatWeGotData() {
-  Serial.print("G\n");
-}
-
-void PiCommunication::sendServosNotConnectedErrorToPi() {
-  // timeout error
-}
-
-void PiCommunication::sendDataToPi(Data data, State state) {
-  // // Send checksum (XOR)
-  // // Send running average pressure (signed integer)
-  // // Send running average flow
-  // // Send “G” for good or “E**” for error and error number
-  // // Send “\n”
-  // unsigned char checkSum = 0;
-  // unsigned char averagePressure = (unsigned char) data.pressureSum / data.numPressureMeasurements;
-  // unsigned char batteryPercentage = (unsigned char) data.batteryPercentage;
-  // unsigned char breathCompleted = (unsigned char) state.isStartingNewBreath;
-  // short flowIntegral;
-  // if (state.isStartingNewBreath) {
-  //   flowIntegral = (short) floor(LITERS_TO_MILLILITERS*data.flowIntegral); // mL/min
-  // } else {
-  //   flowIntegral = 0;
-  // }
-  // int error = 'G'; // TODO: make better
-  
-  // Serial.write(checkSum);
-  // Serial.write(averagePressure);
-  // Serial.write(batteryPercentage);
-  // Serial.write(breathCompleted);
-  // Serial.write(flowIntegral);
-  // Serial.write(error);
-  // Serial.write('\n');
-
-  _lastSentDataTime = millis();
+int PiCommunication::doesMessageTellUsThatPiIsAwake(String receivedString) {
+  if (receivedString.charAt(0) == 'G') {
+    return 1;
+  }
+  else {
+    return 0;
+  }
 }
 
 // if (curentParams.mode == PRESSURE_SUPPORT_MODE && state.isStartingNewBreath) {
@@ -116,16 +129,16 @@ void PiCommunication::sendDataToPi(Data data, State state) {
 /*
   Helper function to verify checksum from first character of string.
 */
-int PiCommunication::isChecksumValid(String piString) {
-  int checkSumVal = piString.charAt(0); // ^ XOR
+// int PiCommunication::isChecksumValid(String piString) {
+//   int checkSumVal = piString.charAt(0); // ^ XOR
 
-  int testVal = byte(piString.charAt(1));
-  for (int i = 2; i < piString.length(); i++){
-    testVal = testVal ^ byte(piString.charAt(i));
-  }
+//   int testVal = byte(piString.charAt(1));
+//   for (int i = 2; i < piString.length(); i++){
+//     testVal = testVal ^ byte(piString.charAt(i));
+//   }
 
-  if (checkSumVal == testVal){
-    return 1;
-  }
-  return 0;
-}
+//   if (checkSumVal == testVal){
+//     return 1;
+//   }
+//   return 0;
+// }

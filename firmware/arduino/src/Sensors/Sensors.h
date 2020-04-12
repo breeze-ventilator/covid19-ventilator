@@ -1,9 +1,6 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#define SECONDS_TO_MILLISECONDS 1000
-#define MINUTES_TO_MILLISECONDS 60000
-
 #define FLOW_IC2_ADDRESS 64//TODO: SIMON
 #define FLOW_OFFSET 32768// 32000//32768
 #define FLOW_SCALE 120 // for air, 142.8 for O2
@@ -15,7 +12,9 @@
 #include "BatteryVoltageSensor/BatteryVoltageSensor.h"
 #include "MainPressureSensor/MainPressureSensor.h"
 
+#include "../Defs/defs.h"
 #include "../Data/Data.h"
+#include "../Helpers/helpers.h"
 #include "Arduino.h"
 
 class Sensors {
@@ -37,7 +36,6 @@ class Sensors {
         int isTimeToReadMainPressure();
         int isTimeToReadOxygenPressure();
         int isTimeToReadBatteryPercentage();
-        int isTimeToRead(unsigned long lastReadTime, unsigned int timeBetweenReadings);
         
         unsigned int _timeBetweenFlowReadings;
         unsigned int _timeBetweenMainPressureReadings;

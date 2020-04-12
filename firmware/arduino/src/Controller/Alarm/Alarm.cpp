@@ -7,6 +7,7 @@ Alarm::Alarm(int pin) {
 
 void Alarm::startAlarm() {
   digitalWrite(_pin, LOW);
+  runForever();
 }
 
 void Alarm::stopAlarm() {
@@ -15,7 +16,6 @@ void Alarm::stopAlarm() {
 
 void Alarm::keepAlarmRunningForever() {
   startAlarm();
-  runForever();
 }
 
 void Alarm::runForever() {

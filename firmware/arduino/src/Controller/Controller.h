@@ -15,19 +15,17 @@
 #include "../Data/Data.h"
 #include "../Parameters/Parameters.h"
 #include "../State/State.h"
-#include "../initialization/initialization.h"
+#include "../Defs/defs.h"
 
 class Controller {
     public:
         Controller();
         int init();
         void stopArduinoAlarm();
-        // void ringAlarmForever();
-        void inhalationControl(Data &data);
-        // void exhalationControl(Data data, Parameters parameters, State state);
+        void startArduinoAlarm();
+        void inhalationControl(Data &data, Parameters &parameters);
+        void exhalationControl(Data &data, Parameters &parameters);
     private:
-        // void oxygenControl(Data data, Parameters parameters, State state);
-        // void airControl(Parameters parameters);
         // int isTimeToControlOxygen();
         // int isTimeToControlAir();
         // int isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings);

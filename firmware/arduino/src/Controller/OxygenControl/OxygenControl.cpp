@@ -26,6 +26,6 @@ void OxygenControl::control(long value) {
 
 	If in exhalation mode, turn it off
 	*/
-	Serial.println(_oxygenValveStepper.getCurrentPosition());
+	// Serial.println(_oxygenValveStepper.getCurrentPosition());
 	_oxygenValveStepper.move(value);
 }

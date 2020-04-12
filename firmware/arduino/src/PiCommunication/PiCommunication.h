@@ -1,23 +1,30 @@
-#ifndef PI_COMMUNICATIONS_H
-#define PI_COMMUNICATIONS_H
+#ifndef PI_COMMUNICATION_H
+#define PI_COMMUNICATION_H
 
 #define LITERS_TO_MILLILITERS 1000
-#define PI_SENT_WRONG_CODE_ERROR -2
-#define TIMEOUT_ERROR -1
 
+#include "../Defs/errors.h"
 #include "../Data/Data.h"
 #include "../State/State.h"
+#include "../Defs/errors.h"
+#include "../Helpers/helpers.h"
+#include <math.h>
+
+#define MAX_SERIAL_WAIT_TIME 1000
+
 
 class PiCommunication {
     public: 
         PiCommunication(int baudRate, int timeBetweenPiSending);
-        int initCommunication(int32_t maxSerialWaitTime, int32_t maxPiWaitTime, int pingInterval);
+        int initCommunication(int pingInterval);
         int isDataAvailable();
-        String getData();
-        void tellPiThatWeGotData();
-        void sendServosNotConnectedErrorToPi();
-        void sendDataToPi(Data data, State state);
-        int isChecksumValid(String piString);
+        String getDataFromPi();
+        void tellPiThatWeGotParameters();
+        void sendDataToPi(Data &data, State &state);
+        int doesMessageContainNewParameters(String receivedString);
+        int doesMessageTellUsThatPiIsAwake(String receivedString);
+        
+        // int isChecksumValid(String piString);
         int isTimeToSendDataToPi();
     private:
         int _baudRate;

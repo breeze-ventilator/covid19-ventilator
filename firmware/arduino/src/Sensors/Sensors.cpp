@@ -1,8 +1,4 @@
 #include "Sensors.h"
-// #include "../OxygenPressureSensor/OxygenPressureSensor.h"
-// #include "../FlowSensor/FlowSensor.h"
-// #include "../BatteryVoltageSensor/BatteryVoltageSensor.h"
-// #include "../MainPressureSensor/MainPressureSensor.h"
 
 Sensors::Sensors(int flowReadingFrequency,
                  int mainPressureReadingFrequency,
@@ -34,6 +30,7 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
   // take sensor readings
   if (isTimeToReadFlow()) {
     int error = 0;
+    // flow read in L/min
     float flowValue = flowSensor.read(&error); // we're not doing anything with this error yet
     if (flowValue > 250) { // max range
       flowValue = 0;
@@ -69,25 +66,14 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
 }
 
 int Sensors::isTimeToReadFlow() {
-  return isTimeToRead(_lastFlowReadTime, _timeBetweenFlowReadings);
+  return isTime(_lastFlowReadTime, _timeBetweenFlowReadings);
 }
 int Sensors::isTimeToReadMainPressure() {
-  return isTimeToRead(_lastMainPressureReadTime, _timeBetweenMainPressureReadings);
+  return isTime(_lastMainPressureReadTime, _timeBetweenMainPressureReadings);
 }
 int Sensors::isTimeToReadOxygenPressure() {
-  return isTimeToRead(_lastOxygenPressureReadTime, _timeBetweenOxygenPressureReadings);
+  return isTime(_lastOxygenPressureReadTime, _timeBetweenOxygenPressureReadings);
 }
 int Sensors::isTimeToReadBatteryPercentage() {
-  return isTimeToRead(_lastBatteryPercentageReadTime, _timeBetweenBatteryPercentageReadings);
-}
-
-int Sensors::isTimeToRead(unsigned long lastReadTime, unsigned int timeBetweenReadings) {
-  unsigned long currentTime = millis();
-  unsigned long timeDifference = currentTime - lastReadTime;
-  if (timeDifference >= timeBetweenReadings) {
-    return 1;
-  }
-  else {
-    return 0;
-  }
+  return isTime(_lastBatteryPercentageReadTime, _timeBetweenBatteryPercentageReadings);
 }

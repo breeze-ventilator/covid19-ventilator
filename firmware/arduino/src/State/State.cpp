@@ -1,48 +1,64 @@
 #include "State.h"
 
 State::State() {
-  isStartingNewBreath = false;
+  breathCompleted = true;
   startTime = 0;
   breathingStage = INHALATION_STAGE;
 }
 
-void State::updateState(Parameters parameters) {
+void State::updateState(Parameters &parameters) {
   unsigned long currentTime = millis();
   if (parameters.currentMode == PRESSURE_CONTROL_MODE) {
     // checks time to see if time to switch from inhalation to exhilation
-    if (breathingStage == INHALATION_STAGE && finishedInspiratoryStage(currentTime, parameters)) {
-      endinhalationAndStartExhalation();
-      startTime = currentTime;
+    if (breathingStage == INHALATION_STAGE) {
+      setDesiredPressure(parameters);
+      if (isFinishedInspiratoryStageInPressureControl(parameters)) {
+        endInhalationAndStartExhalation();
+        startTime = currentTime;
+      }
     }
-    else if (breathingStage == EXHALATION_STAGE && finishedExpiratoryStage(currentTime, parameters)) {
-      endExhalationAndStartinhalation();
+    else if (breathingStage == EXHALATION_STAGE && isFinishedExpiratoryStageInPressureControl(parameters)) {
+      endExhalationAndStartInhalation();
       startTime = currentTime;
-    } else if (isStartingNewBreath) {
-      isStartingNewBreath = false;
     }
   }
   else if (parameters.currentMode == PRESSURE_SUPPORT_MODE) {
-    // should use state.lastFlowValue, state.peakFlowValueInCurrentBreath
+    // TODO: should use state.lastFlowValue, state.peakFlowValueInCurrentBreath
+
   }
 }
 
-void State::endinhalationAndStartExhalation() {
+void State::setDesiredPressure(Parameters &parameters) {
+  unsigned long elapsedTime = millis() - startTime;
+  float slope = (float) parameters.currentInspiratoryPressure / parameters.currentRiseTime;
+  desiredPressure = parameters.currentPEEP + slope*elapsedTime;
+}
+
+void State::setBreathCompletedToFalse() {
+  breathCompleted = false;
+}
+
+void State::endInhalationAndStartExhalation() {
   breathingStage = EXHALATION_STAGE;
 }
 
-void State::endExhalationAndStartinhalation() {
+void State::endExhalationAndStartInhalation() {
   breathingStage = INHALATION_STAGE;
-  isStartingNewBreath = true;
+  breathCompleted = true;
 }
 
-int State::finishedInspiratoryStage(unsigned long currentTime, Parameters parameters) {
-  if (currentTime - startTime > parameters.currentInspiratoryTime) {
-    return 1;
-  } else {return 0;}
+int State::isFinishedInspiratoryStageInPressureControl(Parameters &parameters) {
+  return isTime(startTime, parameters.currentInspiratoryTime);
 }
 
-int State::finishedExpiratoryStage(unsigned long currentTime, Parameters parameters) {
-  if (currentTime - startTime > parameters.currentExpiratoryTime) {
-    return 1;
-  } else {return 0;}
+int State::isFinishedExpiratoryStageInPressureControl(Parameters &parameters) {
+  return isTime(startTime, parameters.currentMaxExpiratoryTime);
 }
+
+// int State::isFinishedInspiratoryStageInPressureSupport(Parameters &parameters) {
+//   return isTime(startTime, parameters.currentInspiratoryTime);
+// }
+
+// int State::isFinishedExpiratoryStageInPressureSupport(Parameters &parameters) {
+//   return isTime(startTime, parameters.currentExpiratoryTime);
+// }

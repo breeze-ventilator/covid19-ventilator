@@ -16,10 +16,6 @@
 #ifndef FlowSensor_h
 #define FlowSensor_h
 
-#if !defined(NO_ERROR)
-#define NO_ERROR 0
-#endif
-
 #if !defined(SENSOR_DEAD_OR_NEEDS_RESET_ERROR)
 #define SENSOR_DEAD_OR_NEEDS_RESET_ERROR 1
 #endif
@@ -35,6 +31,8 @@
   #include "pins_arduino.h"
   #include "WConstants.h"
 #endif
+
+#include "../../Defs/errors.h"
 
 
 class FlowSensor {
