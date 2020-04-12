@@ -19,7 +19,7 @@ module.exports = class Top {
     // this.httpServer = http.createServer(this.expressApp);
 
     this.client = new ClientMessager(this);
-    //this.arduino = new ArduinoMessager(this);
+    this.arduino = new ArduinoMessager(this);
 
     this.client.setupIO(this.port);
   }

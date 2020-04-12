@@ -35,19 +35,19 @@ module.exports = class ClientMessager {
 	// TODO: Aggregate values depending on freq., for frontend ?
 	handleBreathCompleted(breathCompleted, tidalVolume){
 		if(breathCompleted == 1){
-			socket.emit('tidalVolume', { tidalVolume: tidalVolume });
+			this.sendToClient('tidalVolume', { tidalVolume: tidalVolume });
 		}
 	}
 
 	handleBatteryPercentage(batteryPercentage){
-		socket.emit('batteryPercentage', { batteryPercentage: batteryPercentage});
+		this.sendToClient('batteryPercentage', { batteryPercentage: batteryPercentage});
 	}
 	
 	handleError(errorCode, abnormalPressure, abnormalFiO2){
-		socket.emit('error', {errorCode:errorCode, abnormalPressure:abnormalPressure, abnormalFiO2:abnormalFiO2})
+		this.sendToClient('error', {errorCode:errorCode, abnormalPressure:abnormalPressure, abnormalFiO2:abnormalFiO2})
 	}
 
-	sendToClient(message) {
-		this.io.emit(message);
+	sendToClient(field, message) {
+		this.io.emit(field, message);
 	}
 }

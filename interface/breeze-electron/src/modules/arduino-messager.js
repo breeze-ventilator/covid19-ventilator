@@ -1,7 +1,7 @@
 const SerialPort = require('serialport');
 const ByteLength = require('@serialport/parser-byte-length')
 
-export default class ArduinoMessager {
+module.exports = class ArduinoMessager {
 	constructor(top) {
 		this.top = top;
 		this.port = new SerialPort(this.top.serialPort, {baudRate: this.top.baudRate});		
@@ -49,6 +49,8 @@ export default class ArduinoMessager {
 		}
 		else {
 			this.parseArduinoReadings(data);
+			
+			// if we have new parameters, send them; otherwise send 'G'
 		}
 	}
 
@@ -70,38 +72,42 @@ export default class ArduinoMessager {
 
 		console.log(key, this.toSend[key])
 
-		this.readingCount += 1;
+		this.readingCount++;
 		
 		// reading count of 5 means all readings have been added to the dict
-		if (this.readingCount == length(this.readingMapping) - 1){
+		if (this.readingCount == this.readingMapping.length-1){
 			this.top.handleNewReadings(this.toSend)
+			this.readingCount = 0;
 		}
 	}
 
 	// TODO !
-	handleNewParameters(newParameters){
-		let buf = Buffer.alloc(this.numParameters);
+	handleNewParameters(newParameters) {
+		this.newParameters = newParameters;
+		if (this.connected) {
+			let buf = Buffer.alloc(this.numParameters);
 
-		// push "P" and checksum params to buffer
-		buf.write('P', 0, 1) // offset 0, length 1
-		buf.writeInt8(0, 1) // write the number 0, offset 1
+			// push "P" and checksum params to buffer
+			buf.write('P', 0, 1) // offset 0, length 1
+			buf.writeUInt8(0, 1) // write the number 0, offset 1
 
-		// buffer offset of 2 for the 2 params already written
-		let bufOffset = 2;
-		for (let key in newParameters.keys()) {
-			if(key == "mode") {
-				// change from string to 1,2,3 depending on mode
-				buf.writeInt8(this.modes.indexOf(newParameters[key]) + 1, bufOffset)
+			// buffer offset of 2 for the 2 params already written
+			let bufOffset = 2;
+			for (let key in newParameters.keys()) {
+				if(key == "mode") {
+					// change from string to 1,2,3 depending on mode
+					buf.writeUInt8(this.modes.indexOf(newParameters[key]) + 1, bufOffset)
+				}
+				else {
+					buf.writeUInt8(newParameters[key], bufOffset)
+				}
+				bufOffset++;
 			}
-			else{
-				buf.writeInt8(newParameters[key], bufOffset)
-			}
-			bufOffset += 1;
+
+			// lastly, write the new line charcter
+			buf.write('\n', bufOffset, 1);
+			this.port.write(buf)	
 		}
-
-		// lastly, write the new line charcter
-		buf.write('\n', bufOffset, 1);
-		this.port.write(buf)
 	}
 
 	// TODO !
