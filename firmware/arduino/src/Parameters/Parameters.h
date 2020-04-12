@@ -11,30 +11,30 @@ class Parameters {
 
         uint8_t currentMode;
         uint8_t currentFiO2;
-        uint8_t currentInspiratoryTime;
-        uint8_t currentMaxExpiratoryTime;
-        uint8_t currentInspiratoryPressure;
-        uint8_t currentPEEP;
+        uint16_t currentInspiratoryTime;
+        uint16_t currentMaxExpiratoryTime;
+        uint16_t currentInspiratoryPressure;
+        uint16_t currentPEEP;
         uint8_t currentSensitivity;
         uint8_t currentApneaTime;
         uint16_t currentRiseTime;
         uint8_t currentFlowCyclingOffPercentage;
-        uint8_t currentHighInspiratoryPressureAlarm;
-        uint8_t currentLowExpiratoryPressureAlarm;
+        uint16_t currentHighInspiratoryPressureAlarm;
+        uint16_t currentLowExpiratoryPressureAlarm;
     
     private:
         uint8_t _newMode;
         uint8_t _newFiO2;
-        uint8_t _newInspiratoryTime;
-        uint8_t _newMaxExpiratoryTime;
-        uint8_t _newInspiratoryPressure;
-        uint8_t _newPEEP;
+        uint16_t _newInspiratoryTime;
+        uint16_t _newMaxExpiratoryTime;
+        uint16_t _newInspiratoryPressure;
+        uint16_t _newPEEP;
         uint8_t _newSensitivity;
         uint8_t _newApneaTime;
         uint16_t _newRiseTime;
         uint8_t _newFlowCyclingOffPercentage;
-        uint8_t _newHighInspiratoryPressureAlarm;
-        uint8_t _newLowExpiratoryPressureAlarm;
+        uint16_t _newHighInspiratoryPressureAlarm;
+        uint16_t _newLowExpiratoryPressureAlarm;
 
 };
 

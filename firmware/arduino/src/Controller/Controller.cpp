@@ -28,23 +28,23 @@ void Controller::startArduinoAlarm() {
   alarm.startAlarm();
 }
 
-void Controller::inhalationControl(Data &data, Parameters &parameters) {
+void Controller::inhalationControl(Data &data, Parameters &parameters, State &state) {
   // oxygenControl.control(100);
   // oxygenControl.control(random(100));
   // oxygenControl(data, parameters, state);
 
   //  airControl(parameters);
-  float setPressure = (float) parameters.currentPEEP + parameters.currentInspiratoryPressure; //TODO: Check units with below
+  float setPressure = state.desiredPressure; //TODO: Check units with below
   float actualPressure = data.getMainPressureAverageForPID();
-  // blowerControl.control(setPressure, actualPressure);
-  blowerControl.beQuiet();
+  blowerControl.control(setPressure, actualPressure);
+  // blowerControl.beQuiet();
 }
 
 void Controller::exhalationControl(Data &data, Parameters &parameters) {
   float setPressure = (float) parameters.currentPEEP;
   float actualPressure = data.getMainPressureAverageForPID();
-  blowerControl.beQuiet();
-  // blowerControl.control(setPressure, actualPressure);
+  blowerControl.control(setPressure, actualPressure);
+  // blowerControl.beQuiet();
 }
 
 // void Controller::airControl(Parameters parameters) {

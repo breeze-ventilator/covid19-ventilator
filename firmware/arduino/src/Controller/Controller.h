@@ -23,7 +23,7 @@ class Controller {
         int init();
         void stopArduinoAlarm();
         void startArduinoAlarm();
-        void inhalationControl(Data &data, Parameters &parameters);
+        void inhalationControl(Data &data, Parameters &parameters, State &state);
         void exhalationControl(Data &data, Parameters &parameters);
     private:
         // int isTimeToControlOxygen();

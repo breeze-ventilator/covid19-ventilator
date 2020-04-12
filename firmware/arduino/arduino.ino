@@ -37,52 +37,46 @@ void setup() {
   // }
   parameters.currentMode = PRESSURE_CONTROL_MODE;
   parameters.currentFiO2 = 10;
-  parameters.currentInspiratoryTime = 1000;
-  parameters.currentMaxExpiratoryTime = 1500;
-  parameters.currentInspiratoryPressure = ;
-  parameters.currentPEEP = ;
-  parameters.currentSensitivity = ;
-  parameters.currentApneaTime = ;
-  parameters.currentFlowCyclingOffPercentage = ;
-  parameters.currentRiseTime = ;
-  parameters.currentHighInspiratoryPressureAlarm = ;
-  parameters.currentLowExpiratoryPressureAlarm = ;
-
+  parameters.currentInspiratoryTime = 5000;
+  parameters.currentMaxExpiratoryTime = 5000;
+  parameters.currentInspiratoryPressure = 150; // mm H2O
+  parameters.currentPEEP = 50; // mm H2O
+  parameters.currentRiseTime = 100; // ms
 }
 
 void loop() {
   // Check for Params 
-  if (piCommunication.isDataAvailable()) {
-    String receivedString = piCommunication.getDataFromPi();
+  // if (piCommunication.isDataAvailable()) {
+  //   String receivedString = piCommunication.getDataFromPi();
 
-    if (piCommunication.doesMessageContainNewParameters(receivedString)) {
-      parameters.getNewParameters(receivedString);
-    }
-    else if (piCommunication.doesMessageTellUsThatPiIsAwake(receivedString)) {
-      // Pi is awake, should alarm if it hasn't been awake for a while
-    }
-  }
+  //   if (piCommunication.doesMessageContainNewParameters(receivedString)) {
+  //     parameters.getNewParameters(receivedString);
+  //   }
+  //   else if (piCommunication.doesMessageTellUsThatPiIsAwake(receivedString)) {
+  //     // Pi is awake, should alarm if it hasn't been awake for a while
+  //   }
+  // }
 
   sensors.readSensorsIfAvailableAndSaveSensorData(data);
 
   state.updateState(parameters);
 
   // only update parameters when breath is over
-  if (parameters.newParamsHaveArrived && state.breathCompleted) {
-    parameters.updateCurrentParameters();
-  }
+  // if (parameters.newParamsHaveArrived && state.breathCompleted) {
+  //   parameters.updateCurrentParameters();
+  // }
 
   // breathing cycle
   if (state.breathingStage == INHALATION_STAGE) {
-    controller.inhalationControl(data, parameters);
+    controller.inhalationControl(data, parameters, state);
   }
   else if (state.breathingStage == EXHALATION_STAGE) {
     controller.exhalationControl(data, parameters);
   }
 
-  if (piCommunication.isTimeToSendDataToPi()) { // need to make sure pressure and flow are BOTH full
-    piCommunication.sendDataToPi(data, state);
-  }
+  // if (piCommunication.isTimeToSendDataToPi()) { // need to make sure pressure and flow are BOTH full
+  //   piCommunication.sendDataToPi(data, state);
+  // }
     
   if (state.breathCompleted) {
     data.resetTidalVolume();
