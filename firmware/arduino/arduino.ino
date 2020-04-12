@@ -45,17 +45,14 @@ void setup() {
 }
 
 void loop() {
-  // Check for Params 
-  // if (piCommunication.isDataAvailable()) {
-  //   String receivedString = piCommunication.getDataFromPi();
-
-  //   if (piCommunication.doesMessageContainNewParameters(receivedString)) {
-  //     parameters.getNewParameters(receivedString);
-  //   }
-  //   else if (piCommunication.doesMessageTellUsThatPiIsAwake(receivedString)) {
-  //     // Pi is awake, should alarm if it hasn't been awake for a while
-  //   }
-  // }
+  // Check for Params
+  if (piCommunication.isPiSendingUsNewParameters()) {
+    String receivedString = piCommunication.getParametersFromPi();
+    parameters.getNewParameters(receivedString);
+  }
+  else if (piCommunication.isPiTellingUsThatItsAwake()) {
+    // Pi is awake, should alarm if it hasn't been awake for a while
+  }
 
   sensors.readSensorsIfAvailableAndSaveSensorData(data);
 
