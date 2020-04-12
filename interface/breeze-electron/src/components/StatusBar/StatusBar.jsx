@@ -77,6 +77,7 @@ class StatusBar extends React.Component {
     componentDidMount() {
         const self = this;
 
+        // Updates time every 1 second.
         this.interval = setInterval(function() {
             self.setState({
                 time: new Date(),
@@ -91,8 +92,6 @@ class StatusBar extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const level = <div class="level"></div>;
-
 
         return(
 
