@@ -9,20 +9,20 @@ export default class Messager {
 		this.socket.emit('parameterChange', params)
 	}
 
-    pressureListener(cb){
-        this.socket.on('pressure', pressure => cb(pressure))
-    }
-
     tidalVolumeListener(cb){
-        this.socket.on('tidalVolume', tidalVolume => cb(tidalVolume))
+        this.socket.on('tidalVolume', tidalVolume => cb('tidalVolume', tidalVolume))
     }
 
     batteryVoltageListener(cb){
-        this.socket.on('batteryVoltage', batteryVoltage => cb(batteryVoltage))
+        this.socket.on('batteryVoltage', batteryVoltage => cb('batteryVoltage',batteryVoltage))
+    }
+
+    batteryPercentageListener(cb) {
+        this.socket.on('batteryPercentage', batteryPercentage => cb('batteryPercentage', batteryPercentage))
     }
 
     errorListener(cb){
-        // TODO: Finish error listeners for specific errors.
+       this.socket.on('error', (errorCode, abPressure, abFiO2) => cb('error', errorCode, abPressure, abFiO2))
     }
 
     sampleTidalVolumeDataListener(cb){
