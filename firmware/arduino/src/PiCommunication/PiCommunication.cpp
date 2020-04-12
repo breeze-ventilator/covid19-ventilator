@@ -35,11 +35,9 @@ int PiCommunication::initCommunication(int pingInterval) {
   String response = Serial.readStringUntil('\n');
   
   if (response.equals("elbowbump")) {
-    Serial.write(CONNECTED_MESSAGE);
     return NO_ERROR;
   }
   else {
-    Serial.write(WRONG_RESPONSE_MESSAGE);
     return PI_SENT_WRONG_RESPONSE_ERROR;
   }
 }
