@@ -54,7 +54,7 @@ void loop() {
   //   // Pi is awake, should alarm if it hasn't been awake for a while
   // }
 
-  // sensors.readSensorsIfAvailableAndSaveSensorData(data);
+  sensors.readSensorsIfAvailableAndSaveSensorData(data);
 
   // state.updateState(parameters);
 
@@ -71,9 +71,9 @@ void loop() {
   //   controller.exhalationControl(data, parameters);
   // }
 
-  if (piCommunication.isTimeToSendDataToPi()) {
-    piCommunication.sendDataToPi(data, state);
-  }
+  // if (piCommunication.isTimeToSendDataToPi()) {
+  //   piCommunication.sendDataToPi(data, state);
+  // }
     
   // if (state.breathCompleted) {
   //   data.resetTidalVolume();
