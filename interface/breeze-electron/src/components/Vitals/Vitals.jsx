@@ -226,21 +226,21 @@ export default class Vitals extends React.Component {
         </Grid>
 
         {/*Parient Profile*/}
-        <PatientProfile />
+        {/* <PatientProfile /> */}
 
         {/* TODO: Graphs go here */} 
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
 
         {/* Footer modifiables */}
         { footer }
-        {this.state.modal.startingValue != 'Pressure Control' && this.state.modal.startingValue != "Pressure Support" &&
+        {/* {this.state.modal.startingValue != 'Pressure Control' && this.state.modal.startingValue != "Pressure Support" &&
         <SimpleModal modalClose={this.modalClose} open={this.state.modal.open}>
           <div>
             <ParameterInputCustom parameterName={this.state.modal.parameterName} setParameter={this.setParameterStateValue} modalClose = {this.modalClose} startingValue={parseInt(this.state.modal.startingValue)} step={this.state.modal.step} min={this.state.modal.min} max={this.state.modal.max} unit={this.state.modal.unit}/>
           </div>
         </SimpleModal>
-        }
-        {(this.state.modal.startingValue == 'Pressure Control' || this.state.modal.startingValue == "Pressure Support") &&
+        } */}
+        {/* {(this.state.modal.startingValue == 'Pressure Control' || this.state.modal.startingValue == "Pressure Support") &&
         <SimpleModal modalClose={this.modalClose} open={this.state.modal.open}>
           <div align="center">
           <Card align="center" style={{maxWidth: "65%"}}>
@@ -260,7 +260,7 @@ export default class Vitals extends React.Component {
           </div>
           
         </SimpleModal>
-        }
+        } */}
      </div>
     )};
 }
