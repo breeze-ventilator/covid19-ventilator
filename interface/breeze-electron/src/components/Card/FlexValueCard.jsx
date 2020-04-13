@@ -4,6 +4,8 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = theme => ({
@@ -62,7 +64,13 @@ class FlexValueCard extends React.Component {
 
         return(
             <Card className = {classNames}>
-                <CardActionArea onClick={this.openModal}>            
+                <CardActionArea onClick={this.openModal}>     
+                       
+                    {this.props.name=="FiO2" && <Button variant="contained">small</Button>}
+                    {this.props.name == "Respiratory Rate" && <Button variant="contained" style={{backgroundColor: "#eee", padding:0, minWidth:"30px"}}><ExpandLessIcon/></Button>}
+                    {this.props.name == "Inspiratory Time" && <Button variant="contained" style={{backgroundColor: "#ddd", padding:0, minWidth:"30px"}}><ExpandLessIcon/></Button>}
+                    {this.props.name == "PEEP" && <Button variant="contained" style={{backgroundColor: "#ddd", padding:0, boxShadow: "none", minWidth:"30px"}}><ExpandLessIcon/></Button>}
+                    {this.props.name == "Peak Pressure" && <Button variant="contained" style={{backgroundColor: "#eee", padding:0, boxShadow: "none"}}><ExpandLessIcon/></Button>}
                     <Typography variant="subtitle1">
                         {this.props.name}
                     </Typography>
