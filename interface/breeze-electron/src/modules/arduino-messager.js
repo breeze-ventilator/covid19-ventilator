@@ -80,8 +80,9 @@ module.exports = class ArduinoMessager {
 		if (this.readingCount == this.readingMapping.length-1){
 			this.top.handleNewReadings(this.toSend)
 			this.readingCount = 0;
+		} else {
+			this.readingCount++;
 		}
-		this.readingCount++;
 	}
 
 	// TODO !
