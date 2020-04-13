@@ -37,14 +37,14 @@
 
 class FlowSensor {
   public:
-	  FlowSensor(int i2cAddress, int offset, float scale);
+	  FlowSensor(int i2cAddress, uint32_t offset, float scale);
     void init();
     float read(int *errorType);
     
   private:
 	  int _i2cAddress;
-    int _offset;
-    int _scale;
+    uint32_t _offset;
+    float _scale;
 	  uint8_t crc8(const uint8_t data, uint8_t crc);
 };
  

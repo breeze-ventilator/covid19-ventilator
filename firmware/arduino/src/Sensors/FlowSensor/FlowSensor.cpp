@@ -10,7 +10,7 @@
 #include <Wire.h>
 #include "Arduino.h"
 //FlowSensor::FlowSensor(uint8_t i2cAddress)
-FlowSensor::FlowSensor(int i2cAddress, int offset, float scale)
+FlowSensor::FlowSensor(int i2cAddress, uint32_t offset, float scale)
 {
   _i2cAddress = i2cAddress;
 	_offset = offset;
@@ -58,7 +58,7 @@ float FlowSensor::read(int *errorType)
 	}
   // offset = 32768; we read 32704-32720
   // print float of each
-  flow = ( ((float)reading) - ((float)_offset) ) / ((float)_scale); // numbers given upon initilization
+  flow = ((float)reading - _offset) / _scale; // numbers given upon initilization
   Serial.println(flow);
 
   return flow;

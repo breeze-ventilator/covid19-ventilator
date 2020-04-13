@@ -77,7 +77,7 @@ void PiCommunication::tellPiThatWeGotParameters() {
   Serial.print("G");
 }
 
-void PiCommunication::sendDataToPi(Data &data, State &state) {
+void PiCommunication::sendDataToPi(Data &data, State &state, Parameters &parameters) {
   /*
   What we send:
   - Checksum (XOR) (8 bits)
@@ -91,8 +91,8 @@ void PiCommunication::sendDataToPi(Data &data, State &state) {
 
   */
   uint8_t checkSum = 0;
-  uint8_t batteryPercentage = 1;//(uint8_t) data.batteryPercentage;
-  uint8_t breathCompleted = 2;//(uint8_t) state.breathCompleted;
+  uint8_t batteryPercentage = parameters.currentMode; //(uint8_t) data.batteryPercentage;
+  uint8_t breathCompleted = parameters.currentFiO2; //(uint8_t) state.breathCompleted;
   uint8_t tidalVolume = 3;//;
   // if (breathCompleted) {
   //   tidalVolume = (uint8_t) round(LITERS_TO_TENTH_OF_A_LITER*data.tidalVolume); // 10th of a L/min
@@ -100,8 +100,8 @@ void PiCommunication::sendDataToPi(Data &data, State &state) {
   //   tidalVolume = 0;
   // }
 
-  uint8_t abnormalPressure = 0; // TODO: get it
-  uint8_t abnormalFiO2 = 0; // TODO: data.fiO2
+  uint8_t abnormalPressure = 4; // TODO: get it
+  uint8_t abnormalFiO2 = 5; // TODO: data.fiO2
   
   uint8_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
   

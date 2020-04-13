@@ -46,22 +46,22 @@ void setup() {
 
 void loop() {
   // Check for Params
-  // if (piCommunication.isPiSendingUsNewParameters()) {
-  //   piCommunication.getParametersFromPi();
-  //   parameters.getNewParameters(piCommunication.parametersBuffer);
-  // }
-  // else if (piCommunication.isPiTellingUsThatItsAwake()) {
-  //   // Pi is awake, should alarm if it hasn't been awake for a while
-  // }
+  if (piCommunication.isPiSendingUsNewParameters()) {
+    piCommunication.getParametersFromPi();
+    parameters.getNewParameters(piCommunication.parametersBuffer);
+  }
+  else if (piCommunication.isPiTellingUsThatItsAwake()) {
+    // Pi is awake, should alarm if it hasn't been awake for a while
+  }
 
   // sensors.readSensorsIfAvailableAndSaveSensorData(data);
 
-  // state.updateState(parameters);
+  state.updateState(parameters);
 
-  // // only update parameters when breath is over
-  // // if (parameters.newParamsHaveArrived && state.breathCompleted) {
-  // //   parameters.updateCurrentParameters();
-  // // }
+  // only update parameters when breath is over
+  if (parameters.newParamsHaveArrived && state.breathCompleted) {
+    parameters.updateCurrentParameters();
+  }
 
   // // breathing cycle
   // if (state.breathingStage == INHALATION_STAGE) {
@@ -72,7 +72,7 @@ void loop() {
   // }
 
   if (piCommunication.isTimeToSendDataToPi()) {
-    piCommunication.sendDataToPi(data, state);
+    piCommunication.sendDataToPi(data, state, parameters);
   }
     
   // if (state.breathCompleted) {

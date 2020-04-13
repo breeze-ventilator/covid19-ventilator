@@ -11,6 +11,8 @@
 #include "../Helpers/helpers.h"
 #include <math.h>
 
+#include "../Parameters/Parameters.h" // TODO: remove
+
 #define MAX_SERIAL_WAIT_TIME 1000
 #define WELCOME_MESSAGE 1
 #define CONNECTED_MESSAGE 2
@@ -22,7 +24,7 @@ class PiCommunication {
         int initCommunication(int pingInterval);
         void getParametersFromPi();
         void tellPiThatWeGotParameters();
-        void sendDataToPi(Data &data, State &state);
+        void sendDataToPi(Data &data, State &state, Parameters &paremeters);
         int isPiTellingUsThatItsAwake();
         int isPiSendingUsNewParameters();
         
