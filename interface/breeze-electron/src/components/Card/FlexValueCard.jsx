@@ -12,7 +12,7 @@ const useStyles = theme => ({
     height: "100%",
     borderRadius: 0,
     textAlign: "center",
-    margin: "dense",
+    margin: "dense"
   },
   good: {
     background: "#a5d6a7"

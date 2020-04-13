@@ -1,5 +1,11 @@
+@font-face { font-family: 'Barlow'; 
+  font-style: normal; 
+  font-weight: 300; font-display: swap; 
+  src: url(https://fonts.gstatic.com/s/barlow/v4/7cHqv4kjgoGqM7E3p-ks6Vop.ttf) format('truetype');}
+
 body {
-  background-color: #9AD1D4;
+  background-color: #14597D;
+  font-family: "Barlow"
 }
 
 .bottom {
