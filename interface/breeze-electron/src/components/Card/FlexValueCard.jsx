@@ -5,6 +5,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import '../Vitals/css/vitals.css';
+
 
 const useStyles = theme => ({
   root: {
@@ -12,7 +14,7 @@ const useStyles = theme => ({
     height: "100%",
     borderRadius: 0,
     textAlign: "center",
-    margin: "dense"
+    margin: "dense",
   },
   good: {
     background: "#a5d6a7"
@@ -63,13 +65,13 @@ class FlexValueCard extends React.Component {
         return(
             <Card className = {classNames}>
                 <CardActionArea onClick={this.openModal}>            
-                    <Typography variant="subtitle1">
+                    <Typography style={{fontFamily: "Barlow"}} variant="subtitle1">
                         {this.props.name}
                     </Typography>
-                    <Typography variant={this.props.prominence}>
+                    <Typography style={{fontFamily: "Barlow"}} variant={this.props.prominence}>
                         {this.state.value} 
                     </Typography>
-                    <Typography variant="subtitle2">
+                    <Typography style={{fontFamily: "Barlow"}} variant="subtitle2">
                         {this.props.unit}
                     </Typography>
                 </CardActionArea>
