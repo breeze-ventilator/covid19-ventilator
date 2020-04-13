@@ -14,12 +14,18 @@ module.exports = class ClientMessager {
 	handleSocketIOConnection(socket){
 		console.log('Client connected');
 
-		socket.on('parameterChange', (newParameters) => this.top.handleNewParameters(newParameters));
+		socket.on('parameterChange', (newParameters) => this.handleNewParameters(newParameters));
 		socket.on('disconnect', () => this.handleDisconnect());
 	}
 	
 	handleDisconnect() {
 		console.log('user disconnected');
+	}
+
+	// TODO: change newParameters to the params.
+	handleNewParameters(newParameters) {
+		console.log("in handle new parameters", newParameters)
+    this.top.arduino.handleNewParameters(newParameters)
 	}
 
 	/* Handlers from Arduino Data */

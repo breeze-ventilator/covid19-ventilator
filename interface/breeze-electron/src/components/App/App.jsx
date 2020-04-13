@@ -83,6 +83,7 @@ export default class App extends React.Component {
   }
 
   updateData(type, value) {
+    console.log('hellooo', type, value);
     if (type === 'tidal volume'){
       this.state.data.tidalVolume = value;
     }

@@ -18,7 +18,7 @@ export default class Messager {
     }
 
     batteryPercentageListener(cb) {
-        this.socket.on('batteryPercentage', batteryPercentage => cb('batteryPercentage', batteryPercentage))
+			this.socket.on('batteryPercentage', batteryPercentage => cb('batteryPercentage', batteryPercentage))
     }
 
     errorListener(cb){

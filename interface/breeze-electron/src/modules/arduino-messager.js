@@ -12,7 +12,7 @@ module.exports = class ArduinoMessager {
 		this.readingMapping = ["checksum", "battery percentage", "breath complete", "tidal volume", "error code", "abnormal pressure", "abnormal FiO2"]
 		this.readingCount = 0;
 		this.numParameters = 15;
-		this.newParameters = undefined;
+		this.newParametersBuffer = undefined;
 		this.modes = ["Pressure Control", "Pressure Support", "Standby"]
 
 		this.port.on('open', () => this.handlePortOpen());
@@ -50,9 +50,10 @@ module.exports = class ArduinoMessager {
 		}
 		else {
 			this.parseArduinoReadings(data);
-			if(this.newParameters && this.readingCount == 0) {
-				this.port.write(this.newParameters);
-				this.newParameters = undefined;
+
+			if (this.newParametersBuffer && this.readingCount == 0) { // data reading finished
+				this.port.write(this.newParametersBuffer);
+				this.newParametersBuffer = undefined;
 			}
 		}
 	}
@@ -74,43 +75,42 @@ module.exports = class ArduinoMessager {
 		this.toSend[key] = data.readUInt8()
 
 		console.log(key, this.toSend[key])
-
-		this.readingCount++;
 		
 		// reading count of 5 means all readings have been added to the dict
 		if (this.readingCount == this.readingMapping.length-1){
 			this.top.handleNewReadings(this.toSend)
 			this.readingCount = 0;
 		}
+		this.readingCount++;
 	}
 
 	// TODO !
 	handleNewParameters(newParameters) {
-		if (this.connected) {
-			let buf = Buffer.alloc(this.numParameters);
+		// saves buffer, but doesn't send to Pi yet
 
-			// push "P" and checksum params to buffer
-			buf.write('P', 0, 1) // offset 0, length 1
-			buf.writeUInt8(0, 1) // write the number 0, offset 1
+		let buf = Buffer.alloc(this.numParameters);
 
-			// buffer offset of 2 for the 2 params already written
-			let bufOffset = 2;
-			for (let key in newParameters.keys()) {
-				if(key == "mode") {
-					// change from string to 1,2,3 depending on mode
-					buf.writeUInt8(this.modes.indexOf(newParameters[key]) + 1, bufOffset)
-				}
-				else {
-					buf.writeUInt8(newParameters[key], bufOffset)
-				}
-				bufOffset++;
+		// push "P" and checksum params to buffer
+		buf.write('P', 0, 1) // offset 0, length 1
+		buf.writeUInt8(0, 1) // write the number 0, offset 1
+
+		// buffer offset of 2 for the 2 params already written
+		let bufOffset = 2;
+		for (let key in Object.keys(newParameters)) {
+			if(key == "mode") {
+				// change from string to 1,2,3 depending on mode
+				buf.writeUInt8(this.modes.indexOf(newParameters[key]) + 1, bufOffset)
 			}
-
-		// lastly, write the new line charcter
-		buf.write('\n', bufOffset, 1);
-
-		this.newParameters = buf;
+			else {
+				buf.writeUInt8(newParameters[key], bufOffset)
+			}
+			bufOffset++;
 		}
+
+	// lastly, write the new line charcter
+	buf.write('\n', bufOffset, 1);
+
+	this.newParametersBuffer = buf;
 	}
 
 	// TODO !

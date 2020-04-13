@@ -24,12 +24,6 @@ module.exports = class Top {
     this.client.setupIO(this.port);
   }
 
-  // TODO: change newParameters to the params.
-  handleNewParameters(newParameters){
-    console.log("in handle new parameters", newParameters)
-    this.arduino.handleNewParameters(newParameters)
-  }
-
   handleNewReadings(paramDict){
     this.client.handleNewReadings(paramDict);
   }
