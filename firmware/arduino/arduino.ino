@@ -54,7 +54,7 @@ void loop() {
     // Pi is awake, should alarm if it hasn't been awake for a while
   }
 
-  // sensors.readSensorsIfAvailableAndSaveSensorData(data);
+  sensors.readSensorsIfAvailableAndSaveSensorData(data);
 
   state.updateState(parameters);
 
@@ -63,7 +63,7 @@ void loop() {
     parameters.updateCurrentParameters();
   }
 
-  // // breathing cycle
+  // // // breathing cycle
   // if (state.breathingStage == INHALATION_STAGE) {
   //   controller.inhalationControl(data, parameters, state);
   // }

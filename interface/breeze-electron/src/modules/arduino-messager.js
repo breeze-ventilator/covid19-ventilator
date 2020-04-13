@@ -97,16 +97,16 @@ module.exports = class ArduinoMessager {
 		/*
 		Mode (0,1,2)
 		FiO2, in % O2
-		PEEP, in mm H2O
-		Inspiratory pressure (∆P), in mm H2O
+		PEEP, in cm H2O
+		Inspiratory pressure (∆P), in cm H2O
 		Sensitivity, in L/min
-		Rate if pressure control
+		Rate if pressure control, breaths per minute
 		Inspiratory time percentage if pressure control
 		Flow cycling off % if pressure support
-		Apnea time if pressure support
-		Rise time, in tenth of second
-		High inspiratory pressure alarm, in mm H2O
-		Low expiratory pressure alarm, in mm H2O
+		Apnea time if pressure support, in tenth of second
+		Rise time, in tenth of second  (default value to 1)
+		High inspiratory pressure alarm, in cm H2O
+		Low expiratory pressure alarm, in cm H2O
 		*/
 
 		let buffer = Buffer.alloc(LENGTH_OF_PARAMETER_MESSAGE);
