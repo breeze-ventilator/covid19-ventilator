@@ -151,26 +151,13 @@ export default class Vitals extends React.Component {
     return (
       <div className="mainContainer" style={{fontFamily: "Barlow"}}>
         {/* Header Observables */}
-        <Grid container direction="row">
-          <Grid item xs={12}>
-              <MainCard
-                alarm={this.isAlarming("tidalVolume")} 
-                value={this.state.data.tidalVolume}
-                unit='mL'
-                prominence="h1"
-                readableName='Tidal Volume'
-              />
-          </Grid>
-          <Grid item xs={6}>
-              <FlexValueCard
-                alarm={this.isAlarming("ie")}
-                value={"1:3"}
-                prominence="h1"
-                unit='ratio'
-                name='I:E Ratio'
-              />
-          </Grid>
-        </Grid>
+        <MainCard
+          alarm={this.isAlarming("tidalVolume")} 
+          value={this.state.data.tidalVolume}
+          prominence="h1"
+          high={14}
+          low={13}
+        />
 
         {/*Parient Profile*/}
         {/* <PatientProfile /> */}

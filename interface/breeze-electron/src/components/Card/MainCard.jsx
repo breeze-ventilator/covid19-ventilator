@@ -7,8 +7,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import ConcentricCircles from './ConcentricCircles';
 import styled from "@emotion/styled";
+import { keyframes } from '@emotion/core'
 
-const sizes = {large: 500, medium: 300};
+
+const sizes = {large: 500, medium: 380, small: 280};
 const cardWidth = 440;
 const verticalCenter = 220;
 export const MainCard = ({ value, low, high}) => {
@@ -34,19 +36,25 @@ export const MainCard = ({ value, low, high}) => {
 
     return(
         <Container>          
-            <div style={{position: "absolute", 
+            <CircleContainer style={{
                 left: (cardWidth/2 - radius),
                 top: (verticalCenter - radius)
                 }}>
                 <ConcentricCircles 
-                    fill={size !== "medium" && "red"}
+                    // fill={size !== "medium" && "red"}
                     diameter={diameter}/>
-            </div>
-            <div style={{textAlign: "center"}}>
-                <div style={{backgroundColor: "white", borderRadius: 30}}>
-                    hello
+            </CircleContainer>
+            <Data>
+                <VolumeDisp>
+                <div>
+                <ValueText>
+                    {value}
+                </ValueText>
+                L
                 </div>
-            </div>
+                Tidal Volume
+                </VolumeDisp>
+            </Data>
             {/* <Typography variant="subtitle1">
                 {this.props.readableName}
             </Typography>
@@ -70,4 +78,33 @@ const Container = styled.div`
     position: relative;
     box-shadow: 0px 15px 40px rgba(58, 140, 171, 0.19);
     border-radius: 15px;
+    margin-bottom: 40px;
+`
+const fadeIn = keyframes`
+    from { opacity: 0.5; } 
+`
+const CircleContainer = styled.div`
+    position: absolute;
+    animation: ${fadeIn} 1s infinite alternate;
+`
+const Data = styled.div`
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    min-height: 180px;
+    min-width: 180px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`
+const VolumeDisp = styled.div`
+    padding: 20px;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+`
+
+const ValueText = styled.span`
+    font-size: 90px;
 `
