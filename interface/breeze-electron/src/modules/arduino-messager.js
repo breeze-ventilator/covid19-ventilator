@@ -90,7 +90,7 @@ module.exports = class ArduinoMessager {
 	handleNewParameters(newParameters) {
 		console.log(newParameters);
 		
-		this.newParametersBuffer = loadParametersIntoBuffer(newParameters);
+		this.newParametersBuffer = this.loadParametersIntoBuffer(newParameters);
 	}
 
 	loadParametersIntoBuffer(newParameters) {

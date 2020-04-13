@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const http = require('http');
 
-const ArduinoMessager = require('./modules/arduino-messager.js');
+// const ArduinoMessager = require('./modules/arduino-messager.js');
 const ClientMessager = require('./modules/client-messager.js');
 
 module.exports = class Top {
@@ -19,7 +19,7 @@ module.exports = class Top {
     // this.httpServer = http.createServer(this.expressApp);
 
     this.client = new ClientMessager(this);
-    this.arduino = new ArduinoMessager(this);
+    // this.arduino = new ArduinoMessager(this);
 
     this.client.setupIO(this.port);
   }
