@@ -27,7 +27,7 @@ int PiCommunication::initCommunication(int pingInterval) {
   // Arduino sends message to pi until it gets a response
   while (Serial.available() <= 0) { // Serial.available says how many bytes available to read
     // Will send bytes
-    Serial.print("elbowbump\n");
+    Serial.write(WELCOME_MESSAGE);
     delay(pingInterval);
   }
 
@@ -35,12 +35,10 @@ int PiCommunication::initCommunication(int pingInterval) {
   String response = Serial.readStringUntil('\n');
   
   if (response.equals("elbowbump")) {
-    Serial.print("connected\n");
     return NO_ERROR;
   }
   else {
-    Serial.print("wrongmsg\n");
-    return PI_SENT_WRONG_CODE_ERROR;
+    return PI_SENT_WRONG_RESPONSE_ERROR;
   }
 }
 
@@ -49,43 +47,39 @@ int PiCommunication::isTimeToSendDataToPi() {
 }
 
 int PiCommunication::isPiSendingUsNewParameters() {
-  byte[] buffer;
-
-  if (Serial.available() == PARAMETER_BYTE_LENGTH) {
+  if (Serial.available() == PARAMETER_BYTE_LENGTH + 1) { //  // +1 for first descriptive character
     // read the whole thing and check first character
-    Serial.readBytes(buffer, PARAMETER_BYTE_LENGTH);
+    char firstByte = Serial.read();
+    if (firstByte == 'P') {
+      return 1;
+    }
   }
   return 0;
 }
 
-
 int PiCommunication::isPiTellingUsThatItsAwake() {
-  if  (Serial.available() == PI_AWAKE_BYTE_LENGTH){
-    // read and check
+  if (Serial.available() == 1) {
+    // Read and check first character
+    char firstByte = Serial.read();
+    if (firstByte == 'G') {
+      return 1;
+    }
   }
-  return 0
+  return 0;
 }
 
-int PiCommunication::isDataAvailable() {
-  if (Serial.available() <= 0) {
-    return 0;
-  }
-  else {
-    return 1;
-  }
-}
-
-String PiCommunication::getDataFromPi() {
-  String receivedString = Serial.readStringUntil('\n'); // reads up-to-but-not-including '\n' char
-  tellPiThatWeGotParameters();
-  return receivedString;
+void PiCommunication::getParametersFromPi() {
+  Serial.readBytes(parametersBuffer, PARAMETER_BYTE_LENGTH);
+  uint8_t msg = 7;
+  Serial.write(msg);
+  // tellPiThatWeGotParameters();
 }
 
 void PiCommunication::tellPiThatWeGotParameters() {
-  Serial.print("G");
+  // Serial.print("G");
 }
 
-void PiCommunication::sendDataToPi(Data &data, State &state) {
+void PiCommunication::sendDataToPi(Data &data, State &state, Parameters &parameters) {
   /*
   What we send:
   - Checksum (XOR) (8 bits)
@@ -98,20 +92,20 @@ void PiCommunication::sendDataToPi(Data &data, State &state) {
   - Send “\n”
 
   */
-  uint16_t checkSum = 0;
-  uint16_t batteryPercentage = (uint16_t) data.batteryPercentage;
-  uint16_t breathCompleted = (uint16_t) state.breathCompleted;
-  uint32_t tidalVolume;
-  if (breathCompleted) {
-    tidalVolume = (uint16_t) round(LITERS_TO_MILLILITERS*data.tidalVolume); // mL/min
-  } else {
-    tidalVolume = 0;
-  }
+  uint8_t checkSum = 0;
+  uint8_t batteryPercentage = parameters.currentMode; //(uint8_t) data.batteryPercentage;
+  uint8_t breathCompleted = parameters.currentFiO2; //(uint8_t) state.breathCompleted;
+  uint8_t tidalVolume = 3;//;
+  // if (breathCompleted) {
+  //   tidalVolume = (uint8_t) round(LITERS_TO_TENTH_OF_A_LITER*data.tidalVolume); // 10th of a L/min
+  // } else {
+  //   tidalVolume = 0;
+  // }
 
-  uint16_t abnormalPressure = 0; // TODO: get it
-  uint16_t abnormalFiO2 = 0; // TODO: data.fiO2
+  uint8_t abnormalPressure = 4; // TODO: get it
+  uint8_t abnormalFiO2 = 5; // TODO: data.fiO2
   
-  uint16_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
+  uint8_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
   
   Serial.write(checkSum);
   Serial.write(batteryPercentage);
@@ -124,23 +118,23 @@ void PiCommunication::sendDataToPi(Data &data, State &state) {
   _lastSentDataTime = millis();
 }
 
-int PiCommunication::doesMessageContainNewParameters(String receivedString) {
-  if (receivedString.charAt(0) == 'P') {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
+// int PiCommunication::doesMessageContainNewParameters(String receivedString) {
+//   if (receivedString.charAt(0) == 'P') {
+//     return 1;
+//   }
+//   else {
+//     return 0;
+//   }
+// }
 
-int PiCommunication::doesMessageTellUsThatPiIsAwake(String receivedString) {
-  if (receivedString.charAt(0) == 'G') {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
+// int PiCommunication::doesMessageTellUsThatPiIsAwake(String receivedString) {
+//   if (receivedString.charAt(0) == 'G') {
+//     return 1;
+//   }
+//   else {
+//     return 0;
+//   }
+// }
 
 // if (curentParams.mode == PRESSURE_SUPPORT_MODE && state.isStartingNewBreath) {
 //     // we will re-set system time every breath cycle is complete and when

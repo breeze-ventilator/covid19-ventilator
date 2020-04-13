@@ -5,7 +5,7 @@
 class Parameters {
     public:
         Parameters();
-        void getNewParameters(String receivedString);
+        void getNewParameters(uint8_t parametersBuffer[PARAMETER_BYTE_LENGTH]);
         void updateCurrentParameters();
         bool newParamsHaveArrived;
 
