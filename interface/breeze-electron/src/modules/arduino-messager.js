@@ -110,7 +110,7 @@ module.exports = class ArduinoMessager {
 		*/
 
 		let buffer = Buffer.alloc(LENGTH_OF_PARAMETER_MESSAGE);
-		buffer.write('P');
+		buffer.write('P', 1);
 		
 		let checksum = 0;
 		buffer.writeUInt8(checksum, 1); // offset of 1
