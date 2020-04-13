@@ -16,6 +16,7 @@ export default class App extends React.Component {
     super(props);
     this.numPoints = d3Config.numDataPoints;
     this.isMount = false;
+    this.modes = ["Standby", "Pressure Control", "Pressure Support"];
     this.state = {
       data: {
         tidalVolume: 5,
@@ -24,17 +25,15 @@ export default class App extends React.Component {
       },
       parameters: {
         mode: "Pressure Control", // one of Pressure Control, Pressure Support, Standby
-        fiO2: 80, // Control + Support
-        peep: 20, // Control + Support
-        peakPressure: 20, // Control + Support
-        sensitivity: 80, // Support
-        respiratoryRate: 0, // Control
-        inspiratoryTime: 0, // Control
-        flow: 0, //Support
-        apneaTime: 20, // Support
-        riseTime: 0,
-        highInspAlarm:0,
-        lowExpAlarm:0
+        fiO2: 80, // Control + Support (%)
+        peep: 20, // Control + Support (cm H2O)
+        inspiratoryPressure: 20, // Control + Support (cm H2O)
+        sensitivity: 80, // Support (L/min)
+        respiratoryRate: 0, // Control (breaths per minute)
+        inspiratoryTime: 0, // Control (%)
+        flowCyclingOff: 0, //Support (%)
+        apneaTime: 20, // Support (0.1, 0.2, .. will always be a tenth of a second.)
+        riseTime: 0, // ??? (0.1, 0.2, .. will always be a tenth of a second.) default: 0.1
       },
       alarms: {
         minuteVentilation: {
@@ -42,8 +41,8 @@ export default class App extends React.Component {
           max: 10
         },
         pressure: {
-          min: 0,
-          max: 35
+          lowExpiratoryPressure: 0, // low expiratory pressure
+          highInspiratoryPressure: 35 // high inspiratory pressure
         }
       },
       currentlyAlarming: [],
@@ -58,16 +57,35 @@ export default class App extends React.Component {
     this.setAlarms = this.setAlarms.bind(this);
     this.setCurrentlyAlarming = this.setCurrentlyAlarming.bind(this);
     this.doneSetup = this.doneSetup.bind(this);
-    this.messager.sendParametersToBackend(this.state.parameters);
+
+    this.sendToArduino = this.sendToArduino.bind(this);
   }
 
   setParameters(parameters){
     this.state.parameters = parameters;
     this.setState(this.state);
-    console.log("IN APP: ")
-    console.log(this.state)
+  }
 
-    // TODO: SHIP with messager to arduino! 
+  sendToArduino(){
+    let toSend = {};
+  
+    // Ship all parameters.
+    toSend.mode = this.modes.indexOf(parameters.mode);
+    toSend.fiO2 = this.state.parameters.fiO2;
+    toSend.peep = this.state.parameters.peep;
+    toSend.inspiratoryPressure = this.state.parameters.inspiratoryPressure;
+    toSend.sensitivity = this.state.parameters.sensitivity;
+    toSend.respiratoryRate = this.state.parameters.respiratoryRate;
+    toSend.inspiratoryTime = this.state.parameters.inspiratoryTime;
+    toSend.flowCyclingOff = this.state.parameters.flowCyclingOff;
+    toSend.apneaTime = this.state.parameters.apneaTime;
+    toSend.riseTime = this.state.parameters.riseTime;
+
+    // Alarms.
+    toSend.highInspiratoryPressureAlarm = this.state.alarms.pressure.highInspiratoryPressure;
+    toSend.lowExpiratoryPressureAlarm = this.state.alarms.pressure.lowExpiratoryPressure;
+    
+    this.messager.sendParametersToBackend(toSend);
   }
 
   componentDidMount(){
@@ -114,7 +132,7 @@ export default class App extends React.Component {
         />
         <Switch>
         <Route path="/diagnostics">
-          <Vitals allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
+          <Vitals sendToArduino={this.sendToArduino} allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
         </Route>
         <Route path="/alarms">
           <Alarms

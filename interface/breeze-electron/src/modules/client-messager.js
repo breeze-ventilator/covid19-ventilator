@@ -24,8 +24,7 @@ module.exports = class ClientMessager {
 
 	// TODO: change newParameters to the params.
 	handleNewParameters(newParameters) {
-		console.log("in handle new parameters", newParameters)
-    this.top.arduino.handleNewParameters(newParameters)
+    	this.top.arduino.handleNewParameters(newParameters)
 	}
 
 	/* Handlers from Arduino Data */
