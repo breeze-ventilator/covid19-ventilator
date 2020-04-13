@@ -64,7 +64,7 @@ class FlexValueCard extends React.Component {
             <Card className = {classNames}>
                 <CardActionArea onClick={this.openModal}>            
                     <Typography variant="subtitle1">
-                        {this.props.name}
+                        {this.props.readableName}
                     </Typography>
                     <Typography variant={this.props.prominence}>
                         {this.state.value} 
