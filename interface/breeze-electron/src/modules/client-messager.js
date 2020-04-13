@@ -13,8 +13,6 @@ module.exports = class ClientMessager {
     
 	handleSocketIOConnection(socket){
 		console.log('Client connected');
-
-		socket.on('parameterChange', (newParameters) => this.top.handleNewParameters(newParameters));
 		socket.on('disconnect', () => this.handleDisconnect());
 	}
 	
@@ -23,36 +21,31 @@ module.exports = class ClientMessager {
 	}
 
 	/* Handlers from Arduino Data */
-	handleNewReadings(pressure, tidalVolume, batteryPercentage, breathCompleted, error){
-		if(error != 0){
-			handleError(error);
+	handleNewReadings(paramDict){
+		if(paramDict["error code"] != 0){
+			this.handleError(paramDict["error code"], paramDict["abnormal pressure"], paramDict["abnormal FiO2"]);
 		}
-		handlePressure(pressure);
-		handleBatteryPercentage(batteryPercentage);
-		handleBreathCompleted(breathCompleted, tidalVolume); // Sends tidal volume if breath complete = 1;
+		this.handleBatteryPercentage(paramDict["battery percentage"]);
+		this.handleBreathCompleted(paramDict["breath complete"], paramDict["tidal volume"]); // Sends tidal volume if breath complete = 1;
 	}
 
 	// tidalVolume = {time: DateTime, volume: volume}
 	// TODO: Aggregate values depending on freq., for frontend ?
-	handlePressure(pressure){
-		socket.emit('pressure', { pressure: pressure });
-	}
-
 	handleBreathCompleted(breathCompleted, tidalVolume){
 		if(breathCompleted == 1){
-			socket.emit('tidalVolume', { tidalVolume: tidalVolume });
+			this.sendToClient('tidalVolume', { tidalVolume: tidalVolume });
 		}
 	}
 
 	handleBatteryPercentage(batteryPercentage){
-		socket.emit('batteryPercentage', { batteryPercentage: batteryPercentage});
+		this.sendToClient('batteryPercentage', { batteryPercentage: batteryPercentage});
 	}
 	
-	handleError(error){
-		// Depending on error, either send to frontend or nothing.
+	handleError(errorCode, abnormalPressure, abnormalFiO2){
+		this.sendToClient('error', {errorCode:errorCode, abnormalPressure:abnormalPressure, abnormalFiO2:abnormalFiO2})
 	}
 
-	sendToClient(message) {
-		this.io.emit(message);
+	sendToClient(field, message) {
+		this.io.emit(field, message);
 	}
 }

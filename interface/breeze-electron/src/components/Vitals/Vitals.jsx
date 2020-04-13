@@ -11,6 +11,20 @@ import ParameterInputCustom from '../ParameterInput/ParameterInputCustom';
 import PatientProfile from '../PatientProfile/PatientProfile';
 
 
+const parameterInfo = {
+  fiO2: {readableName: "FiO2", unit: "%"},
+  peep: {readableName: "PEEP", unit: "cm H2O"},
+  // peakPressure: {readableName: "Peak pressure", unit: "L"},
+  inspiratoryPressure: {readableName: "Inspiratory pressure", unit: "cm H2O"},
+  inspiratoryTime: {readableName: "Inspiratory time", unit: "%"},
+  respiratoryRate: {readableName: "Respiratory rate", unit: "bpm"},
+  sensitivity: {readableName: "Sensitivity", unit: "L/min"},
+  apneaTime: {readableName: "Apnea time", unit: "s"},
+  flowCyclingOff: {readableName: "Flow cycling off", unit: ""}
+};
+const controlParams = ["fiO2", "peep", "inspiratoryPressure", "inspiratoryTime", "respiratoryRate"];
+const supportParams = ["fiO2", "peep", "inspiratoryPressure", "sensitivity", "apneaTime", "flowCyclingOff"];
+
 export default class Vitals extends React.Component {
   constructor(props) {
     super(props);
@@ -19,16 +33,7 @@ export default class Vitals extends React.Component {
         tidalVolume: 5,
         pressure: 5,
       },
-      parameters: {
-        mode: this.props.allParameters.mode, // one of Pressure Control, Pressure Support, Standby
-        fiO2: this.props.allParameters.fiO2, // Control + Support
-        peep: this.props.allParameters.peep, // Control + Support
-        peakPressure: this.props.allParameters.peakPressure, // Control + Support
-        sensitivity: this.props.allParameters.sensitivity, // Support
-        apneaTime: this.props.allParameters.apneaTime, // Support
-        inspiratoryTime: this.props.allParameters.inspiratoryTime, // Control
-        respiratoryRate: this.props.allParameters.respiratoryRate // Control
-      },
+      parameters: {...this.props.allParameters},
       modal: {
         open: false,
         parameterName: '',
@@ -59,33 +64,13 @@ export default class Vitals extends React.Component {
   }
 
   setParameterStateValue(parameterName,value){
-    if(parameterName == 'FiO2'){
-      this.state.parameters.fiO2 = value;
-    }
-    else if(parameterName == 'PEEP'){
-      this.state.parameters.peep = value;
-    }
-    else if(parameterName == 'Peak Pressure'){
-      this.state.parameters.peakPressure = value;
-    }
-    else if(parameterName == 'Sensitivity'){
-      this.state.parameters.sensitivity = value;
-    }
-    else if(parameterName == 'Apnea Time'){
-      this.state.parameters.apneaTime = value;
-    }
-    else if(parameterName == 'Inspiratory Time'){
-      this.state.parameters.inspiratoryTime = value;
-    }
-    else if(parameterName =='Respiratory Rate'){
-      this.state.parameters.respiratoryRate = value;
-    }
-    this.setState(this.state);
-
+    //TODO: call this somewhere
+    this.setState({parameters: {...this.state.parameters, [parameterName]: value}});
     // TODO: Actually update parameters as well for arduino.
   }
 
   setModalStateValues(parameterName, value, unit){
+    // TODO: this is bad, never mutate state
     if(parameterName == 'FiO2'){
       this.state.modal.step = 1;
       this.state.modal.min = 0;
@@ -146,61 +131,22 @@ export default class Vitals extends React.Component {
   }
 
   render() {
-    let footer;
-    if (this.state.parameters.mode == "Pressure Control") {
-      footer = (
+    const parameterNames = this.state.parameters.mode == "Pressure Control"
+      ? controlParams
+      : supportParams;
+    let footer = (
         <Grid container className="bottom">
-          <Grid container direction="row">
+            {parameterNames.map((name) => 
             <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value="Pressure Control" unit=" " prominence="h4" name="Mode"/>
-            </Grid>
-            <Grid item xs={4}>
-              <FlexValueCard alarm={this.isAlarming("fiO2")} onClickHandler={this.setModalStateValues} value={this.state.parameters.fiO2} unit="%" prominence="h2" name="FiO2" />
-            </Grid>
-            <Grid item xs={4}>
-              <FlexValueCard alarm={this.isAlarming("respiratoryRate")} onClickHandler={this.setModalStateValues} value={this.state.parameters.respiratoryRate} unit="" prominence="h2" name="Respiratory Rate" />
-            </Grid>
-          </Grid>
-          <Grid container direction="row">
-            <Grid item xs={4}>
-              <FlexValueCard alarm={this.isAlarming("peep")} onClickHandler={this.setModalStateValues} value={this.state.parameters.peep} unit="cm H2O" prominence="h2" name="PEEP" />
-            </Grid>
-            <Grid item xs={4}>
-              <FlexValueCard alarm={this.isAlarming("inspiratoryTime")} onClickHandler={this.setModalStateValues} value={this.state.parameters.inspiratoryTime} unit="s" prominence="h2" name="Inspiratory Time" />
-            </Grid>
-            <Grid item xs={4}>
-              <FlexValueCard alarm={this.isAlarming("peakPressure")} onClickHandler={this.setModalStateValues} value={this.state.parameters.peakPressure} unit="cm H2O" prominence="h2" name="Peak Pressure" />
-            </Grid>
-          </Grid>
+              <FlexValueCard 
+                alarm={this.isAlarming(name)}
+                value={this.state.parameters[name]}
+                prominence="h2"
+                readableName={parameterInfo[name].readableName} 
+                unit={parameterInfo[name].unit}
+              />
+            </Grid>)}
         </Grid>);
-    } else if(this.state.parameters.mode == "Pressure Support") {
-      footer = (
-        <Grid container className="bottom">
-          <Grid container direction="row">
-            <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value="Pressure Support" unit=" " prominence="h4" name="Mode" />
-            </Grid>
-            <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value={this.state.parameters.fiO2} unit="%" prominence="h2" name="FiO2" />
-            </Grid>
-            <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value={this.props.allParameters.sensitivity} unit="" prominence="h2" name="Sensitivity" />
-            </Grid>
-          </Grid>
-          <Grid container direction="row">
-            <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value={this.state.parameters.peep} unit="cm H2O" prominence="h2" name="PEEP" />
-            </Grid>
-            <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value={this.state.parameters.apneaTime} unit="s" prominence="h2" name="Apnea Time" />
-            </Grid>
-            <Grid item xs={4}>
-              <FlexValueCard onClickHandler={this.setModalStateValues} value={this.state.parameters.peakPressure} unit="cm H2O" prominence="h2" name="Peak Pressure" />
-            </Grid>
-          </Grid>
-        </Grid>
-      )};
- 
     return (
       <div className="mainContainer" style={{fontFamily: "Barlow"}}>
         {/* Header Observables */}

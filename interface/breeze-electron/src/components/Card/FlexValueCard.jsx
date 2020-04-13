@@ -72,7 +72,7 @@ class FlexValueCard extends React.Component {
                     {this.props.name == "PEEP" && <Button variant="contained" style={{backgroundColor: "#ddd", padding:0, boxShadow: "none", minWidth:"30px"}}><ExpandLessIcon/></Button>}
                     {this.props.name == "Peak Pressure" && <Button variant="contained" style={{backgroundColor: "#eee", padding:0, boxShadow: "none"}}><ExpandLessIcon/></Button>}
                     <Typography variant="subtitle1">
-                        {this.props.name}
+                        {this.props.readableName}
                     </Typography>
                     <Typography variant={this.props.prominence}>
                         {this.state.value} 

@@ -16,20 +16,24 @@ export default class App extends React.Component {
     super(props);
     this.numPoints = d3Config.numDataPoints;
     this.isMount = false;
+    this.modes = ["Standby", "Pressure Control", "Pressure Support"];
     this.state = {
       data: {
         tidalVolume: 5,
-        pressure: 5
+        pressure: 5, 
+        batteryPercentage:"75%"
       },
       parameters: {
         mode: "Pressure Control", // one of Pressure Control, Pressure Support, Standby
-        fiO2: 80, // Control + Support
-        peep: 20, // Control + Support
-        peakPressure: 20, // Control + Support
-        sensitivity: 80, // Support
-        apneaTime: 20, // Support
-        inspiratoryTime: 0, // Control
-        respiratoryRate: 0 // Control
+        fiO2: 80, // Control + Support (%)
+        peep: 20, // Control + Support (cm H2O)
+        inspiratoryPressure: 20, // Control + Support (cm H2O)
+        sensitivity: 80, // Support (L/min)
+        respiratoryRate: 0, // Control (breaths per minute)
+        inspiratoryTime: 0, // Control (%)
+        flowCyclingOff: 0, //Support (%)
+        apneaTime: 20, // Support (0.1, 0.2, .. will always be a tenth of a second.)
+        riseTime: 0, // ??? (0.1, 0.2, .. will always be a tenth of a second.) default: 0.1
       },
       alarms: {
         minuteVentilation: {
@@ -37,8 +41,8 @@ export default class App extends React.Component {
           max: 10
         },
         pressure: {
-          min: 0,
-          max: 35
+          lowExpiratoryPressure: 0, // low expiratory pressure
+          highInspiratoryPressure: 35 // high inspiratory pressure
         }
       },
       currentlyAlarming: [],
@@ -46,22 +50,42 @@ export default class App extends React.Component {
     }
     this.messager = new Messager(5000);
 
-    this.messager.sampleTidalVolumeDataListener(this.updateData.bind(this));
-    this.messager.samplePressureDataListener(this.updateData.bind(this));
+    this.messager.tidalVolumeListener(this.updateData.bind(this));
+    this.messager.batteryPercentageListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
     this.setAlarms = this.setAlarms.bind(this);
     this.setCurrentlyAlarming = this.setCurrentlyAlarming.bind(this);
     this.doneSetup = this.doneSetup.bind(this);
+
+    this.sendToArduino = this.sendToArduino.bind(this);
   }
 
   setParameters(parameters){
     this.state.parameters = parameters;
     this.setState(this.state);
-    console.log("IN APP: ")
-    console.log(this.state)
+  }
 
-    // TODO: SHIP with messager to arduino!
+  sendToArduino(){
+    let toSend = {};
+  
+    // Ship all parameters.
+    toSend.mode = this.modes.indexOf(parameters.mode);
+    toSend.fiO2 = this.state.parameters.fiO2;
+    toSend.peep = this.state.parameters.peep;
+    toSend.inspiratoryPressure = this.state.parameters.inspiratoryPressure;
+    toSend.sensitivity = this.state.parameters.sensitivity;
+    toSend.respiratoryRate = this.state.parameters.respiratoryRate;
+    toSend.inspiratoryTime = this.state.parameters.inspiratoryTime;
+    toSend.flowCyclingOff = this.state.parameters.flowCyclingOff;
+    toSend.apneaTime = this.state.parameters.apneaTime;
+    toSend.riseTime = this.state.parameters.riseTime;
+
+    // Alarms.
+    toSend.highInspiratoryPressureAlarm = this.state.alarms.pressure.highInspiratoryPressure;
+    toSend.lowExpiratoryPressureAlarm = this.state.alarms.pressure.lowExpiratoryPressure;
+    
+    this.messager.sendParametersToBackend(toSend);
   }
 
   componentDidMount(){
@@ -76,12 +100,13 @@ export default class App extends React.Component {
     this.setState({currentlyAlarming});
   }
 
-  updateData(update) {
-    if (update.type === 'tidal volume'){
-      this.state.data.tidalVolume = update.value;
+  updateData(type, value) {
+    console.log('hellooo', type, value);
+    if (type === 'tidal volume'){
+      this.state.data.tidalVolume = value;
     }
-    if(update.type === 'pressure'){
-      this.state.data.pressure = update.value;
+    if(type === 'batteryPercentage'){
+      this.state.data.batteryPercentage = value.toString() + "%";
     }
 
     if (this.isMount) {
@@ -107,7 +132,7 @@ export default class App extends React.Component {
         />
         <Switch>
         <Route path="/diagnostics">
-          <Vitals allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
+          <Vitals sendToArduino={this.sendToArduino} allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
         </Route>
         <Route path="/alarms">
           <Alarms
@@ -120,7 +145,7 @@ export default class App extends React.Component {
         <Redirect from="/" to="/diagnostics" />
       </Router>
         <div className="battery">
-          <div className="battery-level" style={{height : "75%"}}></div>
+          <div className="battery-level" style={{height : this.state.data.batteryPercentage}}></div>
         </div>
       </div>
     );
