@@ -26,7 +26,7 @@ void setup() {
   controller.stopArduinoAlarm();
   int servosConnectedErrorCode = controller.init();
   sensors.init();
-  int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
+  // int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
 
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
@@ -46,34 +46,34 @@ void setup() {
 
 void loop() {
   // Check for Params
-  if (piCommunication.isPiSendingUsNewParameters()) {
-    piCommunication.getParametersFromPi();
-    parameters.getNewParameters(piCommunication.parametersBuffer);
-  }
-  else if (piCommunication.isPiTellingUsThatItsAwake()) {
-    // Pi is awake, should alarm if it hasn't been awake for a while
-  }
+  // if (piCommunication.isPiSendingUsNewParameters()) {
+  //   piCommunication.getParametersFromPi();
+  //   parameters.getNewParameters(piCommunication.parametersBuffer);
+  // }
+  // else if (piCommunication.isPiTellingUsThatItsAwake()) {
+  //   // Pi is awake, should alarm if it hasn't been awake for a while
+  // }
 
   sensors.readSensorsIfAvailableAndSaveSensorData(data);
 
-  state.updateState(parameters);
+  // state.updateState(parameters);
 
-  // only update parameters when breath is over
-  if (parameters.newParamsHaveArrived && state.breathCompleted) {
-    parameters.updateCurrentParameters();
-  }
+  // // only update parameters when breath is over
+  // if (parameters.newParamsHaveArrived && state.breathCompleted) {
+  //   parameters.updateCurrentParameters();
+  // }
 
-  // // // breathing cycle
+  // breathing cycle
   // if (state.breathingStage == INHALATION_STAGE) {
-  //   controller.inhalationControl(data, parameters, state);
+    // controller.inhalationControl(data, parameters, state);
   // }
   // else if (state.breathingStage == EXHALATION_STAGE) {
-  //   controller.exhalationControl(data, parameters);
+    controller.exhalationControl(data, parameters);
   // }
 
-  if (piCommunication.isTimeToSendDataToPi()) {
-    piCommunication.sendDataToPi(data, state, parameters);
-  }
+  // if (piCommunication.isTimeToSendDataToPi()) {
+  //   piCommunication.sendDataToPi(data, state, parameters);
+  // }
     
   // if (state.breathCompleted) {
   //   data.resetTidalVolume();

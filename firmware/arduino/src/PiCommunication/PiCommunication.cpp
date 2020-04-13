@@ -107,13 +107,13 @@ void PiCommunication::sendDataToPi(Data &data, State &state, Parameters &paramet
   
   uint8_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
   
-  // Serial.write(checkSum);
-  // Serial.write(batteryPercentage);
-  // Serial.write(breathCompleted);
-  // Serial.write(tidalVolume);
-  // Serial.write(errorCode);
-  // Serial.write(abnormalPressure);
-  // Serial.write(abnormalFiO2);
+  Serial.write(checkSum);
+  Serial.write(batteryPercentage);
+  Serial.write(breathCompleted);
+  Serial.write(tidalVolume);
+  Serial.write(errorCode);
+  Serial.write(abnormalPressure);
+  Serial.write(abnormalFiO2);
 
   _lastSentDataTime = millis();
 }
