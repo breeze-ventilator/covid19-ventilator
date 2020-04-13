@@ -1,6 +1,8 @@
 const SerialPort = require('serialport');
 const ByteLength = require('@serialport/parser-byte-length')
 
+const LENGTH_OF_PARAMETER_MESSAGE = 15;
+
 module.exports = class ArduinoMessager {
 	constructor(top) {
 		this.top = top;
@@ -11,9 +13,8 @@ module.exports = class ArduinoMessager {
 		this.toSend = {}
 		this.readingMapping = ["checksum", "battery percentage", "breath complete", "tidal volume", "error code", "abnormal pressure", "abnormal FiO2"]
 		this.readingCount = 0;
-		this.numParameters = 15;
 		this.newParametersBuffer = undefined;
-		this.modes = ["Pressure Control", "Pressure Support", "Standby"]
+		this.modes = ["Standby", "Pressure Control", "Pressure Support"]
 
 		this.port.on('open', () => this.handlePortOpen());
 		this.port.on('close', () => this.handlePortClose());
@@ -59,15 +60,15 @@ module.exports = class ArduinoMessager {
 	}
 
 	handshakeWithArduino(data){
-		if(data.readUInt8() == 1){
-			this.port.write('elbowbump\n')
+		if (data.readUInt8() == 1){
+			this.port.write('elbowbump\n');
 			this.connected = true;
 		}
 	}
 
 	parseArduinoReadings(data){
 		// TODO: Add breath time parsing.
-		if(this.isArduinoTimedOut()){
+		if (this.isArduinoTimedOut()) {
 			this.handleArduinoTimeout();
 		}
 
@@ -87,31 +88,38 @@ module.exports = class ArduinoMessager {
 
 	// TODO !
 	handleNewParameters(newParameters) {
-		// saves buffer, but doesn't send to Pi yet
+		console.log(newParameters);
+		
+		this.newParametersBuffer = loadParametersIntoBuffer(newParameters);
+	}
 
-		let buf = Buffer.alloc(this.numParameters);
+	loadParametersIntoBuffer(newParameters) {
+		/*
+		Mode (0,1,2)
+		FiO2, in % O2
+		PEEP, in mm H2O
+		Inspiratory pressure (∆P), in mm H2O
+		Sensitivity, in L/min
+		Rate if pressure control
+		Inspiratory time percentage if pressure control
+		Flow cycling off % if pressure support
+		Apnea time if pressure support
+		Rise time, in tenth of second
+		High inspiratory pressure alarm, in mm H2O
+		Low expiratory pressure alarm, in mm H2O
+		*/
 
-		// push "P" and checksum params to buffer
-		buf.write('P', 0, 1) // offset 0, length 1
-		buf.writeUInt8(0, 1) // write the number 0, offset 1
+		let buffer = Buffer.alloc(LENGTH_OF_PARAMETER_MESSAGE);
+		buffer.write('P');
+		
+		let checksum = 0;
+		buffer.writeUInt8(checksum, 1); // offset of 1
 
-		// buffer offset of 2 for the 2 params already written
-		let bufOffset = 2;
-		for (let key in Object.keys(newParameters)) {
-			if(key == "mode") {
-				// change from string to 1,2,3 depending on mode
-				buf.writeUInt8(this.modes.indexOf(newParameters[key]) + 1, bufOffset)
-			}
-			else {
-				buf.writeUInt8(newParameters[key], bufOffset)
-			}
-			bufOffset++;
-		}
-
-	// lastly, write the new line charcter
-	buf.write('\n', bufOffset, 1);
-
-	this.newParametersBuffer = buf;
+		buffer.writeUInt8(this.modes.indexOf(newParameters.mode), 2);
+		buffer.writeUInt8(newParameters.fiO2, 3);
+		// buf.writeUInt8(newParameters.inspiratoryPressure, 4);
+		// buf.writeUInt8(newParameters.respiratory, 5);
+		return buffer;
 	}
 
 	// TODO !
