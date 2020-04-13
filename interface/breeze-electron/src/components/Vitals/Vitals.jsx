@@ -3,6 +3,7 @@ import FlexValueCard from '../Card/FlexValueCard';
 import Grid from "@material-ui/core/Grid";
 import './css/vitals.css'
 import Card from '@material-ui/core/Card';
+import MainCard from '../Card/MainCard';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -150,26 +151,13 @@ export default class Vitals extends React.Component {
     return (
       <div className="mainContainer" style={{fontFamily: "Barlow"}}>
         {/* Header Observables */}
-        <Grid container direction="row">
-          <Grid item xs={6}>
-              <FlexValueCard
-                alarm={this.isAlarming("tidalVolume")} 
-                value={this.state.data.tidalVolume}
-                unit='mL'
-                prominence="h1"
-                name='Tidal Volume'
-              />
-          </Grid>
-          <Grid item xs={6}>
-              <FlexValueCard
-                alarm={this.isAlarming("ie")}
-                value={"1:3"}
-                prominence="h1"
-                unit='ratio'
-                name='I:E Ratio'
-              />
-          </Grid>
-        </Grid>
+        <MainCard
+          alarm={this.isAlarming("tidalVolume")} 
+          value={this.state.data.tidalVolume}
+          prominence="h1"
+          high={14}
+          low={13}
+        />
 
         {/*Parient Profile*/}
         {/* <PatientProfile /> */}
