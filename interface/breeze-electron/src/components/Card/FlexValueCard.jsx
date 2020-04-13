@@ -66,11 +66,11 @@ class FlexValueCard extends React.Component {
             <Card className = {classNames}>
                 <CardActionArea onClick={this.openModal}>     
                        
-                    {this.props.name=="FiO2" && <Button variant="contained">small</Button>}
-                    {this.props.name == "Respiratory Rate" && <Button variant="contained" style={{backgroundColor: "#eee", padding:0, minWidth:"30px"}}><ExpandLessIcon/></Button>}
-                    {this.props.name == "Inspiratory Time" && <Button variant="contained" style={{backgroundColor: "#ddd", padding:0, minWidth:"30px"}}><ExpandLessIcon/></Button>}
-                    {this.props.name == "PEEP" && <Button variant="contained" style={{backgroundColor: "#ddd", padding:0, boxShadow: "none", minWidth:"30px"}}><ExpandLessIcon/></Button>}
-                    {this.props.name == "Peak Pressure" && <Button variant="contained" style={{backgroundColor: "#eee", padding:0, boxShadow: "none"}}><ExpandLessIcon/></Button>}
+                    {this.props.readableName=="FiO2" && <Button variant="contained">small</Button>}
+                    {this.props.readableName == "Respiratory rate" && <Button variant="contained" style={{backgroundColor: "#eee", padding:0, minWidth:"30px"}}><ExpandLessIcon/></Button>}
+                    {this.props.readableName == "Inspiratory pressure" && <Button variant="contained" style={{backgroundColor: "#ddd", padding:0, minWidth:"30px"}}><ExpandLessIcon/></Button>}
+                    {this.props.readableName == "PEEP" && <Button variant="contained" style={{backgroundColor: "#ddd", padding:0, boxShadow: "none", minWidth:"30px"}}><ExpandLessIcon/></Button>}
+                    {this.props.readableName == "Inspiratory time" && <Button variant="contained" style={{backgroundColor: "#eee", padding:0, boxShadow: "none"}}><ExpandLessIcon/></Button>}
                     <Typography variant="subtitle1">
                         {this.props.readableName}
                     </Typography>
