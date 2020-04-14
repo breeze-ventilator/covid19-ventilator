@@ -25,20 +25,9 @@ export default class Vitals extends React.Component {
         pressure: 5,
       },
       isEditing: false,
-      parameters: {...this.props.allParameters},
-      modal: {
-        open: false,
-        parameterName: '',
-        startingValue: 0,
-        step: 1,
-        min: 0,
-        max: 100,
-        unit: '%'
-      }
+      ...this.props.allParameters
     }
     this.setParameterStateValue = this.setParameterStateValue.bind(this);
-    this.setModalStateValues = this.setModalStateValues.bind(this);
-    this.modalClose = this.modalClose.bind(this);
     this.isAlarming = this.isAlarming.bind(this);
     this.changeMode = this.changeMode.bind(this);
   }
@@ -61,62 +50,8 @@ export default class Vitals extends React.Component {
     // TODO: Actually update parameters as well for arduino.
   }
 
-  setModalStateValues(parameterName, value, unit){
-    // TODO: this is bad, never mutate state
-    if(parameterName == 'FiO2'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'PEEP'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'Peak Pressure'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'Sensitivity'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'Apnea Time'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'Inspiratory Time'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName =='Respiratory Rate'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-
-    this.state.modal.startingValue = value;
-    this.state.modal.parameterName = parameterName;
-    this.state.modal.unit = unit;
-    this.state.modal.open = true;
-
-    if(parameterName == "mode"){
-      this.state.parameters.mode = value
-    }
-
-    this.setState(this.state);
-  }
-
-  modalClose(){
-    this.state.modal.open = false;
-    this.setState(this.state);
-  }
-
   changeMode(value){
+    // TODO: make this into toggleMode
     this.state.parameters.mode = value;
     this.state.modal.open = false;
     this.setState(this.state)
@@ -126,26 +61,36 @@ export default class Vitals extends React.Component {
     this.setState(prevState => ({isEditing: !prevState.isEditing}))
   }
 
+  increment = (fieldName) => {
+    this.setState(prevState => ({[fieldName]: prevState[fieldName] + 1}))
+  }
+
+  decrement = (fieldName) => {
+    this.setState(prevState => ({[fieldName]: prevState[fieldName] - 1}))
+  }
   render() {
-    const {isEditing, parameters} = this.state
-    const parameterNames = this.state.parameters.mode == "Pressure Control"
+    const {isEditing, mode} = this.state
+    const parameterNames = mode == "Pressure Control"
       ? controlParams
       : supportParams;
     let footer = (
         <div style={{position: 'relative' }}>
           <div style={{paddingLeft: "20px"}}>Mode:</div>
           <Header>
-            {parameters.mode}
+            {mode}
           </Header>
           {!isEditing 
           ? <Fab size="small" 
-            style={{position:'absolute', right:'10px', top:'5px', boxShadow:'none', backgroundColor: '#eee'}}
+            style={{position:'absolute', right:'10px', top:'5px', boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.1), 0px 6px 10px 0px rgba(0,0,0,0.04), 0px 1px 18px 0px rgba(0,0,0,0.12)",
+            backgroundColor: '#eee'}}
             onClick={this.toggleEdit}
             >
             <CreateIcon/>
           </Fab>
           : <Button variant="contained" 
-          style={{position:'absolute', right:'10px', top:'5px', color: "white", backgroundColor: "#33B0A6", padding:0, boxShadow: "none"}}
+          style={{position:'absolute',
+          right:'10px', top:'5px', color: "white", 
+          backgroundColor: "#33B0A6", padding:0, boxShadow: "none"}}
           onClick={this.toggleEdit}
           > done </Button>
           }
@@ -154,9 +99,11 @@ export default class Vitals extends React.Component {
             <Grid item xs={4}>
               <FlexValueCard 
                 alarm={this.isAlarming(name)}
-                value={this.state.parameters[name]}
+                value={this.state[name]}
                 readableName={parameterInfo[name].readableName} 
                 unit={parameterInfo[name].unit}
+                increment={() => this.increment(name)}
+                decrement={() => this.decrement(name)}
                 isEditing={isEditing} // DEBUG: use this to toggle mode @Anna
               />
             </Grid>)}

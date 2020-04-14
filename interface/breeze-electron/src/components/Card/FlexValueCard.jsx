@@ -51,7 +51,7 @@ export const FlexValueCard = ({isEditing, classes, value, unit, readableName, in
               </Typography>
               {isEditing 
                 ? <NumberToggle value={value} increment={increment} decrement={decrement}/>
-                : <Typography variant="h2">
+                : <Typography variant="h2" style={{opacity: 0.8}}>
                   {value} 
                   </Typography>}
           </CardActionArea>

@@ -22,19 +22,7 @@ export const MainCard = ({ tidalVolume, respiratoryRate, low, high, minimized}) 
     const radius = parseInt(diameter/2)
     const height = minimized ? 200 : 400;
     const verticalCenter = parseInt(height/2)
-    // const { classes } = this.props;
-
-    // let classNames;
-    // if (this.props.good) {
-    //   classNames = `${classes.root} ${classes.good}`
-    // } else if (this.props.warn) {
-    //   classNames = `${classes.root} ${classes.warn}`
-    // } else if (this.props.alarm) {
-    //   classNames = `${classes.root} ${classes.alarm}`
-    // } else {
-    //   classNames = `${classes.root}`
-    // }
-
+    
     return(
         <div style={{position: 'relative'}}>
         <Container height={height} minimized={minimized}>          
