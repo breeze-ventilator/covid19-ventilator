@@ -8,7 +8,8 @@
 class Data {
     public:
         Data();
-        void saveFlowReading(float flowValue, float delta_time);
+        void saveFlowReading(float flowValue);
+        void updateTidalVolume(float flowValue, float delta_time);
         void saveMainPressureReading(unsigned int pressureValue);
         float getMainPressureAverageForPID();
         float getFlowRecentHistoryAverage();

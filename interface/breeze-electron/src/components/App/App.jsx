@@ -26,14 +26,14 @@ export default class App extends React.Component {
       parameters: {
         mode: "Pressure Control", // one of Pressure Control, Pressure Support, Standby
         fiO2: 80, // Control + Support (%)
-        peep: 20, // Control + Support (cm H2O)
-        inspiratoryPressure: 20, // Control + Support (cm H2O)
+        peep: 3, // Control + Support (cm H2O)
+        inspiratoryPressure: 7, // Control + Support (cm H2O)
         sensitivity: 80, // Support (L/min)
-        respiratoryRate: 0, // Control (breaths per minute)
-        inspiratoryTime: 0, // Control (%)
+        respiratoryRate: 8, // Control (breaths per minute)
+        inspiratoryTime: 33, // Control (%)
         flowCyclingOff: 0, //Support (%)
-        apneaTime: 20, // Support (0.1, 0.2, .. will always be a tenth of a second.)
-        riseTime: 0, // ??? (0.1, 0.2, .. will always be a tenth of a second.) default: 0.1
+        apneaTime: 0.3, // Support (0.1, 0.2, .. will always be a tenth of a second.)
+        riseTime: 0.2, // ??? (0.1, 0.2, .. will always be a tenth of a second.) default: 0.1
       },
       alarms: {
         minuteVentilation: {
@@ -50,8 +50,9 @@ export default class App extends React.Component {
     }
     this.messager = new Messager(5000);
 
-    this.messager.tidalVolumeListener(this.updateData.bind(this));
-    this.messager.batteryPercentageListener(this.updateData.bind(this));
+    this.messager.dataListener(this.updateData.bind(this));
+    // this.messager.tidalVolumeListener(this.updateData.bind(this));
+    // this.messager.batteryPercentageListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
     this.setAlarms = this.setAlarms.bind(this);
@@ -70,7 +71,7 @@ export default class App extends React.Component {
     let toSend = {};
   
     // Ship all parameters.
-    toSend.mode = this.modes.indexOf(parameters.mode);
+    toSend.mode = this.modes.indexOf(this.state.parameters.mode);
     toSend.fiO2 = this.state.parameters.fiO2;
     toSend.peep = this.state.parameters.peep;
     toSend.inspiratoryPressure = this.state.parameters.inspiratoryPressure;
@@ -78,8 +79,8 @@ export default class App extends React.Component {
     toSend.respiratoryRate = this.state.parameters.respiratoryRate;
     toSend.inspiratoryTime = this.state.parameters.inspiratoryTime;
     toSend.flowCyclingOff = this.state.parameters.flowCyclingOff;
-    toSend.apneaTime = this.state.parameters.apneaTime;
-    toSend.riseTime = this.state.parameters.riseTime;
+    toSend.apneaTime = this.state.parameters.apneaTime * 10;
+    toSend.riseTime = this.state.parameters.riseTime * 10;
 
     // Alarms.
     toSend.highInspiratoryPressureAlarm = this.state.alarms.pressure.highInspiratoryPressure;
@@ -100,14 +101,23 @@ export default class App extends React.Component {
     this.setState({currentlyAlarming});
   }
 
-  updateData(type, value) {
-    console.log('hellooo', type, value);
-    if (type === 'tidal volume'){
-      this.state.data.tidalVolume = value;
+  updateData(data) {
+
+    let data_names = [ 
+        "checkSum",
+        "batteryPercentage",
+        "breathCompleted",
+        "tidalVolume", 
+        "errorCode",
+        "abnormalPressure", 
+        "abnormalFiO2"
+    ]
+    console.log("DATA RECEIVED ON FRONTEND!")
+    console.log(data)
+    for(let i = 1; i < data.length; i++){
+      this.state.data[data_names[i]] = data[i];
     }
-    if(type === 'batteryPercentage'){
-      this.state.data.batteryPercentage = value.toString() + "%";
-    }
+
 
     if (this.isMount) {
       this.setState(this.state);

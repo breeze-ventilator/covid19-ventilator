@@ -1,12 +1,22 @@
 #include "State.h"
 
 State::State() {
+  mode = OFF_MODE;
   breathCompleted = true;
   startTime = 0;
-  breathingStage = INHALATION_STAGE;
+  breathingStage = OFF_STAGE;
 }
 
 void State::updateState(Parameters &parameters) {
+  if ((mode != PRESSURE_CONTROL_MODE && mode != PRESSURE_SUPPORT_MODE) 
+        && 
+        (parameters.currentMode == PRESSURE_CONTROL_MODE
+        || parameters.currentMode == PRESSURE_SUPPORT_MODE))
+  {
+    // start with inhalation
+    breathingStage = INHALATION_STAGE;
+  }
+  mode = parameters.currentMode;
   if (parameters.currentMode == PRESSURE_CONTROL_MODE) {
     // checks time to see if time to switch from inhalation to exhilation
     if (breathingStage == INHALATION_STAGE) {
