@@ -2,6 +2,7 @@
 #define OXYGEN_CONTROL_H
 
 #include "Arduino.h"
+#include <PID_v1.h>
 #include "OxygenValveStepper/OxygenValveStepper.h"
 
 #define OXYGEN_VALVE_MOTOR_INTERFACE_TYPE 4
@@ -26,6 +27,7 @@ class OxygenControl {
 
   private:
     OxygenValveStepper _oxygenValveStepper;
+    PID _oxygenControl;
 };
 
 #endif

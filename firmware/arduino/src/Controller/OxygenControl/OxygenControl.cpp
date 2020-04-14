@@ -1,4 +1,5 @@
 #include "OxygenControl.h"
+#include "State.h"
 
 OxygenControl::OxygenControl()
 : _oxygenValveStepper(OXYGEN_VALVE_MOTOR_INTERFACE_TYPE,
@@ -10,7 +11,9 @@ OxygenControl::OxygenControl()
                     OXYGEN_VALVE_MAX_STEPPER_SPEED,
                     OXYGEN_VALVE_STEPPER_ACCELERATION,
                     OXYGEN_VALVE_ENABLE1_PIN,
-                    OXYGEN_VALVE_ENABLE2_PIN)
+                    OXYGEN_VALVE_ENABLE2_PIN),
+  _oxygenControl(&_oxygenConcentration, &_valveSetPoint, &oxygenSetPoint,
+                    OXYGEN_KP, OXYGEN_KD, OXYGEN_KI, DIRECT)
 {
 
 }
@@ -18,9 +21,13 @@ OxygenControl::OxygenControl()
 void OxygenControl::begin() {
 	_oxygenValveStepper.begin();
 	int error = _oxygenValveStepper.moveToZeroPosition(OXYGEN_CONTROL_ZEROING_WAIT_TIME);
+    _oxygenControl.SetSampleTime(PID_TIME);
+    _oxygenControl.SetMode(AUTOMATIC);
+    _oxygenControl.SetOutputLimits(0,4000)//this is in steps who the fuck knows that
 }
 
-void OxygenControl::control(long value) {
+void OxygenControl::control(int setOxygenConcentration, int actualOxygenConcentration,
+                            State state) {
 	/*
 	If in inhalation mode, should be in PID state
 

@@ -4,16 +4,15 @@ BatteryVoltageSensor::BatteryVoltageSensor(int pin) {
   _pin = pin;
 }
 
-int BatteryVoltageSensor::read() {
+float BatteryVoltageSensor::read() {
   // Serial.println(analogRead(_pin));
-  float mV = (float) map(analogRead(_pin), 0, 1023, 0, 5000);
-  int batteryVoltage = floor(mV / 0.286); //voltage divider network
-  // Serial.println(batteryVoltage);
-  return batteryVoltage;
+  float V = (float) analogRead(_pin)*15/1024; // from eamon data sheeet
+  return V;
 }
 
 int BatteryVoltageSensor::readPercentage() {
-  int batteryVoltage = read();
-  int batteryPercentage = constrain(map(batteryVoltage, 11000, 12800, 0, 100), 0, 100);
+  float batteryVoltage = read();
+  int batteryPercentage = constrain(map(batteryVoltage, 11.3, 12.8, 0, 100), 0, 100); 
+  //this isnt perfect (far from it as we dont know what the current draw is or the size of battery. this is a guess at best)
   return batteryPercentage;
 }

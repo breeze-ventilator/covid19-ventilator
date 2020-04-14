@@ -52,7 +52,7 @@ int OxygenValveStepper::moveToZeroPosition(int maxWaitTime) {
   // }
   // count = 0;
   // Make the Stepper move CCW until the switch is activated   
-  while (digitalRead(_limitSwitchPin)) {
+  while (analogRead(_limitSwitchPin)< CURRENT_TRIGGER) {
     _oxygenStepper.moveTo(_oxygenStepper.currentPosition() - 1);  // Set the position to move to
     _oxygenStepper.run(); // Start moving the stepper
     delay(5);

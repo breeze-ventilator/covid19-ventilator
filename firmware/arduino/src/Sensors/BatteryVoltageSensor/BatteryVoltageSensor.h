@@ -19,7 +19,7 @@
 class BatteryVoltageSensor {
   public:
 	  BatteryVoltageSensor(int pin);
-    int read();
+    flaot read();
     int readPercentage();
   private:
     int _pin;
