@@ -10,6 +10,8 @@ import Vitals from '../Vitals/Vitals';
 import Alarms from '../Alarms/Alarms';
 import AlarmsHandler from '../Alarms/AlarmsHandler';
 import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNavigation';
+import StatusBar from '../StatusBar/StatusBar';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -20,7 +22,7 @@ export default class App extends React.Component {
     this.state = {
       data: {
         tidalVolume: 5,
-        pressure: 5, 
+        pressure: 5,
         batteryPercentage:"75%"
       },
       parameters: {
@@ -69,7 +71,7 @@ export default class App extends React.Component {
 
   sendToArduino(){
     let toSend = {};
-  
+
     // Ship all parameters.
     toSend.mode = this.modes.indexOf(this.state.parameters.mode);
     toSend.fiO2 = this.state.parameters.fiO2;
@@ -85,7 +87,7 @@ export default class App extends React.Component {
     // Alarms.
     toSend.highInspiratoryPressureAlarm = this.state.alarms.pressure.highInspiratoryPressure;
     toSend.lowExpiratoryPressureAlarm = this.state.alarms.pressure.lowExpiratoryPressure;
-    
+
     this.messager.sendParametersToBackend(toSend);
   }
 
@@ -103,13 +105,13 @@ export default class App extends React.Component {
 
   updateData(data) {
 
-    let data_names = [ 
+    let data_names = [
         "checkSum",
         "batteryPercentage",
         "breathCompleted",
-        "tidalVolume", 
+        "tidalVolume",
         "errorCode",
-        "abnormalPressure", 
+        "abnormalPressure",
         "abnormalFiO2"
     ]
     console.log("DATA RECEIVED ON FRONTEND!")
@@ -133,7 +135,8 @@ export default class App extends React.Component {
     return (
       <div>
       <Router>
-        <SimpleBottomNavigation setup={false} />
+        {/* <SimpleBottomNavigation setup={false} /> */}
+        <StatusBar />
         <AlarmsHandler
             alarms={this.state.alarms}
             allData={this.state.data}

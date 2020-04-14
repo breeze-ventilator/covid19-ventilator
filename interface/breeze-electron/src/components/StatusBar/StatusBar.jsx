@@ -70,7 +70,8 @@ class StatusBar extends React.Component {
 
         this.state = {
             time: new Date(),
-            batteryLevel: 0
+            batteryLevel: 0,
+            isAlarm: false
         /*
             classes: makeStyles({
                 root: {
@@ -117,12 +118,19 @@ class StatusBar extends React.Component {
                     </strong>
                 </div>
                 <div className = {classes.center}>
-                   {/* <Button onClick={increment} variant="contained" style={{backgroundColor: "rgba(0,0,0,255)", padding:0, boxShadow: "none", width:"100%"}}
-                        component = { Link  }
-                        to="/diagnostics">
-                      Monitoring
-                    </Button>*/}
-                    Monitoring
+                   {this.state.isAlarm ?
+                      <Button style = {{color: "white"}} onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={{backgroundColor: "rgba(0,0,0,255)", padding:0, boxShadow: "none", width:"100%"}}
+                          component = { Link } to="/alarms">
+                          {/* // href="/diagnostics"> */}
+                        Alarms
+                      </Button>
+                      :
+                      <Button style = {{color: "white"}} onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={{backgroundColor: "rgba(0,0,0,255)", padding:0, boxShadow: "none", width:"100%"}}
+                          component = { Link } to="/diagnostics">
+                        Diagnostics
+                      </Button>
+                    }
+                    {/* Monitoring */}
                 </div>
                 <div className = {classes.right}>
                     <div className = {classes.battery}>
