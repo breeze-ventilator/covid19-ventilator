@@ -9,7 +9,7 @@ class Parameters {
         void updateCurrentParameters();
         bool newParamsHaveArrived;
 
-        uint8_t currentMode;
+        uint8_t currentMode = OFF_MODE;
         uint8_t currentFiO2;
         uint16_t currentInspiratoryTime;
         uint16_t currentMaxExpiratoryTime;
