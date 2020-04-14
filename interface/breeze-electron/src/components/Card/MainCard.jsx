@@ -13,10 +13,10 @@ import { keyframes } from '@emotion/core'
 const sizes = {large: 500, medium: 380, small: 280};
 const cardWidth = 440;
 const verticalCenter = 220;
-export const MainCard = ({ value, low, high}) => {
-    const size = value < low
+export const MainCard = ({ tidalVolume, respiratoryRate, low, high}) => {
+    const size = tidalVolume < low
         ? "small"
-        : value < high
+        : tidalVolume < high
             ? "medium"
             : "large";
     const diameter = sizes[size]
@@ -35,6 +35,7 @@ export const MainCard = ({ value, low, high}) => {
     // }
 
     return(
+        <div style={{position: 'relative'}}>
         <Container>          
             <CircleContainer style={{
                 left: (cardWidth/2 - radius),
@@ -47,24 +48,27 @@ export const MainCard = ({ value, low, high}) => {
             <Data>
                 <VolumeDisp>
                 <div>
-                <ValueText>
-                    {value}
-                </ValueText>
-                L
+                    <ValueText>
+                        {tidalVolume}
+                    </ValueText>
+                    L
                 </div>
                 Tidal Volume
                 </VolumeDisp>
             </Data>
-            {/* <Typography variant="subtitle1">
-                {this.props.readableName}
-            </Typography>
-            <Typography variant={this.props.prominence}>
-                {this.state.value} 
-            </Typography>
-            <Typography variant="subtitle2">
-                {this.props.unit}
-            </Typography> */}
         </Container>
+        <TopCard>
+            <VolumeDisp style={{position: "static"}}>
+                <div>
+                    <ValueText style={{fontSize: "50px"}}>
+                        {respiratoryRate}
+                    </ValueText>
+                    bpm
+                </div>
+                Respiratory rate
+            </VolumeDisp>
+        </TopCard>
+        </div>
     );
 }
 
@@ -79,6 +83,15 @@ const Container = styled.div`
     box-shadow: 0px 15px 40px rgba(58, 140, 171, 0.19);
     border-radius: 15px;
     margin-bottom: 40px;
+`
+const TopCard = styled.div`
+    box-shadow: 0px 15px 40px rgba(58,140,171,0.19);
+    border-radius: 15px;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    top: -10px;
+    text-align: center;
 `
 const fadeIn = keyframes`
     from { opacity: 0.5; } 
@@ -100,9 +113,9 @@ const Data = styled.div`
 `
 const VolumeDisp = styled.div`
     padding: 20px;
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
 `
 
 const ValueText = styled.span`
