@@ -131,6 +131,7 @@ export default class Vitals extends React.Component {
                 prominence="h2"
                 readableName={parameterInfo[name].readableName} 
                 unit={parameterInfo[name].unit}
+                isEditing={true} // DEBUG: use this to toggle mode @Anna
               />
             </Grid>)}
         </Grid>);
@@ -139,7 +140,8 @@ export default class Vitals extends React.Component {
         {/* Header Observables */}
         <MainCard
           alarm={this.isAlarming("tidalVolume")} 
-          value={this.state.data.tidalVolume}
+          tidalVolume={this.state.data.tidalVolume}
+          respiratoryRate={this.state.data.respiratoryRate}
           prominence="h1"
           high={14}
           low={13}

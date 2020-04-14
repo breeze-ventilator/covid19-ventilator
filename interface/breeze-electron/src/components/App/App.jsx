@@ -9,7 +9,8 @@ import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import Vitals from '../Vitals/Vitals';
 import Alarms from '../Alarms/Alarms';
 import AlarmsHandler from '../Alarms/AlarmsHandler';
-import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNavigation';
+import StatusBar from '../StatusBar/StatusBar';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -39,9 +40,9 @@ export default class App extends React.Component {
 
     this.messager = new Messager(5000);
 
-    this.messager.dataListener(this.updateData.bind(this));
-    // this.messager.tidalVolumeListener(this.updateData.bind(this));
-    // this.messager.batteryPercentageListener(this.updateData.bind(this));
+    /* TODO: uncommment datalistener and coment sample listener on release.abnormalFiO2 */
+    // this.messager.dataListener(this.updateData.bind(this));
+    this.messager.sampleDataListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
     this.setAlarms = this.setAlarms.bind(this);
@@ -57,7 +58,7 @@ export default class App extends React.Component {
 
   sendToArduino(){
     let toSend = {};
-  
+
     // Get mode and all other parameters.
     toSend.mode = modes.indexOf(this.state.parameters.mode);
     for(param in allParams){
@@ -71,7 +72,7 @@ export default class App extends React.Component {
     // Alarms.
     toSend.highInspiratoryPressureAlarm = this.state.alarms.pressure.max;
     toSend.lowExpiratoryPressureAlarm = this.state.alarms.pressure.min;
-    
+
     this.messager.sendParametersToBackend(toSend);
   }
 
@@ -110,7 +111,7 @@ export default class App extends React.Component {
     return (
       <div>
       <Router>
-        <SimpleBottomNavigation setup={false} />
+        <StatusBar />
         <AlarmsHandler
             alarms={this.state.alarms}
             allData={this.state.data}

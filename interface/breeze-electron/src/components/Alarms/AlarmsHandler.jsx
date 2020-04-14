@@ -5,7 +5,7 @@ import { inRange } from './AlarmsHelper';
 
 const acceptableRanges = {
   peep: {
-    min: 5,
+    min: 2,
     max: 30
   },
   fiO2: {
@@ -26,7 +26,7 @@ const acceptableRanges = {
   },
   inspiratoryTime: {
     min: 0,
-    max: 5
+    max: 100
   }
 }
 

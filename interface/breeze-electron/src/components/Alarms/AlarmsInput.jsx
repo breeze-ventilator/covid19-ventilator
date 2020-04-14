@@ -7,7 +7,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-
+import '../Vitals/css/vitals.css';
 
 class ParameterInputCustom extends React.Component {
     constructor(props) {
@@ -63,11 +63,11 @@ class ParameterInputCustom extends React.Component {
       return (
         <Grid container justify="center">
             <Card align="center" style={{maxWidth: "65%"}}>
-                    <Typography style={{marginTop: "10px"}}variant="subtitle1">
+                    <Typography style={{marginTop: "10px", fontFamily: "Barlow"}}variant="subtitle1">
                         {this.props.parameterName}
                     </Typography>
-                <ButtonGroup style={{margin:"10px",marginBottom:"0px"}}size="medium"align="center" variant="contained" color="primary">
-                    <Button style={{width: '60px', height:'40px', fontSize:"14px"}} onClick={this.handleDecrement}>-</Button>
+                <ButtonGroup size="medium"align="center" variant="contained" color="default">
+                    <Button style={{width: '60px', height:'40px', fontSize:"14px", backgroundColor: "#9BD8D3", color: "white"}} onClick={this.handleDecrement}>-</Button>
                     <NumPad.Number
                         className="md-numpad"
                         decimal={true}
@@ -75,12 +75,12 @@ class ParameterInputCustom extends React.Component {
                         value={this.state.value}
                         onChange={this.handleChange}
                     >
-                    <Button style={{width: '120px', height:'40px', fontSize:"14px", color: "black"}} disabled>{this.state.value + " " + this.props.unit}</Button>
+                    <Button style={{width: '120px', height:'40px', fontSize:"14px", color: "black", fontFamily: "Barlow"}} disabled>{this.state.value + " " + this.props.unit}</Button>
                     </NumPad.Number>
-                    <Button style={{width: '60px', height:'40px', fontSize:"14px"}} onClick={this.handleIncrement}>+</Button>
+                    <Button style={{width: '60px', height:'40px', fontSize:"14px", backgroundColor: "#9BD8D3", color: "white"}} onClick={this.handleIncrement}>+</Button>
                 </ButtonGroup>
-                <Typography style={{marginTop:"10px", marginBottom:"10px", marginLeft: "20px", marginRight: "20px"}} variant="subtitle1">
-                    Usually from values of 80 - 30. :)
+                <Typography style={{marginTop:"10px", marginBottom:"10px", marginLeft: "20px", marginRight: "20px", fontFamily: "Barlow"}} variant="subtitle1">
+                    Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>50-60</b></p>
                 </Typography>
 
             </Card>

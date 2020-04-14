@@ -17,6 +17,7 @@ export default class ValueCard extends React.Component{
                 root: {
                   minWidth: 275,
                   maxWidth: 500,
+                  height: 1000
                 },
                 bullet: {
                   display: 'inline-block',
@@ -54,12 +55,10 @@ export default class ValueCard extends React.Component{
                             {this.state.value} 
                         </Typography>
                         <Typography display="inline" align="right" variant="h6">
-                            {this.props.unit}
+                            {this.props.unit} 
                         </Typography>
                     </Grid>  
                 </CardContent>
-
-
                 </Card>
             </div>
     );

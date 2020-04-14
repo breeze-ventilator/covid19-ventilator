@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import '../Vitals/css/vitals.css';
 
 export default class Alarms extends React.Component {
   constructor(props) {
@@ -72,7 +73,7 @@ export default class Alarms extends React.Component {
               spacing={3}
               direction="column"
             >
-              <h2 style={{textAlign: "center", color: "#fff"}}>Alarm Settings</h2>
+              <br></br><br></br><br></br>
 
               <ParameterInput
                 parameterName="Low Minute Ventilation Alarm"
@@ -110,14 +111,15 @@ export default class Alarms extends React.Component {
                 max={100} 
                 unit={"%"} 
               /> 
-
+              <br></br>
                 <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
                   <Button 
                     onClick={this.saveAlarms}
                     className="setParametersButton"
                     variant="contained"
                     align="center"
-                    color="primary">
+                    color="primary"
+                    style={{backgroundColor: "#9BD8D3"}}>
                       Save Changes
                   </Button>
                 </Grid>

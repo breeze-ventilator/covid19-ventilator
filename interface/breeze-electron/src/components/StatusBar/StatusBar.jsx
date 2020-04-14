@@ -1,7 +1,8 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Moment from 'react-moment';
-
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const useStyles = theme => ({
   root: {
@@ -10,12 +11,11 @@ const useStyles = theme => ({
   statusBar: {
     top: 0,
     left: 0,
-    background: 'rgba( 255, 255, 255, 0.8 )',
+    background: '#0E4362',
+    color: 'white',
     height: '2em',
     width: '100%',
-    lineHeight: 1.8,
-    textAlign: 'center',
-    display: 'flex'
+    display: 'flex',
   },
   battery: {
     position: 'relative',
@@ -40,22 +40,33 @@ const useStyles = theme => ({
   left: {
     float: 'left',
     width:'15%',
-    textAlign: 'left',
     paddingLeft: '15px',
+    paddingTop: 5
   },
   center: {
     display: 'inline-block',
     textAlign: 'center',
-    backgroundColor: 'rgba( 0, 255, 0, 0.3 )',
-    width: '70%',
+    background: '#072536',
+    radius: '2px',
+    color: 'white',
+    width: '60%',
   },
   right: {
     float: 'right',
     width:'15%',
-    textAlign: 'right',
     paddingRight: '15px',
   },
 });
+
+const buttonStyle = {
+  backgroundColor: "#072536", 
+  color: "white", 
+  fontFamily: "Barlow",
+  fontSize: 16, 
+  width:"100%", 
+  height: "120%", 
+  boxShadow: "0 48x 2px -2px rgba(58,140,171,0.24);"
+}
 
 
 
@@ -66,8 +77,10 @@ class StatusBar extends React.Component {
 
         this.state = {
             time: new Date(),
-            batteryLevel: 0
+            batteryLevel: 0,
+            isAlarm: true
         }
+
         this.interval = null
     }
 
@@ -102,8 +115,20 @@ class StatusBar extends React.Component {
                         </Moment>
                     </strong>
                 </div>
-                <div className = {classes.center}>
-                    Monitoring
+                <div className = {classes.center} >
+                   {this.state.isAlarm ?
+                      <Button onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={buttonStyle}
+                          component = { Link } to="/alarms">
+                          {/* // href="/diagnostics"> */}
+                        <span>Diagnostics &nbsp; &nbsp; &nbsp; &nbsp;<p style={{display: "inline", fontFamily: "Barlow", backgroundColor: "9BD8D3", fontSize: 10, opacity: 0.8}}> Set Alarms ⥂</p></span>
+                      </Button>
+                      :
+                      <Button onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={buttonStyle}
+                          component = { Link } to="/diagnostics">
+                          <span> <p style={{display: "inline", fontFamily: "Barlow", fontSize: 10, opacity: 0.8}}>⥄ Diagnostics</p> &nbsp; &nbsp; &nbsp; Set Alarms </span>
+                      </Button>
+                    }
+                    {/* Monitoring */}
                 </div>
                 <div className = {classes.right}>
                     <div className = {classes.battery}>
