@@ -13,8 +13,8 @@ const acceptableRanges = {
     max: 99 
   },
   tidalVolume: {
-    min: 4,
-    max: 9
+    min: 1,
+    max: 30
   },
   pressure: {
     min: 0,

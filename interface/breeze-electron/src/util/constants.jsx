@@ -65,7 +65,7 @@ export const readingsInfo = {
     readableName: "Battery Percentage",
     unit: "%",
     alarmMin: 0,
-    alarmMax: 0,
+    alarmMax: 100,
     sampleErrorValue: 0,
     default: 1
   },
@@ -73,15 +73,15 @@ export const readingsInfo = {
     readableName: "Breath Completed",
     unit: "",
     alarmMin: 0,
-    alarmMax: 0,
+    alarmMax: 1,
     sampleErrorValue: 0,
     default: 1
   },
   tidalVolume: {
     readableName: "Tidal Volume",
     unit: "L",
-    alarmMin: 0,
-    alarmMax: 0,
+    alarmMin: 2,
+    alarmMax: 20,
     sampleErrorValue: 0,
     default: 1
   },
@@ -89,15 +89,15 @@ export const readingsInfo = {
     readableName: "Error Code",
     unit: "",
     alarmMin: 0,
-    alarmMax: 0,
+    alarmMax: 5,
     sampleErrorValue: 0,
     default: 1
   },
   abnormalPressure: {
     readableName: "Abnormal Pressure",
     unit: "cm H2O",
-    alarmMin: 0,
-    alarmMax: 0,
+    alarmMin: 3,
+    alarmMax: 15,
     sampleErrorValue: 0,
     default: 1
   },
@@ -105,7 +105,7 @@ export const readingsInfo = {
     readableName: "Abnormal FiO2",
     unit: "%",
     alarmMin: 0,
-    alarmMax: 0,
+    alarmMax: 100,
     sampleErrorValue: 0,
     default: 1
   }
@@ -168,7 +168,7 @@ export const parameterInfo = {
     max: 100,
     recMin: 50,
     recMax: 60,
-    default: 50
+    default: 4
   },
   inspiratoryPressure: {
     readableName: "Inspiratory pressure",
@@ -178,7 +178,7 @@ export const parameterInfo = {
     max: 100,
     recMin: 50,
     recMax: 60,
-    default: 50
+    default: 20
   },
   inspiratoryTime: {
     readableName: "Inspiratory time",
@@ -188,7 +188,7 @@ export const parameterInfo = {
     max: 100,
     recMin: 50,
     recMax: 60,
-    default: 50
+    default: 33
   },
   respiratoryRate: {
     readableName: "Respiratory rate",
@@ -198,7 +198,7 @@ export const parameterInfo = {
     max: 100,
     recMin: 50,
     recMax: 60,
-    default: 50
+    default: 15
   },
   sensitivity: {
     readableName: "Sensitivity",
@@ -208,7 +208,7 @@ export const parameterInfo = {
     max: 100,
     recMin: 50,
     recMax: 60,
-    default: 50
+    default: -1
   },
   apneaTime: {
     readableName: "Apnea time",
@@ -218,7 +218,7 @@ export const parameterInfo = {
     max: 100,
     recMin: 50,
     recMax: 60,
-    default: 50
+    default: 7
   },
   flowCyclingOff: {
     readableName: "Flow cycling off",
@@ -228,7 +228,7 @@ export const parameterInfo = {
     max: 100,
     recMin: 50,
     recMax: 60,
-    default: 50
+    default: 20
   },
   riseTime: {
     readableName: "Rise Time",

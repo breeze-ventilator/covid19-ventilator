@@ -18,7 +18,7 @@ export default class Messager {
 
     dataListener(cb){
 		if(this.useSampleListener){
-			sampleDataListener(cb);
+			this.sampleDataListener(cb);
 		}
 		else{
 			this.socket.on('data', data => cb(data))
@@ -36,7 +36,7 @@ export default class Messager {
 				data.push(Math.floor(Math.random() * (readingsInfo[name].alarmMax - readingsInfo[name].alarmMin + 1)) + readingsInfo[name].alarmMin);
 			}
 			cb(data);
-		}, 100)
+		}, 1000)
 	}
     
 }
