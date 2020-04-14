@@ -35,6 +35,10 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data, State &state) 
     if (flowValue > 250) { // max range
       flowValue = 0;
     }
+
+    // flow in L/min
+    // tidal volume in L
+
     float delta_time = (float)(millis() - _lastFlowReadTime);
     delta_time /= MINUTES_TO_MILLISECONDS;
     data.saveFlowReading(flowValue);

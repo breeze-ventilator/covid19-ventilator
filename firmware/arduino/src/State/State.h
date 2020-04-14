@@ -8,7 +8,7 @@
 class State {
     public:
         State();
-        bool breathCompleted;
+        int breathCompleted;
         unsigned long startTime;
         int breathingStage; // inhalation or exhilation
         uint32_t desiredPressure;
@@ -18,7 +18,6 @@ class State {
     
     private:
         void setDesiredPressure(Parameters &parameters);
-        void setBreathCompletedToFalse();
         void endInhalationAndStartExhalation();
         void endExhalationAndStartInhalation();
         int isFinishedInspiratoryStageInPressureControl(Parameters &parameters);

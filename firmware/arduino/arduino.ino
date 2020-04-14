@@ -18,7 +18,6 @@ Controller controller;
 PiCommunication piCommunication(BAUD_RATE, TIME_BETWEEN_DATA_SENDING_TO_PI);
 State state;
 Parameters parameters;
-#define HELLO 100
 
 void setup() {
   Serial.begin(9600);
@@ -60,8 +59,7 @@ void loop() {
     }
   }
 
-
-  // state.updateState(parameters);
+  state.updateState(parameters);
 
   sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
 
@@ -78,11 +76,12 @@ void loop() {
     controller.exhalationControl(data, parameters);
   }
 
-  if (piCommunication.isTimeToSendDataToPi()) {
-    piCommunication.sendDataToPi(data, state, parameters);
+  if (state.breathCompleted) {
+    piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.
+    data.resetTidalVolume();
   }
-    
-  // if (state.breathCompleted) {
-  //   data.resetTidalVolume();
-  // }
+  
+  if (piCommunication.isTimeToSendDataToPi()) {
+    piCommunication.sendDataToPi(data, state);
+  }
 }

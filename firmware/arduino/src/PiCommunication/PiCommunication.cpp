@@ -9,6 +9,8 @@ PiCommunication::PiCommunication(int baudRate, int timeBetweenPiSending) {
   _baudRate = baudRate;
   _lastSentDataTime = millis();
   _timeBetweenPiSending = timeBetweenPiSending;
+  _breathCompletedToSend = 1;
+  _tidalVolumeToSend = 0;
 }
 
 int PiCommunication::initCommunication(int pingInterval) {
@@ -74,7 +76,17 @@ void PiCommunication::getParametersFromPi() {
   // tellPiThatWeGotParameters();
 }
 
-void PiCommunication::sendDataToPi(Data &data, State &state, Parameters &parameters) {
+void PiCommunication::updateValuesForPiUponBreathCompleted(Data &data, State &state) {
+  _breathCompletedToSend = state.breathCompleted;
+  _tidalVolumeToSend = (uint8_t) round(data.tidalVolume * LITERS_TO_TENTH_OF_A_LITER);  // 10th of a L/min
+}
+
+void PiCommunication::resetValuesForPi() {
+  _breathCompletedToSend = 0;
+  _tidalVolumeToSend = 0;
+}
+
+void PiCommunication::sendDataToPi(Data &data, State &state) {
   /*
   What we send:
   - Checksum (XOR) (8 bits)
@@ -88,9 +100,9 @@ void PiCommunication::sendDataToPi(Data &data, State &state, Parameters &paramet
 
   */
   uint8_t checkSum = 0;
-  uint8_t batteryPercentage = 10;// parameters.currentMode; //(uint8_t) data.batteryPercentage;
-  uint8_t breathCompleted = state.breathCompleted; //(uint8_t) state.breathCompleted;
-  uint8_t tidalVolume = (uint8_t) round(data.tidalVolume * LITERS_TO_TENTH_OF_A_LITER); // 10th of a L/min
+  uint8_t batteryPercentage = state.breathingStage;// 10;// parameters.currentMode; //(uint8_t) data.batteryPercentage;
+  uint8_t breathCompleted = _breathCompletedToSend;
+  uint8_t tidalVolume = _tidalVolumeToSend;
 
   /*
   Possible Errors:
@@ -112,31 +124,8 @@ void PiCommunication::sendDataToPi(Data &data, State &state, Parameters &paramet
   Serial.write(abnormalFiO2);
 
   _lastSentDataTime = millis();
+  resetValuesForPi();
 }
-
-// int PiCommunication::doesMessageContainNewParameters(String receivedString) {
-//   if (receivedString.charAt(0) == 'P') {
-//     return 1;
-//   }
-//   else {
-//     return 0;
-//   }
-// }
-
-// int PiCommunication::doesMessageTellUsThatPiIsAwake(String receivedString) {
-//   if (receivedString.charAt(0) == 'G') {
-//     return 1;
-//   }
-//   else {
-//     return 0;
-//   }
-// }
-
-// if (curentParams.mode == PRESSURE_SUPPORT_MODE && state.isStartingNewBreath) {
-//     // we will re-set system time every breath cycle is complete and when
-//     // this happens we will let the pi know so that it can check breaths per minut
-//     piCommunications.finishedBreath(&data);
-//   }
 
 /*
   Helper function to verify checksum from first character of string.

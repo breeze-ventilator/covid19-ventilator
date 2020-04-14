@@ -25,19 +25,23 @@ class PiCommunication {
         int initCommunication(int pingInterval);
         void getParametersFromPi();
         void tellPiThatWeGotParameters();
-        void sendDataToPi(Data &data, State &state, Parameters &paremeters);
+        void sendDataToPi(Data &data, State &state);
         int isPiSendingUsNewParameters();
         char getMessageType();
         void flush();
         int isDataAvailable();
+        void updateValuesForPiUponBreathCompleted(Data &data, State &state);
         
         // int isChecksumValid(String piString);
         int isTimeToSendDataToPi();
         uint8_t parametersBuffer[PARAMETER_BYTE_LENGTH];
     private:
+        void resetValuesForPi();
         int _baudRate;
         unsigned long _timeBetweenPiSending;
         unsigned long _lastSentDataTime;
+        uint8_t _breathCompletedToSend;
+        uint8_t _tidalVolumeToSend;
 };
 
 #endif
