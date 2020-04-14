@@ -12,6 +12,7 @@ class State {
         unsigned long startTime;
         int breathingStage; // inhalation or exhilation
         uint32_t desiredPressure;
+        int mode;
         
         void updateState(Parameters &parameters);
     

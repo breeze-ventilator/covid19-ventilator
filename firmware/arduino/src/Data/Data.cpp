@@ -4,11 +4,14 @@ Data::Data()
   : _pressureValues(PRESSURE_HISTORY_LENGTH_FOR_PID),
     _flowValues(FLOW_HISTORY_LENGTH)
 {
-  tidalVolume = 0;
+  tidalVolume = 0.0;
 }
 
-void Data::saveFlowReading(float flowValue, float delta_time) {
+void Data::saveFlowReading(float flowValue) {
   _flowValues.push(flowValue);
+}
+
+void Data::updateTidalVolume(float flowValue, float delta_time) {
   tidalVolume += flowValue*delta_time;
 }
 

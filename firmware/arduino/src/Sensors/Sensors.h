@@ -14,6 +14,7 @@
 
 #include "../Defs/defs.h"
 #include "../Data/Data.h"
+#include "../State/State.h"
 #include "../Helpers/helpers.h"
 #include "Arduino.h"
 
@@ -29,7 +30,7 @@ class Sensors {
         BatteryVoltageSensor batteryVoltageSensor;
         
         void init();
-        void readSensorsIfAvailableAndSaveSensorData(Data &data);
+        void readSensorsIfAvailableAndSaveSensorData(Data &data, State &state);
 
     private:
         int isTimeToReadFlow();

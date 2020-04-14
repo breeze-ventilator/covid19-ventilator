@@ -26,7 +26,7 @@ void Sensors::init() {
   flowSensor.init();
 }
 
-void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
+void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data, State &state) {
   // take sensor readings
   if (isTimeToReadFlow()) {
     int error = 0;
@@ -37,7 +37,10 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
     }
     float delta_time = (float)(millis() - _lastFlowReadTime);
     delta_time /= MINUTES_TO_MILLISECONDS;
-    data.saveFlowReading(flowValue, delta_time);
+    data.saveFlowReading(flowValue);
+    if (state.breathingStage == INHALATION_STAGE) {
+      data.updateTidalVolume(flowValue, delta_time);
+    }
     // Serial.println(flowValue);
     _lastFlowReadTime = millis();
   }
@@ -50,7 +53,7 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data) {
     unsigned int pressureValue = mainPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
     if (pressureValue < 1000) {
       data.saveMainPressureReading(pressureValue);
-      Serial.println(data.getMainPressureAverageForPID());
+      // Serial.println(data.getMainPressureAverageForPID());
       // if (isTimeToRead(_lastPrintTime, _timeBetweenPrints)) {
         // Serial.println(data.getMainPressureAverageForPID());
       //   _lastPrintTime = millis();

@@ -13,6 +13,7 @@
 #define PRESSURE_SUPPORT_MODE 2
 #define INHALATION_STAGE 3
 #define EXHALATION_STAGE 4
+#define OFF_STAGE 5
 
 // Defines size of global storage arrays
 #define NUM_OF_PRESSURE_MEASUREMENTS 10 
