@@ -13,7 +13,8 @@ const useStyles = theme => ({
     height: "100%",
     borderRadius: 0,
     textAlign: "center",
-    margin: "dense"
+    margin: "dense",
+    boxShadow: "0px 0px 0px 0px rgba(0,0,0,0.2), 0px 0px 0px 0px rgba(0,0,0,0.14), 0px 0px 2px 0px rgba(0,0,0,0.12)",
   },
   good: {
     background: "#a5d6a7"
@@ -26,58 +27,36 @@ const useStyles = theme => ({
   }
 });
 
-class FlexValueCard extends React.Component {
-    constructor(props) {
-        super(props);
+export const FlexValueCard = ({isEditing, classes, value, unit, min, max, readableName, increment, decrement}) => {
+  
+  // let classNames;
+  // if (this.props.good) {
+  //   classNames = `${classes.root} ${classes.good}`
+  // } else if (this.props.warn) {
+  //   classNames = `${classes.root} ${classes.warn}`
+  // } else if (this.props.alarm) {
+  //   classNames = `${classes.root} ${classes.alarm}`
+  // } else {
+  //   classNames = `${classes.root}`
+  // }
 
-        this.state = {
-            value: 0,
-            viewForm: false
-        }
-
-      this.openModal = this.openModal.bind(this);
-    }
-
-    openModal() {
-        this.props.onClickHandler(this.props.name, this.props.value, this.props.unit)
-    }
-
-    componentDidUpdate(prevProps) {
-        const { value } = this.props;
-        this.state.value = value;
-    }
-
-    render() {
-        const { classes, isEditing } = this.props;
-
-        let classNames;
-        if (this.props.good) {
-          classNames = `${classes.root} ${classes.good}`
-        } else if (this.props.warn) {
-          classNames = `${classes.root} ${classes.warn}`
-        } else if (this.props.alarm) {
-          classNames = `${classes.root} ${classes.alarm}`
-        } else {
-          classNames = `${classes.root}`
-        }
-
-        return(
-            <Card className = {classNames}>
-                <CardActionArea onClick={this.openModal}>            
-                    <Typography variant="subtitle1" style={{fontFamily: "Barlow"}}>
-                        {this.props.readableName}
-                    </Typography>
-                    <Typography variant="subtitle2" align="left" style={{position: "relative", top: 61, left: 100, fontFamily: "Barlow"}}>
-                        {this.props.unit}
-                    </Typography>
-                    {isEditing ? <NumberToggle value={this.state.value}/>
-                    : <Typography variant={this.props.prominence}>
-                        {this.state.value} 
-                    </Typography>}
-                </CardActionArea>
-            </Card>
-        );
-    }
+  return(
+      <Card className = {classes.root} style={{opacity: isEditing ? 1 : 0.6}}>
+          <CardActionArea style={{padding: isEditing ? "10px 0" : "10px 0"}}>            
+              <Typography variant="subtitle1" style={{fontFamily: "Barlow"}}>
+                  {readableName}
+              </Typography>
+              <Typography variant="subtitle2" align="left" style={{position: "relative", top: 61, left: 100, fontFamily: "Barlow"}}>
+                  {unit}
+              </Typography>
+              {isEditing 
+                ? <NumberToggle min={min} max={max} value={value} increment={increment} decrement={decrement}/>
+                : <Typography variant="h2" style={{opacity: 0.8}}>
+                  {value} 
+                  </Typography>}
+          </CardActionArea>
+      </Card>
+  );
 }
 
 export default withStyles(useStyles)(FlexValueCard)

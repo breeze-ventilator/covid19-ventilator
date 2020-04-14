@@ -10,7 +10,15 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import SimpleModal from '../Modal/SimpleModal';
 import ParameterInputCustom from '../ParameterInput/ParameterInputCustom';
 import PatientProfile from '../PatientProfile/PatientProfile';
+import styled from "@emotion/styled";
 import { parameterInfo, controlParams, supportParams } from '../../util/constants';
+
+import Fab from '@material-ui/core/Fab';
+import CreateIcon from '@material-ui/icons/Create';
+
+function safeValue(fieldName, val){
+  return Math.min(parameterInfo[fieldName].max, Math.max(parameterInfo[fieldName].min, val))
+}
 
 export default class Vitals extends React.Component {
   constructor(props) {
@@ -20,20 +28,10 @@ export default class Vitals extends React.Component {
         tidalVolume: 5,
         pressure: 5,
       },
-      parameters: {...this.props.allParameters},
-      modal: {
-        open: false,
-        parameterName: '',
-        startingValue: 0,
-        step: 1,
-        min: 0,
-        max: 100,
-        unit: '%'
-      }
+      isEditing: false,
+      ...this.props.allParameters
     }
     this.setParameterStateValue = this.setParameterStateValue.bind(this);
-    this.setModalStateValues = this.setModalStateValues.bind(this);
-    this.modalClose = this.modalClose.bind(this);
     this.isAlarming = this.isAlarming.bind(this);
     this.changeMode = this.changeMode.bind(this);
   }
@@ -56,90 +54,74 @@ export default class Vitals extends React.Component {
     // TODO: Actually update parameters as well for arduino.
   }
 
-  setModalStateValues(parameterName, value, unit){
-    // TODO: this is bad, never mutate state
-    if(parameterName == 'FiO2'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'PEEP'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'Peak Pressure'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'Sensitivity'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'Apnea Time'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName == 'Inspiratory Time'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-    else if(parameterName =='Respiratory Rate'){
-      this.state.modal.step = 1;
-      this.state.modal.min = 0;
-      this.state.modal.max = 100;
-    }
-
-    this.state.modal.startingValue = value;
-    this.state.modal.parameterName = parameterName;
-    this.state.modal.unit = unit;
-    this.state.modal.open = true;
-
-    if(parameterName == "mode"){
-      this.state.parameters.mode = value
-    }
-
-    this.setState(this.state);
-  }
-
-  modalClose(){
-    this.state.modal.open = false;
-    this.setState(this.state);
-  }
-
   changeMode(value){
+    // TODO: make this into toggleMode
     this.state.parameters.mode = value;
     this.state.modal.open = false;
     this.setState(this.state)
   }
 
+  toggleEdit = () => {
+    this.setState(prevState => ({isEditing: !prevState.isEditing}))
+  }
+
+  increment = (fieldName) => {
+    this.setState(prevState => ({[fieldName]: safeValue(fieldName, prevState[fieldName] + 1)}))
+  }
+
+  decrement = (fieldName) => {
+    this.setState(prevState => ({[fieldName]: safeValue(fieldName, prevState[fieldName] - 1)}))
+  }
   render() {
-    const parameterNames = this.state.parameters.mode == "Pressure Control"
+    const {isEditing, mode} = this.state
+    const parameterNames = mode == "Pressure Control"
       ? controlParams
       : supportParams;
     let footer = (
-        <Grid container className="bottom">
+        <div style={{position: 'relative' }}>
+          <div style={{paddingLeft: "20px"}}>Mode:</div>
+          <Header>
+            {mode}
+          </Header>
+          {!isEditing 
+          ? <Fab size="small" 
+            style={{position:'absolute', right:'10px', top:'5px', boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.1), 0px 6px 10px 0px rgba(0,0,0,0.04), 0px 1px 18px 0px rgba(0,0,0,0.12)",
+            backgroundColor: '#33B0A6', color: "white"}}
+            // backgroundColor: '#eee'}}
+            onClick={this.toggleEdit}
+            >
+            <CreateIcon/>
+          </Fab>
+          : <Button variant="contained" 
+          style={{position:'absolute',
+          right:'10px', top:'5px', color: "white", 
+          backgroundColor: "#33B0A6", padding:0, boxShadow: "none"}}
+          onClick={this.toggleEdit}
+          > done </Button>
+          }
+        <Grid container>
             {parameterNames.map((name) => 
             <Grid item xs={4}>
               <FlexValueCard 
                 alarm={this.isAlarming(name)}
-                value={this.state.parameters[name]}
-                prominence="h2"
+                value={this.state[name]}
                 readableName={parameterInfo[name].readableName} 
                 unit={parameterInfo[name].unit}
-                isEditing={true} // DEBUG: use this to toggle mode @Anna
+                min={parameterInfo[name].recMin}
+                max={parameterInfo[name].recMax}
+                increment={() => this.increment(name)}
+                decrement={() => this.decrement(name)}
+                isEditing={isEditing} // DEBUG: use this to toggle mode @Anna
               />
             </Grid>)}
-        </Grid>);
+        </Grid>
+        </div>);
     return (
       <div className="mainContainer" style={{fontFamily: "Barlow"}}>
         {/* Header Observables */}
         <MainCard
           alarm={this.isAlarming("tidalVolume")} 
+          minimized={isEditing}
           tidalVolume={this.state.data.tidalVolume}
           respiratoryRate={this.state.data.respiratoryRate}
           prominence="h1"
@@ -152,7 +134,7 @@ export default class Vitals extends React.Component {
 
         {/* TODO: Graphs go here */} 
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
-        <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button>
+        {/* <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button> */}
         {/* Footer modifiables */}
         { footer }
         {/* {this.state.modal.startingValue != 'Pressure Control' && this.state.modal.startingValue != "Pressure Support" &&
@@ -186,3 +168,8 @@ export default class Vitals extends React.Component {
      </div>
     )};
 }
+const Header = styled.span`
+    font-size: 25px;
+    color: #33B0A6;
+    padding-left: 20px;
+`

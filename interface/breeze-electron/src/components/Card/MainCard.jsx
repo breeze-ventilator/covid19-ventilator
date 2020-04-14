@@ -12,8 +12,7 @@ import { keyframes } from '@emotion/core'
 
 const sizes = {large: 500, medium: 380, small: 280};
 const cardWidth = 440;
-const verticalCenter = 220;
-export const MainCard = ({ tidalVolume, respiratoryRate, low, high}) => {
+export const MainCard = ({ tidalVolume, respiratoryRate, low, high, minimized}) => {
     const size = tidalVolume < low
         ? "small"
         : tidalVolume < high
@@ -21,22 +20,12 @@ export const MainCard = ({ tidalVolume, respiratoryRate, low, high}) => {
             : "large";
     const diameter = sizes[size]
     const radius = parseInt(diameter/2)
-    // const { classes } = this.props;
-
-    // let classNames;
-    // if (this.props.good) {
-    //   classNames = `${classes.root} ${classes.good}`
-    // } else if (this.props.warn) {
-    //   classNames = `${classes.root} ${classes.warn}`
-    // } else if (this.props.alarm) {
-    //   classNames = `${classes.root} ${classes.alarm}`
-    // } else {
-    //   classNames = `${classes.root}`
-    // }
-
+    const height = minimized ? 200 : 400;
+    const verticalCenter = parseInt(height/2)
+    
     return(
         <div style={{position: 'relative'}}>
-        <Container>          
+        <Container height={height} minimized={minimized}>          
             <CircleContainer style={{
                 left: (cardWidth/2 - radius),
                 top: (verticalCenter - radius)
@@ -77,12 +66,13 @@ export default MainCard;
 const Container = styled.div`
     margin: 20px;
     max-width: ${cardWidth}px;
-    height: ${cardWidth}px;
+    height: ${props => props.height}px;
+    // ${({ height }) => height ? `${height}px` : `${cardWidth}px`};
     overflow: hidden;
     position: relative;
-    box-shadow: 0px 15px 40px rgba(58, 140, 171, 0.19);
+    ${props => !props.minimized && `box-shadow: 0px 15px 40px rgba(58, 140, 171, 0.19);`}
     border-radius: 15px;
-    margin-bottom: 40px;
+    // margin-bottom: 40px;
 `
 const TopCard = styled.div`
     box-shadow: 0px 15px 40px rgba(58,140,171,0.19);

@@ -15,35 +15,41 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const sizes = {large: 500, medium: 380, small: 280};
 const cardWidth = 440;
 const verticalCenter = 220;
-export const NumberToggle = ({ value, increment, decrement }) => {
+export const NumberToggle = ({ value, min, max, increment, decrement }) => {
 
     return(
-        <div style={{textAlign: 'center'}}>
+        <div style={{textAlign: 'center', padding: "10 0"}}>
+            <div style={{}}>
             <Button 
                 onClick={increment}
                 variant="contained" 
                 style={{position: "absolute", backgroundColor: "rgba(0,0,0,0)", padding:0, boxShadow: "none", width:"100%", height: "50%", top: 0, left: 0}}>
-                <ExpandLessIcon style={{position: "absolute", top: 38}}/></Button>
+                <ExpandLessIcon style={{position: "absolute", top: 50}}/></Button>
 
-                <Typography variant="h2">
+                <Value variant="h2">
                     {value} 
-                </Typography>
+                </Value>
             <Button 
                 onClick={decrement}
                 variant="contained" 
                 style={{position: "absolute", backgroundColor: "rgba(0,0,0,0)", padding:0, boxShadow: "none", width:"100%", height: "50%", bottom: 0, left: 0}}>
                     <ExpandMoreIcon style={{position: "absolute", top: 38}}/></Button> 
             <br></br>
-            <Typography align="center" style={{fontFamily: "Barlow", fontStyle: "Bold"}} variant="subtitle3">
-                Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>50-60</b></p>
+            </div>
+            <div style={{padding: "10px"}}>
+            <Typography align="center" style={{fontFamily: "Barlow", fontStyle: "Bold", padding: "10px"}} variant="subtitle3">
+                Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>{min}-{max}</b></p>
             </Typography> 
+            </div>
         </div>
 
     );
 }
 
 export default NumberToggle;
-
+const Value = styled(Typography)`
+    padding: 20px;
+`
 const Container = styled.div`
     margin: 20px;
     max-width: ${cardWidth}px;
