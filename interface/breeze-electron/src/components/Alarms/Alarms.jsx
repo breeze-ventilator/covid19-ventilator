@@ -73,8 +73,7 @@ export default class Alarms extends React.Component {
               spacing={3}
               direction="column"
             >
-              <br></br>
-              <h2 style={{textAlign: "center", color: "#000", fontFamily: "Barlow"}}>Alarm Settings</h2>
+              <br></br><br></br><br></br>
 
               <ParameterInput
                 parameterName="Low Minute Ventilation Alarm"

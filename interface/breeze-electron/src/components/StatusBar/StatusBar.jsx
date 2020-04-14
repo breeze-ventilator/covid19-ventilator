@@ -11,13 +11,11 @@ const useStyles = theme => ({
   statusBar: {
     top: 0,
     left: 0,
-    background: '#0B3045',
+    background: '#0E4362',
     color: 'white',
     height: '2em',
     width: '100%',
-    lineHeight: 1.8,
-    textAlign: 'center',
-    display: 'flex'
+    display: 'flex',
   },
   battery: {
     position: 'relative',
@@ -42,8 +40,8 @@ const useStyles = theme => ({
   left: {
     float: 'left',
     width:'15%',
-    textAlign: 'left',
     paddingLeft: '15px',
+    paddingTop: 5
   },
   center: {
     display: 'inline-block',
@@ -51,15 +49,24 @@ const useStyles = theme => ({
     background: '#072536',
     radius: '2px',
     color: 'white',
-    width: '70%',
+    width: '60%',
   },
   right: {
     float: 'right',
     width:'15%',
-    textAlign: 'right',
     paddingRight: '15px',
   },
 });
+
+const buttonStyle = {
+  backgroundColor: "#072536", 
+  color: "white", 
+  fontFamily: "Barlow",
+  fontSize: 16, 
+  width:"100%", 
+  height: "120%", 
+  boxShadow: "0 48x 2px -2px rgba(58,140,171,0.24);"
+}
 
 
 
@@ -72,16 +79,7 @@ class StatusBar extends React.Component {
             time: new Date(),
             batteryLevel: 0,
             isAlarm: true
-        /*
-            classes: makeStyles({
-                root: {
-                  width: 500,
-                },
-              }),
-              value: 0,
-            viewForm: false*/
         }
-        /*this.page = null;*/
 
         this.interval = null
     }
@@ -117,17 +115,17 @@ class StatusBar extends React.Component {
                         </Moment>
                     </strong>
                 </div>
-                <div className = {classes.center}>
+                <div className = {classes.center} >
                    {this.state.isAlarm ?
-                      <Button onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={{backgroundColor: "#072536", color: "white", padding:0, boxShadow: "none", width:"100%"}}
+                      <Button onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={buttonStyle}
                           component = { Link } to="/alarms">
                           {/* // href="/diagnostics"> */}
-                        Diagnostics
+                        <span>Diagnostics &nbsp; &nbsp; &nbsp; &nbsp;<p style={{display: "inline", fontFamily: "Barlow", backgroundColor: "9BD8D3", fontSize: 10, opacity: 0.8}}> Set Alarms ⥂</p></span>
                       </Button>
                       :
-                      <Button onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={{backgroundColor: "#072536", color: "white", padding:0, boxShadow: "none", width:"100%"}}
+                      <Button onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={buttonStyle}
                           component = { Link } to="/diagnostics">
-                        Set Alarms
+                          <span> <p style={{display: "inline", fontFamily: "Barlow", fontSize: 10, opacity: 0.8}}>⥄ Diagnostics</p> &nbsp; &nbsp; &nbsp; Set Alarms </span>
                       </Button>
                     }
                     {/* Monitoring */}
