@@ -67,7 +67,7 @@ class FlexValueCard extends React.Component {
                     <Typography variant="subtitle1" style={{fontFamily: "Barlow"}}>
                         {this.props.readableName}
                     </Typography>
-                    <Typography variant="subtitle2" align="left" style={{position: "relative", top: 85, left: 100, fontFamily: "Barlow"}}>
+                    <Typography variant="subtitle2" align="left" style={{position: "relative", top: 61, left: 100, fontFamily: "Barlow"}}>
                         {this.props.unit}
                     </Typography>
                     {isEditing ? <NumberToggle value={this.state.value}/>

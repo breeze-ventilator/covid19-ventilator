@@ -22,8 +22,8 @@ export const NumberToggle = ({ value, increment, decrement }) => {
             <Button 
                 onClick={increment}
                 variant="contained" 
-                style={{backgroundColor: "rgba(0,0,0,0)", padding:0, boxShadow: "none", width:"100%"}}>
-                <ExpandLessIcon/></Button>
+                style={{position: "absolute", backgroundColor: "rgba(0,0,0,0)", padding:0, boxShadow: "none", width:"100%", height: "50%", top: 0, left: 0}}>
+                <ExpandLessIcon style={{position: "absolute", top: 38}}/></Button>
 
                 <Typography variant="h2">
                     {value} 
@@ -31,9 +31,9 @@ export const NumberToggle = ({ value, increment, decrement }) => {
             <Button 
                 onClick={decrement}
                 variant="contained" 
-                style={{backgroundColor: "rgba(0,0,0,0)", padding:0, boxShadow: "none", width:"100%"}}>
-            <ExpandMoreIcon/></Button> 
-
+                style={{position: "absolute", backgroundColor: "rgba(0,0,0,0)", padding:0, boxShadow: "none", width:"100%", height: "50%", bottom: 0, left: 0}}>
+                    <ExpandMoreIcon style={{position: "absolute", top: 38}}/></Button> 
+            <br></br>
             <Typography align="center" style={{fontFamily: "Barlow", fontStyle: "Bold"}} variant="subtitle3">
                 Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>50-60</b></p>
             </Typography> 
