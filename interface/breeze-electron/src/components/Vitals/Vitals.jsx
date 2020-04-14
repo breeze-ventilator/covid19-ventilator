@@ -20,6 +20,7 @@ export default class Vitals extends React.Component {
         tidalVolume: 5,
         pressure: 5,
       },
+      isEditing: false,
       parameters: {...this.props.allParameters},
       modal: {
         open: false,
@@ -118,28 +119,31 @@ export default class Vitals extends React.Component {
   }
 
   render() {
+    const {isEditing} = this.state
     const parameterNames = this.state.parameters.mode == "Pressure Control"
       ? controlParams
       : supportParams;
     let footer = (
-        <Grid container className="bottom">
+        <div style={{position: 'relative' }} className="bottom">
+        <Grid container>
             {parameterNames.map((name) => 
             <Grid item xs={4}>
               <FlexValueCard 
                 alarm={this.isAlarming(name)}
                 value={this.state.parameters[name]}
-                prominence="h2"
                 readableName={parameterInfo[name].readableName} 
                 unit={parameterInfo[name].unit}
-                isEditing={true} // DEBUG: use this to toggle mode @Anna
+                isEditing={isEditing} // DEBUG: use this to toggle mode @Anna
               />
             </Grid>)}
-        </Grid>);
+        </Grid>
+        </div>);
     return (
       <div className="mainContainer" style={{fontFamily: "Barlow"}}>
         {/* Header Observables */}
         <MainCard
           alarm={this.isAlarming("tidalVolume")} 
+          minimized={isEditing}
           tidalVolume={this.state.data.tidalVolume}
           respiratoryRate={this.state.data.respiratoryRate}
           prominence="h1"
@@ -152,7 +156,7 @@ export default class Vitals extends React.Component {
 
         {/* TODO: Graphs go here */} 
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
-        <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button>
+        {/* <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button> */}
         {/* Footer modifiables */}
         { footer }
         {/* {this.state.modal.startingValue != 'Pressure Control' && this.state.modal.startingValue != "Pressure Support" &&

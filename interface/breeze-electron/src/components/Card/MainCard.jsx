@@ -12,8 +12,7 @@ import { keyframes } from '@emotion/core'
 
 const sizes = {large: 500, medium: 380, small: 280};
 const cardWidth = 440;
-const verticalCenter = 220;
-export const MainCard = ({ tidalVolume, respiratoryRate, low, high}) => {
+export const MainCard = ({ tidalVolume, respiratoryRate, low, high, minimized}) => {
     const size = tidalVolume < low
         ? "small"
         : tidalVolume < high
@@ -21,6 +20,8 @@ export const MainCard = ({ tidalVolume, respiratoryRate, low, high}) => {
             : "large";
     const diameter = sizes[size]
     const radius = parseInt(diameter/2)
+    const height = minimized ? 250 : cardWidth;
+    const verticalCenter = parseInt(height/2)
     // const { classes } = this.props;
 
     // let classNames;
@@ -36,7 +37,7 @@ export const MainCard = ({ tidalVolume, respiratoryRate, low, high}) => {
 
     return(
         <div style={{position: 'relative'}}>
-        <Container>          
+        <Container height={height}>          
             <CircleContainer style={{
                 left: (cardWidth/2 - radius),
                 top: (verticalCenter - radius)
@@ -77,7 +78,8 @@ export default MainCard;
 const Container = styled.div`
     margin: 20px;
     max-width: ${cardWidth}px;
-    height: ${cardWidth}px;
+    height: ${props => props.height}px;
+    // ${({ height }) => height ? `${height}px` : `${cardWidth}px`};
     overflow: hidden;
     position: relative;
     box-shadow: 0px 15px 40px rgba(58, 140, 171, 0.19);
