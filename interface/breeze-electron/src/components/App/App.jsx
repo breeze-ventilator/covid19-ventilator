@@ -51,9 +51,9 @@ export default class App extends React.Component {
     }
     this.messager = new Messager(5000);
 
-    this.messager.dataListener(this.updateData.bind(this));
-    // this.messager.tidalVolumeListener(this.updateData.bind(this));
-    // this.messager.batteryPercentageListener(this.updateData.bind(this));
+    /* TODO: uncommment datalistener and coment sample listener on release.abnormalFiO2 */
+    // this.messager.dataListener(this.updateData.bind(this));
+    this.messager.sampleDataListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
     this.setAlarms = this.setAlarms.bind(this);
