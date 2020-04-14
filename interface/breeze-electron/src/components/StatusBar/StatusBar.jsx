@@ -71,7 +71,7 @@ class StatusBar extends React.Component {
         this.state = {
             time: new Date(),
             batteryLevel: 0,
-            isAlarm: false
+            isAlarm: true
         /*
             classes: makeStyles({
                 root: {
@@ -119,15 +119,15 @@ class StatusBar extends React.Component {
                 </div>
                 <div className = {classes.center}>
                    {this.state.isAlarm ?
-                      <Button style = {{color: "white"}} onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={{backgroundColor: "rgba(0,0,0,255)", padding:0, boxShadow: "none", width:"100%"}}
+                      <Button onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={{backgroundColor: "#072536", color: "white", padding:0, boxShadow: "none", width:"100%"}}
                           component = { Link } to="/alarms">
                           {/* // href="/diagnostics"> */}
-                        Alarms
+                        Diagnostics
                       </Button>
                       :
-                      <Button style = {{color: "white"}} onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={{backgroundColor: "rgba(0,0,0,255)", padding:0, boxShadow: "none", width:"100%"}}
+                      <Button onClick={() => this.setState({ isAlarm: !this.state.isAlarm })} variant="contained" style={{backgroundColor: "#072536", color: "white", padding:0, boxShadow: "none", width:"100%"}}
                           component = { Link } to="/diagnostics">
-                        Diagnostics
+                        Set Alarms
                       </Button>
                     }
                     {/* Monitoring */}

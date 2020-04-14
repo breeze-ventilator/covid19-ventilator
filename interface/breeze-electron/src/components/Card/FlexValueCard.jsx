@@ -64,7 +64,7 @@ class FlexValueCard extends React.Component {
         return(
             <Card className = {classNames}>
                 <CardActionArea onClick={this.openModal}>            
-                    <Typography variant="subtitle1" style={{fontFamily: "Barlow", bottom: 0}}>
+                    <Typography variant="subtitle1" style={{fontFamily: "Barlow"}}>
                         {this.props.readableName}
                     </Typography>
                     <Typography variant="subtitle2" align="left" style={{position: "relative", top: 85, left: 100, fontFamily: "Barlow"}}>
