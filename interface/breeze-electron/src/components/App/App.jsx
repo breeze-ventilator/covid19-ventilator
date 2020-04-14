@@ -16,27 +16,28 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.isMount = false;
-
-    this.state = {
+    
+    let state = {
       currentlyAlarming: [],
       setup: true,
       data: {},
       parameters: {}
     }
-
+    
     // Set default data values on state.
     for(const name of readingNames){
-      this.state.data[name] = readingsInfo[name].default;
+      state.data[name] = readingsInfo[name].default;
     }
 
     // Set default parameter values on state.
     for(const name in parameterInfo){
-      this.state.parameters[name] = parameterInfo[name].default;
+      state.parameters[name] = parameterInfo[name].default;
     }
 
     // Set default alarms on state.
-    this.state.alarms = defaultAlarms;
-
+    state.alarms = defaultAlarms;
+    
+    this.state = state;
     this.messager = new Messager(5000);
 
     /* TODO: uncommment datalistener and coment sample listener on release.abnormalFiO2 */
