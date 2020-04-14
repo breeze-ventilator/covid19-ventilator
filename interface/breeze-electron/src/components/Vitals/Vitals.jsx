@@ -16,6 +16,10 @@ import { parameterInfo, controlParams, supportParams } from '../../util/constant
 import Fab from '@material-ui/core/Fab';
 import CreateIcon from '@material-ui/icons/Create';
 
+function safeValue(fieldName, val){
+  return Math.min(parameterInfo[fieldName].max, Math.max(parameterInfo[fieldName].min, val))
+}
+
 export default class Vitals extends React.Component {
   constructor(props) {
     super(props);
@@ -62,11 +66,11 @@ export default class Vitals extends React.Component {
   }
 
   increment = (fieldName) => {
-    this.setState(prevState => ({[fieldName]: prevState[fieldName] + 1}))
+    this.setState(prevState => ({[fieldName]: safeValue(fieldName, prevState[fieldName] + 1)}))
   }
 
   decrement = (fieldName) => {
-    this.setState(prevState => ({[fieldName]: prevState[fieldName] - 1}))
+    this.setState(prevState => ({[fieldName]: safeValue(fieldName, prevState[fieldName] - 1)}))
   }
   render() {
     const {isEditing, mode} = this.state
