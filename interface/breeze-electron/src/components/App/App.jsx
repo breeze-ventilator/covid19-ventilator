@@ -26,7 +26,6 @@ export default class App extends React.Component {
 
     // Set default data values on state.
     for(const name of readingNames){
-      console.log(name)
       this.state.data[name] = readingsInfo[name].default;
     }
 
