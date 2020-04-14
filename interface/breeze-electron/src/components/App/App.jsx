@@ -38,11 +38,11 @@ export default class App extends React.Component {
     state.alarms = defaultAlarms;
     
     this.state = state;
-    this.messager = new Messager(5000);
 
-    /* TODO: uncommment datalistener and coment sample listener on release.abnormalFiO2 */
-    // this.messager.dataListener(this.updateData.bind(this));
-    this.messager.sampleDataListener(this.updateData.bind(this));
+    // Note: Second parameter is whether to use sample listener.
+    this.messager = new Messager(5000, true); 
+
+    this.messager.dataListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
     this.setAlarms = this.setAlarms.bind(this);
