@@ -9,7 +9,6 @@ import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import Vitals from '../Vitals/Vitals';
 import Alarms from '../Alarms/Alarms';
 import AlarmsHandler from '../Alarms/AlarmsHandler';
-import SimpleBottomNavigation from '../SimpleBottomNavigation/SimpleBottomNavigation';
 import StatusBar from '../StatusBar/StatusBar';
 
 
@@ -135,7 +134,6 @@ export default class App extends React.Component {
     return (
       <div>
       <Router>
-        {/* <SimpleBottomNavigation setup={false} /> */}
         <StatusBar />
         <AlarmsHandler
             alarms={this.state.alarms}
