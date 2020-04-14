@@ -112,7 +112,7 @@ export const readingsInfo = {
 
 
 
-}; // TODO: the fields that we monitor
+};
 
 // Defines parameters to send, as all params are sent to arduino
 // for consistency.
