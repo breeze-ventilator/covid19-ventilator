@@ -145,6 +145,7 @@ export default class Vitals extends React.Component {
                 prominence="h2"
                 readableName={parameterInfo[name].readableName} 
                 unit={parameterInfo[name].unit}
+                isEditing={true} // DEBUG: use this to toggle mode @Anna
               />
             </Grid>)}
         </Grid>);

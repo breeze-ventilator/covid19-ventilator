@@ -5,6 +5,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import NumberToggle from './NumberToggle'
 
 const useStyles = theme => ({
   root: {
@@ -47,7 +48,7 @@ class FlexValueCard extends React.Component {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, isEditing } = this.props;
 
         let classNames;
         if (this.props.good) {
@@ -66,9 +67,10 @@ class FlexValueCard extends React.Component {
                     <Typography variant="subtitle1">
                         {this.props.readableName}
                     </Typography>
-                    <Typography variant={this.props.prominence}>
+                    {isEditing ? <NumberToggle value={this.state.value}/>
+                    : <Typography variant={this.props.prominence}>
                         {this.state.value} 
-                    </Typography>
+                    </Typography>}
                     <Typography variant="subtitle2">
                         {this.props.unit}
                     </Typography>

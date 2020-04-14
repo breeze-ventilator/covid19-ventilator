@@ -56,15 +56,6 @@ export const MainCard = ({ tidalVolume, respiratoryRate, low, high}) => {
                 Tidal Volume
                 </VolumeDisp>
             </Data>
-            {/* <Typography variant="subtitle1">
-                {this.props.readableName}
-            </Typography>
-            <Typography variant={this.props.prominence}>
-                {this.state.value} 
-            </Typography>
-            <Typography variant="subtitle2">
-                {this.props.unit}
-            </Typography> */}
         </Container>
         <TopCard>
             <VolumeDisp style={{position: "static"}}>
