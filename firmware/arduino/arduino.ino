@@ -27,12 +27,7 @@ void setup() {
   controller.stopArduinoAlarm();
   int servosConnectedErrorCode = controller.init();
   sensors.init();
-<<<<<<< HEAD
-  // int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
-
-=======
   int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
->>>>>>> last_testing
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
   // }
@@ -81,17 +76,11 @@ void loop() {
   }
   else if (state.breathingStage == EXHALATION_STAGE) {
     controller.exhalationControl(data, parameters);
-  // }
+  }
 
-<<<<<<< HEAD
-  // if (piCommunication.isTimeToSendDataToPi()) {
-  //   piCommunication.sendDataToPi(data, state, parameters);
-  // }
-=======
   if (piCommunication.isTimeToSendDataToPi()) {
     piCommunication.sendDataToPi(data, state, parameters);
   }
->>>>>>> last_testing
     
   // if (state.breathCompleted) {
   //   data.resetTidalVolume();
