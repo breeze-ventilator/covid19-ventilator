@@ -1,7 +1,7 @@
 import React from 'react';
 import Messager from '../../handlers/Messager';
+import {readingNames, readingsInfo, parameterInfo, defaultAlarms, modes, allParams} from '../../util/constants';
 
-import d3Config from '../LineChart/scripts/d3Config.js'
 import './css/App.css';
 
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
@@ -15,51 +15,39 @@ import StatusBar from '../StatusBar/StatusBar';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.numPoints = d3Config.numDataPoints;
     this.isMount = false;
-    this.modes = ["Standby", "Pressure Control", "Pressure Support"];
-    this.state = {
-      data: {
-        tidalVolume: 5,
-        pressure: 5,
-        batteryPercentage:"75%"
-      },
-      parameters: {
-        mode: "Pressure Control", // one of Pressure Control, Pressure Support, Standby
-        fiO2: 80, // Control + Support (%)
-        peep: 3, // Control + Support (cm H2O)
-        inspiratoryPressure: 7, // Control + Support (cm H2O)
-        sensitivity: 80, // Support (L/min)
-        respiratoryRate: 8, // Control (breaths per minute)
-        inspiratoryTime: 33, // Control (%)
-        flowCyclingOff: 0, //Support (%)
-        apneaTime: 0.3, // Support (0.1, 0.2, .. will always be a tenth of a second.)
-        riseTime: 0.2, // ??? (0.1, 0.2, .. will always be a tenth of a second.) default: 0.1
-      },
-      alarms: {
-        minuteVentilation: {
-          min: 6,
-          max: 10
-        },
-        pressure: {
-          lowExpiratoryPressure: 0, // low expiratory pressure
-          highInspiratoryPressure: 35 // high inspiratory pressure
-        }
-      },
+    
+    let state = {
       currentlyAlarming: [],
-      setup: true
+      setup: true,
+      data: {},
+      parameters: {}
     }
+    
+    // Set default data values on state.
+    for(const name of readingNames){
+      state.data[name] = readingsInfo[name].default;
+    }
+
+    // Set default parameter values on state.
+    for(const name in parameterInfo){
+      state.parameters[name] = parameterInfo[name].default;
+    }
+
+    // Set default alarms on state.
+    state.alarms = defaultAlarms;
+    
+    this.state = state;
     this.messager = new Messager(5000);
 
     /* TODO: uncommment datalistener and coment sample listener on release.abnormalFiO2 */
-    this.messager.dataListener(this.updateData.bind(this));
-    // this.messager.sampleDataListener(this.updateData.bind(this));
+    // this.messager.dataListener(this.updateData.bind(this));
+    this.messager.sampleDataListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
     this.setAlarms = this.setAlarms.bind(this);
     this.setCurrentlyAlarming = this.setCurrentlyAlarming.bind(this);
     this.doneSetup = this.doneSetup.bind(this);
-
     this.sendToArduino = this.sendToArduino.bind(this);
   }
 
@@ -71,21 +59,19 @@ export default class App extends React.Component {
   sendToArduino(){
     let toSend = {};
 
-    // Ship all parameters.
-    toSend.mode = this.modes.indexOf(this.state.parameters.mode);
-    toSend.fiO2 = this.state.parameters.fiO2;
-    toSend.peep = this.state.parameters.peep;
-    toSend.inspiratoryPressure = this.state.parameters.inspiratoryPressure;
-    toSend.sensitivity = this.state.parameters.sensitivity;
-    toSend.respiratoryRate = this.state.parameters.respiratoryRate;
-    toSend.inspiratoryTime = this.state.parameters.inspiratoryTime;
-    toSend.flowCyclingOff = this.state.parameters.flowCyclingOff;
-    toSend.apneaTime = this.state.parameters.apneaTime * 10;
-    toSend.riseTime = this.state.parameters.riseTime * 10;
+    // Get mode and all other parameters.
+    toSend.mode = modes.indexOf(this.state.parameters.mode);
+    for(param in allParams){
+      toSend[param] = this.state.parameters[param];
+    }
+
+    // Post processing.
+    toSend.apneaTime *= 10;
+    toSend.riseTime *= 10;
 
     // Alarms.
-    toSend.highInspiratoryPressureAlarm = this.state.alarms.pressure.highInspiratoryPressure;
-    toSend.lowExpiratoryPressureAlarm = this.state.alarms.pressure.lowExpiratoryPressure;
+    toSend.highInspiratoryPressureAlarm = this.state.alarms.pressure.max;
+    toSend.lowExpiratoryPressureAlarm = this.state.alarms.pressure.min;
 
     this.messager.sendParametersToBackend(toSend);
   }
@@ -103,20 +89,11 @@ export default class App extends React.Component {
   }
 
   updateData(data) {
-
-    let data_names = [
-        "checkSum",
-        "batteryPercentage",
-        "breathCompleted",
-        "tidalVolume",
-        "errorCode",
-        "abnormalPressure",
-        "abnormalFiO2"
-    ]
-    console.log("DATA RECEIVED ON FRONTEND!")
+    console.log("[App.jsx]: Data Received.")
     console.log(data)
+
     for(let i = 1; i < data.length; i++){
-      this.state.data[data_names[i]] = data[i];
+      this.state.data[readingNames[i]] = data[i];
     }
 
 
@@ -156,7 +133,7 @@ export default class App extends React.Component {
         <Redirect from="/" to="/diagnostics" />
       </Router>
         <div className="battery">
-          <div className="battery-level" style={{height : this.state.data.batteryPercentage}}></div>
+          <div className="battery-level" style={{height : this.state.data.batteryPercentage + readingsInfo.batteryPercentage.unit}}></div>
         </div>
       </div>
     );

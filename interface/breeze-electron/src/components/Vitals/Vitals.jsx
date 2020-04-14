@@ -10,21 +10,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import SimpleModal from '../Modal/SimpleModal';
 import ParameterInputCustom from '../ParameterInput/ParameterInputCustom';
 import PatientProfile from '../PatientProfile/PatientProfile';
-
-
-const parameterInfo = {
-  fiO2: {readableName: "FiO2", unit: "%"},
-  peep: {readableName: "PEEP", unit: "cm H2O"},
-  // peakPressure: {readableName: "Peak pressure", unit: "L"},
-  inspiratoryPressure: {readableName: "Inspiratory pressure", unit: "cm H2O"},
-  inspiratoryTime: {readableName: "Inspiratory time", unit: "%"},
-  respiratoryRate: {readableName: "Respiratory rate", unit: "bpm"},
-  sensitivity: {readableName: "Sensitivity", unit: "L/min"},
-  apneaTime: {readableName: "Apnea time", unit: "s"},
-  flowCyclingOff: {readableName: "Flow cycling off", unit: ""}
-};
-const controlParams = ["fiO2", "peep", "inspiratoryPressure", "inspiratoryTime", "respiratoryRate"];
-const supportParams = ["fiO2", "peep", "inspiratoryPressure", "sensitivity", "apneaTime", "flowCyclingOff"];
+import { parameterInfo, controlParams, supportParams } from '../../util/constants';
 
 export default class Vitals extends React.Component {
   constructor(props) {
@@ -152,8 +138,6 @@ export default class Vitals extends React.Component {
     return (
       <div className="mainContainer" style={{fontFamily: "Barlow"}}>
         {/* Header Observables */}
-        <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button>
-
         <MainCard
           alarm={this.isAlarming("tidalVolume")} 
           tidalVolume={this.state.data.tidalVolume}
@@ -168,6 +152,7 @@ export default class Vitals extends React.Component {
 
         {/* TODO: Graphs go here */} 
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
+        <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button>
         {/* Footer modifiables */}
         { footer }
         {/* {this.state.modal.startingValue != 'Pressure Control' && this.state.modal.startingValue != "Pressure Support" &&
