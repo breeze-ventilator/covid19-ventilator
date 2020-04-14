@@ -41,7 +41,7 @@ export const FlexValueCard = ({isEditing, classes, value, unit, readableName, in
   // }
 
   return(
-      <Card className = {classes.root}>
+      <Card className = {classes.root} style={{opacity: isEditing ? 1 : 0.6}}>
           <CardActionArea style={{padding: isEditing ? "10px 0" : "10px 0"}}>            
               <Typography variant="subtitle1" style={{fontFamily: "Barlow"}}>
                   {readableName}

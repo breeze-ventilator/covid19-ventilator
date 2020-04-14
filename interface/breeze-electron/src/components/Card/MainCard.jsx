@@ -20,7 +20,7 @@ export const MainCard = ({ tidalVolume, respiratoryRate, low, high, minimized}) 
             : "large";
     const diameter = sizes[size]
     const radius = parseInt(diameter/2)
-    const height = minimized ? 250 : cardWidth;
+    const height = minimized ? 200 : 400;
     const verticalCenter = parseInt(height/2)
     // const { classes } = this.props;
 
@@ -37,7 +37,7 @@ export const MainCard = ({ tidalVolume, respiratoryRate, low, high, minimized}) 
 
     return(
         <div style={{position: 'relative'}}>
-        <Container height={height}>          
+        <Container height={height} minimized={minimized}>          
             <CircleContainer style={{
                 left: (cardWidth/2 - radius),
                 top: (verticalCenter - radius)
@@ -82,9 +82,9 @@ const Container = styled.div`
     // ${({ height }) => height ? `${height}px` : `${cardWidth}px`};
     overflow: hidden;
     position: relative;
-    box-shadow: 0px 15px 40px rgba(58, 140, 171, 0.19);
+    ${props => !props.minimized && `box-shadow: 0px 15px 40px rgba(58, 140, 171, 0.19);`}
     border-radius: 15px;
-    margin-bottom: 40px;
+    // margin-bottom: 40px;
 `
 const TopCard = styled.div`
     box-shadow: 0px 15px 40px rgba(58,140,171,0.19);

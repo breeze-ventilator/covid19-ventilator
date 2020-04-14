@@ -10,7 +10,11 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import SimpleModal from '../Modal/SimpleModal';
 import ParameterInputCustom from '../ParameterInput/ParameterInputCustom';
 import PatientProfile from '../PatientProfile/PatientProfile';
+import styled from "@emotion/styled";
 import { parameterInfo, controlParams, supportParams } from '../../util/constants';
+
+import Fab from '@material-ui/core/Fab';
+import CreateIcon from '@material-ui/icons/Create';
 
 export default class Vitals extends React.Component {
   constructor(props) {
@@ -118,13 +122,33 @@ export default class Vitals extends React.Component {
     this.setState(this.state)
   }
 
+  toggleEdit = () => {
+    this.setState(prevState => ({isEditing: !prevState.isEditing}))
+  }
+
   render() {
-    const {isEditing} = this.state
+    const {isEditing, parameters} = this.state
     const parameterNames = this.state.parameters.mode == "Pressure Control"
       ? controlParams
       : supportParams;
     let footer = (
-        <div style={{position: 'relative' }} className="bottom">
+        <div style={{position: 'relative' }}>
+          <div style={{paddingLeft: "20px"}}>Mode:</div>
+          <Header>
+            {parameters.mode}
+          </Header>
+          {!isEditing 
+          ? <Fab size="small" 
+            style={{position:'absolute', right:'10px', top:'5px', boxShadow:'none', backgroundColor: '#eee'}}
+            onClick={this.toggleEdit}
+            >
+            <CreateIcon/>
+          </Fab>
+          : <Button variant="contained" 
+          style={{position:'absolute', right:'10px', top:'5px', color: "white", backgroundColor: "#33B0A6", padding:0, boxShadow: "none"}}
+          onClick={this.toggleEdit}
+          > done </Button>
+          }
         <Grid container>
             {parameterNames.map((name) => 
             <Grid item xs={4}>
@@ -190,3 +214,8 @@ export default class Vitals extends React.Component {
      </div>
     )};
 }
+const Header = styled.span`
+    font-size: 25px;
+    color: #33B0A6;
+    padding-left: 20px;
+`
