@@ -86,7 +86,8 @@ export default class Vitals extends React.Component {
           {!isEditing 
           ? <Fab size="small" 
             style={{position:'absolute', right:'10px', top:'5px', boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.1), 0px 6px 10px 0px rgba(0,0,0,0.04), 0px 1px 18px 0px rgba(0,0,0,0.12)",
-            backgroundColor: '#eee'}}
+            backgroundColor: '#33B0A6', color: "white"}}
+            // backgroundColor: '#eee'}}
             onClick={this.toggleEdit}
             >
             <CreateIcon/>
@@ -106,6 +107,8 @@ export default class Vitals extends React.Component {
                 value={this.state[name]}
                 readableName={parameterInfo[name].readableName} 
                 unit={parameterInfo[name].unit}
+                min={parameterInfo[name].recMin}
+                max={parameterInfo[name].recMax}
                 increment={() => this.increment(name)}
                 decrement={() => this.decrement(name)}
                 isEditing={isEditing} // DEBUG: use this to toggle mode @Anna

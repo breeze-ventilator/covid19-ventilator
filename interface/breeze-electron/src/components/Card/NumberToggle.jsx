@@ -15,7 +15,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const sizes = {large: 500, medium: 380, small: 280};
 const cardWidth = 440;
 const verticalCenter = 220;
-export const NumberToggle = ({ value, increment, decrement }) => {
+export const NumberToggle = ({ value, min, max, increment, decrement }) => {
 
     return(
         <div style={{textAlign: 'center', padding: "10 0"}}>
@@ -38,7 +38,7 @@ export const NumberToggle = ({ value, increment, decrement }) => {
             </div>
             <div style={{padding: "10px"}}>
             <Typography align="center" style={{fontFamily: "Barlow", fontStyle: "Bold", padding: "10px"}} variant="subtitle3">
-                Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>50-60</b></p>
+                Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>{min}-{max}</b></p>
             </Typography> 
             </div>
         </div>
