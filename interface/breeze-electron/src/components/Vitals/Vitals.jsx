@@ -152,6 +152,8 @@ export default class Vitals extends React.Component {
     return (
       <div className="mainContainer" style={{fontFamily: "Barlow"}}>
         {/* Header Observables */}
+        <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button>
+
         <MainCard
           alarm={this.isAlarming("tidalVolume")} 
           tidalVolume={this.state.data.tidalVolume}
@@ -166,7 +168,6 @@ export default class Vitals extends React.Component {
 
         {/* TODO: Graphs go here */} 
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
-        <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button>
         {/* Footer modifiables */}
         { footer }
         {/* {this.state.modal.startingValue != 'Pressure Control' && this.state.modal.startingValue != "Pressure Support" &&

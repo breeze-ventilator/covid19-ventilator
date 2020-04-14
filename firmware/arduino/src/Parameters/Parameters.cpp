@@ -23,7 +23,7 @@ void Parameters::getNewParameters(uint8_t parametersBuffer[PARAMETER_BYTE_LENGTH
   _newLowExpiratoryPressureAlarm = (uint16_t) parametersBuffer[12] * CENTIMETERS_TO_MILIMETERS;
   
   if (_newMode == PRESSURE_CONTROL_MODE) {
-    float breathTime = 1.0/((float)rate) * SECONDS_TO_MILLISECONDS;
+    float breathTime = 1.0/((float)rate) * MINUTES_TO_MILLISECONDS;
     _newInspiratoryTime = breathTime*inspiratoryTimePercentage/100.0;
     _newMaxExpiratoryTime = breathTime - _newInspiratoryTime;
   }

@@ -61,7 +61,7 @@ void loop() {
   }
 
 
-  // state.updateState(parameters);
+  state.updateState(parameters);
 
   sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
 
@@ -77,12 +77,13 @@ void loop() {
   else if (state.breathingStage == EXHALATION_STAGE) {
     controller.exhalationControl(data, parameters);
   }
-
+  
   if (piCommunication.isTimeToSendDataToPi()) {
     piCommunication.sendDataToPi(data, state, parameters);
   }
-    
-  // if (state.breathCompleted) {
-  //   data.resetTidalVolume();
-  // }
+   
+  if (state.breathCompleted) {
+    piCommunication.updateValuesForPi(data);
+    data.resetTidalVolume();
+  }
 }

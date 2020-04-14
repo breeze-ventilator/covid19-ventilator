@@ -41,8 +41,10 @@ void Controller::inhalationControl(Data &data, Parameters &parameters, State &st
 }
 
 void Controller::exhalationControl(Data &data, Parameters &parameters) {
-  float setPressure = (float) parameters.currentPEEP;
+  // TODO: uncomment below
+  // float setPressure = (float) parameters.currentPEEP;
   float actualPressure = data.getMainPressureAverageForPID();
+  float setPressure = 0;
   blowerControl.control(setPressure, actualPressure);
   // blowerControl.beQuiet();
 }

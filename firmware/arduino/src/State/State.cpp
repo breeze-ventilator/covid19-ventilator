@@ -8,7 +8,7 @@ State::State() {
 }
 
 void State::updateState(Parameters &parameters) {
-  if ((mode != PRESSURE_CONTROL_MODE && mode != PRESSURE_SUPPORT_MODE) 
+  if ((mode != PRESSURE_CONTROL_MODE && mode != PRESSURE_SUPPORT_MODE)
         && 
         (parameters.currentMode == PRESSURE_CONTROL_MODE
         || parameters.currentMode == PRESSURE_SUPPORT_MODE))
