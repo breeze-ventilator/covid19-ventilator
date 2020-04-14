@@ -1,18 +1,33 @@
-import serial
+import eventlet
+import socketio
 
-ser = serial.Serial('/dev/ttyACM0', 9600, timeout=None)
+sio = socketio.Server()
+app = socketio.WSGIApp(sio)
+PORT = 5000
+thread = None
 
-hadnshake_completed = False
+def background():
+    while True:
+        sio.sleep(.1)
+        print("BACKGROUND!")
+        pass
+
+@sio.on('connect')
+def connect(sid, environ):
+    global thread
+    print('connect ')
+    if thread == None:
+        pass
+        thread = sio.start_background_task(target=background)
+
+@sio.on('parameterChange')
+def parameterChange(sid, message):
+    print(message)
 
 
-while(True):
-    if not hadnshake_completed:
-        if ser.in_waiting:
-            byte = ser.read(1)
-            u_int8 = struct.unpack('B', byte)[0]
-            print(u_int8)
-            if u_int8 == 2:
-                hadnshake_completed = True
-        ser.write(bytes([1]))
+@sio.on('disconnect')
+def disconnect(sid):
+    print('disconnect ')
 
-
+if __name__ == '__main__':
+    eventlet.wsgi.server(eventlet.listen(('', PORT)), app, log_output=False)

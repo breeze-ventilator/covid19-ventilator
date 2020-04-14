@@ -6,43 +6,33 @@ export default class Messager {
     }
 
 	sendParametersToBackend(params){
+        console.log("TEST")
+        console.log(params)
 		this.socket.emit('parameterChange', params)
 	}
 
-    tidalVolumeListener(cb){
-        this.socket.on('tidalVolume', tidalVolume => cb('tidalVolume', tidalVolume))
+    dataListener(cb){
+        this.socket.on('data', data => cb(data))
     }
 
-    batteryVoltageListener(cb){
-        this.socket.on('batteryVoltage', batteryVoltage => cb('batteryVoltage',batteryVoltage))
-    }
+    // sampleTidalVolumeDataListener(cb){
+    //     setInterval(() => {
+	// 		let val = Math.floor(4*Math.random() + 10) + 1;
+	// 		cb({
+	// 			type: 'tidal volume',
+	// 			value: val
+	// 		})
+	// 	}, 1000)
+    // }
 
-    batteryPercentageListener(cb) {
-		this.socket.on('batteryPercentage', batteryPercentage => cb('batteryPercentage', batteryPercentage))
-    }
-
-    errorListener(cb){
-       this.socket.on('error', (errorCode, abPressure, abFiO2) => cb('error', errorCode, abPressure, abFiO2))
-    }
-
-    sampleTidalVolumeDataListener(cb){
-        setInterval(() => {
-			let val = Math.floor(4*Math.random() + 10) + 1;
-			cb({
-				type: 'tidal volume',
-				value: val
-			})
-		}, 1000)
-    }
-
-    samplePressureDataListener(cb) {
-        setInterval(() => {
-			let val = Math.floor(3*Math.random() + 25 ) + 1;
-			cb({
-				type: 'pressure',
-				value: val
-			})
-		}, 2000)
-    }
+    // samplePressureDataListener(cb) {
+    //     setInterval(() => {
+	// 		let val = Math.floor(3*Math.random() + 25 ) + 1;
+	// 		cb({
+	// 			type: 'pressure',
+	// 			value: val
+	// 		})
+	// 	}, 2000)
+    // }
     
 }

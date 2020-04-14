@@ -13,16 +13,19 @@ PiCommunication::PiCommunication(int baudRate, int timeBetweenPiSending) {
 
 int PiCommunication::initCommunication(int pingInterval) {
   Serial.begin(_baudRate);
+  delay(10);
   
   int count = 0;
-  while (!Serial) {
-    // wait for serial port to connect. Needed for native USB port only
-    delay(1);
-    if (count > MAX_SERIAL_WAIT_TIME) {
-      return SERIAL_TIMEOUT_ERROR;
-    }
-    count++;
-  }
+  // while (!Serial) {
+  //   // wait for serial port to connect. Needed for native USB port only
+  //   delay(1);
+  //   if (count > MAX_SERIAL_WAIT_TIME) {
+  //     return SERIAL_TIMEOUT_ERROR;
+  //   }
+  //   count++;
+  // }
+
+  // Serial.write(3);
 
   // Arduino sends message to pi until it gets a response
   while (Serial.available() <= 0) { // Serial.available says how many bytes available to read
@@ -32,9 +35,9 @@ int PiCommunication::initCommunication(int pingInterval) {
   }
 
   delay(50);
-  String response = Serial.readStringUntil('\n');
+  uint8_t response = Serial.read();
   
-  if (response.equals("elbowbump")) {
+  if (response == WELCOME_MESSAGE) {
     return NO_ERROR;
   }
   else {
@@ -46,37 +49,29 @@ int PiCommunication::isTimeToSendDataToPi() {
   return isTime(_lastSentDataTime, _timeBetweenPiSending);
 }
 
-int PiCommunication::isPiSendingUsNewParameters() {
-  if (Serial.available() == PARAMETER_BYTE_LENGTH + 1) { //  // +1 for first descriptive character
-    // read the whole thing and check first character
-    char firstByte = Serial.read();
-    if (firstByte == 'P') {
-      return 1;
-    }
+int PiCommunication::isDataAvailable() {
+  if (Serial.available() == MESSAGE_LENGTH_FROM_PI) {
+    return 1;
+  } else {
+    return 0;
   }
-  return 0;
 }
 
-int PiCommunication::isPiTellingUsThatItsAwake() {
-  if (Serial.available() == 1) {
-    // Read and check first character
-    char firstByte = Serial.read();
-    if (firstByte == 'G') {
-      return 1;
-    }
+void PiCommunication::flush() {
+  while (Serial.available() > 0) {
+    Serial.read();
   }
-  return 0;
 }
+
+char PiCommunication::getMessageType() {
+  char messageType = (char) Serial.read();
+  return messageType;
+}
+
 
 void PiCommunication::getParametersFromPi() {
   Serial.readBytes(parametersBuffer, PARAMETER_BYTE_LENGTH);
-  uint8_t msg = 7;
-  Serial.write(msg);
   // tellPiThatWeGotParameters();
-}
-
-void PiCommunication::tellPiThatWeGotParameters() {
-  // Serial.print("G");
 }
 
 void PiCommunication::sendDataToPi(Data &data, State &state, Parameters &parameters) {
@@ -93,19 +88,20 @@ void PiCommunication::sendDataToPi(Data &data, State &state, Parameters &paramet
 
   */
   uint8_t checkSum = 0;
-  uint8_t batteryPercentage = parameters.currentMode; //(uint8_t) data.batteryPercentage;
-  uint8_t breathCompleted = parameters.currentFiO2; //(uint8_t) state.breathCompleted;
-  uint8_t tidalVolume = 3;//;
-  // if (breathCompleted) {
-  //   tidalVolume = (uint8_t) round(LITERS_TO_TENTH_OF_A_LITER*data.tidalVolume); // 10th of a L/min
-  // } else {
-  //   tidalVolume = 0;
-  // }
+  uint8_t batteryPercentage = 10;// parameters.currentMode; //(uint8_t) data.batteryPercentage;
+  uint8_t breathCompleted = state.breathCompleted; //(uint8_t) state.breathCompleted;
+  uint8_t tidalVolume = (uint8_t) round(data.tidalVolume * LITERS_TO_TENTH_OF_A_LITER); // 10th of a L/min
 
+  /*
+  Possible Errors:
+  - FiO2 is abnormal
+  - Peep abnormal
+  - Inspiratory pressure abnormal
+  */
+
+  uint8_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
   uint8_t abnormalPressure = 4; // TODO: get it
   uint8_t abnormalFiO2 = 5; // TODO: data.fiO2
-  
-  uint8_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
   
   Serial.write(checkSum);
   Serial.write(batteryPercentage);
