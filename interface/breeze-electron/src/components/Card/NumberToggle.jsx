@@ -10,7 +10,7 @@ import styled from "@emotion/styled";
 import { keyframes } from '@emotion/core';
 import Button from '@material-ui/core/Button';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const sizes = {large: 500, medium: 380, small: 280};
 const cardWidth = 440;
@@ -18,11 +18,11 @@ const verticalCenter = 220;
 export const NumberToggle = ({ value, increment, decrement }) => {
 
     return(
-        <div style={{textAlign: "center"}}>
+        <div style={{textAlign: 'center'}}>
             <Button 
                 onClick={increment}
                 variant="contained" 
-                style={{backgroundColor: "#ddd", padding:0, boxShadow: "none", minWidth:"50px"}}>
+                style={{backgroundColor: "rgba(0,0,0,0)", padding:0, boxShadow: "none", width:"100%"}}>
                 <ExpandLessIcon/></Button>
 
                 <Typography variant="h2">
@@ -31,9 +31,14 @@ export const NumberToggle = ({ value, increment, decrement }) => {
             <Button 
                 onClick={decrement}
                 variant="contained" 
-                style={{backgroundColor: "#ddd", padding:0, boxShadow: "none", minWidth:"50px"}}>
-            <ExpandLessIcon/></Button>     
+                style={{backgroundColor: "rgba(0,0,0,0)", padding:0, boxShadow: "none", width:"100%"}}>
+            <ExpandMoreIcon/></Button> 
+
+            <Typography align="center" style={{fontFamily: "Barlow", fontStyle: "Bold"}} variant="subtitle3">
+                Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>50-60</b></p>
+            </Typography> 
         </div>
+
     );
 }
 
@@ -72,8 +77,6 @@ const Data = styled.div`
     min-height: 180px;
     min-width: 180px;
     text-align: center;
-    top: 50%;
-    left: 50%;
     transform: translate(-50%, -50%);
 `
 const VolumeDisp = styled.div`
@@ -82,7 +85,6 @@ const VolumeDisp = styled.div`
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
 `
-
 const ValueText = styled.span`
     font-size: 90px;
 `

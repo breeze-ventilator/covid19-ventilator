@@ -64,16 +64,16 @@ class FlexValueCard extends React.Component {
         return(
             <Card className = {classNames}>
                 <CardActionArea onClick={this.openModal}>            
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle1" style={{fontFamily: "Barlow", bottom: 0}}>
                         {this.props.readableName}
+                    </Typography>
+                    <Typography variant="subtitle2" align="left" style={{position: "relative", top: 85, left: 100, fontFamily: "Barlow"}}>
+                        {this.props.unit}
                     </Typography>
                     {isEditing ? <NumberToggle value={this.state.value}/>
                     : <Typography variant={this.props.prominence}>
                         {this.state.value} 
                     </Typography>}
-                    <Typography variant="subtitle2">
-                        {this.props.unit}
-                    </Typography>
                 </CardActionArea>
             </Card>
         );

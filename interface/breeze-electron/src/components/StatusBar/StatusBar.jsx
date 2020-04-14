@@ -1,7 +1,8 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Moment from 'react-moment';
-
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const useStyles = theme => ({
   root: {
@@ -10,7 +11,8 @@ const useStyles = theme => ({
   statusBar: {
     top: 0,
     left: 0,
-    background: 'rgba( 255, 255, 255, 0.8 )',
+    background: '#0B3045',
+    color: 'white',
     height: '2em',
     width: '100%',
     lineHeight: 1.8,
@@ -46,7 +48,9 @@ const useStyles = theme => ({
   center: {
     display: 'inline-block',
     textAlign: 'center',
-    backgroundColor: 'rgba( 0, 255, 0, 0.3 )',
+    background: '#072536',
+    radius: '2px',
+    color: 'white',
     width: '70%',
   },
   right: {
@@ -67,7 +71,17 @@ class StatusBar extends React.Component {
         this.state = {
             time: new Date(),
             batteryLevel: 0
+        /*
+            classes: makeStyles({
+                root: {
+                  width: 500,
+                },
+              }),
+              value: 0,
+            viewForm: false*/
         }
+        /*this.page = null;*/
+
         this.interval = null
     }
 
@@ -103,6 +117,11 @@ class StatusBar extends React.Component {
                     </strong>
                 </div>
                 <div className = {classes.center}>
+                   {/* <Button onClick={increment} variant="contained" style={{backgroundColor: "rgba(0,0,0,255)", padding:0, boxShadow: "none", width:"100%"}}
+                        component = { Link  }
+                        to="/diagnostics">
+                      Monitoring
+                    </Button>*/}
                     Monitoring
                 </div>
                 <div className = {classes.right}>
