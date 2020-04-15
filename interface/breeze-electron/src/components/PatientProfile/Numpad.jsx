@@ -59,8 +59,8 @@ class Numpad extends React.Component {
                     <p style={{marginBottom: 0, marginTop: 0}}>
                         {this.props.profileItemName}
                     </p>
-                    <ButtonGroup style={{margin:"4px"}}size="medium"align="center" variant="contained" color="primary">
-                        <Button style={{width: '60px', height:'30px', fontSize:"12px"}} onClick={this.handleDecrement}>-</Button>
+                    <ButtonGroup style={{margin:"4px"}}size="medium"align="center" variant="contained">
+                        <Button style={{backgroundColor: "#4DB1A7", color: "white", width: '60px', height:'30px', fontSize:"12px"}} onClick={this.handleDecrement}>-</Button>
                         <NumPad.Number
                             className="md-numpad"
                             decimal={true}
@@ -70,7 +70,7 @@ class Numpad extends React.Component {
                         >
                         <Button style={{width: '120px', height:'30px', fontSize:"12px", color: "black"}} disabled>{this.state.value + " " + this.props.unit}</Button>
                         </NumPad.Number>
-                        <Button style={{width: '60px', height:'30px', fontSize:"12px"}} onClick={this.handleIncrement}>+</Button>
+                        <Button style={{backgroundColor: "#4DB1A7", color: "white", width: '60px', height:'30px', fontSize:"12px"}} onClick={this.handleIncrement}>+</Button>
                     </ButtonGroup>
                     </Card>
             </Grid>

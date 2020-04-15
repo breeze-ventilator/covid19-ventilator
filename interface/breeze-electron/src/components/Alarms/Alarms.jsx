@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import '../Vitals/css/vitals.css';
+import ConcentricCircles from '../Card/ConcentricCircles.jsx';
 
 export default class Alarms extends React.Component {
   constructor(props) {
@@ -73,7 +74,7 @@ export default class Alarms extends React.Component {
               spacing={3}
               direction="column"
             >
-              <br></br><br></br><br></br>
+              <div style={{marginTop: 80, opacity: 0}}>Header Sapce</div>
 
               <ParameterInput
                 parameterName="Low Minute Ventilation Alarm"
@@ -111,7 +112,7 @@ export default class Alarms extends React.Component {
                 max={100} 
                 unit={"%"} 
               /> 
-              <br></br>
+              <br></br><br></br>
                 <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
                   <Button 
                     onClick={this.saveAlarms}
@@ -119,7 +120,7 @@ export default class Alarms extends React.Component {
                     variant="contained"
                     align="center"
                     color="primary"
-                    style={{backgroundColor: "#9BD8D3"}}>
+                    style={{backgroundColor: "#9BD8D3", maxWidth: "60%", left: 88}}>
                       Save Changes
                   </Button>
                 </Grid>
@@ -127,6 +128,8 @@ export default class Alarms extends React.Component {
             <NotificationContainer />
           </Container>
         </Box>
+
+        <ConcentricCircles/>
       </div>
     );
   }

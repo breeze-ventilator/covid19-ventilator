@@ -81,9 +81,9 @@ export default class Vitals extends React.Component {
       : supportParams;
     let footer = (
         <div style={{position: 'relative' }}>
-          <div style={{paddingLeft: "20px"}}>Mode:</div>
+          <div style={{paddingLeft: "20px", fontFamily: "Barlow"}}>Mode:</div>
           <Header>
-            <Button onClick={() => {this.toggleMode(mode)}} >
+            <Button style = {{fontFamily: "Barlow", textAlign: "left"}} onClick={() => {this.toggleMode(mode)}} >
               {mode}
             </Button >
           </Header>
