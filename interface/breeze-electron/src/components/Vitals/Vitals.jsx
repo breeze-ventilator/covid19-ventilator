@@ -59,12 +59,8 @@ export default class Vitals extends React.Component {
   }
 
   toggleMode(value){
-    this.state.mode = value;
-    console.log(value);
-    console.log(modes.indexOf(value) + 1)
     // this.state.modal.open = false;
-    this.setState(this.state)
-
+    this.setState({mode: value})
   }
 
   toggleEdit = () => {
@@ -86,7 +82,7 @@ export default class Vitals extends React.Component {
     let footer = (
         <div style={{position: 'relative' }}>
           <div style={{paddingLeft: "20px"}}>
-          <InputLabel id="label"> { this.state.mode } </InputLabel>
+          <InputLabel id="label"> { mode } </InputLabel>
           {isEditing && <Select labelId="label" id="select" value="Mode" onChange={(event) => this.toggleMode(event.target.value)}>
                  <MenuItem value="Pressure Support">Pressure Support</MenuItem>
                  <MenuItem value="Pressure Control">Pressure Control</MenuItem>
