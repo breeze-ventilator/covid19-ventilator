@@ -4,8 +4,12 @@
 #define AIR_INTAKE_PIN 8
 #define BLOWER_FAN_PIN 9
 #define AIR_INTAKE_ZERO_POINT 110
+#define ALARM_PIN_A 26
+#define ALARM_PIN_B 28
+#define AIR_INTAKE_POWER_PIN 10
 #define TIME_BETWEEN_OXYGEN_CONTROLS 100 // ms
 #define TIME_BETWEEN_AIR_CONTROLS 100 // ms
+#define TIME_BETWEEN_BATTERY_CONTROLS 10 //ms
 
 #include "OxygenControl/OxygenControl.h"
 #include "AirIntakeServo/AirIntakeServo.h"

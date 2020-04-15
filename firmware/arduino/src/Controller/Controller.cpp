@@ -4,8 +4,8 @@
 
 Controller::Controller()
     : oxygenControl(),
-    alarm(ALARM_PIN),
-    // airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
+    alarm(ALARM_PIN_A, ALARM_PIN_B),
+    //airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT, AIR_INTAKE_POWER_PIN),
     blowerControl()
 {
   _lastOxygenControlTime = 0;
