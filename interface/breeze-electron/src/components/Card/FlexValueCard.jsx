@@ -46,7 +46,7 @@ export const FlexValueCard = ({isEditing, classes, value, unit, min, max, readab
               <Typography variant="subtitle1" style={{fontFamily: "Barlow"}}>
                   {readableName}
               </Typography>
-              <Typography variant="subtitle2" align="left" style={{position: "relative", top: 61, left: 100, fontFamily: "Barlow"}}>
+              <Typography variant="subtitle2" align="left" style={{position: "relative", top: 61, left: 112, fontFamily: "Barlow"}}>
                   {unit}
               </Typography>
               {isEditing 
