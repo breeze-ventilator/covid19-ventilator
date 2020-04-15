@@ -1,7 +1,11 @@
 import React from 'react';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
+// import {NotificationContainer, NotificationManager} from 'react-notifications';
+// import 'react-notifications/lib/notifications.css';
 import { inRange } from './AlarmsHelper';
+import { store} from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import ReactHowler from 'react-howler'
+import highSound from './sounds/highSound.mp3';
 
 const acceptableRanges = {
   fiO2: {
@@ -30,24 +34,35 @@ export default class AlarmsHandler extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentlyAlarming: []
+      currentlyAlarming: [],
+      ringingIds: [],
+      playingSound: false
     }
 
     this.checkData = this.checkData.bind(this)
     this.alarm = this.alarm.bind(this)
   }
   
-  alarm(dataAlarm) {
-    let newAlarms = dataAlarm.filter(alarm => !this.state.currentlyAlarming.includes(alarm))
-    let allAlarms = this.state.currentlyAlarming.concat(newAlarms)
-
+  alarm(newAlarms,allAlarms) {
     if (newAlarms.length > 0) {
       this.setState({ currentlyAlarming: allAlarms});
       this.props.setCurrentlyAlarming(allAlarms);
     }
  
     for (var data in newAlarms) {
-      NotificationManager.error("Warning!", newAlarms[data])
+      store.addNotification({
+        title: "WARNING!",
+        message: newAlarms[data],
+        type: "danger",
+        insert: "top",
+        container: "top-right",
+        animationIn: ["animated", "fadeIn"],
+        animationOut: ["animated", "fadeOut"],
+        width: 250
+      })
+      if(!this.state.playingSound){
+        this.state.playingSound = true;
+      }
     }
   }
 
@@ -74,7 +89,13 @@ export default class AlarmsHandler extends React.Component {
       }
     } 
 
-    this.alarm(dataAlarm);
+    let newAlarms = dataAlarm.filter(alarm => !this.state.currentlyAlarming.includes(alarm))
+    let allAlarms = this.state.currentlyAlarming.concat(newAlarms)
+    
+    if(allAlarms.length == 0){
+      this.state.playingSound = false;
+    }
+    this.alarm(newAlarms,allAlarms);
   }
 
   componentDidUpdate(prevProps) {
@@ -83,7 +104,11 @@ export default class AlarmsHandler extends React.Component {
 
   render() {
     return (
-      <NotificationContainer />
+      <ReactHowler
+        src={highSound}
+        playing={this.state.playingSound}
+        volume={1.0}
+      />
     )
   }
 }
