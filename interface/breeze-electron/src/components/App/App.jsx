@@ -116,7 +116,7 @@ export default class App extends React.Component {
     else {
       this.state.parameters.mode = "Pressure Control"
     }
-    this.setState(this.state)
+    this.setState(this.state);
   }
 
   updateData(data) {

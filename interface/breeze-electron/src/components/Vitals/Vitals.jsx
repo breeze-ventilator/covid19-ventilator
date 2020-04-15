@@ -56,8 +56,9 @@ export default class Vitals extends React.Component {
   }
 
   toggleMode(value){
-    this.props.toggleMode(value)
-
+    if(this.state.isEditing){
+      this.props.toggleMode(value)
+    }
   }
 
   toggleEdit = () => {
