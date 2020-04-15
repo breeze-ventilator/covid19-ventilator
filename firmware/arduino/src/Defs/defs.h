@@ -56,7 +56,7 @@
 #define BLOW_FAN_INITIAL_POSITION 15  // 0 = min, 180 = max, 90 = midpoint (TODO: this is currently arbitrary)
 #define AIR_INTAKE_INITIAL_POSITION 110 // 0 = min, 180 = max, 90 = midpoint (TODO: arbitraty)
 
-#define FLOW_READING_FREQUENCY 50 // 500 Hz
+#define FLOW_READING_FREQUENCY 500 // 500 Hz
 #define MAIN_PRESSURE_READING_FREQUENCY 500// 500 TODO: change
 #define OXYGEN_PRESSURE_READING_FREQUENCY 100
 #define BATTERY_VOLTAGE_READING_FREQUENCY 5
