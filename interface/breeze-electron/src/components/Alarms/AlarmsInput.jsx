@@ -80,7 +80,6 @@ class ParameterInputCustom extends React.Component {
                     <Button style={{width: '60px', height:'40px', fontSize:"14px", backgroundColor: "#9BD8D3", color: "white"}} onClick={this.handleIncrement}>+</Button>
                 </ButtonGroup>
                 <Typography style={{marginTop:"10px", marginBottom:"10px", marginLeft: "20px", marginRight: "20px", fontFamily: "Barlow"}} variant="subtitle1">
-                    Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>50-60</b></p>
                 </Typography>
 
             </Card>

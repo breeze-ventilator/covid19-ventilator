@@ -11,7 +11,7 @@ import SimpleModal from '../Modal/SimpleModal';
 import ParameterInputCustom from '../ParameterInput/ParameterInputCustom';
 import PatientProfile from '../PatientProfile/PatientProfile';
 import styled from "@emotion/styled";
-import { parameterInfo, controlParams, supportParams } from '../../util/constants';
+import { modes, parameterInfo, controlParams, supportParams } from '../../util/constants';
 
 import Fab from '@material-ui/core/Fab';
 import CreateIcon from '@material-ui/icons/Create';
@@ -33,7 +33,7 @@ export default class Vitals extends React.Component {
     }
     this.setParameterStateValue = this.setParameterStateValue.bind(this);
     this.isAlarming = this.isAlarming.bind(this);
-    this.changeMode = this.changeMode.bind(this);
+    // this.changeMode = this.changeMode.bind(this);
   }
 
   componentDidUpdate(prevProps){
@@ -54,11 +54,13 @@ export default class Vitals extends React.Component {
     // TODO: Actually update parameters as well for arduino.
   }
 
-  changeMode(value){
-    // TODO: make this into toggleMode
-    this.state.parameters.mode = value;
-    this.state.modal.open = false;
+  toggleMode(value){
+    this.state.mode = modes[(modes.indexOf(value) + 1) % 3];
+    console.log(value);
+    console.log(modes.indexOf(value) + 1)
+    // this.state.modal.open = false;
     this.setState(this.state)
+
   }
 
   toggleEdit = () => {
@@ -81,10 +83,12 @@ export default class Vitals extends React.Component {
         <div style={{position: 'relative' }}>
           <div style={{paddingLeft: "20px"}}>Mode:</div>
           <Header>
-            {mode}
+            <Button onClick={() => {this.toggleMode(mode)}} >
+              {mode}
+            </Button >
           </Header>
-          {!isEditing 
-          ? <Fab size="small" 
+          {!isEditing
+          ? <Fab size="small"
             style={{position:'absolute', right:'10px', top:'5px', boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.1), 0px 6px 10px 0px rgba(0,0,0,0.04), 0px 1px 18px 0px rgba(0,0,0,0.12)",
             backgroundColor: '#33B0A6', color: "white"}}
             // backgroundColor: '#eee'}}
@@ -92,20 +96,20 @@ export default class Vitals extends React.Component {
             >
             <CreateIcon/>
           </Fab>
-          : <Button variant="contained" 
+          : <Button variant="contained"
           style={{position:'absolute',
-          right:'10px', top:'5px', color: "white", 
+          right:'10px', top:'5px', color: "white",
           backgroundColor: "#33B0A6", padding:0, boxShadow: "none"}}
           onClick={this.toggleEdit}
           > done </Button>
           }
         <Grid container>
-            {parameterNames.map((name) => 
+            {parameterNames.map((name) =>
             <Grid item xs={4}>
-              <FlexValueCard 
+              <FlexValueCard
                 alarm={this.isAlarming(name)}
                 value={this.state[name]}
-                readableName={parameterInfo[name].readableName} 
+                readableName={parameterInfo[name].readableName}
                 unit={parameterInfo[name].unit}
                 min={parameterInfo[name].recMin}
                 max={parameterInfo[name].recMax}
@@ -120,7 +124,7 @@ export default class Vitals extends React.Component {
       <div className="mainContainer" style={{fontFamily: "Barlow"}}>
         {/* Header Observables */}
         <MainCard
-          alarm={this.isAlarming("tidalVolume")} 
+          alarm={this.isAlarming("tidalVolume")}
           minimized={isEditing}
           tidalVolume={this.state.data.tidalVolume}
           respiratoryRate={this.state.data.respiratoryRate}
@@ -129,10 +133,9 @@ export default class Vitals extends React.Component {
           low={13}
         />
 
-        {/*Parient Profile*/}
-        {/* <PatientProfile /> */}
+        <PatientProfile />
 
-        {/* TODO: Graphs go here */} 
+        {/* TODO: Graphs go here */}
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
         {/* <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button> */}
         {/* Footer modifiables */}
@@ -162,7 +165,7 @@ export default class Vitals extends React.Component {
                 </ButtonGroup>
             </Card>
           </div>
-          
+
         </SimpleModal>
         } */}
      </div>
