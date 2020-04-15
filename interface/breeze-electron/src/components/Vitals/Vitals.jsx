@@ -32,7 +32,6 @@ export default class Vitals extends React.Component {
         tidalVolume: 5,
         pressure: 5,
       },
-      isStandby: true,
       isEditing: false,
       ...this.props.allParameters
     }
@@ -68,10 +67,6 @@ export default class Vitals extends React.Component {
     this.setState(prevState => ({isEditing: !prevState.isEditing}))
   }
 
-  toggleStandby = () => {
-    this.setState(prevState => ({isStandby: !prevState.isStandby}))
-  }
-
   done = () => {
     this.toggleEdit();
     this.props.setParameters(this.state);
@@ -85,22 +80,31 @@ export default class Vitals extends React.Component {
     this.setState(prevState => ({[fieldName]: safeValue(fieldName, prevState[fieldName] - 1)}))
   }
   render() {
-    const {isEditing, mode, isStandby} = this.state
+    const {isEditing, mode} = this.state
     const parameterNames = mode == "Pressure Control"
       ? controlParams
       : supportParams;
     let footer = (
         <div style={{position: 'relative' }}>
-          <div style={{paddingLeft: "20px"}} class="flex-container" direction="row">
-                <InputLabel id="label"> { mode } </InputLabel>
-              {isEditing && <Select labelId="label" id="select" value="Mode" onChange={(event) => this.toggleMode(event.target.value)}>
-                    <MenuItem value="Pressure Support">Pressure Support</MenuItem>
-                    <MenuItem value="Pressure Control">Pressure Control</MenuItem>
-                  </Select>
-              }
-            {!isEditing
+          <div style={{paddingLeft: "20px"}}>
+          <InputLabel id="label"> { mode } </InputLabel>
+          {isEditing && <Select labelId="label" id="select" value="Mode" onChange={(event) => this.toggleMode(event.target.value)}>
+                 <MenuItem value="Pressure Support">Pressure Support</MenuItem>
+                 <MenuItem value="Pressure Control">Pressure Control</MenuItem>
+                 <MenuItem value="Standby">Standby</MenuItem>
+              </Select>
+          }
+          </div>
+          <Header>
+            {/* <Button onClick={() => {this.toggleMode(mode)}} >
+              {mode}
+            </Button > */}
+            {/* <InputLabel id="label">mode</InputLabel> */}
+
+          </Header>
+          {!isEditing
           ? <Fab size="small"
-            style={{boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.1), 0px 6px 10px 0px rgba(0,0,0,0.04), 0px 1px 18px 0px rgba(0,0,0,0.12)",
+            style={{position:'absolute', right:'10px', top:'5px', boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.1), 0px 6px 10px 0px rgba(0,0,0,0.04), 0px 1px 18px 0px rgba(0,0,0,0.12)",
             backgroundColor: '#33B0A6', color: "white"}}
             // backgroundColor: '#eee'}}
             onClick={this.toggleEdit}
@@ -108,28 +112,12 @@ export default class Vitals extends React.Component {
             <CreateIcon/>
           </Fab>
           : <Button variant="contained"
-          style={{ color: "white",
-          backgroundColor: "#33B0A6", padding:5, boxShadow: "none"}}
+          style={{position:'absolute',
+          right:'10px', top:'5px', color: "white",
+          backgroundColor: "#33B0A6", padding:0, boxShadow: "none"}}
           onClick={this.done}
           > done </Button>
           }
-
-          <Button variant="contained"
-          style={{ position: 'absolute', right: '20px', color: "white",
-          backgroundColor: "#33B0A6", padding:5, boxShadow: "none"}}
-          onClick={this.toggleStandby}
-          > {isStandby ? "Standby" : "Power" } </Button>
-
-          </div>
-          {/* <Header> */}
-            {/* <Button onClick={() => {this.toggleMode(mode)}} >
-              {mode}
-            </Button > */}
-            {/* <InputLabel id="label">mode</InputLabel> */}
-
-          {/* </Header> */}
-
-
         <Grid container>
             {parameterNames.map((name) =>
             <Grid item xs={4}>
@@ -161,13 +149,12 @@ export default class Vitals extends React.Component {
         />
 
         <PatientProfile />
-        { footer }
-
 
         {/* TODO: Graphs go here */}
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
         {/* <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button> */}
         {/* Footer modifiables */}
+        { footer }
         {/* {this.state.modal.startingValue != 'Pressure Control' && this.state.modal.startingValue != "Pressure Support" &&
         <SimpleModal modalClose={this.modalClose} open={this.state.modal.open}>
           <div>
