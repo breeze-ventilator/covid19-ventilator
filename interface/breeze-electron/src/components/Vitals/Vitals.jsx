@@ -12,9 +12,13 @@ import ParameterInputCustom from '../ParameterInput/ParameterInputCustom';
 import PatientProfile from '../PatientProfile/PatientProfile';
 import styled from "@emotion/styled";
 import { modes, parameterInfo, controlParams, supportParams } from '../../util/constants';
+import { Select } from '@material-ui/core';
 
 import Fab from '@material-ui/core/Fab';
 import CreateIcon from '@material-ui/icons/Create';
+import { InputLabel } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
+
 
 function safeValue(fieldName, val){
   return Math.min(parameterInfo[fieldName].max, Math.max(parameterInfo[fieldName].min, val))
@@ -55,12 +59,8 @@ export default class Vitals extends React.Component {
   }
 
   toggleMode(value){
-    this.state.mode = modes[(modes.indexOf(value) + 1) % 3];
-    console.log(value);
-    console.log(modes.indexOf(value) + 1)
     // this.state.modal.open = false;
-    this.setState(this.state)
-
+    this.setState({mode: value})
   }
 
   toggleEdit = () => {
@@ -86,11 +86,21 @@ export default class Vitals extends React.Component {
       : supportParams;
     let footer = (
         <div style={{position: 'relative' }}>
-          <div style={{paddingLeft: "20px"}}>Mode:</div>
+          <div style={{paddingLeft: "20px"}}>
+          <InputLabel id="label"> { mode } </InputLabel>
+          {isEditing && <Select labelId="label" id="select" value="Mode" onChange={(event) => this.toggleMode(event.target.value)}>
+                 <MenuItem value="Pressure Support">Pressure Support</MenuItem>
+                 <MenuItem value="Pressure Control">Pressure Control</MenuItem>
+                 <MenuItem value="Standby">Standby</MenuItem>
+              </Select>
+          }
+          </div>
           <Header>
-            <Button onClick={() => {this.toggleMode(mode)}} >
+            {/* <Button onClick={() => {this.toggleMode(mode)}} >
               {mode}
-            </Button >
+            </Button > */}
+            {/* <InputLabel id="label">mode</InputLabel> */}
+
           </Header>
           {!isEditing
           ? <Fab size="small"
