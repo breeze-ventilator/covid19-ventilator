@@ -15,7 +15,7 @@ class Parameters {
         uint16_t currentMaxExpiratoryTime;
         uint16_t currentInspiratoryPressure;
         uint16_t currentPEEP;
-        uint8_t currentSensitivity;
+        int16_t currentSensitivity;
         uint8_t currentApneaTime;
         uint16_t currentRiseTime;
         uint8_t currentFlowCyclingOffPercentage;
@@ -29,7 +29,7 @@ class Parameters {
         uint16_t _newMaxExpiratoryTime;
         uint16_t _newInspiratoryPressure;
         uint16_t _newPEEP;
-        uint8_t _newSensitivity;
+        int16_t _newSensitivity;
         uint8_t _newApneaTime;
         uint16_t _newRiseTime;
         uint8_t _newFlowCyclingOffPercentage;

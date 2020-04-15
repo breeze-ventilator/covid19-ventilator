@@ -6,13 +6,22 @@ List::List(int capacity) {
     _capacity = capacity;
     size = 0;
 
-    _data = new unsigned int[_capacity](); // initializes to 0
+    _data = new float[_capacity](); // initializes to 0
     _currentIdx = 0;
+}
+
+void List::push(float value) {
+    // pops value if list too big
+    _data[_currentIdx] = value;
+    _currentIdx++;
+    _currentIdx = _currentIdx % _capacity;
+    size++;
+    size = min(size, _capacity);
 }
 
 void List::push(unsigned int value) {
     // pops value if list too big
-    _data[_currentIdx] = value;
+    _data[_currentIdx] = (float) value;
     _currentIdx++;
     _currentIdx = _currentIdx % _capacity;
     size++;

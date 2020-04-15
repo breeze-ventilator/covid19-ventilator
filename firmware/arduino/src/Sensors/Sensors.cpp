@@ -46,7 +46,7 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data, State &state) 
     if (state.breathingStage == INHALATION_STAGE) {
       data.updateTidalVolume(flowValue, delta_time);
     }
-    // Serial.println(flowValue);
+    Serial.println(flowValue);
     _lastFlowReadTime = millis();
   }
   // if (isTimeToReadOxygenPressure()) {

@@ -4,6 +4,7 @@
 #include "../Parameters/Parameters.h"
 #include "../Defs/defs.h"
 #include "../Helpers/helpers.h"
+#include "../Data/Data.h"
 
 class State {
     public:
@@ -14,14 +15,15 @@ class State {
         uint32_t desiredPressure;
         int mode;
         
-        void updateState(Parameters &parameters);
+        void updateState(Parameters &parameters, Data &data);
     
     private:
         void setDesiredPressure(Parameters &parameters);
         void endInhalationAndStartExhalation();
         void endExhalationAndStartInhalation();
         int isFinishedInspiratoryStageInPressureControl(Parameters &parameters);
-        int isFinishedExpiratoryStageInPressureControl(Parameters &parameters);
+        int isFinishedExpiratoryStageInPressureControl(Parameters &parameters, Data &data);
+        int patientTriggeredBreath(Parameters &parameters, Data &data);
 };
 
 #endif

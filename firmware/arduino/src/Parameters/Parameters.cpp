@@ -13,7 +13,7 @@ void Parameters::getNewParameters(uint8_t parametersBuffer[PARAMETER_BYTE_LENGTH
   _newFiO2 = parametersBuffer[2];
   _newPEEP = (uint16_t) parametersBuffer[3] * CENTIMETERS_TO_MILIMETERS;
   _newInspiratoryPressure = (uint16_t) parametersBuffer[4] * CENTIMETERS_TO_MILIMETERS;
-  _newSensitivity = parametersBuffer[5];
+  _newSensitivity = -1 * (int16_t) parametersBuffer[5]; // L
   uint8_t rate = parametersBuffer[6];
   uint8_t inspiratoryTimePercentage = parametersBuffer[7];
   _newFlowCyclingOffPercentage = parametersBuffer[8];
