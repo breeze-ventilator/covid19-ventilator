@@ -23,6 +23,9 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  // Set full screen
+  mainWindow.setFullScreen(true);
 };
 
 // This method will be called when Electron has finished
