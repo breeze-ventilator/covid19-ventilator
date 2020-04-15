@@ -110,7 +110,7 @@ export default class PatientProfile extends React.Component {
         const { value } = this.state;
         return (
             <>
-              <Button style={{position: "absolute", top: 51, bottom: 0,left: 20, height: 40, backgroundColor: "#4DB1A7", color: "white", fontFamily: "Barlow", boxShadow: "0px 5px 20px rgba(58,140,171,0.19)"}}  onClick={() => this.setState({modalOneOpen: true, modalTwoOpen: false})}>Patient Profile ⇲</Button>
+              <Button style={{position: "absolute", top: 51, bottom: 0,left: 20, height: 40, backgroundColor: "#EDEFEF", color: "#1f1f1f", fontFamily: "Barlow"}}  onClick={() => this.setState({modalOneOpen: true, modalTwoOpen: false})}>Patient Profile ⇲</Button>
               {/*Intro Page*/}
               <SimpleModal open={this.state.modalOneOpen} modalClose={this.modalOneClose}>
               <Box component="span" m={1}>
@@ -243,7 +243,7 @@ export default class PatientProfile extends React.Component {
                     <Grid container justify="space-evenly" spacing={3} direction="row">
                     </Grid>
                   </Grid>
-              <div style={{background: '#e0f7fa', fontFamily: "Barlow", textAlign: "center", paddingLeft: 15, paddingRight: 15, borderRadius: 8}}>
+              <div style={{background: 'white', fontFamily: "Barlow", textAlign: "center", paddingLeft: 15, paddingRight: 15, borderRadius: 8}}>
               <p>Are you sure you wish to create a new patient profile?</p>
               <div style={buttonStyle}>
                 <Button variant="contained" style={{backgroundColor: "#4DB1A7", color: "white", fontFamily: "Barlow"}} onClick={() => this.setState({modalFiveOpen: false})} > Go Back</Button>{'  '}
