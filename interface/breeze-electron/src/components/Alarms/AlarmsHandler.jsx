@@ -4,13 +4,9 @@ import 'react-notifications/lib/notifications.css';
 import { inRange } from './AlarmsHelper';
 
 const acceptableRanges = {
-  peep: {
-    min: 2,
-    max: 30
-  },
   fiO2: {
     min: 21,
-    max: 99 
+    max: 99
   },
   tidalVolume: {
     min: 1,

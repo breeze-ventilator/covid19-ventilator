@@ -159,8 +159,8 @@ export const parameterInfo = {
     step: 1,
     min: 21,
     max: 99,
-    recMin: 30,
-    recMax: 90,
+    recMin: 80,
+    recMax: null,
     default: 80
   }, // min and max that can be set on the interface
   peep: {
@@ -170,7 +170,7 @@ export const parameterInfo = {
     min: 0,
     max: 100,
     recMin: 5,
-    recMax: 30,
+    recMax: null,
     default: 6
   },
   inspiratoryPressure: {
@@ -179,29 +179,29 @@ export const parameterInfo = {
     step: 1,
     min: 0,
     max: 100,
-    recMin: 10,
-    recMax: 35,
+    recMin: 20,
+    recMax: null,
     default: 20
   },
   inspiratoryTime: {
-    readableName: "Inspiratory time",
+    readableName: "Inspiratory %",
     unit: "%",
-    step: 1,
+    step: 5,
     min: 0,
     max: 100,
-    recMin: 50,
-    recMax: 60,
-    default: 33
+    recMin: 30,
+    recMax: null,
+    default: 30
   },
   respiratoryRate: {
     readableName: "Respiratory rate",
     unit: "bpm",
-    step: 1,
+    step: 2,
     min: 0,
     max: 100,
     recMin: 10,
     recMax: 24,
-    default: 24
+    default: 12
   },
   sensitivity: {
     readableName: "Sensitivity",
