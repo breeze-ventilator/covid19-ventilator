@@ -154,11 +154,11 @@ export const parameterInfo = {
     readableName: "FiO2",
     unit: "%",
     step: 1,
-    min: 0,
-    max: 100,
-    recMin: 50,
-    recMax: 60,
-    default: 50
+    min: 21,
+    max: 99,
+    recMin: 30,
+    recMax: 90,
+    default: 80
   }, // min and max that can be set on the interface
   peep: {
     readableName: "PEEP",
@@ -166,9 +166,9 @@ export const parameterInfo = {
     step: 1,
     min: 0,
     max: 100,
-    recMin: 50,
-    recMax: 60,
-    default: 4
+    recMin: 5,
+    recMax: 30,
+    default: 6
   },
   inspiratoryPressure: {
     readableName: "Inspiratory pressure",
@@ -176,8 +176,8 @@ export const parameterInfo = {
     step: 1,
     min: 0,
     max: 100,
-    recMin: 50,
-    recMax: 60,
+    recMin: 10,
+    recMax: 35,
     default: 20
   },
   inspiratoryTime: {
@@ -196,9 +196,9 @@ export const parameterInfo = {
     step: 1,
     min: 0,
     max: 100,
-    recMin: 50,
-    recMax: 60,
-    default: 15
+    recMin: 10,
+    recMax: 24,
+    default: 24
   },
   sensitivity: {
     readableName: "Sensitivity",
@@ -206,8 +206,8 @@ export const parameterInfo = {
     step: 1,
     min: 0,
     max: 100,
-    recMin: 50,
-    recMax: 60,
+    recMin: "N/A",
+    recMax: "N/A",
     default: -1
   },
   apneaTime: {
@@ -216,9 +216,9 @@ export const parameterInfo = {
     step: 1,
     min: 0,
     max: 100,
-    recMin: 50,
-    recMax: 60,
-    default: 7
+    recMin: 3,
+    recMax: 6,
+    default: 5
   },
   flowCyclingOff: {
     readableName: "Flow cycling off",
@@ -226,9 +226,9 @@ export const parameterInfo = {
     step: 1,
     min: 0,
     max: 100,
-    recMin: 50,
-    recMax: 60,
-    default: 20
+    recMin: 20,
+    recMax: 35,
+    default: 25
   },
   riseTime: {
     readableName: "Rise Time",

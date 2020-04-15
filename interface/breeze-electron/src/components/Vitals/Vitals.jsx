@@ -55,7 +55,6 @@ export default class Vitals extends React.Component {
   }
 
   toggleMode(value){
-    // TODO: make this into toggleMode
     this.state.mode = modes[(modes.indexOf(value) + 1) % 3];
     console.log(value);
     console.log(modes.indexOf(value) + 1)
