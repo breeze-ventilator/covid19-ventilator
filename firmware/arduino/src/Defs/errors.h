@@ -2,6 +2,7 @@
 #define ERRORS_H
 
 #define NO_ERROR 0
+#define ERROR 1
 #define TIMEOUT_ERROR 1
 #define PI_SENT_WRONG_RESPONSE_ERROR 2
 #define SERIAL_TIMEOUT_ERROR 3

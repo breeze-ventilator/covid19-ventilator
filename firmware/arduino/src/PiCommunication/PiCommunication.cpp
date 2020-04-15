@@ -11,6 +11,7 @@ PiCommunication::PiCommunication(int baudRate, int timeBetweenPiSending) {
   _timeBetweenPiSending = timeBetweenPiSending;
   _breathCompletedToSend = 0;
   _tidalVolumeToSend = 0;
+  _apneaTimeExceededError = NO_ERROR;
 }
 
 int PiCommunication::initCommunication(int pingInterval) {
@@ -65,6 +66,10 @@ void PiCommunication::flush() {
   }
 }
 
+void PiCommunication::updateErrors(State &state) {
+  _apneaTimeExceededError = state.apneaTimeExceededError;
+}
+
 char PiCommunication::getMessageType() {
   char messageType = (char) Serial.read();
   return messageType;
@@ -84,6 +89,7 @@ void PiCommunication::updateValuesForPiUponBreathCompleted(Data &data, State &st
 void PiCommunication::resetValuesForPi() {
   _breathCompletedToSend = 0;
   _tidalVolumeToSend = 0;
+  _apneaTimeExceededError = NO_ERROR;
 }
 
 void PiCommunication::sendDataToPi(Data &data, State &state) {
@@ -115,6 +121,7 @@ void PiCommunication::sendDataToPi(Data &data, State &state) {
   uint8_t abnormalPressure = 4; // TODO: get it
   uint8_t abnormalFiO2 = 5; // TODO: data.fiO2
   
+  // TO DO: should send apnea time exceeded error
   Serial.write(checkSum);
   Serial.write(batteryPercentage);
   Serial.write(breathCompleted);

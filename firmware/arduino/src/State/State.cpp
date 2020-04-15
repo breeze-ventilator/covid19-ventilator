@@ -5,6 +5,8 @@ State::State() {
   breathCompleted = 1;
   startTime = 0;
   breathingStage = OFF_STAGE;
+  maxFlowDuringInhalation = 0;
+  apneaTimeExceededError = NO_ERROR;
 }
 
 void State::updateState(Parameters &parameters, Data &data) {
@@ -16,14 +18,13 @@ void State::updateState(Parameters &parameters, Data &data) {
     // start with inhalation
     breathingStage = INHALATION_STAGE;
     startTime = millis();
-
   }
   mode = parameters.currentMode;
   if (parameters.currentMode == PRESSURE_CONTROL_MODE) {
     // checks time to see if time to switch from inhalation to exhilation
     if (breathingStage == INHALATION_STAGE) {
       breathCompleted = 0;
-      setDesiredPressure(parameters);
+      setDesiredInhalationPressure(parameters);
       if (isFinishedInspiratoryStageInPressureControl(parameters)) {
         endInhalationAndStartExhalation();
       }
@@ -33,12 +34,48 @@ void State::updateState(Parameters &parameters, Data &data) {
     }
   }
   else if (parameters.currentMode == PRESSURE_SUPPORT_MODE) {
-    // TODO: should use state.lastFlowValue, state.peakFlowValueInCurrentBreath
-
+    // checks time to see if time to switch from inhalation to exhilation
+    if (breathingStage == INHALATION_STAGE) {
+      breathCompleted = 0;
+      setDesiredInhalationPressure(parameters);
+      updateMaxFlow(data);
+      if (isFinishedInspiratoryStageInPressureSupport(parameters, data)) {
+        endInhalationAndStartExhalation();
+      }
+    }
+    else if (breathingStage == EXHALATION_STAGE) {
+      if (isFinishedExpiratoryStageInPressureSupport(parameters, data)) {
+        endExhalationAndStartInhalation();
+        resetMaxFlow();
+      }
+      else if (isApneaTimeExceeded(parameters)) {
+        // TODO: should notify frontend
+        emergencySwitchToPatientControl(parameters);
+        apneaTimeExceededError = ERROR;
+      }
+    }
   }
 }
 
-void State::setDesiredPressure(Parameters &parameters) {
+int State::isApneaTimeExceeded(Parameters &parameters) {
+  if (isTime(startTime, parameters.currentApneaTime)) {
+    return 1;
+  };
+  return 0;
+}
+
+void State::updateMaxFlow(Data &data) {
+  float currentFlow = data.getFlowRecentHistoryAverage();
+  if (currentFlow > maxFlowDuringInhalation) {
+    maxFlowDuringInhalation = currentFlow;
+  }
+}
+
+void State::resetMaxFlow() {
+  maxFlowDuringInhalation = 0;
+}
+
+void State::setDesiredInhalationPressure(Parameters &parameters) {
   unsigned long elapsedTime = millis() - startTime;
   float slope = (float) parameters.currentInspiratoryPressure / parameters.currentRiseTime;
   if (desiredPressure < parameters.currentPEEP + parameters.currentInspiratoryPressure) {
@@ -60,8 +97,33 @@ void State::endExhalationAndStartInhalation() {
   startTime = millis();
 }
 
+// TODO: need to check for apnea time
+int State::isFinishedInspiratoryStageInPressureSupport(Parameters &parameters, Data &data) {
+  float currentFlow = data.getFlowRecentHistoryAverage();
+  if (isTime(startTime, MIN_INHALATION_TIME_PRESSURE_SUPPORT) && currentFlow < parameters.currentFlowCyclingOffPercentage * maxFlowDuringInhalation) {
+    return 1;
+  }
+  return 0;
+}
+
+int State::isFinishedExpiratoryStageInPressureSupport(Parameters &parameters, Data &data) {
+  // flow triggering
+  if (patientTriggeredBreath(parameters, data)) {
+    return 1;
+  }
+  return 0;
+}
+
 int State::isFinishedInspiratoryStageInPressureControl(Parameters &parameters) {
   return isTime(startTime, parameters.currentInspiratoryTime);
+}
+
+void State::emergencySwitchToPatientControl(Parameters &parameters) {
+  // takes default parameters from the screen
+  parameters.currentMode = PRESSURE_CONTROL_MODE;
+  breathingStage = INHALATION_STAGE;
+  breathCompleted = 1;
+  startTime = millis();
 }
 
 int State::isFinishedExpiratoryStageInPressureControl(Parameters &parameters, Data &data) {
@@ -78,7 +140,6 @@ int State::isFinishedExpiratoryStageInPressureControl(Parameters &parameters, Da
 
 int State::patientTriggeredBreath(Parameters &parameters, Data &data) {
   if (data.getFlowRecentHistoryAverage() <= parameters.currentSensitivity) {
-    Serial.println(-10);
     return 1;
   }
   else {

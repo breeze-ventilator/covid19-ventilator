@@ -34,14 +34,16 @@ void setup() {
   // if (servosConnectedErrorCode != NO_ERROR) {
   //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
   // }
-  parameters.currentMode = PRESSURE_CONTROL_MODE;
-  parameters.currentFiO2 = 10;
-  parameters.currentInspiratoryTime = 5000;
-  parameters.currentMaxExpiratoryTime = 5000;
-  parameters.currentInspiratoryPressure = 150; // mm H2O
-  parameters.currentPEEP = 50; // mm H2O
-  parameters.currentRiseTime = 100; // ms
-  parameters.currentSensitivity = -1; // L
+  // parameters.currentMode = PRESSURE_SUPPORT_MODE;
+  // parameters.currentFiO2 = 10;
+  // parameters.currentInspiratoryTime = 5000;
+  // parameters.currentMaxExpiratoryTime = 5000;
+  // parameters.currentInspiratoryPressure = 150; // mm H2O
+  // parameters.currentPEEP = 50; // mm H2O
+  // parameters.currentRiseTime = 100; // ms
+  // parameters.currentSensitivity = -1; // L
+  // parameters.currentApneaTime = 6000; // ms
+  // parameters.currentFlowCyclingOffPercentage = 0.20; // 20%
 }
 
 void loop() {
@@ -81,8 +83,13 @@ void loop() {
     piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.
     data.resetTidalVolume();
   }
+
+  if (state.apneaTimeExceededError != NO_ERROR ) {
+    piCommunication.updateErrors(state);
+    state.apneaTimeExceededError = NO_ERROR;
+  }
   
-  // if (piCommunication.isTimeToSendDataToPi()) {
-  //   piCommunication.sendDataToPi(data, state);
-  // }
+  if (piCommunication.isTimeToSendDataToPi()) {
+    piCommunication.sendDataToPi(data, state);
+  }
 }
