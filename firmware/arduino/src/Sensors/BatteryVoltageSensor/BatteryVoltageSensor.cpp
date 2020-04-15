@@ -6,7 +6,7 @@ BatteryVoltageSensor::BatteryVoltageSensor(int pin) {
 
 float BatteryVoltageSensor::read() {
   // Serial.println(analogRead(_pin));
-  float V = (float) analogRead(_pin)*15/1024; // from eamon data sheeet
+  float V = (float) analogRead(_pin)*15.974/1024; // from eamon data sheeet
   return V;
 }
 

@@ -5,7 +5,7 @@
 class OxygenSensor {
   public:
 	  OxygenSensor(int pin);
-    unsigned int read();
+    float read();
   private:
     int _pin;
 };

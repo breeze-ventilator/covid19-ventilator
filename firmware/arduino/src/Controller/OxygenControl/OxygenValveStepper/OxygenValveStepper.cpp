@@ -15,11 +15,11 @@
 // #define FLOW_COEFFICIENT 1
 
 OxygenValveStepper::OxygenValveStepper(int motorInterfaceType, int pin0, int pin1,
-      int pin2, int pin3, int limitSwitchPin, int maxStepperSpeed, int stepperAcceleration,
+      int pin2, int pin3, int currentSensePin, int maxStepperSpeed, int stepperAcceleration,
       int oxygenEnable1Pin, int oxygenEnable2Pin)  
   : _oxygenStepper(motorInterfaceType, pin0, pin1, pin2, pin3)
 {
-  _limitSwitchPin = limitSwitchPin;
+  _currentSensePin = currentSensePin;
   _oxygenEnable1Pin = oxygenEnable1Pin;
   _oxygenEnable2Pin = oxygenEnable2Pin;
   _maxStepperSpeed = maxStepperSpeed;
@@ -27,7 +27,6 @@ OxygenValveStepper::OxygenValveStepper(int motorInterfaceType, int pin0, int pin
 }
 
 void OxygenValveStepper::begin() {
-  pinMode(_limitSwitchPin, INPUT_PULLUP); // TODO: simon need better naming here
   
   _oxygenStepper.setMaxSpeed(_maxStepperSpeed); // Slower to get better accuracy
   _oxygenStepper.setAcceleration(_stepperAcceleration);
@@ -52,7 +51,7 @@ int OxygenValveStepper::moveToZeroPosition(int maxWaitTime) {
   // }
   // count = 0;
   // Make the Stepper move CCW until the switch is activated   
-  while (analogRead(_limitSwitchPin)< CURRENT_TRIGGER) {
+  while (analogRead(_currentSensePin)*5.319/1024 < CURRENT_TRIGGER) {//this is new limit switch
     _oxygenStepper.moveTo(_oxygenStepper.currentPosition() - 1);  // Set the position to move to
     _oxygenStepper.run(); // Start moving the stepper
     delay(5);

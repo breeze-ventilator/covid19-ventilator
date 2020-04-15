@@ -4,14 +4,15 @@
 
 #include "Arduino.h"
 
-class BatteryChargeControl {
+
+
+class BatteryChargingControl {
 	public:
-		BatteryChargeControl(int pin);
-		bool control(float setCurrent);
+		BatteryChargingControl(int pin);
+		void control(float setCurrent);
 		void init();
 	private:
 		int _pin;
-		bool _isOnBattery;
 		int _gateVolt;
 };
 

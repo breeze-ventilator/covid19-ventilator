@@ -5,6 +5,8 @@
 #include "Arduino.h"
 #include "../../../Defs/errors.h"
 
+#define CURRENT_TRIGGER 1
+
 class OxygenValveStepper {
   public:
 	  OxygenValveStepper(int motorInterfaceType, int pin0, int pin1,
@@ -18,7 +20,7 @@ class OxygenValveStepper {
     
   private:
 	  AccelStepper _oxygenStepper;
-    int _limitSwitchPin;
+    int _currentSensePin;
     int _maxStepperSpeed;
     int _stepperAcceleration;
     int _oxygenEnable1Pin;
