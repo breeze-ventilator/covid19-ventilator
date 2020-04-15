@@ -1,17 +1,21 @@
 #include "Alarm.h"
 
-Alarm::Alarm(int pin) {
-  _pin = pin;
-  pinMode(_pin, OUTPUT);
+Alarm::Alarm(int pinA, int pinB) {
+  _pinA = pinA;
+  _pinB = pinB;
+  pinMode(_pinA, OUTPUT);
+  pinMode(_pinB, OUTPUT);
 }
 
 void Alarm::startAlarm() {
-  digitalWrite(_pin, LOW);
-  runForever();
+  digitalWrite(_pinA, LOW);
+  digitalWrite(_pinB, LOW);
+  runForever(); //this is neclear u cant turn it off...
 }
 
 void Alarm::stopAlarm() {
-  digitalWrite(_pin, HIGH);
+  digitalWrite(_pinA, HIGH);
+  digitalWrite(_pinB, HIGH);
 }
 
 void Alarm::keepAlarmRunningForever() {

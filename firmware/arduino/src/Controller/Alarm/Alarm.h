@@ -3,12 +3,13 @@
 #include "Arduino.h"
 class Alarm {
     public:
-        Alarm(int pin);
+        Alarm(int pinA, int pinB);
         void startAlarm();
         void stopAlarm();
         void keepAlarmRunningForever();
     private:
-        int _pin;
+        int _pinA;
+        int _pinB
         void runForever();
 };
 
