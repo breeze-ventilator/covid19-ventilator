@@ -81,8 +81,8 @@ export const readingsInfo = {
   tidalVolume: {
     readableName: "Tidal Volume",
     unit: "L",
-    alarmMin: 2,
-    alarmMax: 20,
+    alarmMin: 1,
+    alarmMax: 2,
     sampleErrorValue: 0,
     default: 1
   },
@@ -113,7 +113,7 @@ export const readingsInfo = {
   minuteVentilation: {
     readableName: "Minute Ventilation",
     unit: "L/min",
-    default: null
+    default: 7
   }
 };
 
