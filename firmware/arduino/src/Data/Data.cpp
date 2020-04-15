@@ -32,8 +32,9 @@ void Data::saveBatteryPercentage(unsigned int newBatteryPercentage) {
   batteryPercentage = newBatteryPercentage;
 }
 
-void Data::saveOxygenPressureReading(unsigned int pressureValue) {
+void Data::saveOxygenReading(float newOxygenReading) {
   // TODO
+  oxygenReading = newOxygenReading;
 }
 
 // when breath finished

@@ -8,7 +8,9 @@
 
 class MainPressureSensor {
   public:
-    MainPressureSensor();
+    MainPressureSensor(int pin);
     float read();
+  private:
+    int _pin;
 };
 #endif

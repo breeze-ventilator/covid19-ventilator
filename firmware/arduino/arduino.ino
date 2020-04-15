@@ -12,7 +12,7 @@
 Data data;
 Sensors sensors(FLOW_READING_FREQUENCY,
                  MAIN_PRESSURE_READING_FREQUENCY,
-                 OXYGEN_PRESSURE_READING_FREQUENCY,
+                 OXYGEN_READING_FREQUENCY,
                  BATTERY_VOLTAGE_READING_FREQUENCY);
 Controller controller;
 PiCommunication piCommunication(BAUD_RATE, TIME_BETWEEN_DATA_SENDING_TO_PI);
