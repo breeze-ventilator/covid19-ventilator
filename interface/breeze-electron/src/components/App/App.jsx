@@ -44,7 +44,7 @@ export default class App extends React.Component {
     this.state = state;
 
     // Note: Second parameter is whether to use sample listener.
-    this.messager = new Messager(5000, true); 
+    this.messager = new Messager(5000, false); 
 
     this.messager.dataListener(this.updateData.bind(this));
 
@@ -75,6 +75,7 @@ export default class App extends React.Component {
     // Post processing.
     toSend.apneaTime *= 10;
     toSend.riseTime *= 10;
+    toSend.sensitivity *= -1;
 
     // Alarms.
     toSend.highInspiratoryPressureAlarm = this.state.alarms.pressure.max;
