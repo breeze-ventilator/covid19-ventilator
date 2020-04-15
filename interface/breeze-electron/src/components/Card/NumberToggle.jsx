@@ -20,26 +20,26 @@ export const NumberToggle = ({ value, min, max, increment, decrement }) => {
     return(
         <div style={{textAlign: 'center', padding: "10 0"}}>
             <div style={{}}>
-            <Button 
+            <Button
                 onClick={increment}
-                variant="contained" 
+                variant="contained"
                 style={{position: "absolute", backgroundColor: "rgba(0,0,0,0)", padding:0, boxShadow: "none", width:"100%", height: "50%", top: 0, left: 0}}>
                 <ExpandLessIcon style={{position: "absolute", top: 50}}/></Button>
 
                 <Value variant="h2">
-                    {value} 
+                    {value}
                 </Value>
-            <Button 
+            <Button
                 onClick={decrement}
-                variant="contained" 
+                variant="contained"
                 style={{position: "absolute", backgroundColor: "rgba(0,0,0,0)", padding:0, boxShadow: "none", width:"100%", height: "50%", bottom: 0, left: 0}}>
-                    <ExpandMoreIcon style={{position: "absolute", top: 38}}/></Button> 
+                    <ExpandMoreIcon style={{position: "absolute", top: 38}}/></Button>
             <br></br>
             </div>
             <div style={{padding: "10px"}}>
             <Typography align="center" style={{fontFamily: "Barlow", fontStyle: "Bold", padding: "10px"}} variant="subtitle3">
                 Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>{min}-{max}</b></p>
-            </Typography> 
+            </Typography>
             </div>
         </div>
 
@@ -70,7 +70,7 @@ const TopCard = styled.div`
     text-align: center;
 `
 const fadeIn = keyframes`
-    from { opacity: 0.5; } 
+    from { opacity: 0.5; }
 `
 const CircleContainer = styled.div`
     position: absolute;

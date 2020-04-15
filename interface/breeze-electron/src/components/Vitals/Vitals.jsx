@@ -60,7 +60,26 @@ export default class Vitals extends React.Component {
     console.log(modes.indexOf(value) + 1)
     // this.state.modal.open = false;
     this.setState(this.state)
+  }
 
+  updateBMI = (BMI) => {
+    this.setState({ userBMI : BMI})
+  }
+
+  updateIdealWeight = (idealWeight) => {
+    this.setState({ userIdealWeight : idealWeight})
+  }
+
+  updateBreathingRate = (breathingRate) => {
+    this.setState({ userBreathingRate : breathingRate})
+  }
+
+  updateParameterInfo(){
+    const PEEP = userBMI <= 30 ? 5 : 8;
+    const inspiratoryPressure = userIdealWeight * 7.5;
+    const minRespiratoryRate = userBreathingRate <= 25 ? userBreathingRate + 2 : 24;
+
+    //TODO: set these as parameterInfo
   }
 
   toggleEdit = () => {
@@ -133,8 +152,8 @@ export default class Vitals extends React.Component {
           low={13}
         />
 
-        <PatientProfile />
-
+        <PatientProfile onSelectBMI={this.updateBMI} onSelectIdealWeight={this.updateIdealWeight} onSelectBreathingRate={this.updateBreathingRate}/>
+        this.updateParameterInfo()
         {/* TODO: Graphs go here */}
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}
         {/* <Button onClick={() => this.props.sendToArduino()} style = {{marginBottom:"50px", height:"80px",fontSize:"20px", marginTop:"10px",backgroundColor:"green",color:"white"}} variant="contained">SEND THE PARAMS!</Button> */}
