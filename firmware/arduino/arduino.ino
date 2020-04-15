@@ -76,7 +76,7 @@ void loop() {
     controller.exhalationControl(data, parameters);
   }
 
-  if (state.breathCompleted) {
+  if (state.breathCompleted && state.mode != OFF_MODE) {
     piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.
     data.resetTidalVolume();
   }

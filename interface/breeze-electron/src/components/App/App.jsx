@@ -21,7 +21,9 @@ export default class App extends React.Component {
       currentlyAlarming: [],
       setup: true,
       data: {},
-      parameters: {}
+      parameters: {},
+      tidalVolumeTimes: [],
+      tidalVolumes: []
     }
     
     // Set default data values on state.
@@ -52,8 +54,11 @@ export default class App extends React.Component {
   }
 
   setParameters(parameters){
-    this.state.parameters = parameters;
+    for(const paramName in this.state.parameters){
+      this.state.parameters[paramName] = parameters[paramName];
+    }
     this.setState(this.state);
+    this.sendToArduino();
   }
 
   sendToArduino(){
@@ -61,7 +66,7 @@ export default class App extends React.Component {
 
     // Get mode and all other parameters.
     toSend.mode = modes.indexOf(this.state.parameters.mode);
-    for(param in allParams){
+    for(let param of allParams){
       toSend[param] = this.state.parameters[param];
     }
 
@@ -89,10 +94,43 @@ export default class App extends React.Component {
   }
 
   updateData(data) {
-    console.log("[App.jsx]: Data Received.")
-    console.log(data)
+    // console.log("[App.jsx]: Data Received.")
+    // console.log(data)
 
-    for(let i = 1; i < data.length; i++){
+    // Set first two parameters.
+    this.state.data[readingNames[1]] = data[1];
+    this.state.data[readingNames[2]] = data[2];
+
+    // Only set tidal volume if breathCompleted. TODO: 
+    let isBreathCompleted = data[2];
+    if(isBreathCompleted == 1){
+      this.state.data[readingNames[3]] = data[3];
+      
+      // Calculate tidalVolumes
+      this.state.tidalVolumeTimes.push((new Date()).getTime());
+      this.state.tidalVolumes.push(data[3]);
+      
+      let timeDifference =  this.state.tidalVolumeTimes[this.state.tidalVolumeTimes.length-1] - this.state.tidalVolumeTimes[0]
+      const MILLISECONDS_IN_A_MINUTE = 60000;
+
+      while(timeDifference >= MILLISECONDS_IN_A_MINUTE){
+        this.state.tidalVolumeTimes.shift() // pops the first element
+        this.state.tidalVolumes.shift();
+        timeDifference = this.state.tidalVolumeTimes[this.state.tidalVolumeTimes.length-1] - this.state.tidalVolumeTimes[0]
+      }
+
+      this.state.data.trueRespiratoryRate = this.state.tidalVolumeTimes.length;
+      
+      if (this.state.tidalVolumes.length != 0) {
+        let sumOfTidalVolumes = this.state.tidalVolumes.reduce((a,b) => a + b, 0)
+        this.state.data.minuteVentilation = sumOfTidalVolumes;
+        console.log("Minute ventilation");
+        console.log(this.state.data.minuteVentilation);
+      }
+
+    }
+
+    for(let i = 4; i < data.length; i++){
       this.state.data[readingNames[i]] = data[i];
     }
 
@@ -120,7 +158,7 @@ export default class App extends React.Component {
         />
         <Switch>
         <Route path="/diagnostics">
-          <Vitals sendToArduino={this.sendToArduino} allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
+          <Vitals setParameters={this.setParameters} allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
         </Route>
         <Route path="/alarms">
           <Alarms

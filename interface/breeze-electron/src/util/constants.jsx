@@ -49,7 +49,8 @@ export const readingNames = [
   "tidalVolume",
   "errorCode",
   "abnormalPressure",
-  "abnormalFiO2"
+  "abnormalFiO2",
+  "minuteVentilation"
 ];
 
 export const readingsInfo = {
@@ -108,10 +109,12 @@ export const readingsInfo = {
     alarmMax: 100,
     sampleErrorValue: 0,
     default: 1
+  },
+  minuteVentilation: {
+    readableName: "Minute Ventilation",
+    unit: "L/min",
+    default: null
   }
-
-
-
 };
 
 // Defines parameters to send, as all params are sent to arduino
@@ -208,7 +211,7 @@ export const parameterInfo = {
     max: 100,
     recMin: 50,
     recMax: 60,
-    default: -1
+    default: 1
   },
   apneaTime: {
     readableName: "Apnea time",

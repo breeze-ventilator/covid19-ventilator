@@ -67,6 +67,8 @@ export default class AlarmsHandler extends React.Component {
 
       if (range === undefined) continue;
 
+      if(val == null) continue;
+
       if (!inRange(val, range)) {
         dataAlarm.push(data)
       } else if (this.state.currentlyAlarming.includes(data)) {

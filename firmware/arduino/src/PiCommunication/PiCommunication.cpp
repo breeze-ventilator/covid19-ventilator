@@ -9,7 +9,7 @@ PiCommunication::PiCommunication(int baudRate, int timeBetweenPiSending) {
   _baudRate = baudRate;
   _lastSentDataTime = millis();
   _timeBetweenPiSending = timeBetweenPiSending;
-  _breathCompletedToSend = 1;
+  _breathCompletedToSend = 0;
   _tidalVolumeToSend = 0;
 }
 

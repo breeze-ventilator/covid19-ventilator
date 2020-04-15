@@ -65,6 +65,11 @@ export default class Vitals extends React.Component {
     this.setState(prevState => ({isEditing: !prevState.isEditing}))
   }
 
+  done = () => {
+    this.toggleEdit();
+    this.props.setParameters(this.state);
+  }
+
   increment = (fieldName) => {
     this.setState(prevState => ({[fieldName]: safeValue(fieldName, prevState[fieldName] + 1)}))
   }
@@ -96,7 +101,7 @@ export default class Vitals extends React.Component {
           style={{position:'absolute',
           right:'10px', top:'5px', color: "white", 
           backgroundColor: "#33B0A6", padding:0, boxShadow: "none"}}
-          onClick={this.toggleEdit}
+          onClick={this.done}
           > done </Button>
           }
         <Grid container>
@@ -123,7 +128,7 @@ export default class Vitals extends React.Component {
           alarm={this.isAlarming("tidalVolume")} 
           minimized={isEditing}
           tidalVolume={this.state.data.tidalVolume}
-          respiratoryRate={this.state.data.respiratoryRate}
+          respiratoryRate={this.state.data.trueRespiratoryRate}
           prominence="h1"
           high={14}
           low={13}

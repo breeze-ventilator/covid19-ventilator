@@ -38,6 +38,7 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data, State &state) 
 
     // flow in L/min
     // tidal volume in L
+    // flow (L/min) * (min/ms) * ∆t (ms)
 
     float delta_time = (float)(millis() - _lastFlowReadTime);
     delta_time /= MINUTES_TO_MILLISECONDS;
