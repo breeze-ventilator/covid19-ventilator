@@ -123,11 +123,11 @@ export default class PatientProfile extends React.Component {
                     <div style={modalStyle}>
                   <h2 style={{textAlign: "center", marginTop: 80, color: "#1f1f1f"}}><u>Setting Up Your Ventilator</u></h2>
                   {'    '}<p style={{textAlign: "center"}}>1. Has the ventilator circuit been assembled? (Circuit put together, HME filter, and tracheal suction)</p>
-                  {'    '}<p style={{marginBottom: 249.5, textAlign: "center"}}>2. Did you hear the backup alarm when starting the machine? (If not, it may not be functioning properly)</p>
+                  {'    '}<p style={{marginBottom: 149.5, textAlign: "center"}}>2. Did you hear the backup alarm when starting the machine? (If not, it may not be functioning properly)</p> 
                   <div style={buttonStyle}>
-                  <Button variant="contained" color="secondary" disableElevation onClick={() => this.setState({modalOneOpen: false})}>Quit</Button> {'  '}
-                  <Button variant="contained" color="default" onClick={() => this.setState({modalOneOpen: false, modalFourOpen: true})} >Skip</Button>{'  '}
-                  <Button variant="contained" color="primary" onClick={() => this.setState({modalOneOpen: false, modalTwoOpen: true})}>Continue ➜ </Button>
+                  <Button variant="contained" style = {{fontFamily: "Barlow", marginRight: 10, backgroundColor: "#FFE4C0", color: "#1f1f1f"}} onClick={() => this.setState({modalOneOpen: false})}>Quit</Button> {'  '}
+                  <Button variant="contained" style = {{fontFamily: "Barlow", backgroundColor: "#4DB1A7", color: "white"}} onClick={() => this.setState({modalOneOpen: false, modalFourOpen: true})} >Skip</Button>{'  '}
+                  <Button variant="contained" style = {{fontFamily: "Barlow", backgroundColor: "#4DB1A7", color: "white"}} onClick={() => this.setState({modalOneOpen: false, modalTwoOpen: true})}>Continue ➜ </Button>
                   </div>
                     </div>
                   <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
@@ -177,9 +177,9 @@ export default class PatientProfile extends React.Component {
                             </Grid>
                         </Grid>
                         <div style={modalStyle}>
-                        <h2 style={{textAlign: "center"}}><u>Pressure Test</u></h2>
-                        <p style={{textAlign: "center"}}>Keep the output tube connected to the ventilator, but not to the patient. Block the tube mouthpiece with a gloved hand.
-                          Then press Begin Pressure Test. </p><br></br><br></br><br></br>
+                        <h2 style={{textAlign: "center", marginTop: 80, color: "#1f1f1f"}}><u>Pressure Test</u></h2>
+                        <p style={{textAlign: "center"}}>Keep the output tube connected to the ventilator, but not to the patient. Block the tube mouthpiece with a gloved hand. 
+                          Then press Begin Pressure Test. </p><br></br><br></br>
                         <div style={buttonStyle}>
                         <Button variant="contained" style = {{fontFamily: "Barlow", backgroundColor: "#4DB1A7", color: "white"}} onClick={(e) => window.alert("Pressure Test Running!")}>Begin Pressure Test</Button>
                         </div>
