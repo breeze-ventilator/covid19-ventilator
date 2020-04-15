@@ -16,7 +16,7 @@ const toggleContainer = {
 };
 
 const modalStyle = {
-  background: '#e0f7fa',
+  background: '#D8FAF7',
   radius: 8,
   borderRadius: 8,
   marginRight: 25,
@@ -95,10 +95,7 @@ export default class PatientProfile extends React.Component {
         const { value } = this.state;
         return (
             <>
-              <br></br>
-              <div style={buttonStyle}>
-              <Button variant="outlined" color="disabled" style={{backgroundColor: "#6BD6F3"}}  onClick={() => this.setState({modalOneOpen: true, modalTwoOpen: false})}>Patient Profile</Button>
-              </div>
+              <Button style={{position: "absolute", top: 51, bottom: 0,left: 20, height: 40, backgroundColor: "#4DB1A7", color: "white", fontFamily: "Barlow", boxShadow: "0px 5px 20px rgba(58,140,171,0.19)"}}  onClick={() => this.setState({modalOneOpen: true, modalTwoOpen: false})}>Patient Profile ⇲</Button>
               {/*Intro Page*/}
               <SimpleModal open={this.state.modalOneOpen} modalClose={this.modalOneClose}>
               <Box component="span" m={1}>
