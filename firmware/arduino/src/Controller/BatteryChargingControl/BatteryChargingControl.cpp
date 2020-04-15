@@ -1,6 +1,6 @@
 #include "BatteryChargingControl.h"
 
-BatteryChargingControl::BatteryChargingControl(int pin){
+BatteryChargingControl::BatteryChargingControl(int sensePin, int controlPin){
     _pin = pin;
 
 }
@@ -11,7 +11,7 @@ void BatteryChargingControl::init(){
 
 
 void BatteryChargingControl::control(float setCurrent){
-    float current = (float) (analogRead(_pin) – 512) * 50 / 1024; 
+    float current = (float) (analogRead(_pin)) * 25 / 1024; 
     //thoes values are nominal and the zero point (512) might need adjustment
 
     if (current > setCurrent)

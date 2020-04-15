@@ -12,7 +12,8 @@ class BatteryChargingControl {
 		void control(float setCurrent);
 		void init();
 	private:
-		int _pin;
+		int _sensePin;
+		int _controlPin;
 		int _gateVolt;
 };
 
