@@ -40,7 +40,7 @@ export default class PatientProfile extends React.Component {
         };
         this.finishSetup = this.finishSetup.bind(this);
         this.quitSetup = this.quitSetup.bind(this);
-        this.restartSetup = this.restartSetup.bind(this);
+        this.restartSetup = this.restartSetup.bind
     }  
 
       state = {
@@ -158,7 +158,7 @@ export default class PatientProfile extends React.Component {
                           <Button variant="contained" color="primary" onClick={(e) => window.alert("Flow Test Running!")}>Begin Flow Test</Button>
                           </div>
                           <div style={{textAlign: "center", paddingTop: 160}}>
-                          <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalOneOpen: true})} > Back </Button>{'  '}
+                          <Button variant="contained" color="default" onClick={() => this.setState({modalTwoOpen: false, modalOneOpen: true})} > Back </Button>{'  '}
                           <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalThreeOpen: true})} >Continue ➜ </Button>
                           </div>
                           </div>
@@ -188,7 +188,7 @@ export default class PatientProfile extends React.Component {
                           <Button variant="contained" color="primary" onClick={(e) => window.alert("Pressure Test Running!")}>Begin Pressure Test</Button>
                           </div>
                           <div style={{textAlign: "center", paddingTop: 160}}>
-                          <Button variant="contained" color="primary" onClick={() => this.setState({modalThreeOpen: false, modalTwoOpen: true})} > Back </Button>{'  '}
+                          <Button variant="contained" color="default" onClick={() => this.setState({modalThreeOpen: false, modalTwoOpen: true})} > Back </Button>{'  '}
                           <Button variant="contained" color="primary" onClick={() => this.setState({modalThreeOpen: false, modalFourOpen: true})} >Continue ➜ </Button>
                           </div>
                           </div>
@@ -209,7 +209,7 @@ export default class PatientProfile extends React.Component {
                               </Grid>
                           </Grid>
                           <div style={modalStyle}>
-                            <p style={{textAlign: "center", paddingBottom: 0}}><h2><u>Patient Information</u></h2></p>
+                            <p style={{textAlign: "center", paddingBottom: 0}}><h1>Patient Information</h1></p>
                           <div style={toggleContainer}>
                           <ToggleButtonGroup value={value}exclusive onChange={this.handleValue}>
                             <ToggleButton value="female">
@@ -226,8 +226,8 @@ export default class PatientProfile extends React.Component {
                           <br></br>
                           <Numpad profileItemName="Breathing Rate" setItem={this.setItemStateValue} startingValue={60} step={1} min={30} max={300} unit={""}/>
                           <div style={{textAlign: "center", paddingTop: 46}}>
-                          <Button variant="contained" color="primary" onClick={() => this.setState({modalFourOpen: false, modalThreeOpen: true})} > Back </Button>{'  '}
-                          <Button variant="contained" color="default" onClick={() => this.setState({modalFiveOpen: true})} >Save Changes</Button>
+                          <Button variant="contained" color="default" onClick={() => this.setState({modalFourOpen: false, modalThreeOpen: true})} > Back </Button>{'  '}
+                          <Button variant="contained" color="primary" onClick={() => this.setState({modalFiveOpen: true})} >Save Changes</Button>
                           </div>
                           </div>
                           <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
