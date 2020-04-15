@@ -15,7 +15,7 @@ void Data::updateTidalVolume(float flowValue, float delta_time) {
   tidalVolume += flowValue*delta_time;
 }
 
-void Data::saveMainPressureReading(unsigned int pressureValue) {
+void Data::saveMainPressureReading(float pressureValue) {
   // for PID
   _pressureValues.push(pressureValue);
 }

@@ -9,6 +9,6 @@
 class MainPressureSensor {
   public:
     MainPressureSensor();
-    unsigned int read();
+    float read();
 };
 #endif

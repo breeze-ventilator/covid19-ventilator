@@ -19,15 +19,6 @@ void List::push(float value) {
     size = min(size, _capacity);
 }
 
-void List::push(unsigned int value) {
-    // pops value if list too big
-    _data[_currentIdx] = (float) value;
-    _currentIdx++;
-    _currentIdx = _currentIdx % _capacity;
-    size++;
-    size = min(size, _capacity);
-}
-
 float List::getMean() {
     float total = 0.0;
     for (int i = 0; i < size; i++) {

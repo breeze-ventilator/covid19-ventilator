@@ -1,6 +1,3 @@
-// #ifndef OXYGEN_PRESSURE_SENSOR_H
-// #define OXYGEN_PRESSURE_SENSOR_H
-
 #include "OxygenValveStepper.h"
 
 // #define ACCEL_STEPPER_MOTOR_INTERFACE_TYPE 4 //leave this here

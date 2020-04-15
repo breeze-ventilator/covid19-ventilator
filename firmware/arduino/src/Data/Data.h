@@ -10,7 +10,7 @@ class Data {
         Data();
         void saveFlowReading(float flowValue);
         void updateTidalVolume(float flowValue, float delta_time);
-        void saveMainPressureReading(unsigned int pressureValue);
+        void saveMainPressureReading(float pressureValue);
         float getMainPressureAverageForPID();
         float getFlowRecentHistoryAverage();
         void saveBatteryPercentage(unsigned int newBatteryPercentage);

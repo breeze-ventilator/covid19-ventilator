@@ -6,7 +6,6 @@ class List {
     public:
         List(int capacity);
         void push(float value);
-        void push(unsigned int value);
         float getMean();
         int size;
     
