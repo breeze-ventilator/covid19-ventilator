@@ -27,7 +27,8 @@ void FlowSensor::init()
   Wire.endTransmission();
   
   delay(50);
-  
+  int error = 0;
+  read(&error); // read nonsense first value
 }
  
 float FlowSensor::read(int *errorType)

@@ -26,7 +26,7 @@ void setup() {
   controller.stopArduinoAlarm();
   int servosConnectedErrorCode = controller.init();
   sensors.init();
-  int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
+  // int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
   // }
@@ -34,13 +34,14 @@ void setup() {
   // if (servosConnectedErrorCode != NO_ERROR) {
   //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
   // }
-  // parameters.currentMode = OFF_MODE;
-  // parameters.currentFiO2 = 10;
-  // parameters.currentInspiratoryTime = 5000;
-  // parameters.currentMaxExpiratoryTime = 5000;
-  // parameters.currentInspiratoryPressure = 150; // mm H2O
-  // parameters.currentPEEP = 50; // mm H2O
-  // parameters.currentRiseTime = 100; // ms
+  parameters.currentMode = PRESSURE_CONTROL_MODE;
+  parameters.currentFiO2 = 10;
+  parameters.currentInspiratoryTime = 5000;
+  parameters.currentMaxExpiratoryTime = 5000;
+  parameters.currentInspiratoryPressure = 150; // mm H2O
+  parameters.currentPEEP = 50; // mm H2O
+  parameters.currentRiseTime = 100; // ms
+  parameters.currentSensitivity = -1; // L
 }
 
 void loop() {
@@ -59,7 +60,7 @@ void loop() {
     }
   }
 
-  state.updateState(parameters);
+  state.updateState(parameters, data);
 
   sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
 
@@ -81,7 +82,7 @@ void loop() {
     data.resetTidalVolume();
   }
   
-  if (piCommunication.isTimeToSendDataToPi()) {
-    piCommunication.sendDataToPi(data, state);
-  }
+  // if (piCommunication.isTimeToSendDataToPi()) {
+  //   piCommunication.sendDataToPi(data, state);
+  // }
 }

@@ -7,7 +7,7 @@ State::State() {
   breathingStage = OFF_STAGE;
 }
 
-void State::updateState(Parameters &parameters) {
+void State::updateState(Parameters &parameters, Data &data) {
   if ((mode != PRESSURE_CONTROL_MODE && mode != PRESSURE_SUPPORT_MODE)
         && 
         (parameters.currentMode == PRESSURE_CONTROL_MODE
@@ -28,7 +28,7 @@ void State::updateState(Parameters &parameters) {
         endInhalationAndStartExhalation();
       }
     }
-    else if (breathingStage == EXHALATION_STAGE && isFinishedExpiratoryStageInPressureControl(parameters)) {
+    else if (breathingStage == EXHALATION_STAGE && isFinishedExpiratoryStageInPressureControl(parameters, data)) {
       endExhalationAndStartInhalation();
     }
   }
@@ -64,10 +64,27 @@ int State::isFinishedInspiratoryStageInPressureControl(Parameters &parameters) {
   return isTime(startTime, parameters.currentInspiratoryTime);
 }
 
-int State::isFinishedExpiratoryStageInPressureControl(Parameters &parameters) {
-  return isTime(startTime, parameters.currentMaxExpiratoryTime);
+int State::isFinishedExpiratoryStageInPressureControl(Parameters &parameters, Data &data) {
+  if (isTime(startTime, parameters.currentMaxExpiratoryTime)) {
+    return 1;
+  }
+  
+  // flow triggering
+  if (patientTriggeredBreath(parameters, data)) {
+    return 1;
+  }
+  return 0;
 }
 
+int State::patientTriggeredBreath(Parameters &parameters, Data &data) {
+  if (data.getFlowRecentHistoryAverage() <= parameters.currentSensitivity) {
+    Serial.println(-10);
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
 // int State::isFinishedInspiratoryStageInPressureSupport(Parameters &parameters) {
 //   return isTime(startTime, parameters.currentInspiratoryTime);
 // }

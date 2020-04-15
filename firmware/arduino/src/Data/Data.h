@@ -4,7 +4,7 @@
 #include "Arduino.h"
 
 #define PRESSURE_HISTORY_LENGTH_FOR_PID 50 //TODO: change
-#define FLOW_HISTORY_LENGTH 10
+#define FLOW_HISTORY_LENGTH 50
 class Data {
     public:
         Data();
