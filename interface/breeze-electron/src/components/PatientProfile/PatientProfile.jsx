@@ -38,6 +38,9 @@ export default class PatientProfile extends React.Component {
         this.state = {
           modalOneOpen: true
         };
+        this.finishSetup = this.finishSetup.bind(this);
+        this.quitSetup = this.quitSetup.bind(this);
+        this.restartSetup = this.restartSetup.bind(this);
     }  
 
       state = {
@@ -91,154 +94,172 @@ export default class PatientProfile extends React.Component {
         this.setState(this.state);
       }
 
+      finishSetup() {
+        this.props.toggleSetupHandler();
+        this.setState({modalFourOpen: false, modalFiveOpen: false});
+      }
+
+      quitSetup() {
+        this.props.toggleSetupHandler();
+        this.setState({modalOneOpen: false})
+      }
+
+      restartSetup() {
+        this.props.toggleSetupHandler();
+        this.setState({modalOneOpen: true, modalTwoOpen: false})
+      }
+
     render() {
         const { value } = this.state;
         return (
             <>
-              <Button style={{position: "absolute", top: 51, bottom: 0,left: 20, height: 40, backgroundColor: "#4DB1A7", color: "white", fontFamily: "Barlow", boxShadow: "0px 5px 20px rgba(58,140,171,0.19)"}}  onClick={() => this.setState({modalOneOpen: true, modalTwoOpen: false})}>Patient Profile ⇲</Button>
-              {/*Intro Page*/}
-              <SimpleModal open={this.state.modalOneOpen} modalClose={this.modalOneClose}>
-              <Box component="span" m={1}>
-              <Container>
-                    <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
-                    <Grid item xl={6} md={6} sm={12} xs={12}>
-                        <Grid container justify="space-evenly" spacing={3} direction="row">
-                        </Grid>
-                    </Grid>
-                    <div style={modalStyle}>
-                  <h2 style={{textAlign: "center"}}><u>Setting Up Your Ventilator</u></h2>
-                  {'    '}<p style={{textAlign: "center"}}>1. Has the ventilator circuit been assembled? (Circuit put together, HME filter, and tracheal suction)</p>
-                  {'    '}<p style={{marginBottom: 249.5, textAlign: "center"}}>2. Did you hear the backup alarm when starting the machine? (If not, it may not be functioning properly)</p> 
-                  <div style={buttonStyle}>
-                  <Button variant="contained" color="secondary" disableElevation onClick={() => this.setState({modalOneOpen: false})}>Quit</Button> {'  '}
-                  <Button variant="contained" color="default" onClick={() => this.setState({modalOneOpen: false, modalFourOpen: true})} >Skip</Button>{'  '}
-                  <Button variant="contained" color="primary" onClick={() => this.setState({modalOneOpen: false, modalTwoOpen: true})}>Continue ➜ </Button>
-                  </div>     
-                    </div>
-                  <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
+              <Button style={{position: "absolute", top: 51, bottom: 0,left: 20, height: 40, backgroundColor: "#4DB1A7", color: "white", fontFamily: "Barlow", boxShadow: "0px 5px 20px rgba(58,140,171,0.19)"}}  onClick={() => this.restartSetup()}>Patient Profile ⇲</Button>
+              {this.props.setup && <div>
+                {/*Intro Page*/}
+                <SimpleModal open={this.state.modalOneOpen} modalClose={this.modalOneClose}>
+                <Box component="span" m={1}>
+                <Container>
+                      <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
+                      <Grid item xl={6} md={6} sm={12} xs={12}>
+                          <Grid container justify="space-evenly" spacing={3} direction="row">
+                          </Grid>
+                      </Grid>
+                      <div style={modalStyle}>
+                    <h2 style={{textAlign: "center"}}><u>Setting Up Your Ventilator</u></h2>
+                    {'    '}<p style={{textAlign: "center"}}>1. Has the ventilator circuit been assembled? (Circuit put together, HME filter, and tracheal suction)</p>
+                    {'    '}<p style={{marginBottom: 249.5, textAlign: "center"}}>2. Did you hear the backup alarm when starting the machine? (If not, it may not be functioning properly)</p> 
+                    <div style={buttonStyle}>
+                    <Button variant="contained" color="secondary" disableElevation onClick={() => this.quitSetup()}>Quit</Button> {'  '}
+                    <Button variant="contained" color="default" onClick={() => this.setState({modalOneOpen: false, modalFourOpen: true})} >Skip</Button>{'  '}
+                    <Button variant="contained" color="primary" onClick={() => this.setState({modalOneOpen: false, modalTwoOpen: true})}>Continue ➜ </Button>
+                    </div>     
+                      </div>
+                    <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
 
-                        </Grid>
-                    </Grid>
-                </Container>
-                </Box>
+                          </Grid>
+                      </Grid>
+                  </Container>
+                  </Box>
+                </SimpleModal>
+
+                {/*Flow Tests*/}
+                <SimpleModal open={this.state.modalTwoOpen} modalClose={this.modalThreeClose}>
+                  <Box component="span" m={1}>
+                  <Container>
+                      <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
+                          <Grid item xl={6} md={6} sm={12} xs={12}>
+                              <Grid container justify="space-evenly" spacing={3} direction="row">
+                              </Grid>
+                          </Grid>
+                          <div style={modalStyle}>
+                          <h2 style={{textAlign: "center"}}><u>Flow Test</u></h2>
+                          <p style={{textAlign: "center"}}>Connect the output tube to the ventilator, but not to the patient. Then press Begin Flow Test.</p><br></br><br></br><br></br><br></br>
+                          <div style={buttonStyle}>
+                          <Button variant="contained" color="primary" onClick={(e) => window.alert("Flow Test Running!")}>Begin Flow Test</Button>
+                          </div>
+                          <div style={{textAlign: "center", paddingTop: 160}}>
+                          <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalOneOpen: true})} > Back </Button>{'  '}
+                          <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalThreeOpen: true})} >Continue ➜ </Button>
+                          </div>
+                          </div>
+                          <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
+
+                          </Grid>
+                      </Grid>
+                  </Container>
+                  </Box>
               </SimpleModal>
 
-              {/*Flow Tests*/}
-              <SimpleModal open={this.state.modalTwoOpen} modalClose={this.modalThreeClose}>
-                <Box component="span" m={1}>
-                <Container>
+              {/*Pressure Tests*/}
+
+              <SimpleModal open={this.state.modalThreeOpen} modalClose={this.modalFourClose}>
+                  <Box component="span" m={1}>
+                  <Container>
+                      <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
+                          <Grid item xl={6} md={6} sm={12} xs={12}>
+                              <Grid container justify="space-evenly" spacing={3} direction="row">
+                              </Grid>
+                          </Grid>
+                          <div style={modalStyle}>
+                          <h2 style={{textAlign: "center"}}><u>Pressure Test</u></h2>
+                          <p style={{textAlign: "center"}}>Keep the output tube connected to the ventilator, but not to the patient. Block the tube mouthpiece with a gloved hand. 
+                            Then press Begin Pressure Test. </p><br></br><br></br><br></br>
+                          <div style={buttonStyle}>
+                          <Button variant="contained" color="primary" onClick={(e) => window.alert("Pressure Test Running!")}>Begin Pressure Test</Button>
+                          </div>
+                          <div style={{textAlign: "center", paddingTop: 160}}>
+                          <Button variant="contained" color="primary" onClick={() => this.setState({modalThreeOpen: false, modalTwoOpen: true})} > Back </Button>{'  '}
+                          <Button variant="contained" color="primary" onClick={() => this.setState({modalThreeOpen: false, modalFourOpen: true})} >Continue ➜ </Button>
+                          </div>
+                          </div>
+                          <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
+                          </Grid>
+                      </Grid>
+                  </Container>
+                  </Box>
+              </SimpleModal>
+
+              {/*Patient Profile*/}
+              <SimpleModal open={this.state.modalFourOpen} modalClose={this.modalFourClose}>
+                  <Box component="span" m={1}>
+                  <Container>
+                      <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
+                          <Grid item xl={6} md={6} sm={12} xs={12}>
+                              <Grid container justify="space-evenly" spacing={3} direction="row">
+                              </Grid>
+                          </Grid>
+                          <div style={modalStyle}>
+                            <p style={{textAlign: "center", paddingBottom: 0}}><h2><u>Patient Information</u></h2></p>
+                          <div style={toggleContainer}>
+                          <ToggleButtonGroup value={value}exclusive onChange={this.handleValue}>
+                            <ToggleButton value="female">
+                              Female
+                            </ToggleButton>
+                            <ToggleButton value="male">
+                              Male
+                            </ToggleButton>
+                          </ToggleButtonGroup>
+                        </div>
+                          <Numpad profileItemName="Patient Weight" setItem={this.setItemStateValue} startingValue={80} step={1} min={30} max={300} unit={"lbs"}/>
+                          <br></br>
+                          <Numpad profileItemName="Patient Height" setItem={this.setItemStateValue} startingValue={180} step={1} min={30} max={300} unit={"cm"}/>
+                          <br></br>
+                          <Numpad profileItemName="Breathing Rate" setItem={this.setItemStateValue} startingValue={60} step={1} min={30} max={300} unit={""}/>
+                          <div style={{textAlign: "center", paddingTop: 46}}>
+                          <Button variant="contained" color="primary" onClick={() => this.setState({modalFourOpen: false, modalThreeOpen: true})} > Back </Button>{'  '}
+                          <Button variant="contained" color="default" onClick={() => this.setState({modalFiveOpen: true})} >Save Changes</Button>
+                          </div>
+                          </div>
+                          <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
+
+                          </Grid>
+                      </Grid>
+                  </Container>
+                  </Box>
+              </SimpleModal>
+
+              {/*Confirmation Modal*/}
+              <SimpleModal open={this.state.modalFiveOpen} modalClose={this.modalFiveClose}>
+              <Box component="span" m={1}>
+                  <Container>
                     <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
-                        <Grid item xl={6} md={6} sm={12} xs={12}>
-                            <Grid container justify="space-evenly" spacing={3} direction="row">
-                            </Grid>
-                        </Grid>
-                        <div style={modalStyle}>
-                        <h2 style={{textAlign: "center"}}><u>Flow Test</u></h2>
-                        <p style={{textAlign: "center"}}>Connect the output tube to the ventilator, but not to the patient. Then press Begin Flow Test.</p><br></br><br></br><br></br><br></br>
-                        <div style={buttonStyle}>
-                        <Button variant="contained" color="primary" onClick={(e) => window.alert("Flow Test Running!")}>Begin Flow Test</Button>
-                        </div>
-                        <div style={{textAlign: "center", paddingTop: 160}}>
-                        <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalOneOpen: true})} > Back </Button>{'  '}
-                        <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalThreeOpen: true})} >Continue ➜ </Button>
-                        </div>
-                        </div>
-                        <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
-
-                        </Grid>
+                    <Grid item xl={6} md={6} sm={12} xs={12}>
+                      <Grid container justify="space-evenly" spacing={3} direction="row">
+                      </Grid>
                     </Grid>
-                </Container>
+                <div style={{background: '#e0f7fa', textAlign: "center", paddingLeft: 15, paddingRight: 15, borderRadius: 8}}>
+                <p>Are you sure you wish to create a new patient profile?</p>
+                <div style={buttonStyle}>
+                  <Button variant="contained" color="default" onClick={() => this.setState({modalFiveOpen: false})} > Go Back</Button>{'  '}
+                  <Button variant="contained" color="primary" onClick={() => this.finishSetup() } >Save Changes</Button>
+                </div>
+                </div>
+                    </Grid>
+                  </Container>
                 </Box>
-            </SimpleModal>
-
-            {/*Pressure Tests*/}
-
-            <SimpleModal open={this.state.modalThreeOpen} modalClose={this.modalFourClose}>
-                <Box component="span" m={1}>
-                <Container>
-                    <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
-                        <Grid item xl={6} md={6} sm={12} xs={12}>
-                            <Grid container justify="space-evenly" spacing={3} direction="row">
-                            </Grid>
-                        </Grid>
-                        <div style={modalStyle}>
-                        <h2 style={{textAlign: "center"}}><u>Pressure Test</u></h2>
-                        <p style={{textAlign: "center"}}>Keep the output tube connected to the ventilator, but not to the patient. Block the tube mouthpiece with a gloved hand. 
-                          Then press Begin Pressure Test. </p><br></br><br></br><br></br>
-                        <div style={buttonStyle}>
-                        <Button variant="contained" color="primary" onClick={(e) => window.alert("Pressure Test Running!")}>Begin Pressure Test</Button>
-                        </div>
-                        <div style={{textAlign: "center", paddingTop: 160}}>
-                        <Button variant="contained" color="primary" onClick={() => this.setState({modalThreeOpen: false, modalTwoOpen: true})} > Back </Button>{'  '}
-                        <Button variant="contained" color="primary" onClick={() => this.setState({modalThreeOpen: false, modalFourOpen: true})} >Continue ➜ </Button>
-                        </div>
-                        </div>
-                        <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
-                        </Grid>
-                    </Grid>
-                </Container>
-                </Box>
-            </SimpleModal>
-
-            {/*Patient Profile*/}
-            <SimpleModal open={this.state.modalFourOpen} modalClose={this.modalFourClose}>
-                <Box component="span" m={1}>
-                <Container>
-                    <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
-                        <Grid item xl={6} md={6} sm={12} xs={12}>
-                            <Grid container justify="space-evenly" spacing={3} direction="row">
-                            </Grid>
-                        </Grid>
-                        <div style={modalStyle}>
-                          <p style={{textAlign: "center", paddingBottom: 0}}><h2><u>Patient Information</u></h2></p>
-                        <div style={toggleContainer}>
-                        <ToggleButtonGroup value={value}exclusive onChange={this.handleValue}>
-                          <ToggleButton value="female">
-                            Female
-                          </ToggleButton>
-                          <ToggleButton value="male">
-                            Male
-                          </ToggleButton>
-                        </ToggleButtonGroup>
-                      </div>
-                        <Numpad profileItemName="Patient Weight" setItem={this.setItemStateValue} startingValue={80} step={1} min={30} max={300} unit={"lbs"}/>
-                        <br></br>
-                        <Numpad profileItemName="Patient Height" setItem={this.setItemStateValue} startingValue={180} step={1} min={30} max={300} unit={"cm"}/>
-                        <br></br>
-                        <Numpad profileItemName="Breathing Rate" setItem={this.setItemStateValue} startingValue={60} step={1} min={30} max={300} unit={""}/>
-                        <div style={{textAlign: "center", paddingTop: 46}}>
-                        <Button variant="contained" color="primary" onClick={() => this.setState({modalFourOpen: false, modalThreeOpen: true})} > Back </Button>{'  '}
-                        <Button variant="contained" color="default" onClick={() => this.setState({modalFiveOpen: true})} >Save Changes</Button>
-                        </div>
-                        </div>
-                        <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
-
-                        </Grid>
-                    </Grid>
-                </Container>
-                </Box>
-            </SimpleModal>
-
-            {/*Confirmation Modal*/}
-            <SimpleModal open={this.state.modalFiveOpen} modalClose={this.modalFiveClose}>
-            <Box component="span" m={1}>
-                <Container>
-                  <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
-                   <Grid item xl={6} md={6} sm={12} xs={12}>
-                    <Grid container justify="space-evenly" spacing={3} direction="row">
-                    </Grid>
-                  </Grid>
-              <div style={{background: '#e0f7fa', textAlign: "center", paddingLeft: 15, paddingRight: 15, borderRadius: 8}}>
-              <p>Are you sure you wish to create a new patient profile?</p>
-              <div style={buttonStyle}>
-                <Button variant="contained" color="primary" onClick={() => this.setState({modalFiveOpen: false})} > Go Back</Button>{'  '}
-                <Button variant="contained" color="default" onClick={() => this.setState({modalFourOpen: false, modalFiveOpen: false})} >Save Changes</Button>
+              </SimpleModal>
               </div>
-              </div>
-                  </Grid>
-                </Container>
-              </Box>
-            </SimpleModal>
+            }
             </>
         )
     };

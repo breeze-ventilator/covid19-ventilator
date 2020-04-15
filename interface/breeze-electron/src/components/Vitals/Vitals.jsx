@@ -137,8 +137,7 @@ export default class Vitals extends React.Component {
           high={14}
           low={13}
         />
-
-        <PatientProfile />
+        <PatientProfile setup={this.props.setup} toggleSetupHandler={this.props.toggleSetupHandler}/>
 
         {/* TODO: Graphs go here */}
         {/* <LineChart timeSeriesData={this.props.timeSeriesData} /> */}

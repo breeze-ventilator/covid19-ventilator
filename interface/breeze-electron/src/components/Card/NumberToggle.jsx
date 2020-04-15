@@ -16,7 +16,12 @@ const sizes = {large: 500, medium: 380, small: 280};
 const cardWidth = 440;
 const verticalCenter = 220;
 export const NumberToggle = ({ value, min, max, increment, decrement }) => {
-
+    let recommended;
+    if(max == null){
+        recommended = min
+    } else {
+        recommended = min +'-' + max
+    }
     return(
         <div style={{textAlign: 'center', padding: "10 0"}}>
             <div style={{}}>
@@ -38,7 +43,7 @@ export const NumberToggle = ({ value, min, max, increment, decrement }) => {
             </div>
             <div style={{padding: "10px"}}>
             <Typography align="center" style={{fontFamily: "Barlow", fontStyle: "Bold", padding: "10px"}} variant="subtitle3">
-                Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>{min}-{max}</b></p>
+            Recommended: <p style={{display: "inline", color: "#4abe48"}}><b>{recommended}</b></p>
             </Typography> 
             </div>
         </div>

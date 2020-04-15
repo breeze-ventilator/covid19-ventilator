@@ -33,12 +33,13 @@ export const modes = ["Standby", "Pressure Control", "Pressure Support"];
 
 export const defaultAlarms = {
   minuteVentilation: {
-    min: 6,
-    max: 10
+    min: 0,
+    max: 150,
+    step: 10
   },
   pressure: {
     min: 0,
-    max: 35
+    max: 150
   }
 }
 
@@ -135,6 +136,7 @@ export const controlParams = [
   "fiO2",
   "peep",
   "inspiratoryPressure",
+  "sensitivity",
   "inspiratoryTime",
   "respiratoryRate",
 ];
@@ -207,8 +209,8 @@ export const parameterInfo = {
     readableName: "Sensitivity",
     unit: "L/min",
     step: 1,
-    min: 0,
-    max: 100,
+    min: -10,
+    max: 0,
     recMin: "N/A",
     recMax: "N/A",
     default: -1

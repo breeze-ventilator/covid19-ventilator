@@ -17,4 +17,8 @@
 #define OXYGEN_SENSOR_NOT_WORKING 10
 #define OXYGEN_ABNORMAL 11
 
+#define TOO_LOW 1
+#define TOO_HIGH 2
+
+
 #endif

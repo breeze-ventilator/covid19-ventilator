@@ -7,29 +7,6 @@ import 'react-notifications-component/dist/theme.css';
 import ReactHowler from 'react-howler'
 import highSound from './sounds/highSound.mp3';
 
-const acceptableRanges = {
-  fiO2: {
-    min: 21,
-    max: 99
-  },
-  tidalVolume: {
-    min: 1,
-    max: 30
-  },
-  pressure: {
-    min: 0,
-    max: 35
-  },
-  riseTime: {
-    min: 0,
-    max: 1
-  },
-  inspiratoryTime: {
-    min: 0,
-    max: 100
-  }
-}
-
 export default class AlarmsHandler extends React.Component {
   constructor(props) {
     super(props);
@@ -50,26 +27,37 @@ export default class AlarmsHandler extends React.Component {
     }
  
     for (var data in newAlarms) {
-      store.addNotification({
-        title: "WARNING!",
-        message: newAlarms[data],
-        type: "danger",
-        insert: "top",
-        container: "top-right",
-        animationIn: ["animated", "fadeIn"],
-        animationOut: ["animated", "fadeOut"],
-        width: 250
-      })
-      if(!this.state.playingSound){
-        this.state.playingSound = true;
-      }
+      this.createAlarm(newAlarms[data])
     }
   }
 
+  createAlarm(data) {
+    store.addNotification({
+      title: data + 'alarm',
+      message: " ",
+      type: "danger",
+      insert: "top",
+      container: "top-right",
+      animationIn: ["animated", "fadeIn"],
+      animationOut: ["animated", "fadeOut"],
+      width: 250
+    })
+    if(!this.state.playingSound){
+      this.state.playingSound = true;
+    }
+  }
+
+  alarmFromArduino(alarmType){
+    // FiO2 low, FiO2 high
+    if(!this.state.currentlyAlarming.includes(alarmType)){
+      this.state.currentlyAlarming.push(alarmType)
+      this.createAlarm(alarmType)
+    }
+  }
 
   checkData() {
-    let alarmRanges = Object.assign(acceptableRanges, this.props.alarms);
-    let dataPieces = Object.assign(this.props.allData, this.props.allParameters);
+    let alarmRanges = this.props.alarms;
+    let dataPieces = Object.assign(this.props.allData);
     let dataAlarm = [];
 
     for (var data in dataPieces) {
@@ -99,6 +87,9 @@ export default class AlarmsHandler extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    if(this.props.receivedAlarmFromArduino){
+      this.alarmFromArduino(this.props.arduinoAlarmType)
+    }
     this.checkData();
   }
 
