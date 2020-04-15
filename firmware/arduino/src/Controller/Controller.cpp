@@ -8,7 +8,6 @@ Controller::Controller()
     // airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
     blowerControl()
 {
-  _lastOxygenControlTime = 0;
   _lastAirControlTime = 0;
 }
 
@@ -32,6 +31,7 @@ void Controller::inhalationControl(Data &data, Parameters &parameters, State &st
   // oxygenControl.control(100);
   // oxygenControl.control(random(100));
   // oxygenControl(data, parameters, state);
+  // oxygenControl.control();
 
   //  airControl(parameters);
   float setPressure = state.desiredPressure; //TODO: Check units with below
@@ -52,10 +52,6 @@ void Controller::exhalationControl(Data &data, Parameters &parameters) {
 
 // void Controller::airControl(Parameters parameters) {
 //   airIntakeServo.setOpening(100 - parameters.currentFiO2);
-// }
-
-// int Controller::isTimeToControlOxygen() {
-//   return isTime(_lastOxygenControlTime, TIME_BETWEEN_OXYGEN_CONTROLS);
 // }
 
 // int Controller::isTimeToControlAir() {

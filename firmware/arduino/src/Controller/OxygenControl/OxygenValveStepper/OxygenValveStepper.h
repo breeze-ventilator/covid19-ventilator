@@ -4,11 +4,12 @@
 #include <AccelStepper.h> // Include the AccelStepper library:
 #include "Arduino.h"
 #include "../../../Defs/errors.h"
+#define CURRENT_TRIGGER 1
 
 class OxygenValveStepper {
   public:
 	  OxygenValveStepper(int motorInterfaceType, int pin0, int pin1,
-      int pin2, int pin3, int limitSwitchPin, int maxStepperSpeed, int stepperAcceleration,
+      int pin2, int pin3, int currentSensePin, int maxStepperSpeed, int stepperAcceleration,
       int oxygenEnable1Pin, int oxygenEnable2Pin);
     void begin();
     int moveToZeroPosition(int maxWaitTime);
@@ -18,7 +19,7 @@ class OxygenValveStepper {
     
   private:
 	  AccelStepper _oxygenStepper;
-    int _limitSwitchPin;
+    int _currentSensePin;
     int _maxStepperSpeed;
     int _stepperAcceleration;
     int _oxygenEnable1Pin;

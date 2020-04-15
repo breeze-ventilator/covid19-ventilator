@@ -1,10 +1,10 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#define FLOW_IC2_ADDRESS 64//TODO: SIMON
+#define FLOW_IC2_ADDRESS 64
 #define FLOW_OFFSET 32768// 32000//32768 // we read 32704-32720
 #define FLOW_SCALE 120 // for air, 142.8 for O2
-#define BATTERY_VOLTAGE_PIN 8
+#define BATTERY_VOLTAGE_PIN 7
 #define OXYGEN_SENSOR_PIN 5
 
 #include "FlowSensor/FlowSensor.h"
