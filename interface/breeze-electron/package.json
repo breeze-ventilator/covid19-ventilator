@@ -85,6 +85,7 @@
         "@material-ui/icons": "^4.9.1",
         "@material-ui/lab": "^4.0.0-alpha.48",
         "electron-squirrel-startup": "^1.0.0",
+        "python-shell": "^1.0.8",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-howler": "^3.7.4",

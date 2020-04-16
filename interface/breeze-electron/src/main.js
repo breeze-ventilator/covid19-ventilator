@@ -25,6 +25,13 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
+var pyshell = require('python-shell')
+pyshell.PythonShell.run('src/modules/arduino_messager.py', null, function  (err, results)  {
+  if  (err)  throw err;
+  console.log('modules/arduino_messager.pyfinished.');
+  console.log('results', results);
+ });
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
