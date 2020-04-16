@@ -6,7 +6,7 @@ export default class Messager {
 		this.useSampleListener = useSampleListener;
 		this.socket = null;
 		if(!useSampleListener){
-			this.socket = io('http://localhost:' + port, {transports: ['websocket']});
+			this.socket = io('http://localhost:' + port, {transports: ['websocket', 'flashsocket', 'polling']});
 		}
     }
 
