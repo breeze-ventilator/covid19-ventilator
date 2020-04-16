@@ -224,7 +224,7 @@ export default class PatientProfile extends React.Component {
                           <br></br>
                           <Numpad profileItemName="Patient Height" setItem={this.setItemStateValue} startingValue={180} step={1} min={30} max={300} unit={"cm"}/>
                           <br></br>
-                          <Numpad profileItemName="Breathing Rate" setItem={this.setItemStateValue} startingValue={60} step={1} min={30} max={300} unit={""}/>
+                          <Numpad profileItemName="Breathing Rate" setItem={this.setItemStateValue} startingValue={60} step={1} min={30} max={300} unit={"bpm"}/>
                           <div style={{textAlign: "center", paddingTop: 46}}>
                           <Button variant="contained" color="default" onClick={() => this.setState({modalFourOpen: false, modalThreeOpen: true})} > Back </Button>{'  '}
                           <Button variant="contained" color="primary" onClick={() => this.setState({modalFiveOpen: true})} >Save Changes</Button>
