@@ -6,7 +6,8 @@ Controller::Controller()
     : oxygenControl(),
     alarm(ALARM_PIN),
     // airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
-    blowerControl()
+    blowerControl(),
+    batteryChargingControl(BATTERY_SENSE_PIN, BATTERY_CONTROL_PIN);
 {
   _lastAirControlTime = 0;
 }
@@ -57,3 +58,7 @@ void Controller::exhalationControl(Data &data, Parameters &parameters) {
 // int Controller::isTimeToControlAir() {
 //   return isTime(_lastAirControlTime, TIME_BETWEEN_AIR_CONTROLS);
 // }
+
+int Controller::isTimeToControlBatteryCharging() {
+  return isTime(_lastbatteryControlTime, TIME_BETWEEN_BATTERY_CONTROLS);
+}

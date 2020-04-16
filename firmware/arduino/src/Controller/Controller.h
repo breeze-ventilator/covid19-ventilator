@@ -11,6 +11,7 @@
 #include "AirIntakeServo/AirIntakeServo.h"
 #include "BlowerControl/BlowerControl.h"
 #include "Alarm/Alarm.h"
+#include "BatteryChargingControl/BatteryChargingControl.h"
 
 #include "../Data/Data.h"
 #include "../Parameters/Parameters.h"
@@ -35,6 +36,7 @@ class Controller {
         // AirIntakeServo airIntakeServo;
         BlowerControl blowerControl;
         unsigned long _lastAirControlTime;
+        BatteryChargingControl batteryChargingControl;
 };
 
 #endif
