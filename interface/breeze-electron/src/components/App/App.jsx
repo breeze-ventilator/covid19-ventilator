@@ -44,7 +44,7 @@ export default class App extends React.Component {
     this.state = state;
 
     // Note: Second parameter is whether to use sample listener.
-    this.messager = new Messager(5000, false); 
+    this.messager = new Messager(8081, false); 
 
     this.messager.dataListener(this.updateData.bind(this));
 

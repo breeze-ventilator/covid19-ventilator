@@ -12,7 +12,7 @@ sio  = socketio.Server()
 app = socketio.WSGIApp(sio)
 thread = None
 
-PORT = 5000
+PORT = 8081
 serial_interface = SerialInterface(ser, sio)
 
 @sio.on('connect')
