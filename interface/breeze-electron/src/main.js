@@ -1,7 +1,7 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
+
 const path = require('path');
-// const Top = require('./top.js');
-// const top = new Top();
+import {PythonShell} from 'python-shell';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -23,14 +23,20 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
-};
 
-var pyshell = require('python-shell')
-pyshell.PythonShell.run('src/modules/arduino_messager.py', null, function  (err, results)  {
-  if  (err)  throw err;
-  console.log('modules/arduino_messager.pyfinished.');
-  console.log('results', results);
- });
+  var pyshell = new PythonShell('src/modules/arduino_messager.py', {mode: 'json'});
+
+  pyshell.send({hello: 5, goodbye: 6});
+
+  pyshell.on('message', function(message) {
+    console.log(message, new Date().getTime());
+    mainWindow.webContents.send('newData', message)
+  })
+
+  ipcMain.on('newParams', (event, arg) => {
+    pyshell.send(arg);
+  })
+};
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
