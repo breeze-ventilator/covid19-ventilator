@@ -72,7 +72,6 @@ class ParameterInputCustom extends React.Component {
                         className="md-numpad"
                         decimal={true}
                         negative={false}
-                        value={this.state.value}
                         onChange={this.handleChange}
                     >
                     <Button style={{width: '120px', height:'40px', fontSize:"14px", color: "black", fontFamily: "Barlow"}} disabled>{this.state.value + " " + this.props.unit}</Button>

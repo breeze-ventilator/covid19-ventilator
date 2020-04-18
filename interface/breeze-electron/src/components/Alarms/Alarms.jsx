@@ -78,39 +78,39 @@ export default class Alarms extends React.Component {
 
               <ParameterInput
                 parameterName="Low Minute Ventilation Alarm"
-                startingValue={this.props.alarms.minuteVentilation.min}
+                startingValue={(this.props.alarms.minuteVentilation.min + this.props.alarms.minuteVentilation.max) / 2}
                 setParameter={this.setParameterStateValue}
                 step={2}
-                min={0}
-                max={100}
-                unit={"%"}
+                min={this.props.alarms.minuteVentilation.min}
+                max={this.props.alarms.minuteVentilation.max}
+                unit={"L"}
               /> <br></br>
               <ParameterInput
                 parameterName="High Minute Ventilation Alarm"
-                startingValue={this.props.alarms.minuteVentilation.max}
+                startingValue={(this.props.alarms.minuteVentilation.min + this.props.alarms.minuteVentilation.max)/2}
                 setParameter={this.setParameterStateValue}
                 step={2}
-                min={0}
-                max={100}
-                unit={"%"}
+                min={this.props.alarms.minuteVentilation.min}
+                max={this.props.alarms.minuteVentilation.max}
+                unit={"L"}
               /> <br></br>
               <ParameterInput
                 parameterName="Low Pressure Alarm"
-                startingValue={this.props.alarms.pressure.min}
+                startingValue={(this.props.alarms.pressure.min + this.props.alarms.pressure.max)/2}
                 setParameter={this.setParameterStateValue}
                 step={2}
-                min={0}
-                max={100}
-                unit={"%"}
+                min={this.props.alarms.pressure.min}
+                max={this.props.alarms.pressure.max}
+                unit={"cm H2O"}
               /> <br></br>
               <ParameterInput
                 parameterName="High Pressure Alarm"
-                startingValue={this.props.alarms.pressure.max}
+                startingValue={(this.props.alarms.pressure.min + this.props.alarms.pressure.max)/2}
                 setParameter={this.setParameterStateValue}
                 step={2} 
-                min={0} 
-                max={100} 
-                unit={"%"} 
+                min={this.props.alarms.pressure.min} 
+                max={this.props.alarms.pressure.max} 
+                unit={"cm H2O"} 
               /> 
               <br></br><br></br>
                 <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>

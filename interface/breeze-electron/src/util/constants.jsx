@@ -158,7 +158,7 @@ export const parameterInfo = {
   fiO2: {
     readableName: "FiO2",
     unit: "%",
-    step: 1,
+    step: 10,
     min: 21,
     max: 99,
     recMin: 80,
@@ -170,7 +170,7 @@ export const parameterInfo = {
     unit: "cm H2O",
     step: 1,
     min: 0,
-    max: 100,
+    max: 30,
     recMin: 5,
     recMax: null,
     default: 6
@@ -178,7 +178,7 @@ export const parameterInfo = {
   inspiratoryPressure: {
     readableName: "Inspiratory pressure",
     unit: "cm H2O",
-    step: 1,
+    step: 2,
     min: 0,
     max: 100,
     recMin: 20,

@@ -63,9 +63,8 @@ class Numpad extends React.Component {
                         <Button style={{backgroundColor: "#4DB1A7", color: "white", width: '60px', height:'30px', fontSize:"12px"}} onClick={this.handleDecrement}>-</Button>
                         <NumPad.Number
                             className="md-numpad"
-                            decimal={true}
+                            decimal={false}
                             negative={false}
-                            value={this.state.value}
                             onChange={this.handleChange}
                         >
                         <Button style={{width: '120px', height:'30px', fontSize:"12px", color: "black"}} disabled>{this.state.value + " " + this.props.unit}</Button>
