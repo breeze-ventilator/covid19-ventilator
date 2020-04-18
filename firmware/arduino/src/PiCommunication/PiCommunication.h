@@ -31,6 +31,7 @@ class PiCommunication {
         void flush();
         int isDataAvailable();
         void updateValuesForPiUponBreathCompleted(Data &data, State &state);
+        void updateErrors(State &state);
         
         // int isChecksumValid(String piString);
         int isTimeToSendDataToPi();
@@ -42,6 +43,7 @@ class PiCommunication {
         unsigned long _lastSentDataTime;
         uint8_t _breathCompletedToSend;
         uint8_t _tidalVolumeToSend;
+        uint8_t _apneaTimeExceededError;
 };
 
 #endif

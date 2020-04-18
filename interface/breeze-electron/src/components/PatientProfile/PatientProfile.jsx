@@ -39,7 +39,10 @@ export default class PatientProfile extends React.Component {
         this.state = {
           modalOneOpen: true
         };
-    }
+        this.finishSetup = this.finishSetup.bind(this);
+        this.quitSetup = this.quitSetup.bind(this);
+        this.restartSetup = this.restartSetup.bind
+    }  
 
       state = {
         gender: 'female',
@@ -106,6 +109,21 @@ export default class PatientProfile extends React.Component {
         this.setState(this.state);
       }
 
+      finishSetup() {
+        this.props.toggleSetupHandler();
+        this.setState({modalFourOpen: false, modalFiveOpen: false});
+      }
+
+      quitSetup() {
+        this.props.toggleSetupHandler();
+        this.setState({modalOneOpen: false})
+      }
+
+      restartSetup() {
+        this.props.toggleSetupHandler();
+        this.setState({modalOneOpen: true, modalTwoOpen: false})
+      }
+
     render() {
         const { value } = this.state;
         return (
@@ -160,13 +178,37 @@ export default class PatientProfile extends React.Component {
                         </div>
                         <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
 
-                        </Grid>
-                    </Grid>
-                </Container>
-                </Box>
-            </SimpleModal>
+                          </Grid>
+                      </Grid>
+                  </Container>
+                  </Box>
+                </SimpleModal>
 
-            {/*Pressure Tests*/}
+                {/*Flow Tests*/}
+                <SimpleModal open={this.state.modalTwoOpen} modalClose={this.modalThreeClose}>
+                  <Box component="span" m={1}>
+                  <Container>
+                      <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
+                          <Grid item xl={6} md={6} sm={12} xs={12}>
+                              <Grid container justify="space-evenly" spacing={3} direction="row">
+                              </Grid>
+                          </Grid>
+                          <div style={modalStyle}>
+                          <h2 style={{textAlign: "center"}}><u>Flow Test</u></h2>
+                          <p style={{textAlign: "center"}}>Connect the output tube to the ventilator, but not to the patient. Then press Begin Flow Test.</p><br></br><br></br><br></br><br></br>
+                          <div style={buttonStyle}>
+                          <Button variant="contained" color="primary" onClick={(e) => window.alert("Flow Test Running!")}>Begin Flow Test</Button>
+                          </div>
+                          <div style={{textAlign: "center", paddingTop: 160}}>
+                          <Button variant="contained" color="default" onClick={() => this.setState({modalTwoOpen: false, modalOneOpen: true})} > Back </Button>{'  '}
+                          <Button variant="contained" color="primary" onClick={() => this.setState({modalTwoOpen: false, modalThreeOpen: true})} >Continue ➜ </Button>
+                          </div>
+                          </div>
+                          <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}></Grid>
+                          </Grid>
+                        </Container>
+                  </Box>
+              </SimpleModal>
 
             <SimpleModal open={this.state.modalThreeOpen} modalClose={this.modalFourClose}>
                 <Box component="span" m={1}>
@@ -225,22 +267,30 @@ export default class PatientProfile extends React.Component {
                         <Button variant="contained" style = {{fontFamily: "Barlow", backgroundColor: "#4DB1A7", color: "white"}} onClick={() => this.setState({modalFourOpen: false, modalThreeOpen: true})} > Back </Button>{'  '}
                         <Button variant="contained" style = {{fontFamily: "Barlow", backgroundColor: "#FFE4C0", color: "#1f1f1f"}} onClick={() => this.setState({modalFiveOpen: true})} >Save Changes</Button>
                         </div>
-                        </div>
-                        <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}>
+                          <Numpad profileItemName="Patient Weight" setItem={this.setItemStateValue} startingValue={80} step={1} min={30} max={300} unit={"lbs"}/>
+                          <br></br>
+                          <Numpad profileItemName="Patient Height" setItem={this.setItemStateValue} startingValue={180} step={1} min={30} max={300} unit={"cm"}/>
+                          <br></br>
+                          <Numpad profileItemName="Breathing Rate" setItem={this.setItemStateValue} startingValue={60} step={1} min={30} max={300} unit={""}/>
+                          <div style={{textAlign: "center", paddingTop: 46}}>
+                          <Button variant="contained" color="default" onClick={() => this.setState({modalFourOpen: false, modalThreeOpen: true})} > Back </Button>{'  '}
+                          <Button variant="contained" color="primary" onClick={() => this.setState({modalFiveOpen: true})} >Save Changes</Button>
+                          </div>
+                          <Grid item text-align="center" xl={6} md={6} sm={12} xs={12}></Grid>
+                          </div>
+                      </Grid>
+                  </Container>
+                  </Box>
+              </SimpleModal>
 
-                        </Grid>
-                    </Grid>
-                </Container>
-                </Box>
-            </SimpleModal>
-
-            {/*Confirmation Modal*/}
-            <SimpleModal open={this.state.modalFiveOpen} modalClose={this.modalFiveClose}>
-            <Box component="span" m={1}>
-                <Container>
-                  <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
-                   <Grid item xl={6} md={6} sm={12} xs={12}>
-                    <Grid container justify="space-evenly" spacing={3} direction="row">
+              {/*Confirmation Modal*/}
+              <SimpleModal open={this.state.modalFiveOpen} modalClose={this.modalFiveClose}>
+              <Box component="span" m={1}>
+                  <Container>
+                    <Grid container alignItems="stretch"justify="center" spacing={3} direction="column">
+                    <Grid item xl={6} md={6} sm={12} xs={12}>
+                      <Grid container justify="space-evenly" spacing={3} direction="row">
+                      </Grid>
                     </Grid>
                   </Grid>
               <div style={{background: 'white', fontFamily: "Barlow", textAlign: "center", paddingLeft: 15, paddingRight: 15, borderRadius: 8}}>
@@ -250,10 +300,10 @@ export default class PatientProfile extends React.Component {
                 <Button variant="contained" style={{backgroundColor: "#FFE4C0", color: "1f1f1f", fontFamily: "Barlow"}} onClick={() => this.setState({modalFourOpen: false, modalFiveOpen: false})} >Save Changes</Button>
               </div>
               </div>
-                  </Grid>
-                </Container>
+              </Container>
               </Box>
-            </SimpleModal>
+              </SimpleModal>
+            }
             </>
         )
     };

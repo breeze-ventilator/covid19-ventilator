@@ -7,12 +7,12 @@ from serial_interface import SerialInterface
 # If no params reply with G
 
 # TIME OUT SET TO NONE SO when reading, will only read once done.
-ser = serial.Serial('/dev/cu.usbmodem14201', 9600, timeout=None)
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=None)
 sio  = socketio.Server()
 app = socketio.WSGIApp(sio)
 thread = None
 
-PORT = 5000
+PORT = 8081
 serial_interface = SerialInterface(ser, sio)
 
 @sio.on('connect')

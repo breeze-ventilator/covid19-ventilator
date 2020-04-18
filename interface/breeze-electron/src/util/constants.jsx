@@ -33,12 +33,13 @@ export const modes = ["Standby", "Pressure Control", "Pressure Support"];
 
 export const defaultAlarms = {
   minuteVentilation: {
-    min: 6,
-    max: 10
+    min: 0,
+    max: 150,
+    step: 10
   },
   pressure: {
     min: 0,
-    max: 35
+    max: 150
   }
 }
 
@@ -49,7 +50,8 @@ export const readingNames = [
   "tidalVolume",
   "errorCode",
   "abnormalPressure",
-  "abnormalFiO2"
+  "abnormalFiO2",
+  "minuteVentilation"
 ];
 
 export const readingsInfo = {
@@ -80,8 +82,8 @@ export const readingsInfo = {
   tidalVolume: {
     readableName: "Tidal Volume",
     unit: "L",
-    alarmMin: 2,
-    alarmMax: 20,
+    alarmMin: 1,
+    alarmMax: 2,
     sampleErrorValue: 0,
     default: 1
   },
@@ -108,10 +110,12 @@ export const readingsInfo = {
     alarmMax: 100,
     sampleErrorValue: 0,
     default: 1
+  },
+  minuteVentilation: {
+    readableName: "Minute Ventilation",
+    unit: "L/min",
+    default: 7
   }
-
-
-
 };
 
 // Defines parameters to send, as all params are sent to arduino
@@ -132,6 +136,7 @@ export const controlParams = [
   "fiO2",
   "peep",
   "inspiratoryPressure",
+  "sensitivity",
   "inspiratoryTime",
   "respiratoryRate",
 ];
@@ -156,8 +161,8 @@ export const parameterInfo = {
     step: 1,
     min: 21,
     max: 99,
-    recMin: 30,
-    recMax: 90,
+    recMin: 80,
+    recMax: null,
     default: 80
   }, // min and max that can be set on the interface
   peep: {
@@ -167,7 +172,7 @@ export const parameterInfo = {
     min: 0,
     max: 100,
     recMin: 5,
-    recMax: 30,
+    recMax: null,
     default: 6
   },
   inspiratoryPressure: {
@@ -176,36 +181,36 @@ export const parameterInfo = {
     step: 1,
     min: 0,
     max: 100,
-    recMin: 10,
-    recMax: 35,
+    recMin: 20,
+    recMax: null,
     default: 20
   },
   inspiratoryTime: {
-    readableName: "Inspiratory time",
+    readableName: "Inspiratory %",
     unit: "%",
-    step: 1,
+    step: 5,
     min: 0,
     max: 100,
-    recMin: 50,
-    recMax: 60,
-    default: 33
+    recMin: 30,
+    recMax: null,
+    default: 30
   },
   respiratoryRate: {
     readableName: "Respiratory rate",
     unit: "bpm",
-    step: 1,
+    step: 2,
     min: 0,
     max: 100,
     recMin: 10,
     recMax: 24,
-    default: 24
+    default: 12
   },
   sensitivity: {
     readableName: "Sensitivity",
     unit: "L/min",
     step: 1,
-    min: 0,
-    max: 100,
+    min: -10,
+    max: 0,
     recMin: "N/A",
     recMax: "N/A",
     default: -1

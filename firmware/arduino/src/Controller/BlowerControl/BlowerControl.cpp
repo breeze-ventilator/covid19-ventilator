@@ -9,7 +9,7 @@ BlowerControl::BlowerControl()
 
 void BlowerControl::begin() {
 	_blowerFanServo.begin();
-	_blowerControl.SetSampleTime(PID_TIME);
+	_blowerControl.SetSampleTime(BLOWER_PID_TIME);
   _blowerControl.SetMode(AUTOMATIC);
 	_blowerControl.SetOutputLimits(15, 90);
 }

@@ -1,64 +1,63 @@
 import React from 'react';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
+// import {NotificationContainer, NotificationManager} from 'react-notifications';
+// import 'react-notifications/lib/notifications.css';
 import { inRange } from './AlarmsHelper';
-
-const acceptableRanges = {
-  peep: {
-    min: 2,
-    max: 30
-  },
-  fiO2: {
-    min: 21,
-    max: 99 
-  },
-  tidalVolume: {
-    min: 1,
-    max: 30
-  },
-  pressure: {
-    min: 0,
-    max: 35
-  },
-  riseTime: {
-    min: 0,
-    max: 1
-  },
-  inspiratoryTime: {
-    min: 0,
-    max: 100
-  }
-}
+import { store} from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import ReactHowler from 'react-howler'
+import highSound from './sounds/highSound.mp3';
 
 export default class AlarmsHandler extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentlyAlarming: []
+      currentlyAlarming: [],
+      ringingIds: [],
+      playingSound: false
     }
 
     this.checkData = this.checkData.bind(this)
     this.alarm = this.alarm.bind(this)
   }
   
-  alarm(dataAlarm) {
-    let newAlarms = dataAlarm.filter(alarm => !this.state.currentlyAlarming.includes(alarm))
-    let allAlarms = this.state.currentlyAlarming.concat(newAlarms)
-
+  alarm(newAlarms,allAlarms) {
     if (newAlarms.length > 0) {
       this.setState({ currentlyAlarming: allAlarms});
       this.props.setCurrentlyAlarming(allAlarms);
     }
  
     for (var data in newAlarms) {
-      NotificationManager.error("Warning!", newAlarms[data])
+      this.createAlarm(newAlarms[data])
     }
   }
 
+  createAlarm(data) {
+    store.addNotification({
+      title: data + 'alarm',
+      message: " ",
+      type: "danger",
+      insert: "top",
+      container: "top-right",
+      animationIn: ["animated", "fadeIn"],
+      animationOut: ["animated", "fadeOut"],
+      width: 250
+    })
+    if(!this.state.playingSound){
+      this.state.playingSound = true;
+    }
+  }
+
+  alarmFromArduino(alarmType){
+    // FiO2 low, FiO2 high
+    if(!this.state.currentlyAlarming.includes(alarmType)){
+      this.state.currentlyAlarming.push(alarmType)
+      this.createAlarm(alarmType)
+    }
+  }
 
   checkData() {
-    let alarmRanges = Object.assign(acceptableRanges, this.props.alarms);
-    let dataPieces = Object.assign(this.props.allData, this.props.allParameters);
+    let alarmRanges = this.props.alarms;
+    let dataPieces = Object.assign(this.props.allData);
     let dataAlarm = [];
 
     for (var data in dataPieces) {
@@ -66,6 +65,8 @@ export default class AlarmsHandler extends React.Component {
       let range = alarmRanges[data]; 
 
       if (range === undefined) continue;
+
+      if(val == null) continue;
 
       if (!inRange(val, range)) {
         dataAlarm.push(data)
@@ -76,16 +77,29 @@ export default class AlarmsHandler extends React.Component {
       }
     } 
 
-    this.alarm(dataAlarm);
+    let newAlarms = dataAlarm.filter(alarm => !this.state.currentlyAlarming.includes(alarm))
+    let allAlarms = this.state.currentlyAlarming.concat(newAlarms)
+    
+    if(allAlarms.length == 0){
+      this.state.playingSound = false;
+    }
+    this.alarm(newAlarms,allAlarms);
   }
 
   componentDidUpdate(prevProps) {
+    if(this.props.receivedAlarmFromArduino){
+      this.alarmFromArduino(this.props.arduinoAlarmType)
+    }
     this.checkData();
   }
 
   render() {
     return (
-      <NotificationContainer />
+      <ReactHowler
+        src={highSound}
+        playing={this.state.playingSound}
+        volume={1.0}
+      />
     )
   }
 }

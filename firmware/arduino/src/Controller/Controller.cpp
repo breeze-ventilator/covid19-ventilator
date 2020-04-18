@@ -6,9 +6,9 @@ Controller::Controller()
     : oxygenControl(),
     alarm(ALARM_PIN),
     // airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
-    blowerControl()
+    blowerControl(),
+    batteryChargingControl(BATTERY_SENSE_PIN, BATTERY_CONTROL_PIN);
 {
-  _lastOxygenControlTime = 0;
   _lastAirControlTime = 0;
 }
 
@@ -32,6 +32,7 @@ void Controller::inhalationControl(Data &data, Parameters &parameters, State &st
   // oxygenControl.control(100);
   // oxygenControl.control(random(100));
   // oxygenControl(data, parameters, state);
+  // oxygenControl.control();
 
   //  airControl(parameters);
   float setPressure = state.desiredPressure; //TODO: Check units with below
@@ -44,6 +45,7 @@ void Controller::exhalationControl(Data &data, Parameters &parameters) {
   // TODO: uncomment below
   // float setPressure = (float) parameters.currentPEEP;
   float actualPressure = data.getMainPressureAverageForPID();
+  // Serial.println(actualPressure);
   float setPressure = 0;
   blowerControl.control(setPressure, actualPressure);
   // blowerControl.beQuiet();
@@ -53,10 +55,10 @@ void Controller::exhalationControl(Data &data, Parameters &parameters) {
 //   airIntakeServo.setOpening(100 - parameters.currentFiO2);
 // }
 
-// int Controller::isTimeToControlOxygen() {
-//   return isTime(_lastOxygenControlTime, TIME_BETWEEN_OXYGEN_CONTROLS);
-// }
-
 // int Controller::isTimeToControlAir() {
 //   return isTime(_lastAirControlTime, TIME_BETWEEN_AIR_CONTROLS);
 // }
+
+int Controller::isTimeToControlBatteryCharging() {
+  return isTime(_lastbatteryControlTime, TIME_BETWEEN_BATTERY_CONTROLS);
+}

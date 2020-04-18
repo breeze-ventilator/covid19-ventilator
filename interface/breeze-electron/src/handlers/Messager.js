@@ -1,4 +1,4 @@
-import socketIOClient from "socket.io-client";
+import io from "socket.io-client";
 import {readingNames, readingsInfo} from '../util/constants';
 
 export default class Messager {
@@ -6,7 +6,7 @@ export default class Messager {
 		this.useSampleListener = useSampleListener;
 		this.socket = null;
 		if(!useSampleListener){
-			this.socket = socketIOClient('http://localhost:' + port);
+			this.socket = io('http://localhost:' + port, {transports: ['websocket', 'flashsocket', 'polling']});
 		}
     }
 

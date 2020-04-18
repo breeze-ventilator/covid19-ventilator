@@ -15,22 +15,14 @@
 #define EXHALATION_STAGE 4
 #define OFF_STAGE 5
 
-// Defines size of global storage arrays
 #define NUM_OF_PRESSURE_MEASUREMENTS 10 
 #define NUM_OF_FLOW_MEASUREMENTS 10 
 
 #define SEND_DATA_TIMEOUT 10
 
-// https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/
-
 // Input pin numbers
-#define PRESSURE_PIN 6
-#define BATTERY_PIN 7
-#define FAN_SENSOR_PIN 40
-#define STEP_MOTOR_ZERO_PIN A5
+#define MAIN_PRESSURE_PIN 6
 
-// Output pin 
-#define BLOWER_PIN 9 //is pwm (servo)
 #define ALARM_PIN 25
 #define AIR_CONTROL_PIN 8 //is pwm (servo)
 
@@ -56,14 +48,17 @@
 #define BLOW_FAN_INITIAL_POSITION 15  // 0 = min, 180 = max, 90 = midpoint (TODO: this is currently arbitrary)
 #define AIR_INTAKE_INITIAL_POSITION 110 // 0 = min, 180 = max, 90 = midpoint (TODO: arbitraty)
 
-#define FLOW_READING_FREQUENCY 50 // 500 Hz
+#define FLOW_READING_FREQUENCY 500 // 500 Hz
 #define MAIN_PRESSURE_READING_FREQUENCY 500// 500 TODO: change
-#define OXYGEN_PRESSURE_READING_FREQUENCY 100
+#define OXYGEN_READING_FREQUENCY 5
 #define BATTERY_VOLTAGE_READING_FREQUENCY 5
 
 // Pi Comms
 #define BAUD_RATE 9600
 #define PI_PING_INTERVAL 100
 #define TIME_BETWEEN_DATA_SENDING_TO_PI 1000
+
+// Pressure support
+#define MIN_INHALATION_TIME_PRESSURE_SUPPORT 400
 
 #endif

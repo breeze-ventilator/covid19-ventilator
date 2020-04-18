@@ -12,7 +12,7 @@
 Data data;
 Sensors sensors(FLOW_READING_FREQUENCY,
                  MAIN_PRESSURE_READING_FREQUENCY,
-                 OXYGEN_PRESSURE_READING_FREQUENCY,
+                 OXYGEN_READING_FREQUENCY,
                  BATTERY_VOLTAGE_READING_FREQUENCY);
 Controller controller;
 PiCommunication piCommunication(BAUD_RATE, TIME_BETWEEN_DATA_SENDING_TO_PI);
@@ -34,13 +34,16 @@ void setup() {
   // if (servosConnectedErrorCode != NO_ERROR) {
   //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
   // }
-  // parameters.currentMode = OFF_MODE;
+  // parameters.currentMode = PRESSURE_SUPPORT_MODE;
   // parameters.currentFiO2 = 10;
   // parameters.currentInspiratoryTime = 5000;
   // parameters.currentMaxExpiratoryTime = 5000;
   // parameters.currentInspiratoryPressure = 150; // mm H2O
   // parameters.currentPEEP = 50; // mm H2O
   // parameters.currentRiseTime = 100; // ms
+  // parameters.currentSensitivity = -1; // L
+  // parameters.currentApneaTime = 6000; // ms
+  // parameters.currentFlowCyclingOffPercentage = 0.20; // 20%
 }
 
 void loop() {
@@ -59,7 +62,7 @@ void loop() {
     }
   }
 
-  state.updateState(parameters);
+  state.updateState(parameters, data);
 
   sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
 
@@ -76,9 +79,14 @@ void loop() {
     controller.exhalationControl(data, parameters);
   }
 
-  if (state.breathCompleted) {
+  if (state.breathCompleted && state.mode != OFF_MODE) {
     piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.
     data.resetTidalVolume();
+  }
+
+  if (state.apneaTimeExceededError != NO_ERROR ) {
+    piCommunication.updateErrors(state);
+    state.apneaTimeExceededError = NO_ERROR;
   }
   
   if (piCommunication.isTimeToSendDataToPi()) {

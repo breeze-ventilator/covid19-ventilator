@@ -21,7 +21,9 @@ export default class App extends React.Component {
       currentlyAlarming: [],
       setup: true,
       data: {},
-      parameters: {}
+      parameters: {},
+      tidalVolumeTimes: [],
+      tidalVolumes: []
     }
     
     // Set default data values on state.
@@ -36,24 +38,29 @@ export default class App extends React.Component {
 
     // Set default alarms on state.
     state.alarms = defaultAlarms;
-    
+    state.receivedAlarmFromArduino = false;
+    state.arduinoAlarmType = null;
+
     this.state = state;
 
     // Note: Second parameter is whether to use sample listener.
-    this.messager = new Messager(5000, true); 
+    this.messager = new Messager(8081, false); 
 
     this.messager.dataListener(this.updateData.bind(this));
 
     this.setParameters = this.setParameters.bind(this);
     this.setAlarms = this.setAlarms.bind(this);
     this.setCurrentlyAlarming = this.setCurrentlyAlarming.bind(this);
-    this.doneSetup = this.doneSetup.bind(this);
+    this.toggleSetup = this.toggleSetup.bind(this);
     this.sendToArduino = this.sendToArduino.bind(this);
   }
 
   setParameters(parameters){
-    this.state.parameters = parameters;
+    for(const paramName in this.state.parameters){
+      this.state.parameters[paramName] = parameters[paramName];
+    }
     this.setState(this.state);
+    this.sendToArduino();
   }
 
   sendToArduino(){
@@ -61,13 +68,14 @@ export default class App extends React.Component {
 
     // Get mode and all other parameters.
     toSend.mode = modes.indexOf(this.state.parameters.mode);
-    for(param in allParams){
+    for(let param of allParams){
       toSend[param] = this.state.parameters[param];
     }
 
     // Post processing.
     toSend.apneaTime *= 10;
     toSend.riseTime *= 10;
+    toSend.sensitivity *= -1;
 
     // Alarms.
     toSend.highInspiratoryPressureAlarm = this.state.alarms.pressure.max;
@@ -89,21 +97,73 @@ export default class App extends React.Component {
   }
 
   updateData(data) {
-    console.log("[App.jsx]: Data Received.")
-    console.log(data)
+    // console.log("[App.jsx]: Data Received.")
+    // console.log(data)
 
-    for(let i = 1; i < data.length; i++){
+    // Set first two parameters.
+    this.state.data[readingNames[1]] = data[1];
+    this.state.data[readingNames[2]] = data[2];
+
+    // Only set tidal volume if breathCompleted. TODO: 
+    let isBreathCompleted = data[2];
+    if(isBreathCompleted == 1){
+      this.state.data[readingNames[3]] = data[3];
+      
+      // Calculate tidalVolumes
+      this.state.tidalVolumeTimes.push((new Date()).getTime());
+      this.state.tidalVolumes.push(data[3]);
+      
+      let timeDifference =  this.state.tidalVolumeTimes[this.state.tidalVolumeTimes.length-1] - this.state.tidalVolumeTimes[0]
+      const MILLISECONDS_IN_A_MINUTE = 60000;
+
+      while(timeDifference >= MILLISECONDS_IN_A_MINUTE){
+        this.state.tidalVolumeTimes.shift() // pops the first element
+        this.state.tidalVolumes.shift();
+        timeDifference = this.state.tidalVolumeTimes[this.state.tidalVolumeTimes.length-1] - this.state.tidalVolumeTimes[0]
+      }
+
+      // Calculate respiratory rate
+      this.state.data.trueRespiratoryRate = this.state.tidalVolumeTimes.length;
+      
+      // Calculate minute ventilation
+      if (this.state.tidalVolumes.length != 0) {
+        let sumOfTidalVolumes = this.state.tidalVolumes.reduce((a,b) => a + b, 0)
+        this.state.data.minuteVentilation = sumOfTidalVolumes;
+      }
+    }
+
+
+    for(let i = 4; i < data.length; i++){
       this.state.data[readingNames[i]] = data[i];
     }
 
+    /*
+      SETS  
+          state.receivedAlarmFromArduino;
+          state.arduinoAlarmType;
+          0 none, 1, low fio2, 2 high fio2
+          depending on data from arduino
+    */
+    if(data[4] == 1){
+      this.state.receivedAlarmFromArduino = true;
+      this.state.arduinoAlarmType = "Low FiO2";
+    }
+    else if(data[4] == 2){
+      this.state.receivedAlarmFromArduino = true;
+      this.state.arduinoAlarmType = "High FiO2";   
+    }
+    else{
+      this.state.receivedAlarmFromArduino = false;
+      this.state.arduinoAlarmType = null;
+    }
 
     if (this.isMount) {
       this.setState(this.state);
     }
   }
 
-  doneSetup(){
-    this.state.setup = false;
+  toggleSetup(){
+    this.state.setup = !this.state.setup;
     this.setState(this.state);
   }
 
@@ -116,11 +176,13 @@ export default class App extends React.Component {
             alarms={this.state.alarms}
             allData={this.state.data}
             allParameters={this.state.parameters}
+            arduinoAlarmType={this.state.arduinoAlarmType}
+            receivedAlarmFromArduino={this.state.receivedAlarmFromArduino}
             setCurrentlyAlarming={this.setCurrentlyAlarming}
         />
         <Switch>
         <Route path="/diagnostics">
-          <Vitals sendToArduino={this.sendToArduino} allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
+          <Vitals toggleSetupHandler={this.toggleSetup} setup={this.state.setup} setParameters={this.setParameters} allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
         </Route>
         <Route path="/alarms">
           <Alarms

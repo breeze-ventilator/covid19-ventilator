@@ -5,14 +5,14 @@
 class List {
     public:
         List(int capacity);
-        void push(unsigned int value);
+        void push(float value);
         float getMean();
         int size;
     
     private:
         int _capacity;
         int _currentIdx;
-        unsigned int *_data;
+        float *_data;
 };
 
 #endif
