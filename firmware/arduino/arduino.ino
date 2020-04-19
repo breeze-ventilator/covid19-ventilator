@@ -9,23 +9,23 @@
 #include "src/PiCommunication/PiCommunication.h"
 #include "src/Defs/errors.h"
 
-// Data data;
-// Sensors sensors(FLOW_READING_FREQUENCY,
-//                  MAIN_PRESSURE_READING_FREQUENCY,
-//                  OXYGEN_READING_FREQUENCY,
-//                  BATTERY_VOLTAGE_READING_FREQUENCY);
+Data data;
+Sensors sensors(FLOW_READING_FREQUENCY,
+                 MAIN_PRESSURE_READING_FREQUENCY,
+                 OXYGEN_READING_FREQUENCY,
+                 BATTERY_VOLTAGE_READING_FREQUENCY);
 Controller controller;
 // PiCommunication piCommunication(BAUD_RATE, TIME_BETWEEN_DATA_SENDING_TO_PI);
-// State state;
+State state;
 // Parameters parameters;
 
 void setup() {
-  // Serial.begin(9600);
-  // delay(500); // let serial settle
+  Serial.begin(9600);
+  delay(500); // let serial settle
   
   // controller.stopArduinoAlarm();
   controller.init();
-  // sensors.init();
+  sensors.init();
   // int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
@@ -64,7 +64,7 @@ void loop() {
 
   // state.updateState(parameters, data);
 
-  // sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
+  sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
 
   // // only update parameters when breath is over
   // if (parameters.newParamsHaveArrived && state.breathCompleted) {
