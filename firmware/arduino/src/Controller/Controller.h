@@ -21,11 +21,13 @@
 class Controller {
     public:
         Controller();
-        int init();
+        void init();
         void stopArduinoAlarm();
         void startArduinoAlarm();
         void inhalationControl(Data &data, Parameters &parameters, State &state);
         void exhalationControl(Data &data, Parameters &parameters);
+        void blowFan(int blowerPower);
+        void manageBattery();
     private:
         // int isTimeToControlOxygen();
         // int isTimeToControlAir();

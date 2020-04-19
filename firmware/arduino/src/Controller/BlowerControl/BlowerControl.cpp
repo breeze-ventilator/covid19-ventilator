@@ -31,6 +31,10 @@ void BlowerControl::control(float setPressure, float actualPressure){
 	}
 }
 
+void BlowerControl::blowFan(int blowerPower) {
+	_blowerFanServo.writeBlowerPower(blowerPower);
+}
+
 void BlowerControl::beQuiet() {
 	_blowerFanServo.writeBlowerPower(15);
 	delay(1000);

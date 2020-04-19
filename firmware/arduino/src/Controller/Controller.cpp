@@ -7,16 +7,16 @@ Controller::Controller()
     alarm(ALARM_PIN),
     // airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
     blowerControl(),
-    batteryChargingControl(BATTERY_SENSE_PIN, BATTERY_CONTROL_PIN);
+    batteryChargingControl(BATTERY_SENSE_PIN, BATTERY_CONTROL_PIN)
 {
   _lastAirControlTime = 0;
 }
 
-int Controller::init() {
+void Controller::init() {
   blowerControl.begin();
-  oxygenControl.begin();
+  // oxygenControl.begin();
+  batteryChargingControl.init();
   // airIntakeServo.begin();
-  return 0;
 }
 
 void Controller::stopArduinoAlarm() {
@@ -51,6 +51,14 @@ void Controller::exhalationControl(Data &data, Parameters &parameters) {
   // blowerControl.beQuiet();
 }
 
+void Controller::blowFan(int blowerPower) {
+  blowerControl.blowFan(blowerPower);
+}
+
+void Controller::manageBattery() {
+  batteryChargingControl.control(1); // 1 amp
+}
+
 // void Controller::airControl(Parameters parameters) {
 //   airIntakeServo.setOpening(100 - parameters.currentFiO2);
 // }
@@ -59,6 +67,6 @@ void Controller::exhalationControl(Data &data, Parameters &parameters) {
 //   return isTime(_lastAirControlTime, TIME_BETWEEN_AIR_CONTROLS);
 // }
 
-int Controller::isTimeToControlBatteryCharging() {
-  return isTime(_lastbatteryControlTime, TIME_BETWEEN_BATTERY_CONTROLS);
-}
+// int Controller::isTimeToControlBatteryCharging() {
+//   return isTime(_lastbatteryControlTime, TIME_BETWEEN_BATTERY_CONTROLS);
+// }

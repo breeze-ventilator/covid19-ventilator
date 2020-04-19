@@ -16,6 +16,7 @@ class BlowerControl {
         BlowerControl();
         void control(float setPressure, float actualPressure);
         void begin();
+        void blowFan(int blowerPower);
         void beQuiet();
     private:
         PID _blowerControl;
