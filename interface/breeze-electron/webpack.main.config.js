@@ -6,8 +6,8 @@ module.exports = {
   entry: './src/main.js',
   // Put your normal webpack config below here
   externals : {
-    uws: "uws",
-    "python-shell": "require('python-shell')"
+    uws: "uws"
+    // "python-shell": "require('python-shell')"
   },
   module: {
     rules: require('./webpack.rules'),

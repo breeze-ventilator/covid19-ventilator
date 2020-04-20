@@ -1,4 +1,5 @@
-const { ipcRenderer } = require('electron')
+const electron = window.require('electron')
+const ipcRenderer = electron.ipcRenderer;
 
 export default class Messager {
     constructor(){
