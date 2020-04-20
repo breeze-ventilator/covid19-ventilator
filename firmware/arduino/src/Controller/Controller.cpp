@@ -3,8 +3,8 @@
 #include "Controller.h"
 
 Controller::Controller()
-    : oxygenControl(),
-    alarm(ALARM_PIN),
+    : // oxygenControl(),
+    // alarm(ALARM_PIN),
     // airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
     blowerControl(),
     batteryChargingControl(BATTERY_SENSE_PIN, BATTERY_CONTROL_PIN)
@@ -20,12 +20,14 @@ void Controller::init() {
 }
 
 void Controller::stopArduinoAlarm() {
-  alarm.stopAlarm();
+  // alarm.stopAlarm();
+  return;
 }
 
 void Controller::startArduinoAlarm() {
   // runs forever and blocks everything after it
-  alarm.startAlarm();
+  // alarm.startAlarm();
+  return;
 }
 
 void Controller::inhalationControl(Data &data, Parameters &parameters, State &state) {
@@ -35,7 +37,7 @@ void Controller::inhalationControl(Data &data, Parameters &parameters, State &st
   // oxygenControl.control();
 
   //  airControl(parameters);
-  float setPressure = state.desiredPressure; //TODO: Check units with below
+  float setPressure = (float) state.desiredPressure; // TODO: Check units with below
   float actualPressure = data.getMainPressureAverageForPID();
   blowerControl.control(setPressure, actualPressure);
   // blowerControl.beQuiet();
@@ -43,10 +45,10 @@ void Controller::inhalationControl(Data &data, Parameters &parameters, State &st
 
 void Controller::exhalationControl(Data &data, Parameters &parameters) {
   // TODO: uncomment below
-  // float setPressure = (float) parameters.currentPEEP;
+  float setPressure = (float) parameters.currentPEEP;
   float actualPressure = data.getMainPressureAverageForPID();
   // Serial.println(actualPressure);
-  float setPressure = 0;
+  // float setPressure = 0;
   blowerControl.control(setPressure, actualPressure);
   // blowerControl.beQuiet();
 }

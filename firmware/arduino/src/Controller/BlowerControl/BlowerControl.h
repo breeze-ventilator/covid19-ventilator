@@ -1,9 +1,9 @@
 #ifndef BLOWER_CONTROL_H
 #define BLOWER_CONTROL_H
 
-#define BLOWER_KI 2
-#define BLOWER_KP 1
-#define BLOWER_KD 1
+#define BLOWER_KI 0
+#define BLOWER_KP 5
+#define BLOWER_KD 0
 #define BLOWER_FAN_SERVO_PIN 9
 #define BLOWER_PID_TIME 100
 

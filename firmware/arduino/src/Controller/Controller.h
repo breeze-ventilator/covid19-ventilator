@@ -33,8 +33,8 @@ class Controller {
         // int isTimeToControlAir();
         // int isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings);
 
-        OxygenControl oxygenControl;
-        Alarm alarm;
+        // OxygenControl oxygenControl;
+        // Alarm alarm;
         // AirIntakeServo airIntakeServo;
         BlowerControl blowerControl;
         unsigned long _lastAirControlTime;
