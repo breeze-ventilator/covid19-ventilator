@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 
 const path = require('path');
-import {PythonShell} from 'python-shell';
+// import {PythonShell} from 'python-shell';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -24,19 +24,19 @@ const createWindow = () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 
-  var pyshell = new PythonShell('src/modules/arduino_messager.py');
+  // var pyshell = new PythonShell('src/modules/arduino_messager.py', {pythonPath: 'python3'});
 
-  // pyshell.send({hello: 5, goodbye: 6});
+  // // pyshell.send({hello: 5, goodbye: 6});
 
-  pyshell.on('message', function(message) {
-    console.log(message, new Date().getTime());
-    // let jsonMsg = JSON.parse(message);
-    // mainWindow.webContents.send('newData', jsonMsg)
-  })
+  // pyshell.on('message', function(message) {
+  //   console.log(message, new Date().getTime());
+  //   let jsonMsg = JSON.parse(message);
+  //   mainWindow.webContents.send('newData', jsonMsg)
+  // })
 
-  ipcMain.on('newParams', (event, arg) => {
-    pyshell.send(JSON.stringify(arg));
-  })
+  // ipcMain.on('newParams', (event, arg) => {
+  //   pyshell.send(JSON.stringify(arg));
+  // })
 };
 
 // This method will be called when Electron has finished
