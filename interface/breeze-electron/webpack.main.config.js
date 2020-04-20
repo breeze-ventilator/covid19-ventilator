@@ -6,7 +6,8 @@ module.exports = {
   entry: './src/main.js',
   // Put your normal webpack config below here
   externals : {
-    uws: "uws"
+    uws: "uws",
+    "child_process": "child_process"
     // "python-shell": "require('python-shell')"
   },
   module: {
