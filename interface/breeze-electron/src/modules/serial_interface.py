@@ -30,7 +30,7 @@ class SerialInterface:
       "highInspiratoryPressureAlarm",
       "lowExpiratoryPressureAlarm"
       ]
-    self.port = '/dev/ttyACM0'
+    self.port = '/dev/cu.usbmodem14101'
     self.serial = None
     self.start_serial()
     self.debug_mode = True
@@ -66,7 +66,9 @@ class SerialInterface:
     self.need_to_send_params = True
     self.debug('parameters set')
   
-  def set_new_parameters(self, params):
+  def set_new_parameters(self, line):
+    params = json.loads(line)
+    self.debug(params)
     params_byte_array = ord("P").to_bytes(1, byteorder="little", signed=False)
     
     checksum = (0).to_bytes(1, byteorder="little", signed=False)
