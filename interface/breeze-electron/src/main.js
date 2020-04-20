@@ -24,22 +24,18 @@ const createWindow = () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 
-  // var pyshell = new PythonShell('src/modules/arduino_messager.py', {pythonPath: 'python3'});
-  PythonShell.runString('x=1+1;print(x)', null, function (err) {
-    if (err) throw err;
-    console.log('finished');
-  });
+  var pyshell = new PythonShell('src/modules/arduino_messager.py', {pythonPath: 'python3'});
   // // pyshell.send({hello: 5, goodbye: 6});
 
-  // pyshell.on('message', function(message) {
-  //   console.log(message, new Date().getTime());
-  //   let jsonMsg = JSON.parse(message);
-  //   mainWindow.webContents.send('newData', jsonMsg)
-  // })
+  pyshell.on('message', function(message) {
+    console.log(message, new Date().getTime());
+    let jsonMsg = JSON.parse(message);
+    mainWindow.webContents.send('newData', jsonMsg)
+  })
 
-  // ipcMain.on('newParams', (event, arg) => {
-  //   pyshell.send(JSON.stringify(arg));
-  // })
+  ipcMain.on('newParams', (event, arg) => {
+    pyshell.send(JSON.stringify(arg));
+  })
 };
 
 // This method will be called when Electron has finished
