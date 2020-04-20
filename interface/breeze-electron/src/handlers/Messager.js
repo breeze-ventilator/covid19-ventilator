@@ -13,7 +13,9 @@ export default class Messager {
 
 	dataListener(cb){
 		ipcRenderer.on('newData', (event, arg) => {
-			// cb(arg)
+			if (arg.type == "data") {
+				cb(arg.data);
+			}
 			console.log(arg)
 		})
 	}

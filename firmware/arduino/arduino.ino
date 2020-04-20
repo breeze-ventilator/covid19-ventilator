@@ -23,10 +23,10 @@ void setup() {
   Serial.begin(9600);
   delay(500); // let serial settle
   
-  controller.stopArduinoAlarm();
-  int servosConnectedErrorCode = controller.init();
-  sensors.init();
-  // int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
+  // controller.stopArduinoAlarm();
+  // int servosConnectedErrorCode = controller.init();
+  // sensors.init();
+  int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
   // }
@@ -64,7 +64,7 @@ void loop() {
 
   state.updateState(parameters, data);
 
-  sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
+  // sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
 
   // only update parameters when breath is over
   if (parameters.newParamsHaveArrived && state.breathCompleted) {
@@ -72,12 +72,12 @@ void loop() {
   }
 
   //breathing cycle
-  if (state.breathingStage == INHALATION_STAGE) {
-    controller.inhalationControl(data, parameters, state);
-  }
-  else if (state.breathingStage == EXHALATION_STAGE) {
-    controller.exhalationControl(data, parameters);
-  }
+  // if (state.breathingStage == INHALATION_STAGE) {
+  //   controller.inhalationControl(data, parameters, state);
+  // }
+  // else if (state.breathingStage == EXHALATION_STAGE) {
+  //   controller.exhalationControl(data, parameters);
+  // }
 
   if (state.breathCompleted && state.mode != OFF_MODE) {
     piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.

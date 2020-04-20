@@ -26,7 +26,7 @@ const createWindow = () => {
 
   var pyshell = new PythonShell('src/modules/arduino_messager.py', {mode: 'json'});
 
-  pyshell.send({hello: 5, goodbye: 6});
+  // pyshell.send({hello: 5, goodbye: 6});
 
   pyshell.on('message', function(message) {
     console.log(message, new Date().getTime());
