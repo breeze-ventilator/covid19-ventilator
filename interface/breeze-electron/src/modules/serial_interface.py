@@ -30,7 +30,7 @@ class SerialInterface:
       "highInspiratoryPressureAlarm",
       "lowExpiratoryPressureAlarm"
       ]
-    self.port = '/dev/ttyACM0' #'/dev/cu.usbmodem14101'
+    self.port = '/dev/cu.usbmodem14101' # '/dev/ttyACM0'
     self.serial = None
     self.start_serial()
     self.debug_mode = True

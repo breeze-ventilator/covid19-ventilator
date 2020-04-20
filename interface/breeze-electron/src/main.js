@@ -24,17 +24,18 @@ const createWindow = () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 
-  var pyshell = new PythonShell('src/modules/arduino_messager.py', {mode: 'json'});
+  var pyshell = new PythonShell('src/modules/arduino_messager.py');
 
   // pyshell.send({hello: 5, goodbye: 6});
 
   pyshell.on('message', function(message) {
     console.log(message, new Date().getTime());
-    mainWindow.webContents.send('newData', message)
+    // let jsonMsg = JSON.parse(message);
+    // mainWindow.webContents.send('newData', jsonMsg)
   })
 
   ipcMain.on('newParams', (event, arg) => {
-    pyshell.send(arg);
+    pyshell.send(JSON.stringify(arg));
   })
 };
 
