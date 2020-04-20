@@ -25,7 +25,10 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 
   // var pyshell = new PythonShell('src/modules/arduino_messager.py', {pythonPath: 'python3'});
-
+  PythonShell.runString('x=1+1;print(x)', null, function (err) {
+    if (err) throw err;
+    console.log('finished');
+  });
   // // pyshell.send({hello: 5, goodbye: 6});
 
   // pyshell.on('message', function(message) {
