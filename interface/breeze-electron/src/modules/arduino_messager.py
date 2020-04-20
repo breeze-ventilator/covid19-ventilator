@@ -5,7 +5,7 @@ immediately, but do something else if idle."""
 
 from serial_interface import SerialInterface
 
-s_interface = SerialInterface()
+# s_interface = SerialInterface()
 
 def main():
 	while True:
