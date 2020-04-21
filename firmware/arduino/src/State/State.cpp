@@ -80,8 +80,9 @@ void State::setDesiredInhalationPressure(Parameters &parameters) {
   unsigned long elapsedTime = millis() - startTime;
   float slope = ((float) parameters.currentInspiratoryPressure) / ((float) parameters.currentRiseTime);
 
-  uint32_t desiredInspiratoryPressure = min(slope*elapsedTime, parameters.currentInspiratoryPressure);
-  desiredPressure = desiredInspiratoryPressure + parameters.currentPEEP;
+  // uint32_t desiredInspiratoryPressure = min(slope*elapsedTime, parameters.currentInspiratoryPressure);
+  // desiredPressure = desiredInspiratoryPressure + parameters.currentPEEP;
+  desiredPressure = parameters.currentInspiratoryPressure + parameters.currentPEEP;
   // Serial.println(desiredPressure);
 }
 
