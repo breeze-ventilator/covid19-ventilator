@@ -21,7 +21,7 @@
 #define SEND_DATA_TIMEOUT 10
 
 // Input pin numbers
-#define MAIN_PRESSURE_PIN 6
+#define MAIN_PRESSURE_PIN 0
 
 #define ALARM_PIN 25
 #define AIR_CONTROL_PIN 8 //is pwm (servo)

@@ -47,6 +47,19 @@ void Parameters::updateCurrentParameters() {
   currentHighInspiratoryPressureAlarm = _newHighInspiratoryPressureAlarm;
   currentLowExpiratoryPressureAlarm = _newLowExpiratoryPressureAlarm;
 
+  Serial.println(currentMode);
+  Serial.println(currentFiO2);
+  Serial.println(currentInspiratoryTime);
+  Serial.println(currentMaxExpiratoryTime);
+  Serial.println(currentInspiratoryPressure);
+  Serial.println(currentPEEP);
+  Serial.println(currentSensitivity);
+  Serial.println(currentApneaTime);
+  Serial.println(currentFlowCyclingOffPercentage);
+  Serial.println(currentRiseTime);
+  Serial.println(currentHighInspiratoryPressureAlarm);
+  Serial.println(currentLowExpiratoryPressureAlarm);
+
   newParamsHaveArrived = false;
 	return;
 }

@@ -39,7 +39,8 @@ void Controller::inhalationControl(Data &data, Parameters &parameters, State &st
   //  airControl(parameters);
   float setPressure = (float) state.desiredPressure; // TODO: Check units with below
   float actualPressure = data.getMainPressureAverageForPID();
-  blowerControl.control(setPressure, actualPressure);
+  // blowerControl.control(setPressure, actualPressure);
+  blowerControl.blowFan(30);
   // blowerControl.beQuiet();
 }
 
@@ -49,7 +50,8 @@ void Controller::exhalationControl(Data &data, Parameters &parameters) {
   float actualPressure = data.getMainPressureAverageForPID();
   // Serial.println(actualPressure);
   // float setPressure = 0;
-  blowerControl.control(setPressure, actualPressure);
+  blowerControl.blowFan(90);
+  // blowerControl.control(setPressure, actualPressure);
   // blowerControl.beQuiet();
 }
 
