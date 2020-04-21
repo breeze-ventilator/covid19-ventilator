@@ -13,7 +13,7 @@
 
 #define BLOWER_KP 0.32
 #define BLOWER_KI 2.00
-#define BLOWER_KD 0.04
+#define BLOWER_KD 0.03
 
 
 #define BLOWER_FAN_SERVO_PIN 9
