@@ -47,10 +47,10 @@ export default class Alarms extends React.Component {
   setParameterStateValue(parameterName, value) {
     let alarms = this.state.alarms;
     if (parameterName == "Low Minute Ventilation Alarm") {
-      alarms["minuteVentilation"].min = value
+      alarms["Minute ventilation"].min = value
     }
     else if (parameterName == "High Minute Ventilation Alarm") {
-      alarms["minuteVentilation"].max = value
+      alarms["Minute ventilation"].max = value
     }
     else if (parameterName == "Low Pressure Alarm") {
       alarms["pressure"].min = value
@@ -77,20 +77,20 @@ export default class Alarms extends React.Component {
 
               <ParameterInput
                 parameterName="Low Minute Ventilation Alarm"
-                startingValue={(this.props.alarms.minuteVentilation.min + this.props.alarms.minuteVentilation.max) / 2}
+                startingValue={(this.props.alarms["Minute ventilation"].min + this.props.alarms["Minute ventilation"].max) / 2}
                 setParameter={this.setParameterStateValue}
                 step={2}
-                min={this.props.alarms.minuteVentilation.min}
-                max={this.props.alarms.minuteVentilation.max}
+                min={this.props.alarms["Minute ventilation"].min}
+                max={this.props.alarms["Minute ventilation"].max}
                 unit={"L"}
               /> <br></br>
               <ParameterInput
                 parameterName="High Minute Ventilation Alarm"
-                startingValue={(this.props.alarms.minuteVentilation.min + this.props.alarms.minuteVentilation.max)/2}
+                startingValue={(this.props.alarms["Minute ventilation"].min + this.props.alarms["Minute ventilation"].max)/2}
                 setParameter={this.setParameterStateValue}
                 step={2}
-                min={this.props.alarms.minuteVentilation.min}
-                max={this.props.alarms.minuteVentilation.max}
+                min={this.props.alarms["Minute ventilation"].min}
+                max={this.props.alarms["Minute ventilation"].max}
                 unit={"L"}
               /> <br></br>
               <ParameterInput

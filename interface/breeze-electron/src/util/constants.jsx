@@ -32,7 +32,7 @@ export const errorCode = ["NO ERROR"]
 export const modes = ["Standby", "Pressure Control", "Pressure Support"];
 
 export const defaultAlarms = {
-  minuteVentilation: {
+  "Minute ventilation": {
     min: 0,
     max: 150,
     step: 10
@@ -51,7 +51,7 @@ export const readingNames = [
   "errorCode",
   "abnormalPressure",
   "abnormalFiO2",
-  "minuteVentilation"
+  "Minute ventilation"
 ];
 
 export const readingsInfo = {
@@ -111,7 +111,7 @@ export const readingsInfo = {
     sampleErrorValue: 0,
     default: 1
   },
-  minuteVentilation: {
+  "Minute ventilation": {
     readableName: "Minute Ventilation",
     unit: "L/min",
     default: 7

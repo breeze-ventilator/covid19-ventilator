@@ -128,7 +128,7 @@ export default class App extends React.Component {
       // Calculate minute ventilation
       if (this.state.tidalVolumes.length != 0) {
         let sumOfTidalVolumes = this.state.tidalVolumes.reduce((a,b) => a + b, 0)
-        this.state.data.minuteVentilation = sumOfTidalVolumes;
+        this.state.data["Minute ventilation"] = sumOfTidalVolumes;
       }
     }
 
