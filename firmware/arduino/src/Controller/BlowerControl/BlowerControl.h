@@ -2,7 +2,7 @@
 #define BLOWER_CONTROL_H
 
 #define BLOWER_KI 0
-#define BLOWER_KP 3
+#define BLOWER_KP 0.5
 #define BLOWER_KD 0
 #define BLOWER_FAN_SERVO_PIN 9
 #define BLOWER_PID_TIME 100
