@@ -21,5 +21,6 @@ void BlowerFanServo::turnOff() {
 
 void BlowerFanServo::writeBlowerPower(double blowerPower) {
   int bPower = (int) blowerPower;
+  Serial.println(bPower);
   _blowerFan.write(bPower);
 }
