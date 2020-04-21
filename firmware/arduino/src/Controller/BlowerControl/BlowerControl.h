@@ -11,8 +11,8 @@
 // #define BLOWER_KP 0.3
 // #define BLOWER_KD 0.05
 
-#define BLOWER_KP 0.8
-#define BLOWER_KI 1.00
+#define BLOWER_KP 2.00
+#define BLOWER_KI 0.50
 #define BLOWER_KD 0.00 // 0.03
 
 
