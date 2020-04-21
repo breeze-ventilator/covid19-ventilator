@@ -47,7 +47,6 @@ void Parameters::updateCurrentParameters() {
   currentHighInspiratoryPressureAlarm = _newHighInspiratoryPressureAlarm;
   currentLowExpiratoryPressureAlarm = _newLowExpiratoryPressureAlarm;
 
-  // Serial.write(88);
   newParamsHaveArrived = false;
 	return;
 }

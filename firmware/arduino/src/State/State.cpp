@@ -79,7 +79,6 @@ void State::resetMaxFlow() {
 void State::setDesiredInhalationPressure(Parameters &parameters) {
   unsigned long elapsedTime = millis() - startTime;
   float slope = ((float) parameters.currentInspiratoryPressure) / ((float) parameters.currentRiseTime);
-  Serial.println(startTime);
 
   uint32_t desiredInspiratoryPressure = min(slope*elapsedTime, parameters.currentInspiratoryPressure);
   desiredPressure = desiredInspiratoryPressure + parameters.currentPEEP;

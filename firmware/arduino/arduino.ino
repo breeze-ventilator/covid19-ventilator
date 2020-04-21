@@ -72,7 +72,7 @@ void loop() {
   }
 
   //breathing cycle
-  // controller.manageBattery();
+  controller.manageBattery();
   // controller.blowFan(90);
   if (state.breathingStage == INHALATION_STAGE) {
     // Serial.println(1);
