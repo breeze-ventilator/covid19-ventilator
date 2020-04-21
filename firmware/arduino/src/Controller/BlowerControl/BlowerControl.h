@@ -4,7 +4,7 @@
 // Ku = 0.75, Tu = 0.23 sec
 #define BLOWER_KI 1.304
 #define BLOWER_KP 0.15 
-#define BLOWER_KD 0.0115
+#define BLOWER_KD 0.03
 #define BLOWER_FAN_SERVO_PIN 9
 #define BLOWER_PID_TIME 100
 
