@@ -24,8 +24,8 @@ void BlowerControl::control(float setPressure, float actualPressure){
 	// }
 	// delay(1);
 
-	_pressureSetPoint = setPressure;
-	_actualPressure = actualPressure;
+	_pressureSetPoint = setPressure + 30;
+	_actualPressure = actualPressure + 30;
   if (_blowerControl.Compute()) {
 		_blowerFanServo.writeBlowerPower(_blowerPower);
 	}
