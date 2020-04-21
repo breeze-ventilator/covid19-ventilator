@@ -16,7 +16,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.isMount = false;
-    
+
     let state = {
       currentlyAlarming: [],
       setup: true,
@@ -25,7 +25,7 @@ export default class App extends React.Component {
       tidalVolumeTimes: [],
       tidalVolumes: []
     }
-    
+
     // Set default data values on state.
     for(const name of readingNames){
       state.data[name] = readingsInfo[name].default;
@@ -44,7 +44,7 @@ export default class App extends React.Component {
     this.state = state;
 
     // Note: Second parameter is whether to use sample listener.
-    this.messager = new Messager(8081, true); 
+    this.messager = new Messager();
 
     this.messager.dataListener(this.updateData.bind(this));
 
@@ -104,15 +104,15 @@ export default class App extends React.Component {
     this.state.data[readingNames[1]] = data[1];
     this.state.data[readingNames[2]] = data[2];
 
-    // Only set tidal volume if breathCompleted. TODO: 
+    // Only set tidal volume if breathCompleted. TODO:
     let isBreathCompleted = data[2];
     if(isBreathCompleted == 1){
       this.state.data[readingNames[3]] = data[3];
-      
+
       // Calculate tidalVolumes
       this.state.tidalVolumeTimes.push((new Date()).getTime());
       this.state.tidalVolumes.push(data[3]);
-      
+
       let timeDifference =  this.state.tidalVolumeTimes[this.state.tidalVolumeTimes.length-1] - this.state.tidalVolumeTimes[0]
       const MILLISECONDS_IN_A_MINUTE = 60000;
 
@@ -124,7 +124,7 @@ export default class App extends React.Component {
 
       // Calculate respiratory rate
       this.state.data.trueRespiratoryRate = this.state.tidalVolumeTimes.length;
-      
+
       // Calculate minute ventilation
       if (this.state.tidalVolumes.length != 0) {
         let sumOfTidalVolumes = this.state.tidalVolumes.reduce((a,b) => a + b, 0)
@@ -138,7 +138,7 @@ export default class App extends React.Component {
     }
 
     /*
-      SETS  
+      SETS
           state.receivedAlarmFromArduino;
           state.arduinoAlarmType;
           0 none, 1, low fio2, 2 high fio2
@@ -150,7 +150,7 @@ export default class App extends React.Component {
     }
     else if(data[4] == 2){
       this.state.receivedAlarmFromArduino = true;
-      this.state.arduinoAlarmType = "High FiO2";   
+      this.state.arduinoAlarmType = "High FiO2";
     }
     else{
       this.state.receivedAlarmFromArduino = false;
