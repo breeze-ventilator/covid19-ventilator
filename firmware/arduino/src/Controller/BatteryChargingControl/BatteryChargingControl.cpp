@@ -26,6 +26,6 @@ void BatteryChargingControl::control(float setCurrent){ // 1
 	}
 
 	_gateVolt = constrain(_gateVolt, 0, 255);// makesure we dont go crazy
-	Serial.println(_gateVolt);
+	Serial.println(current);
 	analogWrite(_controlPin, _gateVolt);
 }
