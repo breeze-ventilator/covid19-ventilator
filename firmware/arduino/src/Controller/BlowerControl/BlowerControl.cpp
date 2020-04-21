@@ -26,8 +26,8 @@ void BlowerControl::control(float setPressure, float actualPressure){
 
 	_pressureSetPoint = setPressure;
 	_actualPressure = actualPressure;
-	Serial.println(_actualPressure);
   if (_blowerControl.Compute()) {
+	  	Serial.println(_blowerPower);
 		_blowerFanServo.writeBlowerPower(_blowerPower);
 	}
 }
