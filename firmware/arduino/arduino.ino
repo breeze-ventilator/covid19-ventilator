@@ -36,10 +36,10 @@ void setup() {
   // }
   parameters.currentMode = PRESSURE_CONTROL_MODE;
   parameters.currentFiO2 = 10;
-  parameters.currentInspiratoryTime = 30000;
-  parameters.currentMaxExpiratoryTime = 1000;
-  parameters.currentInspiratoryPressure = 200; // mm H2O
-  parameters.currentPEEP = 0; // mm H2O
+  parameters.currentInspiratoryTime = 2000;
+  parameters.currentMaxExpiratoryTime = 4000;
+  parameters.currentInspiratoryPressure = 250; // mm H2O
+  parameters.currentPEEP = 50; // mm H2O
   parameters.currentRiseTime = 100; // ms
   parameters.currentSensitivity = -1; // L
   parameters.currentApneaTime = 6000; // ms
