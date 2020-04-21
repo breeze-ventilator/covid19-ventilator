@@ -3,7 +3,6 @@ const ipcRenderer = electron.ipcRenderer;
 
 export default class Messager {
     constructor(){
-			
     }
 
 	sendParametersToBackend(params){

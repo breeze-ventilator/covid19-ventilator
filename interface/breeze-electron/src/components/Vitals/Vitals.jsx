@@ -73,11 +73,42 @@ export default class Vitals extends React.Component {
   }
 
   increment = (fieldName) => {
-    this.setState(prevState => ({[fieldName]: safeValue(fieldName, prevState[fieldName] + 1)}))
+    let currentValue = this.state[fieldName];
+    let defaultValue = parameterInfo[fieldName].default;
+
+    // step size should be different at boundary conditions
+    let step;
+    let distanceToClosestValidPoint = (defaultValue - currentValue) % parameterInfo[fieldName].step;
+    if (distanceToClosestValidPoint == 0) {
+      step = parameterInfo[fieldName].step;
+    } else if (currentValue == parameterInfo[fieldName].min) {
+      step = distanceToClosestValidPoint;
+    } else {
+      step = 0;
+    }
+    let newValue = currentValue + step;
+    this.setState(({[fieldName]: safeValue(fieldName, newValue)})) // we technically don't need safeValue anymore
   }
 
   decrement = (fieldName) => {
-    this.setState(prevState => ({[fieldName]: safeValue(fieldName, prevState[fieldName] - 1)}))
+    let currentValue = this.state[fieldName];
+    let defaultValue = parameterInfo[fieldName].default;
+
+    // step size should be different at boundary conditions
+    // (e.g. if we increment from the min of 21 and step is 10, we should go up to 30 not 31)
+    let step;
+    let distanceToClosestValidPoint = (currentValue - defaultValue) % parameterInfo[fieldName].step;
+    if (distanceToClosestValidPoint == 0) {
+      step = parameterInfo[fieldName].step;
+    } else if (currentValue == parameterInfo[fieldName].max) {
+      step = distanceToClosestValidPoint;
+    } else {
+      step = 0;
+    }
+    let newValue = currentValue - step
+    this.setState(({[fieldName]: safeValue(fieldName, newValue)}))
+
+    // this.setState(prevState => ({[fieldName]: safeValue(fieldName, prevState[fieldName] - parameterInfo[fieldName].step)}))
   }
   render() {
     const {isEditing, mode} = this.state

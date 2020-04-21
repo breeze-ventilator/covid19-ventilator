@@ -33,7 +33,7 @@ export default class AlarmsHandler extends React.Component {
 
   createAlarm(data) {
     store.addNotification({
-      title: data + 'alarm',
+      title: data + ' alarm',
       message: " ",
       type: "danger",
       insert: "top",
