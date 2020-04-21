@@ -56,7 +56,7 @@ void Parameters::updateCurrentParameters() {
   Serial.write(currentPEEP);
   Serial.write(currentSensitivity);
   Serial.write(currentApneaTime);
-  Serial.write(currentFlowCyclingOffPercentage);
+  // Serial.write(currentFlowCyclingOffPercentage); //
   Serial.write(currentRiseTime);
   Serial.write(currentHighInspiratoryPressureAlarm);
   Serial.write(currentLowExpiratoryPressureAlarm);
