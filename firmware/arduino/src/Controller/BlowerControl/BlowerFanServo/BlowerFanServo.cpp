@@ -20,5 +20,6 @@ void BlowerFanServo::turnOff() {
 }
 
 void BlowerFanServo::writeBlowerPower(double blowerPower) {
-  _blowerFan.write(blowerPower);
+  int bPower = (int) blowerPower;
+  _blowerFan.write(bPower);
 }
