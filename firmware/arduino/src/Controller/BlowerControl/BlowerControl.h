@@ -7,9 +7,14 @@
 // #define BLOWER_KD 0.03
 
 // Ku = 0.9, Tu = 0.14
-#define BLOWER_KI 4.28
-#define BLOWER_KP 0.3
-#define BLOWER_KD 0.05
+// #define BLOWER_KI 4.28
+// #define BLOWER_KP 0.3
+// #define BLOWER_KD 0.05
+
+#define BLOWER_KP 0.18
+#define BLOWER_KI 2.57
+#define BLOWER_KD 0.01
+
 
 #define BLOWER_FAN_SERVO_PIN 9
 #define BLOWER_PID_TIME 100
