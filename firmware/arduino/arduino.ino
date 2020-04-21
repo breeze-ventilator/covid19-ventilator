@@ -63,7 +63,7 @@ void loop() {
   //   }
   // }
 
-  state.updateState(parameters, data);
+  // state.updateState(parameters, data);
 
   sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
 
@@ -74,23 +74,23 @@ void loop() {
 
   //breathing cycle
   controller.manageBattery();
-  // controller.blowFan(90);
-  if (state.breathingStage == INHALATION_STAGE) {
-    // Serial.println(1);
-    controller.inhalationControl(data, parameters, state);
-  }
-  else if (state.breathingStage == EXHALATION_STAGE) {
-    // Serial.println(0);
-    controller.exhalationControl(data, parameters);
-  }
-  else {
-    Serial.println(-1);
-  }
+  controller.blowFan(90);
+  // if (state.breathingStage == INHALATION_STAGE) {
+  //   // Serial.println(1);
+  //   controller.inhalationControl(data, parameters, state);
+  // }
+  // else if (state.breathingStage == EXHALATION_STAGE) {
+  //   // Serial.println(0);
+  //   controller.exhalationControl(data, parameters);
+  // }
+  // else {
+  //   Serial.println(-1);
+  // }
 
-  if (state.breathCompleted && state.mode != OFF_MODE) {
-    piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.
-    data.resetTidalVolume();
-  }
+  // if (state.breathCompleted && state.mode != OFF_MODE) {
+  //   piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.
+  //   data.resetTidalVolume();
+  // }
 
   // if (state.apneaTimeExceededError != NO_ERROR) {
   //   piCommunication.updateErrors(state);

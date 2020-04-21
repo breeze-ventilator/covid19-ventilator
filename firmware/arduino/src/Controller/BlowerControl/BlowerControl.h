@@ -17,7 +17,7 @@
 
 
 #define BLOWER_FAN_SERVO_PIN 9
-#define BLOWER_PID_TIME 100
+#define BLOWER_PID_TIME 20
 
 #include "Arduino.h"
 #include <PID_v1.h>
