@@ -24,7 +24,7 @@ void setup() {
   delay(500); // let serial settle
   
   // controller.stopArduinoAlarm();
-  // controller.init(); // TODO: put back
+  controller.init(); // TODO: put back
   sensors.init();
   int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
