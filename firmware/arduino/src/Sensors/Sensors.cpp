@@ -5,9 +5,9 @@ Sensors::Sensors(int flowReadingFrequency,
                  int oxygenReadingFrequency,
                  int batteryVoltageReadingFrequency)
     : flowSensor(FLOW_IC2_ADDRESS, FLOW_OFFSET, FLOW_SCALE),
-    mainPressureSensor(MAIN_PRESSURE_PIN),
-    oxygenSensor(OXYGEN_SENSOR_PIN),
-    batteryVoltageSensor(BATTERY_VOLTAGE_PIN)
+    mainPressureSensor(MAIN_PRESSURE_PIN)
+    // oxygenSensor(OXYGEN_SENSOR_PIN),
+    // batteryVoltageSensor(BATTERY_VOLTAGE_PIN)
   {
   _timeBetweenFlowReadings = 1.0/flowReadingFrequency * SECONDS_TO_MILLISECONDS;
   _timeBetweenMainPressureReadings = 1.0/mainPressureReadingFrequency * SECONDS_TO_MILLISECONDS;
@@ -42,30 +42,30 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data, State &state) 
     float delta_time = (float)(millis() - _lastFlowReadTime);
     delta_time /= MINUTES_TO_MILLISECONDS;
     data.saveFlowReading(flowValue);
+
     if (state.breathingStage == INHALATION_STAGE) {
       data.updateTidalVolume(flowValue, delta_time);
     }
     // Serial.println(flowValue);
     _lastFlowReadTime = millis();
   }
-  if (isTimeToReadOxygen()) {
-    float oxygenReading = oxygenSensor.read();
-    data.saveOxygenReading(oxygenReading);
-    _lastOxygenReadTime = millis();
-  }
+  // if (isTimeToReadOxygen()) {
+  //   float oxygenReading = oxygenSensor.read();
+  //   data.saveOxygenReading(oxygenReading);
+  //   _lastOxygenReadTime = millis();
+  // }
   if (isTimeToReadMainPressure()) {
     float pressureValue = mainPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
-    if (pressureValue < 1000) {
-      data.saveMainPressureReading(pressureValue);
-      _lastMainPressureReadTime = millis();
-    }
+    // Serial.println(pressureValue);
+    data.saveMainPressureReading(pressureValue);
+    _lastMainPressureReadTime = millis();
   }
-  if (isTimeToReadBatteryPercentage()) {
-    unsigned int batteryPercentage = batteryVoltageSensor.readPercentage();
-    data.saveBatteryPercentage(batteryPercentage);
-    // Serial.println(batteryPercentage);
-    _lastBatteryPercentageReadTime = millis();
-  }
+  // if (isTimeToReadBatteryPercentage()) {
+  //   unsigned int batteryPercentage = batteryVoltageSensor.readPercentage();
+  //   data.saveBatteryPercentage(batteryPercentage);
+  //   // Serial.println(batteryPercentage);
+  //   _lastBatteryPercentageReadTime = millis();
+  // }
 }
 
 int Sensors::isTimeToReadFlow() {

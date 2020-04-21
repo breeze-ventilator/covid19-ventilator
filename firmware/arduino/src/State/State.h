@@ -7,6 +7,8 @@
 #include "../Data/Data.h"
 #include "../Defs/errors.h"
 
+#include <math.h>
+
 class State {
     public:
         State();
