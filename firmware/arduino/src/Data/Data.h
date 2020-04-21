@@ -10,11 +10,11 @@ class Data {
         Data();
         void saveFlowReading(float flowValue);
         void updateTidalVolume(float flowValue, float delta_time);
-        void saveMainPressureReading(unsigned int pressureValue);
+        void saveMainPressureReading(float pressureValue);
         float getMainPressureAverageForPID();
         float getFlowRecentHistoryAverage();
         void saveBatteryPercentage(unsigned int newBatteryPercentage);
-        void saveOxygenPressureReading(unsigned int pressureValue);
+        void saveOxygenReading(float oxygenReading);
         void resetTidalVolume();
 
         float peakFlowValueInCurrentBreath; // needed for switching to exhalation
@@ -24,6 +24,7 @@ class Data {
         uint32_t numFlowErros;
         uint32_t numPressureErrors;
         uint8_t batteryPercentage;
+        float oxygenReading;
 
     private:
         List _pressureValues;

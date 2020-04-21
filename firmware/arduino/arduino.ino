@@ -12,7 +12,7 @@
 Data data;
 Sensors sensors(FLOW_READING_FREQUENCY,
                  MAIN_PRESSURE_READING_FREQUENCY,
-                 OXYGEN_PRESSURE_READING_FREQUENCY,
+                 OXYGEN_READING_FREQUENCY,
                  BATTERY_VOLTAGE_READING_FREQUENCY);
 Controller controller;
 PiCommunication piCommunication(BAUD_RATE, TIME_BETWEEN_DATA_SENDING_TO_PI);
@@ -24,8 +24,8 @@ void setup() {
   delay(500); // let serial settle
   
   // controller.stopArduinoAlarm();
-  // int servosConnectedErrorCode = controller.init();
-  // sensors.init();
+  controller.init(); // TODO: put back
+  sensors.init();
   int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
@@ -34,11 +34,11 @@ void setup() {
   // if (servosConnectedErrorCode != NO_ERROR) {
   //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
   // }
-  // parameters.currentMode = PRESSURE_SUPPORT_MODE;
+  // parameters.currentMode = PRESSURE_CONTROL_MODE;
   // parameters.currentFiO2 = 10;
-  // parameters.currentInspiratoryTime = 5000;
-  // parameters.currentMaxExpiratoryTime = 5000;
-  // parameters.currentInspiratoryPressure = 150; // mm H2O
+  // parameters.currentInspiratoryTime = 1000;
+  // parameters.currentMaxExpiratoryTime = 1000;
+  // parameters.currentInspiratoryPressure = 200; // mm H2O
   // parameters.currentPEEP = 50; // mm H2O
   // parameters.currentRiseTime = 100; // ms
   // parameters.currentSensitivity = -1; // L
@@ -64,7 +64,7 @@ void loop() {
 
   state.updateState(parameters, data);
 
-  // sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
+  sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
 
   // only update parameters when breath is over
   if (parameters.newParamsHaveArrived && state.breathCompleted) {
@@ -72,19 +72,26 @@ void loop() {
   }
 
   //breathing cycle
-  // if (state.breathingStage == INHALATION_STAGE) {
-  //   controller.inhalationControl(data, parameters, state);
-  // }
-  // else if (state.breathingStage == EXHALATION_STAGE) {
-  //   controller.exhalationControl(data, parameters);
-  // }
+  controller.manageBattery();
+  // controller.blowFan(90);
+  if (state.breathingStage == INHALATION_STAGE) {
+    // Serial.println(1);
+    controller.inhalationControl(data, parameters, state);
+  }
+  else if (state.breathingStage == EXHALATION_STAGE) {
+    // Serial.println(0);
+    controller.exhalationControl(data, parameters);
+  }
+  else {
+    // Serial.println(-1);
+  }
 
   if (state.breathCompleted && state.mode != OFF_MODE) {
     piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.
     data.resetTidalVolume();
   }
 
-  if (state.apneaTimeExceededError != NO_ERROR ) {
+  if (state.apneaTimeExceededError != NO_ERROR) {
     piCommunication.updateErrors(state);
     state.apneaTimeExceededError = NO_ERROR;
   }

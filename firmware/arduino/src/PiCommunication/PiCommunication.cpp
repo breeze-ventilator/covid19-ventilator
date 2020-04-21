@@ -106,9 +106,9 @@ void PiCommunication::sendDataToPi(Data &data, State &state) {
 
   */
   uint8_t checkSum = 0;
-  uint8_t batteryPercentage = 1;//state.breathingStage;// 10;// parameters.currentMode; //(uint8_t) data.batteryPercentage;
-  uint8_t breathCompleted = 1;//_breathCompletedToSend;
-  uint8_t tidalVolume = 3;//_tidalVolumeToSend;
+  uint8_t batteryPercentage = 100; //state.breathingStage;// 10;// parameters.currentMode; //(uint8_t) data.batteryPercentage;
+  uint8_t breathCompleted = _breathCompletedToSend;
+  uint8_t tidalVolume = _tidalVolumeToSend;
 
   /*
   Possible Errors:

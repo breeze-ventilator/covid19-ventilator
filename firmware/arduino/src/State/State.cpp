@@ -7,6 +7,7 @@ State::State() {
   breathingStage = OFF_STAGE;
   maxFlowDuringInhalation = 0;
   apneaTimeExceededError = NO_ERROR;
+  desiredPressure = 0;
 }
 
 void State::updateState(Parameters &parameters, Data &data) {
@@ -77,17 +78,16 @@ void State::resetMaxFlow() {
 
 void State::setDesiredInhalationPressure(Parameters &parameters) {
   unsigned long elapsedTime = millis() - startTime;
-  float slope = (float) parameters.currentInspiratoryPressure / parameters.currentRiseTime;
-  if (desiredPressure < parameters.currentPEEP + parameters.currentInspiratoryPressure) {
-    desiredPressure = parameters.currentPEEP + slope*elapsedTime;
-  }
-  else {
-    desiredPressure = parameters.currentPEEP + parameters.currentInspiratoryPressure;
-  }
+  float slope = ((float) parameters.currentInspiratoryPressure) / ((float) parameters.currentRiseTime);
+
+  uint32_t desiredInspiratoryPressure = min(slope*elapsedTime, parameters.currentInspiratoryPressure);
+  desiredPressure = desiredInspiratoryPressure + parameters.currentPEEP;
+  // Serial.println(desiredPressure);
 }
 
 void State::endInhalationAndStartExhalation() {
   breathingStage = EXHALATION_STAGE;
+  desiredPressure = 0;
   startTime = millis();
 }
 
@@ -132,9 +132,9 @@ int State::isFinishedExpiratoryStageInPressureControl(Parameters &parameters, Da
   }
   
   // flow triggering
-  if (patientTriggeredBreath(parameters, data)) {
-    return 1;
-  }
+  // if (patientTriggeredBreath(parameters, data)) {
+  //   return 1;
+  // }
   return 0;
 }
 

@@ -3,14 +3,13 @@
   Get a pressure reading.
 */
 
-MainPressureSensor::MainPressureSensor() {
-
+MainPressureSensor::MainPressureSensor(int pin) {
+  _pin = pin;
 }
 
-unsigned int MainPressureSensor::read() {
+float MainPressureSensor::read() {
   // mm H2O
-  float mV = map(analogRead(PRESSURE_PIN), 0, 1023, 0, 5000);
-  float mA = mV / PRESSURE_SENSE_RESISTOR;
-  return floor((mA - 4) * 25.4); // numbers set by datasheet
+  float pressure = (5.0* ((analogRead(_pin)/1024.0) - 0.1) / 0.8) * 703;
+  return pressure;
 }
 

@@ -9,9 +9,9 @@ BlowerControl::BlowerControl()
 
 void BlowerControl::begin() {
 	_blowerFanServo.begin();
-	_blowerControl.SetSampleTime(PID_TIME);
+	_blowerControl.SetSampleTime(BLOWER_PID_TIME);
   _blowerControl.SetMode(AUTOMATIC);
-	_blowerControl.SetOutputLimits(15, 90);
+	_blowerControl.SetOutputLimits(15, 120);
 }
 
 void BlowerControl::control(float setPressure, float actualPressure){
@@ -29,6 +29,10 @@ void BlowerControl::control(float setPressure, float actualPressure){
   if (_blowerControl.Compute()) {
 		_blowerFanServo.writeBlowerPower(_blowerPower);
 	}
+}
+
+void BlowerControl::blowFan(int blowerPower) {
+	_blowerFanServo.writeBlowerPower(blowerPower);
 }
 
 void BlowerControl::beQuiet() {
