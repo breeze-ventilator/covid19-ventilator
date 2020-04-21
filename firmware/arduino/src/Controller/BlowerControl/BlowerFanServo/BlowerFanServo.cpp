@@ -20,7 +20,7 @@ void BlowerFanServo::turnOff() {
 }
 
 void BlowerFanServo::writeBlowerPower(double blowerPower) {
-  if (blowerPower <= 90) {
+  if (blowerPower <= 150) {
     _blowerFan.write(blowerPower);
   }
 }
