@@ -84,7 +84,7 @@ void loop() {
     controller.exhalationControl(data, parameters);
   }
   else {
-    // Serial.println(-1);
+    Serial.println(-1);
   }
 
   if (state.breathCompleted && state.mode != OFF_MODE) {
