@@ -26,7 +26,7 @@ void setup() {
   // controller.stopArduinoAlarm();
   controller.init(); // TODO: put back
   sensors.init();
-  // int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
+  int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
   // }
@@ -34,43 +34,43 @@ void setup() {
   // if (servosConnectedErrorCode != NO_ERROR) {
   //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
   // }
-  parameters.currentMode = PRESSURE_CONTROL_MODE;
-  parameters.currentFiO2 = 10;
-  parameters.currentInspiratoryTime = 4000;
-  parameters.currentMaxExpiratoryTime = 4000;
-  parameters.currentInspiratoryPressure = 250; // mm H2O
-  parameters.currentPEEP = 50; // mm H2O
-  parameters.currentRiseTime = 100; // ms
-  parameters.currentSensitivity = -1; // L
-  parameters.currentApneaTime = 6000; // ms
-  parameters.currentFlowCyclingOffPercentage = 0.20; // 20%
-  delay(5);
+  // parameters.currentMode = PRESSURE_CONTROL_MODE;
+  // parameters.currentFiO2 = 10;
+  // parameters.currentInspiratoryTime = 4000;
+  // parameters.currentMaxExpiratoryTime = 4000;
+  // parameters.currentInspiratoryPressure = 250; // mm H2O
+  // parameters.currentPEEP = 50; // mm H2O
+  // parameters.currentRiseTime = 100; // ms
+  // parameters.currentSensitivity = -1; // L
+  // parameters.currentApneaTime = 6000; // ms
+  // parameters.currentFlowCyclingOffPercentage = 0.20; // 20%
+  // delay(5);
 }
 
 void loop() {
   // Check for Params
-  // if (piCommunication.isDataAvailable()) {
-  //   char messageType = piCommunication.getMessageType();
-  //   if (messageType == 'P')
-  //   {
-  //     piCommunication.getParametersFromPi();
-  //     parameters.getNewParameters(piCommunication.parametersBuffer);
-  //   }
-  //   else if (messageType == 'G')
-  //   {
-  //     // Pi is awake, should alarm if it hasn't been awake for a while
-  //     piCommunication.flush();
-  //   }
-  // }
+  if (piCommunication.isDataAvailable()) {
+    char messageType = piCommunication.getMessageType();
+    if (messageType == 'P')
+    {
+      piCommunication.getParametersFromPi();
+      parameters.getNewParameters(piCommunication.parametersBuffer);
+    }
+    else if (messageType == 'G')
+    {
+      // Pi is awake, should alarm if it hasn't been awake for a while
+      piCommunication.flush();
+    }
+  }
 
   state.updateState(parameters, data);
 
   sensors.readSensorsIfAvailableAndSaveSensorData(data, state);
 
   // only update parameters when breath is over
-  // if (parameters.newParamsHaveArrived && state.breathCompleted) {
-  //   parameters.updateCurrentParameters();
-  // }
+  if (parameters.newParamsHaveArrived && state.breathCompleted) {
+    parameters.updateCurrentParameters();
+  }
 
   //breathing cycle
   controller.manageBattery();
@@ -84,20 +84,20 @@ void loop() {
     controller.exhalationControl(data, parameters);
   }
   else {
-    Serial.println(-1);
+    // Serial.println(-1);
   }
 
-  // if (state.breathCompleted && state.mode != OFF_MODE) {
-  //   piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.
-  //   data.resetTidalVolume();
-  // }
+  if (state.breathCompleted && state.mode != OFF_MODE) {
+    piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.
+    data.resetTidalVolume();
+  }
 
-  // if (state.apneaTimeExceededError != NO_ERROR) {
-  //   piCommunication.updateErrors(state);
-  //   state.apneaTimeExceededError = NO_ERROR;
-  // }
+  if (state.apneaTimeExceededError != NO_ERROR) {
+    piCommunication.updateErrors(state);
+    state.apneaTimeExceededError = NO_ERROR;
+  }
   
-  // if (piCommunication.isTimeToSendDataToPi()) {
-  //   piCommunication.sendDataToPi(data, state);
-  // }
+  if (piCommunication.isTimeToSendDataToPi()) {
+    piCommunication.sendDataToPi(data, state);
+  }
 }
