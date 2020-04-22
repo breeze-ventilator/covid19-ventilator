@@ -9,6 +9,8 @@ BatteryChargingControl::BatteryChargingControl(int sensePin, int controlPin){
 void BatteryChargingControl::init(){
 	pinMode(_controlPin, OUTPUT);
 	_gateVolt = 0;
+	delay(1);
+	control(2);
 }
 
 void BatteryChargingControl::control(float setCurrent){ // 1

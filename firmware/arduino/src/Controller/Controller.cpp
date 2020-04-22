@@ -13,9 +13,9 @@ Controller::Controller()
 }
 
 void Controller::init() {
-  blowerControl.begin();
   // oxygenControl.begin();
   batteryChargingControl.init();
+  blowerControl.begin();
   // airIntakeServo.begin();
 }
 

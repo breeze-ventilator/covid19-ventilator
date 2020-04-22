@@ -55,6 +55,8 @@ void State::updateState(Parameters &parameters, Data &data) {
         apneaTimeExceededError = ERROR;
       }
     }
+  } else if (parameters.currentMode == OFF_MODE) {
+    breathingStage = OFF_STAGE;
   }
 }
 
