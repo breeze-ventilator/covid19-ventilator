@@ -9,3 +9,10 @@ The Arduino firmware has several components:
 * `State` modifies the state of the system based on the parameters, the time, and the sensor data. The state cycles between inhalation and exhalation.
 * `Data` saves a short history of the data from the sensors and computes a moving average for the pressure and flow readings.
 * `Parameters` contains all the parameters given by the Raspberry Pi. New parameters from the Raspberry Pi get updated upon the start of a new breath.
+
+## Interface
+To run the interface for the first time:
+1. `cd interface/breeze-electron`
+2. `npm install`, which might take a few minutes.
+3. `npm run start`
+A popup error will appear at the start if it hasn't detected the Arduino plugged in or if it can't find `arduino_messager.py`. You can close the error and the rest of the app will remain functional.
