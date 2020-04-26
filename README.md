@@ -17,4 +17,6 @@ To run the interface for the first time:
 3. `npm install`, which might take a few minutes.
 4. `npm run start`
 
+You will also need to have `node` installed. See link [here](https://nodejs.org/en/).
+
 A popup error will appear at the start if it hasn't detected the Arduino plugged in or if it can't find `arduino_messager.py`. You can close the error and the rest of the app will remain functional.
