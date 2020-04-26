@@ -12,8 +12,9 @@ The Arduino firmware has several components:
 
 ## Interface
 To run the interface for the first time:
-1. `cd interface/breeze-electron`
-2. `npm install`, which might take a few minutes.
-3. `npm run start`
+1. `git clone https://github.com/Open-Breeze/covid19-ventilator.git`
+2. `cd covid19-ventilator/interface/breeze-electron`
+3. `npm install`, which might take a few minutes.
+4. `npm run start`
 
 A popup error will appear at the start if it hasn't detected the Arduino plugged in or if it can't find `arduino_messager.py`. You can close the error and the rest of the app will remain functional.
