@@ -36,6 +36,7 @@ class Controller {
         // OxygenControl oxygenControl;
         // Alarm alarm;
         // AirIntakeServo airIntakeServo;
+        void controlPressure(float desiredPressure, Data &data);
         BlowerControl blowerControl;
         unsigned long _lastAirControlTime;
         BatteryChargingControl batteryChargingControl;
