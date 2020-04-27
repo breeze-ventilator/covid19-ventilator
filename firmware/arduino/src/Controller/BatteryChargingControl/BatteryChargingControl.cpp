@@ -10,7 +10,7 @@ void BatteryChargingControl::init(){
 	pinMode(_controlPin, OUTPUT);
 	_gateVolt = 0;
 	delay(1);
-	control(2);
+	control(1);
 }
 
 void BatteryChargingControl::control(float setCurrent){ // 1
@@ -28,6 +28,6 @@ void BatteryChargingControl::control(float setCurrent){ // 1
 	}
 
 	_gateVolt = constrain(_gateVolt, 0, 255);// makesure we dont go crazy
-	Serial.println(current);
+	// Serial.println(current);
 	analogWrite(_controlPin, _gateVolt);
 }
