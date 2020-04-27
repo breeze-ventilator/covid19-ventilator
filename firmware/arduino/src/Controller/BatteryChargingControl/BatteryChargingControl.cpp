@@ -19,15 +19,14 @@ void BatteryChargingControl::control(float setCurrent){ // 1
 
 	if (current > setCurrent)
 	{ // too much current up gate voltage
-
-			_gateVolt++;
+		_gateVolt++;
 	}
 	else if (current < setCurrent)
 	{ // too little current lets let more in
-			_gateVolt--;
+		_gateVolt--;
 	}
 
 	_gateVolt = constrain(_gateVolt, 0, 255);// makesure we dont go crazy
-	Serial.println(current);
+	// Serial.println(current);
 	analogWrite(_controlPin, _gateVolt);
 }
