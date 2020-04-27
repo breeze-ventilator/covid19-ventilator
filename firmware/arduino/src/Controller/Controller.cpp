@@ -58,7 +58,7 @@ void Controller::blowFan(int blowerPower) {
 }
 
 void Controller::manageBattery() {
-  batteryChargingControl.control(5); // 1 amp
+  batteryChargingControl.control(1); // 1 amp
 }
 
 // void Controller::airControl(Parameters parameters) {
