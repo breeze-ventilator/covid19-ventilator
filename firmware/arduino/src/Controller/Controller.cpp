@@ -3,7 +3,7 @@
 #include "Controller.h"
 
 Controller::Controller()
-    : // oxygenControl(),
+    : oxygenControl(),
     // alarm(ALARM_PIN),
     // airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
     blowerControl(),
