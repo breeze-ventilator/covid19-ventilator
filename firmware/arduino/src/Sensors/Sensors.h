@@ -37,6 +37,7 @@ class Sensors {
         int isTimeToReadMainPressure();
         int isTimeToReadOxygen();
         int isTimeToReadBatteryPercentage();
+        int isTimeToPrint();
         
         unsigned int _timeBetweenFlowReadings;
         unsigned int _timeBetweenMainPressureReadings;
