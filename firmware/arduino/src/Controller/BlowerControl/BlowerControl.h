@@ -1,20 +1,10 @@
 #ifndef BLOWER_CONTROL_H
 #define BLOWER_CONTROL_H
 
-// Ku = 0.75, Tu = 0.23 sec
-// #define BLOWER_KI 1.304
-// #define BLOWER_KP 0.15 
-// #define BLOWER_KD 0.03
-
-// Ku = 0.9, Tu = 0.14
-#define BLOWER_KI 4.28
-#define BLOWER_KP 0.3
-#define BLOWER_KD 0.05
-
-// #define BLOWER_KP 2.00
-// #define BLOWER_KI 0.50
-// #define BLOWER_KD 0.00 // 0.03
-
+// Tuned using the Ziegler–Nichols method
+#define BLOWER_KI 48.0
+#define BLOWER_KP 6.6
+#define BLOWER_KD 0.3
 
 #define BLOWER_FAN_SERVO_PIN 9
 #define BLOWER_PID_TIME 20
