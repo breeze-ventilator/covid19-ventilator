@@ -18,7 +18,7 @@ void Parameters::getNewParameters(uint8_t parametersBuffer[PARAMETER_BYTE_LENGTH
   uint8_t inspiratoryTimePercentage = parametersBuffer[7];
   _newFlowCyclingOffPercentage = parametersBuffer[8] / 100.0;
   _newApneaTime = (uint16_t) parametersBuffer[9] * SECONDS_TO_MILLISECONDS;
-  _newRiseTime = (uint16_t) parametersBuffer[10] * TENTH_OF_SECOND_TO_MILISECONDS;
+  _newRiseTime = (uint16_t) parametersBuffer[10] * TENTH_OF_SECOND_TO_MILISECONDS; // (not being used; rises as fast as possible)
   _newHighInspiratoryPressureAlarm = (uint16_t) parametersBuffer[11] * CENTIMETERS_TO_MILIMETERS;
   _newLowExpiratoryPressureAlarm = (uint16_t) parametersBuffer[12] * CENTIMETERS_TO_MILIMETERS;
   

@@ -24,7 +24,7 @@ void setup() {
   delay(500); // let serial settle
   
   // controller.stopArduinoAlarm();
-  controller.init(); // TODO: put back
+  controller.init();
   sensors.init();
   int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
@@ -36,9 +36,9 @@ void setup() {
   // }
   // parameters.currentMode = PRESSURE_CONTROL_MODE;
   // parameters.currentFiO2 = 10;
-  // parameters.currentInspiratoryTime = 1000;
-  // parameters.currentMaxExpiratoryTime = 1000;
-  // parameters.currentInspiratoryPressure = 200; // mm H2O
+  // parameters.currentInspiratoryTime = 4000;
+  // parameters.currentMaxExpiratoryTime = 4000;
+  // parameters.currentInspiratoryPressure = 250; // mm H2O
   // parameters.currentPEEP = 50; // mm H2O
   // parameters.currentRiseTime = 100; // ms
   // parameters.currentSensitivity = -1; // L
@@ -81,9 +81,6 @@ void loop() {
   else if (state.breathingStage == EXHALATION_STAGE) {
     // Serial.println(0);
     controller.exhalationControl(data, parameters);
-  }
-  else {
-    // Serial.println(-1);
   }
 
   if (state.breathCompleted && state.mode != OFF_MODE) {

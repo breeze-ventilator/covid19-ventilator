@@ -1,11 +1,13 @@
 #ifndef BLOWER_CONTROL_H
 #define BLOWER_CONTROL_H
 
-#define BLOWER_KI 0
-#define BLOWER_KP 5
-#define BLOWER_KD 0
+// Tuned using the Ziegler–Nichols method
+#define BLOWER_KI 48.0
+#define BLOWER_KP 6.6
+#define BLOWER_KD 0.3
+
 #define BLOWER_FAN_SERVO_PIN 9
-#define BLOWER_PID_TIME 100
+#define BLOWER_PID_TIME 20
 
 #include "Arduino.h"
 #include <PID_v1.h>

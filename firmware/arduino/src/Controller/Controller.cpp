@@ -13,9 +13,9 @@ Controller::Controller()
 }
 
 void Controller::init() {
-  blowerControl.begin();
   // oxygenControl.begin();
   batteryChargingControl.init();
+  blowerControl.begin();
   // airIntakeServo.begin();
 }
 
@@ -37,21 +37,19 @@ void Controller::inhalationControl(Data &data, Parameters &parameters, State &st
   // oxygenControl.control();
 
   //  airControl(parameters);
-  float setPressure = (float) state.desiredPressure; // TODO: Check units with below
-  float actualPressure = data.getMainPressureAverageForPID();
-  // blowerControl.control(setPressure, actualPressure);
-  blowerControl.blowFan(100);
-  // blowerControl.beQuiet();
+  controlPressure(state.desiredPressure, data);
 }
 
 void Controller::exhalationControl(Data &data, Parameters &parameters) {
-  // TODO: uncomment below
-  float setPressure = (float) parameters.currentPEEP;
+  controlPressure(parameters.currentPEEP, data);
+}
+
+void Controller::controlPressure(float desiredPressure, Data &data) {
   float actualPressure = data.getMainPressureAverageForPID();
+  blowerControl.control(desiredPressure, actualPressure);
   // Serial.println(actualPressure);
   // float setPressure = 0;
-  blowerControl.blowFan(50);
-  // blowerControl.control(setPressure, actualPressure);
+  // blowerControl.blowFan(15);
   // blowerControl.beQuiet();
 }
 
