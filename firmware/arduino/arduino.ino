@@ -24,7 +24,7 @@ void setup() {
   delay(500); // let serial settle
   
   // controller.stopArduinoAlarm();
-  controller.init(); // TODO: put back
+  controller.init();
   sensors.init();
   // int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
@@ -40,7 +40,7 @@ void setup() {
   parameters.currentMaxExpiratoryTime = 4000;
   parameters.currentInspiratoryPressure = 250; // mm H2O
   parameters.currentPEEP = 50; // mm H2O
-  parameters.currentRiseTime = 100; // ms
+  parameters.currentRiseTime = 100; // ms (not being used; rising up as fast as possible)
   parameters.currentSensitivity = -1; // L
   parameters.currentApneaTime = 6000; // ms
   parameters.currentFlowCyclingOffPercentage = 0.20; // 20%
