@@ -8,7 +8,7 @@
 
 #define CURRENT_TRIGGER 1
 #define STEPPER_MAX_SPEED 1000
-#define STEPPER_ACCELERATION 300
+#define STEPPER_ACCELERATION 500
 #define MAX_STEPS 2000 // 10 revolutions, 200 steps per revolution
 
 class OxygenValveStepper {
