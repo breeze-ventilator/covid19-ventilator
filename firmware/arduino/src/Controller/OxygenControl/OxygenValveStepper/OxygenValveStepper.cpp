@@ -39,8 +39,8 @@ void OxygenValveStepper::activate() {
   // we activate/deactivate the stepper to avoid overheating
 
   // enable the power to the stepper at about half power
-  analogWrite(_oxygenActivate1Pin, 100);
-  analogWrite(_oxygenActivate2Pin, 100);
+  analogWrite(_oxygenActivate1Pin, 120);
+  analogWrite(_oxygenActivate2Pin, 120);
 }
 
 void OxygenValveStepper::deactivate() {
