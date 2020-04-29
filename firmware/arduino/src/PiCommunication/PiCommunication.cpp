@@ -124,14 +124,14 @@ void PiCommunication::sendDataToPi(Data &data, State &state) {
   - Inspiratory pressure abnormal
   */
 
-  uint8_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
+  uint8_t isPatientDisconnected = 0; // TODO: actual error maybe state.error?
   
   // TO DO: should send apnea time exceeded error
   Serial.write(checkSum);
   Serial.write(batteryPercentage);
   Serial.write(breathCompleted);
   Serial.write(tidalVolume);
-  Serial.write(errorCode);
+  Serial.write(isPatientDisconnected);
   Serial.write(_minPressure);
   Serial.write(_maxPressure);
 
