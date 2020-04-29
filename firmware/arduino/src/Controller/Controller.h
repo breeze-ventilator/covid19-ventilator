@@ -33,7 +33,7 @@ class Controller {
         // int isTimeToControlAir();
         // int isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings);
 
-        // OxygenControl oxygenControl;
+        OxygenControl oxygenControl;
         // Alarm alarm;
         // AirIntakeServo airIntakeServo;
         void controlPressure(float desiredPressure, Data &data);

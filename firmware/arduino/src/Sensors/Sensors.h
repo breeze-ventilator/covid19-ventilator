@@ -27,7 +27,7 @@ class Sensors {
         FlowSensor flowSensor;
         MainPressureSensor mainPressureSensor;
         // BatteryVoltageSensor batteryVoltageSensor;
-        // OxygenSensor oxygenSensor;
+        OxygenSensor oxygenSensor;
         
         void init();
         void readSensorsIfAvailableAndSaveSensorData(Data &data, State &state);

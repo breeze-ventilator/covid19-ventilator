@@ -5,8 +5,8 @@ Sensors::Sensors(int flowReadingFrequency,
                  int oxygenReadingFrequency,
                  int batteryVoltageReadingFrequency)
     : flowSensor(FLOW_IC2_ADDRESS, FLOW_OFFSET, FLOW_SCALE),
-    mainPressureSensor(MAIN_PRESSURE_PIN)
-    // oxygenSensor(OXYGEN_SENSOR_PIN),
+    mainPressureSensor(MAIN_PRESSURE_PIN),
+    oxygenSensor(OXYGEN_SENSOR_PIN)
     // batteryVoltageSensor(BATTERY_VOLTAGE_PIN)
   {
   _timeBetweenFlowReadings = 1.0/flowReadingFrequency * SECONDS_TO_MILLISECONDS;
@@ -36,9 +36,7 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data, State &state) 
       flowValue = 0;
     }
 
-    // flow in L/min
-    // tidal volume in L
-
+    // flow in L/min, tidal volume in L
     float delta_time = (float)(millis() - _lastFlowReadTime);
     delta_time /= MINUTES_TO_MILLISECONDS;
     data.saveFlowReading(flowValue);
@@ -49,11 +47,11 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data, State &state) 
     // Serial.println(flowValue);
     _lastFlowReadTime = millis();
   }
-  // if (isTimeToReadOxygen()) {
-  //   float oxygenReading = oxygenSensor.read();
-  //   data.saveOxygenReading(oxygenReading);
-  //   _lastOxygenReadTime = millis();
-  // }
+  if (isTimeToReadOxygen()) {
+    float oxygenReading = oxygenSensor.read();
+    data.saveOxygenReading(oxygenReading);
+    _lastOxygenReadTime = millis();
+  }
   if (isTimeToReadMainPressure()) {
     float pressureValue = mainPressureSensor.read(); // analog read (difference between this pressure and atmospheric pressure)
     data.saveMainPressureReading(pressureValue);

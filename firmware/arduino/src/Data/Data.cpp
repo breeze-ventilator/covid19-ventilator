@@ -33,7 +33,6 @@ void Data::saveBatteryPercentage(unsigned int newBatteryPercentage) {
 }
 
 void Data::saveOxygenReading(float newOxygenReading) {
-  // TODO
   oxygenReading = newOxygenReading;
 }
 
