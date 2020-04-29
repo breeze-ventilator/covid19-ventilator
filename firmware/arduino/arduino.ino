@@ -82,6 +82,9 @@ void loop() {
     // Serial.println(0);
     controller.exhalationControl(data, parameters);
   }
+  else {
+    controller.standby();
+  }
 
   if (state.breathCompleted && state.mode != OFF_MODE) {
     piCommunication.updateValuesForPiUponBreathCompleted(data, state); // if breath = 1, set value to send to 1.
