@@ -18,7 +18,7 @@
 #define OXYGEN_KD 1
 #define OXYGEN_PID_TIME 100
 #define OXYGEN_DESIRED_ACCURACY 5 // %
-#define VALVE_STEP_SIZE 10
+#define VALVE_STEP_SIZE 10 // 1.8 degrees
 #define TIME_BETWEEN_OXYGEN_CONTROLS 100
 
 #include "../../Helpers/helpers.h"

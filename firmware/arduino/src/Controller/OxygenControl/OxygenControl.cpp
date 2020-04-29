@@ -19,14 +19,17 @@ void OxygenControl::begin() {
 }
 
 void OxygenControl::control(float desiredFiO2, float oxygenConcentration) {
-	// only control oxygen if in range
-	if (abs(oxygenConcentration - desiredFiO2) < OXYGEN_DESIRED_ACCURACY) {
-		if (desiredFiO2 < oxygenConcentration) {
-			oxygenValveStepper.move(VALVE_STEP_SIZE);
+	if (isTimeToControlOxygen()) {
+		// only control oxygen if required
+		if (abs(oxygenConcentration - desiredFiO2) < OXYGEN_DESIRED_ACCURACY) {
+			if (desiredFiO2 < oxygenConcentration) {
+				oxygenValveStepper.move(VALVE_STEP_SIZE);
+			}
+			else {
+				oxygenValveStepper.move(-VALVE_STEP_SIZE);
+			}
 		}
-		else {
-			oxygenValveStepper.move(-VALVE_STEP_SIZE);
-		}
+		_lastOxygenControlTime = millis();
 	}
 
 	// _oxygenSetConcentration = setOxygenConcentration;

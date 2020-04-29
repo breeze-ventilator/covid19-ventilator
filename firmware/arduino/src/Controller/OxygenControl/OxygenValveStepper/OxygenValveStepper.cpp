@@ -21,14 +21,11 @@ void OxygenValveStepper::begin() {
 
 void OxygenValveStepper::moveToZeroPosition() {
   activate();
-  unsigned long startTime = millis();
-  uint16_t jamTime = 4000;
-
+  
   // jam the stepper to the end until we're sure it's at 0
-  while (millis() - startTime < jamTime) {
-    stepper.moveTo(stepper.currentPosition() - 1);  // Set the position to move to
-    stepper.run();
-  }
+  int32_t newPosition = stepper.currentPosition() - MAX_STEPS;
+  stepper.runToNewPosition(newPosition);
+  
   // could alternatively use a limit switch to avoid jamming
   // ^ could use movingAverage(analogRead(_currentSensePin)*5.319/1024) < CURRENT_TRIGGER
 
@@ -53,9 +50,9 @@ void OxygenValveStepper::deactivate() {
 void OxygenValveStepper::move(long desiredSteps) {
   activate();
 
-  long steps = max(-stepper.currentPosition(), desiredSteps);
+  long steps = max(-stepper.currentPosition(), desiredSteps); // don't go past 0
   if (steps != 0) {
-    stepper.move(desiredSteps);
+    stepper.move(steps);
     _moveComplete = false;
   }
 }
@@ -72,8 +69,4 @@ void OxygenValveStepper::runOneStepIfRequired(){
       stepper.run();
     }
   }
-}
-
-long OxygenValveStepper::getCurrentPosition() {
-  return stepper.currentPosition();
 }

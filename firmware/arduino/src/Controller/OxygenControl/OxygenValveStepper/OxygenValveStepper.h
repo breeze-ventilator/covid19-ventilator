@@ -9,6 +9,7 @@
 #define CURRENT_TRIGGER 1
 #define STEPPER_MAX_SPEED 1000
 #define STEPPER_ACCELERATION 300
+#define MAX_STEPS 2000 // 10 revolutions, 200 steps per revolution
 
 class OxygenValveStepper {
   public:
@@ -23,7 +24,6 @@ class OxygenValveStepper {
     void moveToZeroPosition();
     void move(long desiredSteps);
     void runOneStepIfRequired();
-    long getCurrentPosition();
     void activate();
     void deactivate();
     

@@ -10,7 +10,6 @@ Controller::Controller()
     batteryChargingControl(BATTERY_SENSE_PIN, BATTERY_CONTROL_PIN)
 {
   _lastAirControlTime = 0;
-  _lastOxygenControlTime = 0;
 }
 
 void Controller::init() {
