@@ -8,7 +8,7 @@
 #define TIME_BETWEEN_AIR_CONTROLS 100 // ms
 
 #include "OxygenControl/OxygenControl.h"
-#include "AirIntakeServo/AirIntakeServo.h"
+#include "AirControl/AirControl.h"
 #include "BlowerControl/BlowerControl.h"
 #include "Alarm/Alarm.h"
 #include "BatteryChargingControl/BatteryChargingControl.h"
