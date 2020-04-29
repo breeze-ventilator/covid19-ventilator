@@ -31,6 +31,7 @@ void OxygenControl::control(float desiredFiO2, float oxygenConcentration) {
 		}
 		_lastOxygenControlTime = millis();
 	}
+	oxygenValveStepper.runOneStepIfRequired();
 
 	// _oxygenSetConcentration = setOxygenConcentration;
 	// _oxygenActualConcentration = actualOxygenConcentration;
