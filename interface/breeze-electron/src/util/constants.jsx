@@ -33,13 +33,13 @@ export const modes = ["Standby", "Pressure Control", "Pressure Support"];
 
 export const defaultAlarms = {
   "Minute ventilation": {
-    min: 0,
-    max: 150,
+    min: 10,
+    max: 40,
     step: 10
   },
   pressure: {
-    min: 0,
-    max: 150
+    min: 3,
+    max: 40
   }
 }
 
@@ -114,7 +114,9 @@ export const readingsInfo = {
   "Minute ventilation": {
     readableName: "Minute Ventilation",
     unit: "L/min",
-    default: 7
+    default: 7,
+    alarmMin:0,
+    alarmMax:100
   }
 };
 
