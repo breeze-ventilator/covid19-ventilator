@@ -91,8 +91,10 @@ void loop() {
     data.resetTidalVolume();
   }
 
+  piCommunication.updateErrors(state, data);
+
+  // reset state errors
   if (state.apneaTimeExceededError != NO_ERROR) {
-    piCommunication.updateErrors(state);
     state.apneaTimeExceededError = NO_ERROR;
   }
   
