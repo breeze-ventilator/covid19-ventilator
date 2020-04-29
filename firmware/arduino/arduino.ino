@@ -21,7 +21,6 @@ Parameters parameters;
 
 void setup() {
   Serial.begin(9600);
-  delay(500); // let serial settle
   
   // controller.stopArduinoAlarm();
   controller.init();
