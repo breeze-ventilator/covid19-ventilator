@@ -9,7 +9,7 @@ Controller::Controller()
     blowerControl(),
     batteryChargingControl(BATTERY_SENSE_PIN, BATTERY_CONTROL_PIN)
 {
-  _lastAirControlTime = 0;
+  
 }
 
 void Controller::init() {

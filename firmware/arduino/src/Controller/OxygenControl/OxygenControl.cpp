@@ -3,7 +3,7 @@
 OxygenControl::OxygenControl()
 : oxygenValveStepper(OXYGEN_VALVE_PIN0, OXYGEN_VALVE_PIN1, OXYGEN_VALVE_PIN2,
           OXYGEN_VALVE_PIN3, OXYGEN_VALVE_CURRENT_SENSE_PIN,
-          OXYGEN_VALVE_ACTIVATE1_PIN, OXYGEN_VALVE_ACTIVATE2_PIN)//,
+          OXYGEN_VALVE_ENABLE1_PIN, OXYGEN_VALVE_ENABLE2_PIN)//,
   // pid(&_oxygenActualConcentration, &_valveSetPoint, &_oxygenSetConcentration,
   //     OXYGEN_KP, OXYGEN_KI, OXYGEN_KD, DIRECT)
 {
@@ -18,9 +18,10 @@ void OxygenControl::begin() {
   // pid.SetOutputLimits(-100,100); // TODO: this is in steps, who knows
 }
 
-void OxygenControl::control(float desiredFiO2, float oxygenConcentration) {
+void OxygenControl::control(float desiredFiO2, Data &data) {
 	if (isTimeToControlOxygen()) {
 		// only control oxygen if required
+		float oxygenConcentration = data.getOxygenRecentHistoryAverage();
 		if (abs(oxygenConcentration - desiredFiO2) < OXYGEN_DESIRED_ACCURACY) {
 			if (desiredFiO2 < oxygenConcentration) {
 				oxygenValveStepper.move(VALVE_STEP_SIZE);

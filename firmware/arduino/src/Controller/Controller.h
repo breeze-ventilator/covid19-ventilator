@@ -39,7 +39,6 @@ class Controller {
         // AirIntakeServo airIntakeServo;
         BlowerControl blowerControl;
         BatteryChargingControl batteryChargingControl;
-        unsigned long _lastAirControlTime;
 };
 
 #endif
