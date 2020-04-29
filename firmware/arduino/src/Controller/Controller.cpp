@@ -65,6 +65,15 @@ void Controller::manageBattery() {
   batteryChargingControl.control(1); // 1 amp
 }
 
+void Controller::delayWithCharging(unsigned long delayTime) {  
+  while (delayTime >= 10) {
+    delay(10);
+    manageBattery();
+    delayTime -= 10;
+  }
+  delay(delayTime);
+}
+
 // void Controller::airControl(Parameters parameters) {
 //   airIntakeServo.setOpening(100 - parameters.currentFiO2);
 // }

@@ -29,6 +29,7 @@ class Controller {
         void blowFan(int blowerPower);
         void manageBattery();
         void standby();
+        void delayWithCharging(unsigned long delayTime);
     private:
         // int isTimeToControlOxygen();
         // int isTimeToControlAir();
