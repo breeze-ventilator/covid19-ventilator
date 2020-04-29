@@ -5,7 +5,7 @@
 Controller::Controller()
     : // oxygenControl(),
     // alarm(ALARM_PIN),
-    // airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
+    airControl(AIR_INTAKE_PIN),
     blowerControl(),
     batteryChargingControl(BATTERY_SENSE_PIN, BATTERY_CONTROL_PIN)
 {
@@ -16,7 +16,7 @@ void Controller::init() {
   // oxygenControl.begin();
   batteryChargingControl.init();
   blowerControl.begin();
-  // airIntakeServo.begin();
+  airControl.begin();
 }
 
 void Controller::stopArduinoAlarm() {
@@ -38,6 +38,7 @@ void Controller::inhalationControl(Data &data, Parameters &parameters, State &st
 
   //  airControl(parameters);
   controlPressure(state.desiredPressure, data);
+  airControl.control(parameters.currentFiO2);
 }
 
 void Controller::exhalationControl(Data &data, Parameters &parameters) {

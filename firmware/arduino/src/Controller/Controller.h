@@ -3,7 +3,6 @@
 
 #define AIR_INTAKE_PIN 8
 #define BLOWER_FAN_PIN 9
-#define AIR_INTAKE_ZERO_POINT 110
 #define TIME_BETWEEN_OXYGEN_CONTROLS 1000 // ms
 #define TIME_BETWEEN_AIR_CONTROLS 100 // ms
 
@@ -36,7 +35,7 @@ class Controller {
 
         // OxygenControl oxygenControl;
         // Alarm alarm;
-        // AirIntakeServo airIntakeServo;
+        AirControl airControl;
         void controlPressure(float desiredPressure, Data &data);
         BlowerControl blowerControl;
         unsigned long _lastAirControlTime;
