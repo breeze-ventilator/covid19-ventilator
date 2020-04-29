@@ -2,7 +2,8 @@
 
 Data::Data()
   : _pressureValues(PRESSURE_HISTORY_LENGTH_FOR_PID),
-    _flowValues(FLOW_HISTORY_LENGTH)
+    _flowValues(FLOW_HISTORY_LENGTH),
+    _oxygenValues(OXYGEN_HISTORY_LENGTH)
 {
   tidalVolume = 0.0;
 }
@@ -33,7 +34,11 @@ void Data::saveBatteryPercentage(unsigned int newBatteryPercentage) {
 }
 
 void Data::saveOxygenReading(float newOxygenReading) {
-  oxygenReading = newOxygenReading;
+  _oxygenValues.push(newOxygenReading);
+}
+
+float Data::getOxygenRecentHistoryAverage() {
+  return _oxygenValues.getMean();
 }
 
 // when breath finished

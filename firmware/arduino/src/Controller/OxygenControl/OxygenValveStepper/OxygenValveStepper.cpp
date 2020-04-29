@@ -29,10 +29,11 @@ void OxygenValveStepper::moveToZeroPosition() {
     stepper.moveTo(stepper.currentPosition() - 1);  // Set the position to move to
     stepper.run();
   }
-  stepper.setCurrentPosition(0);  // Set the current position as zero
-  deactivate();
   // could alternatively use a limit switch to avoid jamming
   // ^ could use movingAverage(analogRead(_currentSensePin)*5.319/1024) < CURRENT_TRIGGER
+
+  stepper.setCurrentPosition(0);  // Set the current position as zero
+  deactivate();
 }
 
 void OxygenValveStepper::activate() {
@@ -49,19 +50,26 @@ void OxygenValveStepper::deactivate() {
   digitalWrite(_oxygenActivate2Pin, LOW);
 }
 
-void OxygenValveStepper::move(long value) {
+void OxygenValveStepper::move(long desiredSteps) {
   activate();
-  stepper.moveTo(value);
-  _moveComplete = false;
+
+  long steps = max(-stepper.currentPosition(), desiredSteps);
+  if (steps != 0) {
+    stepper.move(desiredSteps);
+    _moveComplete = false;
+  }
 }
 
 void OxygenValveStepper::runOneStepIfRequired(){
   if (!_moveComplete) {
-    stepper.run();
-
-    if (stepper.distanceToGo() == 0) {
+    if (stepper.distanceToGo() == 0)
+    {
       deactivate(); // deactivate when we're done moving
       _moveComplete = true;
+    }
+    else
+    {
+      stepper.run();
     }
   }
 }

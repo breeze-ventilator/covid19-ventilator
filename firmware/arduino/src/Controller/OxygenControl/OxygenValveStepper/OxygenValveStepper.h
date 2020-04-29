@@ -4,6 +4,7 @@
 #include <AccelStepper.h> // Include the AccelStepper library:
 #include "Arduino.h"
 #include "../../../Defs/errors.h"
+#include <math.h>
 
 #define CURRENT_TRIGGER 1
 #define STEPPER_MAX_SPEED 1000
@@ -20,7 +21,7 @@ class OxygenValveStepper {
                        int oxygenActivate2Pin);
     void begin();
     void moveToZeroPosition();
-    void move(long value);
+    void move(long desiredSteps);
     void runOneStepIfRequired();
     long getCurrentPosition();
     void activate();

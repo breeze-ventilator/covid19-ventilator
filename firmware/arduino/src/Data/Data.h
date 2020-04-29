@@ -5,16 +5,18 @@
 
 #define PRESSURE_HISTORY_LENGTH_FOR_PID 20
 #define FLOW_HISTORY_LENGTH 50
+#define OXYGEN_HISTORY_LENGTH 10
 class Data {
     public:
         Data();
         void saveFlowReading(float flowValue);
         void updateTidalVolume(float flowValue, float delta_time);
         void saveMainPressureReading(float pressureValue);
-        float getMainPressureAverageForPID();
-        float getFlowRecentHistoryAverage();
         void saveBatteryPercentage(unsigned int newBatteryPercentage);
         void saveOxygenReading(float oxygenReading);
+        float getMainPressureAverageForPID();
+        float getFlowRecentHistoryAverage();
+        float getOxygenRecentHistoryAverage();
         void resetTidalVolume();
 
         float peakFlowValueInCurrentBreath; // needed for switching to exhalation
@@ -29,6 +31,7 @@ class Data {
     private:
         List _pressureValues;
         List _flowValues;
+        List _oxygenValues;
 
 };
 
