@@ -37,5 +37,4 @@ void BlowerControl::blowFan(int blowerPower) {
 
 void BlowerControl::beQuiet() {
 	_blowerFanServo.writeBlowerPower(15);
-	delay(1000);
 }

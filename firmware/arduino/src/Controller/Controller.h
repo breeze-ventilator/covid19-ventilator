@@ -28,6 +28,7 @@ class Controller {
         void exhalationControl(Data &data, Parameters &parameters);
         void blowFan(int blowerPower);
         void manageBattery();
+        void standby();
     private:
         // int isTimeToControlOxygen();
         // int isTimeToControlAir();

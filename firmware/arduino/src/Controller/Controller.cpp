@@ -57,6 +57,10 @@ void Controller::blowFan(int blowerPower) {
   blowerControl.blowFan(blowerPower);
 }
 
+void Controller::standby() {
+  blowerControl.beQuiet();
+}
+
 void Controller::manageBattery() {
   batteryChargingControl.control(1); // 1 amp
 }
