@@ -42,9 +42,9 @@ export default class AlarmsHandler extends React.Component {
       animationOut: ["animated", "fadeOut"],
       width: 250
     })
-    // if(!this.state.playingSound){
-    //   this.state.playingSound = true;
-    // }
+    if(!this.state.playingSound){
+      this.state.playingSound = true;
+    }
   }
 
   // alarmFromArduino(alarmType){

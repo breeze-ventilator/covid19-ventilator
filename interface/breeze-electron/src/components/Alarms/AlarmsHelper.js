@@ -1,5 +1,6 @@
 
 export function shouldAlarm(name, value, alarmRanges){
+  // conditions for alarm notification
   if (name == "abnormalPressure" && value < alarmRanges.pressure.min) { // workaround: abnormalPressure contains min
     return "Pressure abnormally low"
   }
@@ -14,4 +15,5 @@ export function shouldAlarm(name, value, alarmRanges){
       return "Minute ventilation high"
     }
   }
+  return ""
 }
