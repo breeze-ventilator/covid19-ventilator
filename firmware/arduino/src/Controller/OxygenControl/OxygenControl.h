@@ -5,10 +5,10 @@
 #include "OxygenValveStepper/OxygenValveStepper.h"
 #include <PID_v1.h>
 
-#define OXYGEN_VALVE_PIN0 42
-#define OXYGEN_VALVE_PIN1 44
-#define OXYGEN_VALVE_PIN2 43
-#define OXYGEN_VALVE_PIN3 41
+#define OXYGEN_VALVE_PIN0 41
+#define OXYGEN_VALVE_PIN1 43
+#define OXYGEN_VALVE_PIN2 44
+#define OXYGEN_VALVE_PIN3 45
 #define OXYGEN_VALVE_CURRENT_SENSE_PIN 2
 #define OXYGEN_VALVE_ENABLE1_PIN 2
 #define OXYGEN_VALVE_ENABLE2_PIN 3
