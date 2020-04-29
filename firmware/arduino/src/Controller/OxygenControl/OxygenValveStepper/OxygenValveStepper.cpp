@@ -39,8 +39,8 @@ void OxygenValveStepper::activate() {
   // we activate/deactivate the stepper to avoid overheating
 
   // enable the power to the stepper at about half power
-  analogWrite(_oxygenActivate1Pin, 120);
-  analogWrite(_oxygenActivate2Pin, 120);
+  analogWrite(_oxygenActivate1Pin, 150);
+  analogWrite(_oxygenActivate2Pin, 150);
 }
 
 void OxygenValveStepper::deactivate() {
@@ -53,6 +53,7 @@ void OxygenValveStepper::move(long desiredSteps) {
   activate();
 
   long steps = max(-stepper.currentPosition(), desiredSteps); // don't go past 0
+  steps = min(steps, MAX_STEPS - stepper.currentPosition()); // don't go past the end
   if (steps != 0) {
     stepper.move(steps);
     _moveComplete = false;
@@ -71,4 +72,8 @@ void OxygenValveStepper::runOneStepIfRequired(){
       stepper.run();
     }
   }
+}
+
+long OxygenValveStepper::getCurrentPosition() {
+  return stepper.currentPosition();
 }

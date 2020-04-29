@@ -38,6 +38,7 @@ void Controller::inhalationControl(Data &data, Parameters &parameters, State &st
 
 void Controller::exhalationControl(Data &data, Parameters &parameters) {
   controlPressure(parameters.currentPEEP, data);
+  oxygenControl.control(parameters.currentFiO2, data);
 }
 
 void Controller::controlPressure(float desiredPressure, Data &data) {

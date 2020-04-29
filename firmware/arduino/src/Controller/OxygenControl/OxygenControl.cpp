@@ -19,14 +19,18 @@ void OxygenControl::begin() {
 }
 
 void OxygenControl::control(float desiredFiO2, Data &data) {
+	// TODO: remove reverse
+	Serial.println(oxygenValveStepper.getCurrentPosition());
 	if (isTimeToControlOxygen()) {
 		// only control oxygen if required
 		float oxygenConcentration = data.getOxygenRecentHistoryAverage();
-		if (abs(oxygenConcentration - desiredFiO2) < OXYGEN_DESIRED_ACCURACY) {
-			if (desiredFiO2 < oxygenConcentration) {
+		if (abs(oxygenConcentration - desiredFiO2) > OXYGEN_DESIRED_ACCURACY) {
+			if (oxygenConcentration < desiredFiO2) {
+				// Serial.println(-1);
 				oxygenValveStepper.move(VALVE_STEP_SIZE);
 			}
 			else {
+				// Serial.println(1);
 				oxygenValveStepper.move(-VALVE_STEP_SIZE);
 			}
 		}

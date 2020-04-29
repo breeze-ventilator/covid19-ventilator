@@ -34,9 +34,9 @@ void setup() {
   //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
   // }
   parameters.currentMode = PRESSURE_CONTROL_MODE;
-  parameters.currentFiO2 = 10;
+  parameters.currentFiO2 = 80;
   parameters.currentInspiratoryTime = 4000;
-  parameters.currentMaxExpiratoryTime = 4000;
+  parameters.currentMaxExpiratoryTime = 3000;
   parameters.currentInspiratoryPressure = 250; // mm H2O
   parameters.currentPEEP = 50; // mm H2O
   parameters.currentRiseTime = 100; // ms
@@ -74,11 +74,9 @@ void loop() {
   controller.manageBattery();
   // controller.blowFan(90);
   if (state.breathingStage == INHALATION_STAGE) {
-    // Serial.println(1);
     controller.inhalationControl(data, parameters, state);
   }
   else if (state.breathingStage == EXHALATION_STAGE) {
-    // Serial.println(0);
     controller.exhalationControl(data, parameters);
   }
   else {

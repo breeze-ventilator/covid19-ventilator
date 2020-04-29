@@ -5,7 +5,7 @@
 
 #define PRESSURE_HISTORY_LENGTH_FOR_PID 20
 #define FLOW_HISTORY_LENGTH 50
-#define OXYGEN_HISTORY_LENGTH 10
+#define OXYGEN_HISTORY_LENGTH 5
 class Data {
     public:
         Data();

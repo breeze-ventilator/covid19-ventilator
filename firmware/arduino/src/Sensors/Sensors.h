@@ -43,7 +43,7 @@ class Sensors {
         
         unsigned int _timeBetweenFlowReadings;
         unsigned int _timeBetweenMainPressureReadings;
-        unsigned int _timeBetweenOxygenReadings;
+        unsigned long _timeBetweenOxygenReadings;
         unsigned int _timeBetweenBatteryPercentageReadings;
         unsigned int _timeBetweenPrints;
 

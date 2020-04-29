@@ -7,8 +7,8 @@
 #include <math.h>
 
 #define CURRENT_TRIGGER 1
-#define STEPPER_MAX_SPEED 1000
-#define STEPPER_ACCELERATION 500
+#define STEPPER_MAX_SPEED 2000
+#define STEPPER_ACCELERATION 2000
 #define MAX_STEPS 2000 // 10 revolutions, 200 steps per revolution
 
 class OxygenValveStepper {
@@ -26,6 +26,7 @@ class OxygenValveStepper {
     void runOneStepIfRequired();
     void activate();
     void deactivate();
+    long getCurrentPosition();
     
   private:
 	  AccelStepper stepper;
