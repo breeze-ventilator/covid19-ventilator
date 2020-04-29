@@ -4,7 +4,6 @@
 #define AIR_INTAKE_PIN 8
 #define BLOWER_FAN_PIN 9
 #define AIR_INTAKE_ZERO_POINT 110
-#define TIME_BETWEEN_OXYGEN_CONTROLS 1000 // ms
 #define TIME_BETWEEN_AIR_CONTROLS 100 // ms
 
 #include "OxygenControl/OxygenControl.h"
@@ -18,6 +17,8 @@
 #include "../State/State.h"
 #include "../Defs/defs.h"
 
+#include <math.h>
+
 class Controller {
     public:
         Controller();
@@ -28,17 +29,16 @@ class Controller {
         void exhalationControl(Data &data, Parameters &parameters);
         void blowFan(int blowerPower);
         void manageBattery();
+        void standby();
+        void delayWithCharging(unsigned long delayTime);
     private:
-        // int isTimeToControlOxygen();
         // int isTimeToControlAir();
-        // int isTimeToRead(unsigned long lastReadTime, int timeBetweenReadings);
+        void controlPressure(float desiredPressure, Data &data);
 
-        // OxygenControl oxygenControl;
+        OxygenControl oxygenControl;
         // Alarm alarm;
         // AirIntakeServo airIntakeServo;
-        void controlPressure(float desiredPressure, Data &data);
         BlowerControl blowerControl;
-        unsigned long _lastAirControlTime;
         BatteryChargingControl batteryChargingControl;
 };
 

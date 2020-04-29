@@ -21,7 +21,6 @@ Parameters parameters;
 
 void setup() {
   Serial.begin(9600);
-  delay(500); // let serial settle
   
   // controller.stopArduinoAlarm();
   controller.init();
@@ -81,6 +80,9 @@ void loop() {
   else if (state.breathingStage == EXHALATION_STAGE) {
     // Serial.println(0);
     controller.exhalationControl(data, parameters);
+  }
+  else {
+    controller.standby();
   }
 
   if (state.breathCompleted && state.mode != OFF_MODE) {

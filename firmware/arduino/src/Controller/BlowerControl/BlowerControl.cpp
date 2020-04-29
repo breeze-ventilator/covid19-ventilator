@@ -11,7 +11,7 @@ void BlowerControl::begin() {
 	_blowerFanServo.begin();
 	_blowerControl.SetSampleTime(BLOWER_PID_TIME);
   _blowerControl.SetMode(AUTOMATIC);
-	_blowerControl.SetOutputLimits(15, 130);
+	_blowerControl.SetOutputLimits(15, 150);
 }
 
 void BlowerControl::control(float setPressure, float actualPressure){
@@ -37,5 +37,4 @@ void BlowerControl::blowFan(int blowerPower) {
 
 void BlowerControl::beQuiet() {
 	_blowerFanServo.writeBlowerPower(15);
-	delay(1000);
 }

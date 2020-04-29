@@ -6,6 +6,8 @@
 #define FLOW_SCALE 120 // for air, 142.8 for O2
 #define BATTERY_VOLTAGE_PIN 7
 #define OXYGEN_SENSOR_PIN 5
+#define MAIN_PRESSURE_PIN 0
+
 
 #include "FlowSensor/FlowSensor.h"
 #include "BatteryVoltageSensor/BatteryVoltageSensor.h"
@@ -27,7 +29,7 @@ class Sensors {
         FlowSensor flowSensor;
         MainPressureSensor mainPressureSensor;
         // BatteryVoltageSensor batteryVoltageSensor;
-        // OxygenSensor oxygenSensor;
+        OxygenSensor oxygenSensor;
         
         void init();
         void readSensorsIfAvailableAndSaveSensorData(Data &data, State &state);
