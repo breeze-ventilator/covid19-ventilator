@@ -21,12 +21,11 @@ Parameters parameters;
 
 void setup() {
   Serial.begin(9600);
-  delay(500); // let serial settle
   
   // controller.stopArduinoAlarm();
   controller.init();
   sensors.init();
-  int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL);
+  int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL, controller);
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
   // }

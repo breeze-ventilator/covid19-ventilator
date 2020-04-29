@@ -14,7 +14,7 @@ PiCommunication::PiCommunication(int baudRate, int timeBetweenPiSending) {
   _apneaTimeExceededError = NO_ERROR;
 }
 
-int PiCommunication::initCommunication(int pingInterval) {
+int PiCommunication::initCommunication(int pingInterval, Controller &controller) {
   Serial.begin(_baudRate);
   delay(10);
   
@@ -34,7 +34,7 @@ int PiCommunication::initCommunication(int pingInterval) {
   while (Serial.available() <= 0) { // Serial.available says how many bytes available to read
     // Will send bytes
     Serial.write(WELCOME_MESSAGE);
-    delay(pingInterval);
+    controller.delayWithCharging(pingInterval);
   }
 
   delay(50);

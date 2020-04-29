@@ -30,6 +30,7 @@ class Controller {
         void blowFan(int blowerPower);
         void manageBattery();
         void standby();
+        void delayWithCharging(unsigned long delayTime);
     private:
         // int isTimeToControlAir();
         void controlPressure(float desiredPressure, Data &data);
