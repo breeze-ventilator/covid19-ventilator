@@ -60,7 +60,8 @@ void Sensors::readSensorsIfAvailableAndSaveSensorData(Data &data, State &state) 
     _lastMainPressureReadTime = millis();
     // Serial.println(data.getMainPressureAverageForPID());
     if (isTimeToPrint()) {
-      Serial.println(data.getMainPressureAverageForPID());
+      Serial.println(pressureValue);
+      // Serial.println(data.getMainPressureAverageForPID());
       _lastPrintTime = millis();
     }
   }

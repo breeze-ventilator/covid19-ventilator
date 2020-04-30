@@ -11,7 +11,7 @@ void BatteryChargingControl::init(){
 	_gateVolt = 0;
 	delay(1);
 	for (int i=0; i<500; i++) {
-		control(1);
+		control(5);
 	}
 }
 
