@@ -25,6 +25,7 @@ class OxygenValveStepper {
     void move(long desiredSteps);
     void runOneStepIfRequired();
     void activate();
+    void initialActivate();
     void deactivate();
     long getCurrentPosition();
     
