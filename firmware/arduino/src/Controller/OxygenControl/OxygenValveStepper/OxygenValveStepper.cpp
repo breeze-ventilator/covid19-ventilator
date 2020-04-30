@@ -22,7 +22,7 @@ void OxygenValveStepper::begin() {
 }
 
 void OxygenValveStepper::moveToZeroPosition() {
-  activate();
+  initialActivate();
   
   // jam the stepper to the end until we're sure it's at 0
   int32_t newPosition = stepper.currentPosition() - MAX_STEPS;
@@ -33,6 +33,14 @@ void OxygenValveStepper::moveToZeroPosition() {
 
   stepper.setCurrentPosition(0);  // Set the current position as zero
   deactivate();
+}
+
+void OxygenValveStepper::initialActivate() {
+  // we activate/deactivate the stepper to avoid overheating
+
+  // enable the power to the stepper at about half power
+  analogWrite(_oxygenActivate1Pin, 120);
+  analogWrite(_oxygenActivate2Pin, 120);
 }
 
 void OxygenValveStepper::activate() {
@@ -52,10 +60,10 @@ void OxygenValveStepper::deactivate() {
 void OxygenValveStepper::move(long desiredSteps) {
   activate();
 
-  // long steps = max(-stepper.currentPosition(), desiredSteps); // don't go past 0
-  // steps = min(steps, MAX_STEPS - stepper.currentPosition()); // don't go past the end
-  if (desiredSteps != 0) {
-    stepper.move(desiredSteps);
+  long steps = max(-stepper.currentPosition(), desiredSteps); // don't go past 0
+  steps = min(steps, MAX_STEPS - stepper.currentPosition()); // don't go past the end
+  if (steps != 0) {
+    stepper.move(steps);
     _moveComplete = false;
   }
 }
