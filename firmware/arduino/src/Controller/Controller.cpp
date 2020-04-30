@@ -50,21 +50,13 @@ void Controller::controlPressure(float desiredPressure, Data &data) {
   // blowerControl.beQuiet();
 }
 
-// void Controller::controlOxygen(float desiredFiO2, Data &data) {
-  
-//   if (isTimeToControlOxygen()) {
-//     float oxygenConcentration = data.getOxygenRecentHistoryAverage();
-//     oxygenControl.control(desiredFiO2, oxygenConcentration);
-//     _lastOxygenControlTime = millis();
-//   }
-// }
-
 void Controller::blowFan(int blowerPower) {
   blowerControl.blowFan(blowerPower);
 }
 
 void Controller::standby() {
   blowerControl.beQuiet();
+  oxygenControl.zero();
 }
 
 void Controller::manageBattery() {
@@ -79,11 +71,3 @@ void Controller::delayWithCharging(unsigned long delayTime) {
   }
   delay(delayTime);
 }
-
-// void Controller::airControl(Parameters parameters) {
-//   airIntakeServo.setOpening(100 - parameters.currentFiO2);
-// }
-
-// int Controller::isTimeToControlAir() {
-//   return isTime(_lastAirControlTime, TIME_BETWEEN_AIR_CONTROLS);
-// }

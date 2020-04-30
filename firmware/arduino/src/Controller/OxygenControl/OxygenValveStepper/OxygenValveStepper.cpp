@@ -52,10 +52,10 @@ void OxygenValveStepper::deactivate() {
 void OxygenValveStepper::move(long desiredSteps) {
   activate();
 
-  long steps = max(-stepper.currentPosition(), desiredSteps); // don't go past 0
-  steps = min(steps, MAX_STEPS - stepper.currentPosition()); // don't go past the end
-  if (steps != 0) {
-    stepper.move(steps);
+  // long steps = max(-stepper.currentPosition(), desiredSteps); // don't go past 0
+  // steps = min(steps, MAX_STEPS - stepper.currentPosition()); // don't go past the end
+  if (desiredSteps != 0) {
+    stepper.move(desiredSteps);
     _moveComplete = false;
   }
 }

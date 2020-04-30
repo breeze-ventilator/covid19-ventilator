@@ -18,7 +18,7 @@
 #define OXYGEN_KD 1
 #define OXYGEN_PID_TIME 100
 #define OXYGEN_DESIRED_ACCURACY 5 // %
-#define VALVE_STEP_SIZE 5 // 0.9 degrees
+#define VALVE_STEP_SIZE 2 // 0.36 degrees
 #define TIME_BETWEEN_OXYGEN_CONTROLS 500
 
 #include "../../Helpers/helpers.h"
@@ -29,13 +29,10 @@ class OxygenControl {
 	  OxygenControl();
     void begin();
     void control(float desiredFiO2, Data &data);
+    void zero();
 
   private:
     OxygenValveStepper oxygenValveStepper;
-    // PID pid;
-    double _oxygenActualConcentration = 0;
-    double _valveSetPoint = 0;
-    double _oxygenSetConcentration = 0;
     unsigned long _lastOxygenControlTime;
     int isTimeToControlOxygen();
     
