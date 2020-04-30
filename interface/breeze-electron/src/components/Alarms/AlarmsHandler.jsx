@@ -1,7 +1,7 @@
 import React from 'react';
 // import {NotificationContainer, NotificationManager} from 'react-notifications';
 // import 'react-notifications/lib/notifications.css';
-import { inRange } from './AlarmsHelper';
+import { shouldAlarm } from './AlarmsHelper';
 import { store} from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import ReactHowler from 'react-howler'
@@ -33,7 +33,7 @@ export default class AlarmsHandler extends React.Component {
 
   createAlarm(data) {
     store.addNotification({
-      title: data + ' alarm',
+      title: data,
       message: " ",
       type: "danger",
       insert: "top",
@@ -47,38 +47,32 @@ export default class AlarmsHandler extends React.Component {
     }
   }
 
-  alarmFromArduino(alarmType){
-    // FiO2 low, FiO2 high
-    if(!this.state.currentlyAlarming.includes(alarmType)){
-      this.state.currentlyAlarming.push(alarmType)
-      this.createAlarm(alarmType)
-    }
-  }
+  // alarmFromArduino(alarmType){
+  //   // FiO2 low, FiO2 high
+  //   if(!this.state.currentlyAlarming.includes(alarmType)){
+  //     this.state.currentlyAlarming.push(alarmType)
+  //     this.createAlarm(alarmType)
+  //   }
+  // }
 
   checkData() {
     let alarmRanges = this.props.alarms;
     let dataPieces = Object.assign(this.props.allData);
     let dataAlarm = [];
-
     for (var data in dataPieces) {
       let val = dataPieces[data];
-      let range = alarmRanges[data]; 
-
-      if (range === undefined) continue;
-
       if(val == null) continue;
-
-      if (!inRange(val, range)) {
-        dataAlarm.push(data)
+      const alarmMessage = shouldAlarm(data, val, alarmRanges);
+      if (alarmMessage) {
+        dataAlarm.push(alarmMessage)
       } else if (this.state.currentlyAlarming.includes(data)) {
         let alarms = this.state.currentlyAlarming.filter(x => x != data)
         this.setState({currentlyAlarming: alarms});
         this.props.setCurrentlyAlarming(alarms);
       }
     } 
-
     let newAlarms = dataAlarm.filter(alarm => !this.state.currentlyAlarming.includes(alarm))
-    let allAlarms = this.state.currentlyAlarming.concat(newAlarms)
+    let allAlarms = [...this.state.currentlyAlarming, ...newAlarms]
     
     if(allAlarms.length == 0){
       this.state.playingSound = false;
@@ -87,9 +81,9 @@ export default class AlarmsHandler extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.receivedAlarmFromArduino){
-      this.alarmFromArduino(this.props.arduinoAlarmType)
-    }
+    // if(this.props.receivedAlarmFromArduino){
+    //   this.alarmFromArduino(this.props.arduinoAlarmType)
+    // }
     this.checkData();
   }
 
