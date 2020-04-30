@@ -3,20 +3,20 @@
 #include "Controller.h"
 
 Controller::Controller()
-    : // oxygenControl(),
+    : oxygenControl(),
     // alarm(ALARM_PIN),
-    // airIntakeServo(AIR_INTAKE_PIN, AIR_INTAKE_ZERO_POINT),
+    airControl(AIR_INTAKE_PIN, AIR_INTAKE_OFF_PIN),
     blowerControl(),
     batteryChargingControl(BATTERY_SENSE_PIN, BATTERY_CONTROL_PIN)
 {
-  _lastAirControlTime = 0;
+  
 }
 
 void Controller::init() {
-  // oxygenControl.begin();
+  oxygenControl.begin();
   batteryChargingControl.init();
   blowerControl.begin();
-  // airIntakeServo.begin();
+  airControl.begin();
 }
 
 void Controller::stopArduinoAlarm() {
@@ -31,17 +31,18 @@ void Controller::startArduinoAlarm() {
 }
 
 void Controller::inhalationControl(Data &data, Parameters &parameters, State &state) {
-  // oxygenControl.control(100);
-  // oxygenControl.control(random(100));
-  // oxygenControl(data, parameters, state);
-  // oxygenControl.control();
-
   //  airControl(parameters);
   controlPressure(state.desiredPressure, data);
+  // oxygenControl.control(parameters.currentFiO2, data);
 }
 
 void Controller::exhalationControl(Data &data, Parameters &parameters) {
   controlPressure(parameters.currentPEEP, data);
+  oxygenControl.control(parameters.currentFiO2, data);
+}
+
+void Controller::controlAir(Parameters &parameters) {
+  airControl.control(parameters.currentFiO2);
 }
 
 void Controller::controlPressure(float desiredPressure, Data &data) {
@@ -57,18 +58,20 @@ void Controller::blowFan(int blowerPower) {
   blowerControl.blowFan(blowerPower);
 }
 
-void Controller::manageBattery() {
-  batteryChargingControl.control(1); // 1 amp
+void Controller::standby() {
+  blowerControl.beQuiet();
+  oxygenControl.zero();
 }
 
-// void Controller::airControl(Parameters parameters) {
-//   airIntakeServo.setOpening(100 - parameters.currentFiO2);
-// }
+void Controller::manageBattery() {
+  batteryChargingControl.control();
+}
 
-// int Controller::isTimeToControlAir() {
-//   return isTime(_lastAirControlTime, TIME_BETWEEN_AIR_CONTROLS);
-// }
-
-// int Controller::isTimeToControlBatteryCharging() {
-//   return isTime(_lastbatteryControlTime, TIME_BETWEEN_BATTERY_CONTROLS);
-// }
+void Controller::delayWithCharging(unsigned long delayTime) {  
+  while (delayTime >= 10) {
+    delay(10);
+    manageBattery();
+    delayTime -= 10;
+  }
+  delay(delayTime);
+}

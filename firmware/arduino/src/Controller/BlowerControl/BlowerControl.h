@@ -2,9 +2,9 @@
 #define BLOWER_CONTROL_H
 
 // Tuned using the Ziegler–Nichols method
-#define BLOWER_KI 48.0
-#define BLOWER_KP 6.6
-#define BLOWER_KD 0.3
+#define BLOWER_KP 16.0
+#define BLOWER_KI 0.0
+#define BLOWER_KD 1.33
 
 #define BLOWER_FAN_SERVO_PIN 9
 #define BLOWER_PID_TIME 20

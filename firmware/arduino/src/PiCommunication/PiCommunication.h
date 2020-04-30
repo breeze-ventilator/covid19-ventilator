@@ -9,6 +9,8 @@
 #include "../Defs/errors.h"
 #include "../Defs/defs.h"
 #include "../Helpers/helpers.h"
+#include "../Controller/Controller.h"
+
 #include <math.h>
 
 #include "../Parameters/Parameters.h" // TODO: remove
@@ -22,7 +24,7 @@
 class PiCommunication {
     public: 
         PiCommunication(int baudRate, int timeBetweenPiSending);
-        int initCommunication(int pingInterval);
+        int initCommunication(int pingInterval, Controller &controller);
         void getParametersFromPi();
         void tellPiThatWeGotParameters();
         void sendDataToPi(Data &data, State &state);
