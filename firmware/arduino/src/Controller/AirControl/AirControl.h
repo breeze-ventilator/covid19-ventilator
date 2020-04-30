@@ -17,7 +17,6 @@ class AirControl {
         Servo airIntakeServo;
         int _pin;
         int _offPin;
-        void setOpening(int percent);
 };
 
 #endif
