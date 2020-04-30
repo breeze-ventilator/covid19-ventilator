@@ -26,10 +26,10 @@ void OxygenControl::control(float desiredFiO2, Data &data) {
 		float oxygenConcentration = data.getOxygenRecentHistoryAverage();
 		if (abs(oxygenConcentration - desiredFiO2) > OXYGEN_DESIRED_ACCURACY) {
 			if (oxygenConcentration < desiredFiO2) {
-				oxygenValveStepper.move(-VALVE_STEP_SIZE);
+				oxygenValveStepper.move(VALVE_STEP_SIZE);
 			}
 			else {
-				oxygenValveStepper.move(VALVE_STEP_SIZE);
+				oxygenValveStepper.move(-VALVE_STEP_SIZE);
 			}
 		}
 		_lastOxygenControlTime = millis();

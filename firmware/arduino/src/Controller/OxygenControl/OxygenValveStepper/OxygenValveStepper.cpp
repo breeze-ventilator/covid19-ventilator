@@ -25,7 +25,7 @@ void OxygenValveStepper::moveToZeroPosition() {
   activate();
   
   // jam the stepper to the end until we're sure it's at 0
-  int32_t newPosition = stepper.currentPosition() + MAX_STEPS;
+  int32_t newPosition = stepper.currentPosition() - MAX_STEPS;
   stepper.runToNewPosition(newPosition);
   
   // could alternatively use a limit switch to avoid jamming
