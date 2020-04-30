@@ -39,7 +39,6 @@ module.exports = [
     use: [
       {
         loader: 'file-loader',
-        include: SRC,
         options: {
           name: '[name].[ext]',
         }

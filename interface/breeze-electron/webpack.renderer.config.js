@@ -1,7 +1,7 @@
 const rules = require('./webpack.rules');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const assets = [ 'sound']; // asset directories
+const assets = [ 'highSound.mp3']; // asset directories
 rules.push({
   test: /\.css$/,
   use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
