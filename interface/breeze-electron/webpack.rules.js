@@ -1,3 +1,6 @@
+var path = require('path');
+
+var SRC = path.resolve(__dirname, 'src/main/js');
 module.exports = [
   // Add support for native node modules
   {
@@ -36,6 +39,7 @@ module.exports = [
     use: [
       {
         loader: 'file-loader',
+        include: SRC,
         options: {
           name: '[name].[ext]',
         }
