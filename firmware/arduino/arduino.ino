@@ -77,10 +77,10 @@ void loop() {
   // breathing cycle
   controller.manageBattery();
   // controller.blowFan(90);
-  if (state.breathingStage == INHALATION_STAGE) {
+  if (state.breathingStage == INHALATION_STAGE && parameters.currentMode != OFF_MODE) {
     controller.inhalationControl(data, parameters, state);
   }
-  else if (state.breathingStage == EXHALATION_STAGE) {
+  else if (state.breathingStage == EXHALATION_STAGE && parameters.currentMode != OFF_MODE) {
     controller.exhalationControl(data, parameters);
   }
 

@@ -27,6 +27,7 @@ class OxygenValveStepper {
     void activate();
     void initialActivate();
     void deactivate();
+    // void hardDeactivate();
     long getCurrentPosition();
     
   private:
@@ -36,6 +37,10 @@ class OxygenValveStepper {
     int _stepperAcceleration;
     int _oxygenActivate1Pin;
     int _oxygenActivate2Pin;
+    int _pin0;
+    int _pin1;
+    int _pin2;
+    int _pin3;
 
     bool _moveComplete = false;
 };

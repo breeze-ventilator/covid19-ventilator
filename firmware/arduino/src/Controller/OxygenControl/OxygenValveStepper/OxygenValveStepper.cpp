@@ -9,6 +9,11 @@ OxygenValveStepper::OxygenValveStepper(int pin0,
                                        int oxygenActivate2Pin)
   : stepper(AccelStepper::FULL4WIRE, pin0, pin1, pin2, pin3)
 {
+  _pin0 = pin0;
+  _pin1 = pin1;
+  _pin2 = pin2;
+  _pin3 = pin3;
+
   _currentSensePin = currentSensePin;
   _oxygenActivate1Pin = oxygenActivate1Pin;
   _oxygenActivate2Pin = oxygenActivate2Pin;
@@ -40,8 +45,8 @@ void OxygenValveStepper::initialActivate() {
   // we activate/deactivate the stepper to avoid overheating
 
   // enable the power to the stepper at about half power
-  analogWrite(_oxygenActivate1Pin, 120);
-  analogWrite(_oxygenActivate2Pin, 120);
+  analogWrite(_oxygenActivate1Pin, 2);
+  analogWrite(_oxygenActivate2Pin, 2);
 }
 
 void OxygenValveStepper::activate() {
@@ -56,15 +61,19 @@ void OxygenValveStepper::deactivate() {
   // let the stepper rest to avoid overheating
   digitalWrite(_oxygenActivate1Pin, LOW);
   digitalWrite(_oxygenActivate2Pin, LOW);
+  digitalWrite(_pin0, LOW);
+  digitalWrite(_pin1, LOW);
+  digitalWrite(_pin2, LOW);
+  digitalWrite(_pin3, LOW);
 }
 
 void OxygenValveStepper::move(long desiredSteps) {
   activate();
 
-  long steps = max(-stepper.currentPosition(), desiredSteps); // don't go past 0
-  steps = min(steps, MAX_STEPS - stepper.currentPosition()); // don't go past the end
-  if (steps != 0) {
-    stepper.move(steps);
+  // long steps = max(-stepper.currentPosition(), desiredSteps); // don't go past 0
+  // steps = min(steps, MAX_STEPS - stepper.currentPosition()); // don't go past the end
+  if (desiredSteps != 0) {
+    stepper.move(desiredSteps);
     _moveComplete = false;
   }
 }
