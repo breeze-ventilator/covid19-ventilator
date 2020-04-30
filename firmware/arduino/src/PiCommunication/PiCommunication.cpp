@@ -12,6 +12,8 @@ PiCommunication::PiCommunication(int baudRate, int timeBetweenPiSending) {
   _breathCompletedToSend = 0;
   _tidalVolumeToSend = 0;
   _apneaTimeExceededError = NO_ERROR;
+  _minPressure = 250;
+  _maxPressure = 0;
 }
 
 int PiCommunication::initCommunication(int pingInterval, Controller &controller) {
@@ -66,8 +68,11 @@ void PiCommunication::flush() {
   }
 }
 
-void PiCommunication::updateErrors(State &state) {
+void PiCommunication::updateErrors(State &state, Data &data) {
   _apneaTimeExceededError = state.apneaTimeExceededError;
+  uint8_t latestPressureValue = (uint8_t) round(data.getMainPressureAverageForPID() / 10.0); // mm H2O to cm H2O
+  _minPressure = min(_minPressure, latestPressureValue);
+  _maxPressure = max(_maxPressure, latestPressureValue);
 }
 
 char PiCommunication::getMessageType() {
@@ -90,6 +95,8 @@ void PiCommunication::resetValuesForPi() {
   _breathCompletedToSend = 0;
   _tidalVolumeToSend = 0;
   _apneaTimeExceededError = NO_ERROR;
+  _minPressure = 250;
+  _maxPressure = 0;
 }
 
 void PiCommunication::sendDataToPi(Data &data, State &state) {
@@ -117,18 +124,16 @@ void PiCommunication::sendDataToPi(Data &data, State &state) {
   - Inspiratory pressure abnormal
   */
 
-  uint8_t errorCode = NO_ERROR; // TODO: actual error maybe state.error?
-  uint8_t isPressureNormal = NO_ERROR; // TODO: get it
-  uint8_t isFiO2Normal = TOO_HIGH; // TODO: data.fiO2
+  uint8_t isPatientDisconnected = 0; // TODO: actual error maybe state.error?
   
   // TO DO: should send apnea time exceeded error
   Serial.write(checkSum);
   Serial.write(batteryPercentage);
   Serial.write(breathCompleted);
   Serial.write(tidalVolume);
-  Serial.write(errorCode);
-  Serial.write(isPressureNormal);
-  Serial.write(isFiO2Normal);
+  Serial.write(isPatientDisconnected);
+  Serial.write(_minPressure);
+  Serial.write(_maxPressure);
 
   _lastSentDataTime = millis();
   resetValuesForPi();
