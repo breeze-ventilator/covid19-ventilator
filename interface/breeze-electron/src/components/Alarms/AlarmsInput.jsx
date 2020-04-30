@@ -38,20 +38,22 @@ class ParameterInputCustom extends React.Component {
         }
 
         this.setState({value});
+        this.props.setParameter(this.props.parameterName, this.state.value);
+
     }
 
     handleIncrement(){
-        if((this.state.value + this.props.step) <= this.props.max){
-            this.state.value += this.props.step;
-            this.setState(this.state);
-        }
+        const newValue = this.state.value - this.props.step
+        this.setState({value: this.state.value + this.props.step});
+        this.props.setParameter(this.props.parameterName, newValue);
     }
 
     handleDecrement(){
-        if((this.state.value - this.props.step) >= this.props.min){
-            this.state.value -= this.props.step;
-            this.setState(this.state);ß
+        const newValue = this.state.value - this.props.step
+        if((this.state.value - this.props.step) >= 0){
+            this.setState({value: newValue});
         }
+        this.props.setParameter(this.props.parameterName, newValue);
     }
 
     setParameter(){

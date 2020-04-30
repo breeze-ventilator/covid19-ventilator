@@ -45,7 +45,7 @@ export default class Alarms extends React.Component {
   }
 
   setParameterStateValue(parameterName, value) {
-    let alarms = this.state.alarms;
+    let alarms = {...this.state.alarms};
     if (parameterName == "Low Minute Ventilation Alarm") {
       alarms["Minute ventilation"].min = value
     }
@@ -58,7 +58,7 @@ export default class Alarms extends React.Component {
     else if (parameterName == "High Pressure Alarm") {
       alarms["pressure"].max = value
     }
-    this.setState({alarms: alarms})
+    this.setState({alarms})
   }
 
   render() {
@@ -77,7 +77,7 @@ export default class Alarms extends React.Component {
 
               <ParameterInput
                 parameterName="Low Minute Ventilation Alarm"
-                startingValue={(this.props.alarms["Minute ventilation"].min + this.props.alarms["Minute ventilation"].max) / 2}
+                startingValue={this.props.alarms["Minute ventilation"].min}
                 setParameter={this.setParameterStateValue}
                 step={2}
                 min={this.props.alarms["Minute ventilation"].min}
@@ -86,7 +86,7 @@ export default class Alarms extends React.Component {
               /> <br></br>
               <ParameterInput
                 parameterName="High Minute Ventilation Alarm"
-                startingValue={(this.props.alarms["Minute ventilation"].min + this.props.alarms["Minute ventilation"].max)/2}
+                startingValue={this.props.alarms["Minute ventilation"].max}
                 setParameter={this.setParameterStateValue}
                 step={2}
                 min={this.props.alarms["Minute ventilation"].min}
@@ -95,7 +95,7 @@ export default class Alarms extends React.Component {
               /> <br></br>
               <ParameterInput
                 parameterName="Low Pressure Alarm"
-                startingValue={(this.props.alarms.pressure.min + this.props.alarms.pressure.max)/2}
+                startingValue={this.props.alarms.pressure.min}
                 setParameter={this.setParameterStateValue}
                 step={2}
                 min={this.props.alarms.pressure.min}
@@ -104,7 +104,7 @@ export default class Alarms extends React.Component {
               /> <br></br>
               <ParameterInput
                 parameterName="High Pressure Alarm"
-                startingValue={(this.props.alarms.pressure.min + this.props.alarms.pressure.max)/2}
+                startingValue={this.props.alarms.pressure.max}
                 setParameter={this.setParameterStateValue}
                 step={2} 
                 min={this.props.alarms.pressure.min} 
