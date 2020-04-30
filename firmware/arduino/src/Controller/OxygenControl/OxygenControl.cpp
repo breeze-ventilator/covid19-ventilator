@@ -20,6 +20,8 @@ void OxygenControl::begin() {
 
 void OxygenControl::control(float desiredFiO2, Data &data) {
 	// TODO: remove reverse
+	Serial.print(data.getOxygenRecentHistoryAverage());
+  Serial.print(" ");
 	Serial.println(oxygenValveStepper.getCurrentPosition());
 	if (isTimeToControlOxygen()) {
 		// only control oxygen if required
