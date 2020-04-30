@@ -5,7 +5,12 @@ import { shouldAlarm } from './AlarmsHelper';
 import { store} from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import ReactHowler from 'react-howler'
-import highSound from './sounds/highSound.mp3';
+
+const prod = true;
+const path = prod 
+  ? '/Users/raffihotter/Code/covid19-ventilator/interface/breeze-electron/src/components/Alarms/sounds/highSound.mp3'
+  : './sounds/highSound.mp3';
+import highSound from path;
 
 export default class AlarmsHandler extends React.Component {
   constructor(props) {
