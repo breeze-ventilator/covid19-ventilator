@@ -61,7 +61,7 @@ export const readingsInfo = {
     alarmMin: 0,
     alarmMax: 0,
     sampleErrorValue: 0,
-    default: 1
+    default: null
   },
   batteryPercentage: {
     readableName: "Battery Percentage",
@@ -69,7 +69,7 @@ export const readingsInfo = {
     alarmMin: 0,
     alarmMax: 100,
     sampleErrorValue: 0,
-    default: 1
+    default: null
   },
   breathCompleted: {
     readableName: "Breath Completed",
@@ -77,7 +77,7 @@ export const readingsInfo = {
     alarmMin: 0,
     alarmMax: 1,
     sampleErrorValue: 0,
-    default: 1
+    default: null
   },
   tidalVolume: {
     readableName: "Tidal Volume",
@@ -85,7 +85,7 @@ export const readingsInfo = {
     alarmMin: 1,
     alarmMax: 2,
     sampleErrorValue: 0,
-    default: 1
+    default: null
   },
   errorCode: {
     readableName: "Error Code",
@@ -93,7 +93,7 @@ export const readingsInfo = {
     alarmMin: 0,
     alarmMax: 5,
     sampleErrorValue: 0,
-    default: 1
+    default: null
   },
   abnormalPressure: {
     readableName: "Abnormal Pressure",
@@ -101,7 +101,7 @@ export const readingsInfo = {
     alarmMin: 3,
     alarmMax: 15,
     sampleErrorValue: 0,
-    default: 1
+    default: null
   },
   abnormalFiO2: {
     readableName: "Abnormal FiO2",
@@ -109,12 +109,12 @@ export const readingsInfo = {
     alarmMin: 0,
     alarmMax: 100,
     sampleErrorValue: 0,
-    default: 1
+    default: null
   },
   "Minute ventilation": {
     readableName: "Minute Ventilation",
     unit: "L/min",
-    default: 7,
+    default: null,
     alarmMin:0,
     alarmMax:100
   }
