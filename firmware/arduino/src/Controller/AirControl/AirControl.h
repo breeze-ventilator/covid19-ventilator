@@ -18,7 +18,6 @@ class AirControl {
         int _pin;
         int _offPin;
         void setOpening(int percent);
-        int _fiO2;
 };
 
 #endif

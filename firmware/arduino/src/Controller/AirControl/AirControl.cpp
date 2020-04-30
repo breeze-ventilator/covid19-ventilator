@@ -4,7 +4,6 @@
 AirControl::AirControl(int pin, int offPin) {
   _pin = pin;
   _offPin = offPin;
-  _fiO2 = 0;
 }
 
 void AirControl::begin() {
@@ -14,10 +13,7 @@ void AirControl::begin() {
 }
 
 void AirControl::control(int desiredFiO2) {
-  if (desiredFiO2 != _fiO2) {
-    _fiO2 = desiredFiO2;
-    setOpening(100-desiredFiO2);
-  }
+  setOpening(100-desiredFiO2);
 }
 
 void AirControl::setOpening(int percent){ // percent open we want

@@ -68,6 +68,7 @@ void loop() {
   // only update parameters when breath is over
   if (parameters.newParamsHaveArrived && state.breathCompleted) {
     parameters.updateCurrentParameters();
+    controller.controlAir(parameters);
   }
 
   //breathing cycle

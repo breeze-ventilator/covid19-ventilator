@@ -32,6 +32,7 @@ class Controller {
         void manageBattery();
         void standby();
         void delayWithCharging(unsigned long delayTime);
+        void controlAir(Parameters &parameters);
     private:
         // Alarm alarm;
         OxygenControl oxygenControl;
