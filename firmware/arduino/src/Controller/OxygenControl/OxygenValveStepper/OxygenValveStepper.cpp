@@ -19,6 +19,7 @@ void OxygenValveStepper::begin() {
   pinMode(_oxygenActivate2Pin, OUTPUT);
   stepper.setMaxSpeed(STEPPER_MAX_SPEED); // Slower to get better accuracy
   stepper.setAcceleration(STEPPER_ACCELERATION);
+  deactivate();
 }
 
 void OxygenValveStepper::moveToZeroPosition() {

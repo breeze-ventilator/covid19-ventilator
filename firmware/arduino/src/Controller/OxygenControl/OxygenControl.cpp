@@ -10,11 +10,13 @@ OxygenControl::OxygenControl()
 
 void OxygenControl::begin() {
 	oxygenValveStepper.begin();
-  oxygenValveStepper.moveToZeroPosition();
+//   oxygenValveStepper.moveToZeroPosition();
 }
 
 void OxygenControl::zero() {
-  oxygenValveStepper.moveToZeroPosition();
+	oxygenValveStepper.deactivate();
+//   oxygenValveStepper.moveToZeroPosition();
+	return;
 }
 
 void OxygenControl::control(float desiredFiO2, Data &data) {
