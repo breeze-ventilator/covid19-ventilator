@@ -33,7 +33,7 @@ void Controller::startArduinoAlarm() {
 void Controller::inhalationControl(Data &data, Parameters &parameters, State &state) {
   //  airControl(parameters);
   controlPressure(state.desiredPressure, data);
-  oxygenControl.control(parameters.currentFiO2, data);
+  // oxygenControl.control(parameters.currentFiO2, data);
 }
 
 void Controller::exhalationControl(Data &data, Parameters &parameters) {

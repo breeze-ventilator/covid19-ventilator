@@ -69,6 +69,9 @@ void loop() {
   if (parameters.newParamsHaveArrived && state.breathCompleted) {
     parameters.updateCurrentParameters();
     controller.controlAir(parameters);
+    if (parameters.currentMode == OFF_MODE) {
+      controller.standby();
+    }
   }
 
   // breathing cycle
@@ -79,9 +82,6 @@ void loop() {
   }
   else if (state.breathingStage == EXHALATION_STAGE) {
     controller.exhalationControl(data, parameters);
-  }
-  else {
-    controller.standby();
   }
 
   if (state.breathCompleted && state.mode != OFF_MODE) {
