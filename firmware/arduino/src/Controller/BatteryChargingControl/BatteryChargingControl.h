@@ -4,12 +4,14 @@
 #define BATTERY_SENSE_PIN 6
 #define BATTERY_CONTROL_PIN 4
 
+#define BATTERY_SET_CURRENT 5 // amps
+
 #include "Arduino.h"
 
 class BatteryChargingControl {
 	public:
 		BatteryChargingControl(int sensePin, int controlPin);
-		void control(float setCurrent);
+		void control();
 		void init();
 	private:
 		int _sensePin;

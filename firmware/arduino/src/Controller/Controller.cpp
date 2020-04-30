@@ -64,7 +64,7 @@ void Controller::standby() {
 }
 
 void Controller::manageBattery() {
-  batteryChargingControl.control(1); // 1 amp
+  batteryChargingControl.control();
 }
 
 void Controller::delayWithCharging(unsigned long delayTime) {  

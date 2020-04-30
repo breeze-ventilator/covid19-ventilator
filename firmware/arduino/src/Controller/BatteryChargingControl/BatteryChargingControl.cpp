@@ -11,20 +11,20 @@ void BatteryChargingControl::init(){
 	_gateVolt = 0;
 	delay(1);
 	for (int i=0; i<500; i++) {
-		control(1);
+		control();
 	}
 }
 
-void BatteryChargingControl::control(float setCurrent){ // 1
+void BatteryChargingControl::control(){
 	float current = (float) (analogRead(_sensePin)) * 25.0 / 1024.0; 
 	// thoes values are nominal and the zero point (512) might need adjustment
 
-	if (current > setCurrent)
+	if (current > BATTERY_SET_CURRENT)
 	{ // too much current up gate voltage
 
 			_gateVolt++;
 	}
-	else if (current < setCurrent)
+	else if (current < BATTERY_SET_CURRENT)
 	{ // too little current lets let more in
 			_gateVolt--;
 	}
