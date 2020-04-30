@@ -18,9 +18,6 @@ void OxygenControl::zero() {
 }
 
 void OxygenControl::control(float desiredFiO2, Data &data) {
-	Serial.print(data.getOxygenRecentHistoryAverage());
-  Serial.print(" ");
-	Serial.println(oxygenValveStepper.getCurrentPosition());
 	if (isTimeToControlOxygen()) {
 		// only control oxygen if required
 		float oxygenConcentration = data.getOxygenRecentHistoryAverage();
