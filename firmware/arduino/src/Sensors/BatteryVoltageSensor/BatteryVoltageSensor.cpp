@@ -12,6 +12,6 @@ float BatteryVoltageSensor::read() {
 int BatteryVoltageSensor::readPercentage() {
   // this isnt perfect (far from it as we dont know what the current draw is or the size of battery. this is a guess at best)
   float batteryVoltage = read();
-  int batteryPercentage = constrain(map(batteryVoltage, 11.3, 12.8, 0, 100), 0, 100); 
+  int batteryPercentage = constrain(map(batteryVoltage, 11.5, 13.7, 0, 100), 0, 100); 
   return batteryPercentage;
 }

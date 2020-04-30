@@ -8,14 +8,17 @@
 
 class AirControl {
     public:
-        AirControl(int pin);
+        AirControl(int pin, int offPin);
         void begin();
         void control(int desiredFiO2);
+        void activate();
+        void deactivate();
     private:
         Servo airIntakeServo;
         int _pin;
-        int _zeroPoint;
+        int _offPin;
         void setOpening(int percent);
+        int _fiO2;
 };
 
 #endif

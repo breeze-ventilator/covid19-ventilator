@@ -3,17 +3,17 @@
 #include "Controller.h"
 
 Controller::Controller()
-    : // oxygenControl(),
+    : oxygenControl(),
     // alarm(ALARM_PIN),
-    airControl(AIR_INTAKE_PIN),
+    airControl(AIR_INTAKE_PIN, AIR_INTAKE_OFF_PIN),
     blowerControl(),
     batteryChargingControl(BATTERY_SENSE_PIN, BATTERY_CONTROL_PIN)
 {
-  _lastAirControlTime = 0;
+  
 }
 
 void Controller::init() {
-  // oxygenControl.begin();
+  oxygenControl.begin();
   batteryChargingControl.init();
   blowerControl.begin();
   airControl.begin();
@@ -31,18 +31,16 @@ void Controller::startArduinoAlarm() {
 }
 
 void Controller::inhalationControl(Data &data, Parameters &parameters, State &state) {
-  // oxygenControl.control(100);
-  // oxygenControl.control(random(100));
-  // oxygenControl(data, parameters, state);
-  // oxygenControl.control();
-
   //  airControl(parameters);
   controlPressure(state.desiredPressure, data);
   airControl.control(parameters.currentFiO2);
+  oxygenControl.control(parameters.currentFiO2, data);
 }
 
 void Controller::exhalationControl(Data &data, Parameters &parameters) {
   controlPressure(parameters.currentPEEP, data);
+  airControl.control(parameters.currentFiO2);
+  oxygenControl.control(parameters.currentFiO2, data);
 }
 
 void Controller::controlPressure(float desiredPressure, Data &data) {
@@ -60,20 +58,18 @@ void Controller::blowFan(int blowerPower) {
 
 void Controller::standby() {
   blowerControl.beQuiet();
+  oxygenControl.zero();
 }
 
 void Controller::manageBattery() {
   batteryChargingControl.control(1); // 1 amp
 }
 
-// void Controller::airControl(Parameters parameters) {
-//   airIntakeServo.setOpening(100 - parameters.currentFiO2);
-// }
-
-// int Controller::isTimeToControlAir() {
-//   return isTime(_lastAirControlTime, TIME_BETWEEN_AIR_CONTROLS);
-// }
-
-// int Controller::isTimeToControlBatteryCharging() {
-//   return isTime(_lastbatteryControlTime, TIME_BETWEEN_BATTERY_CONTROLS);
-// }
+void Controller::delayWithCharging(unsigned long delayTime) {  
+  while (delayTime >= 10) {
+    delay(10);
+    manageBattery();
+    delayTime -= 10;
+  }
+  delay(delayTime);
+}
