@@ -68,9 +68,10 @@ void loop() {
   // only update parameters when breath is over
   if (parameters.newParamsHaveArrived && state.breathCompleted) {
     parameters.updateCurrentParameters();
+    controller.controlAir(parameters);
   }
 
-  //breathing cycle
+  // breathing cycle
   controller.manageBattery();
   // controller.blowFan(90);
   if (state.breathingStage == INHALATION_STAGE) {
