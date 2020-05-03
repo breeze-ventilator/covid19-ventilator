@@ -11,6 +11,8 @@ import Alarms from '../Alarms/Alarms';
 import AlarmsHandler from '../Alarms/AlarmsHandler';
 import StatusBar from '../StatusBar/StatusBar';
 
+let modesWithoutStandby = [...modes];
+modesWithoutStandby.shift() // remove standby
 
 export default class App extends React.Component {
   constructor(props) {
@@ -40,6 +42,7 @@ export default class App extends React.Component {
     state.alarms = defaultAlarms;
     state.receivedAlarmFromArduino = false;
     state.arduinoAlarmType = null;
+    state.isStandby = true;
 
     this.state = state;
 
@@ -52,6 +55,8 @@ export default class App extends React.Component {
     this.setAlarms = this.setAlarms.bind(this);
     this.setCurrentlyAlarming = this.setCurrentlyAlarming.bind(this);
     this.toggleSetup = this.toggleSetup.bind(this);
+    this.toggleStandbyHandler = this.toggleStandbyHandler.bind(this);
+    this.toggleMode = this.toggleMode.bind(this);
     this.sendToArduino = this.sendToArduino.bind(this);
   }
 
@@ -68,6 +73,9 @@ export default class App extends React.Component {
 
     // Get mode and all other parameters.
     toSend.mode = modes.indexOf(this.state.parameters.mode);
+    if(this.state.isStandby){
+      toSend.mode = 0;
+    }
     for(let param of allParams){
       toSend[param] = this.state.parameters[param];
     }
@@ -94,6 +102,21 @@ export default class App extends React.Component {
 
   setCurrentlyAlarming(currentlyAlarming) {
     this.setState({currentlyAlarming});
+  }
+
+  toggleStandbyHandler() {
+    this.state.isStandby = !this.state.isStandby;
+    this.setState(this.state)
+  }
+
+  toggleMode(value) {
+    if(this.state.parameters.mode == "Pressure Control"){
+      this.state.parameters.mode = "Pressure Support"
+    }
+    else {
+      this.state.parameters.mode = "Pressure Control"
+    }
+    this.setState(this.state);
   }
 
   updateData(data) {
@@ -182,7 +205,7 @@ export default class App extends React.Component {
         />
         <Switch>
         <Route path="/diagnostics">
-          <Vitals toggleSetupHandler={this.toggleSetup} setup={this.state.setup} setParameters={this.setParameters} allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
+          <Vitals toggleMode={this.toggleMode} mode={this.state.parameters.mode} toggleStandbyHandler={this.toggleStandbyHandler} isStandby={this.state.isStandby} toggleSetupHandler={this.toggleSetup} setup={this.state.setup} setParameters={this.setParameters} allData={this.state.data} allParameters={this.state.parameters} currentlyAlarming={this.state.currentlyAlarming} />
         </Route>
         <Route path="/alarms">
           <Alarms

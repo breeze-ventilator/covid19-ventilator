@@ -15,6 +15,7 @@ import { modes, parameterInfo, controlParams, supportParams } from '../../util/c
 
 import Fab from '@material-ui/core/Fab';
 import CreateIcon from '@material-ui/icons/Create';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 function safeValue(fieldName, val){
   return Math.min(parameterInfo[fieldName].max, Math.max(parameterInfo[fieldName].min, val))
@@ -55,12 +56,9 @@ export default class Vitals extends React.Component {
   }
 
   toggleMode(value){
-    this.state.mode = modes[(modes.indexOf(value) + 1) % 3];
-    console.log(value);
-    console.log(modes.indexOf(value) + 1)
-    // this.state.modal.open = false;
-    this.setState(this.state)
-
+    if(this.state.isEditing){
+      this.props.toggleMode(value)
+    }
   }
 
   toggleEdit = () => {
@@ -111,10 +109,16 @@ export default class Vitals extends React.Component {
     // this.setState(prevState => ({[fieldName]: safeValue(fieldName, prevState[fieldName] - parameterInfo[fieldName].step)}))
   }
   render() {
-    const {isEditing, mode} = this.state
+    const {isEditing} = this.state
+    const mode = this.props.mode;
     const parameterNames = mode == "Pressure Control"
       ? controlParams
       : supportParams;
+
+    const isStandby = this.props.isStandby;
+
+    const standByButtonColor = isStandby ? "green" : "red";
+
     let footer = (
         <div style={{position: 'relative' }}>
           <div style={{paddingLeft: "20px"}}>Mode:</div>
@@ -123,6 +127,8 @@ export default class Vitals extends React.Component {
               {mode}
             </Button >
           </Header>
+
+          <div>
           {!isEditing
           ? <Fab size="small"
             style={{position:'absolute', right:'10px', top:'5px', boxShadow: "0px 3px 5px -1px rgba(0,0,0,0.1), 0px 6px 10px 0px rgba(0,0,0,0.04), 0px 1px 18px 0px rgba(0,0,0,0.12)",
@@ -130,7 +136,7 @@ export default class Vitals extends React.Component {
             // backgroundColor: '#eee'}}
             onClick={this.toggleEdit}
             >
-            <CreateIcon/>
+          <CreateIcon/>
           </Fab>
           : <Button variant="contained"
           style={{position:'absolute',
@@ -139,6 +145,16 @@ export default class Vitals extends React.Component {
           onClick={this.done}
           > done </Button>
           }
+          </div>
+          <div>
+          <Button variant="contained"
+            style={{position:'absolute', right:'80px', top:'5px',
+            backgroundColor: standByButtonColor, color: "white"}}
+            onClick={this.props.toggleStandbyHandler}>
+              <PowerSettingsNewIcon  />
+            </Button>
+          </div>
+
         <Grid container>
             {parameterNames.map((name) =>
             <Grid item xs={4}>
