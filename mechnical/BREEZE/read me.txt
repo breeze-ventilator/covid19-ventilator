@@ -1,6 +1,0 @@
-File BREEZE.iam is the main assembly file
-
-Files BREEZE-SXX are subassembly files
-Files BREEZE-MXX are manufactured parts
-
-Parts BREEZE-M02 and BREEZE-M23 are obselete parts and do not appear in any assembly
