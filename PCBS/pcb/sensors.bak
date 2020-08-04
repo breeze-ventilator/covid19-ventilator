@@ -1,0 +1,318 @@
+EESchema Schematic File Version 4
+LIBS:ventilator_shield-cache
+EELAYER 29 0
+EELAYER END
+$Descr A 11000 8500
+encoding utf-8
+Sheet 6 7
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Connector:Conn_01x06_Male J?
+U 1 1 5E9AF670
+P 2950 2200
+F 0 "J?" H 2922 2174 50  0000 R CNN
+F 1 "Conn_01x06_Male" H 2922 2083 50  0000 R CNN
+F 2 "" H 2950 2200 50  0001 C CNN
+F 3 "~" H 2950 2200 50  0001 C CNN
+	1    2950 2200
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	2750 2000 2300 2000
+Wire Wire Line
+	2750 2100 1650 2100
+Wire Wire Line
+	2750 2200 2300 2200
+Wire Wire Line
+	2750 2300 1650 2300
+Wire Wire Line
+	2750 2400 2000 2400
+Wire Wire Line
+	2750 2500 2300 2500
+Text HLabel 1650 2100 0    50   BiDi ~ 0
+FLOW-SDA
+Text HLabel 1650 2300 0    50   Input ~ 0
+FLOW-SCL
+Wire Wire Line
+	2300 2200 2300 2500
+Connection ~ 2300 2500
+Wire Wire Line
+	2300 2500 2300 2600
+$Comp
+L power:GND #PWR?
+U 1 1 5E9B0E6D
+P 2300 2600
+F 0 "#PWR?" H 2300 2350 50  0001 C CNN
+F 1 "GND" H 2305 2427 50  0000 C CNN
+F 2 "" H 2300 2600 50  0001 C CNN
+F 3 "" H 2300 2600 50  0001 C CNN
+	1    2300 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2300 2000 2300 1850
+$Comp
+L power:+12C #PWR?
+U 1 1 5E9B14C0
+P 2300 1850
+F 0 "#PWR?" H 2300 1700 50  0001 C CNN
+F 1 "+12C" H 2315 2023 50  0000 C CNN
+F 2 "" H 2300 1850 50  0001 C CNN
+F 3 "" H 2300 1850 50  0001 C CNN
+	1    2300 1850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2000 2400 2000 1850
+$Comp
+L power:+5V #PWR?
+U 1 1 5E9B1DDD
+P 2000 1850
+F 0 "#PWR?" H 2000 1700 50  0001 C CNN
+F 1 "+5V" H 2015 2023 50  0000 C CNN
+F 2 "" H 2000 1850 50  0001 C CNN
+F 3 "" H 2000 1850 50  0001 C CNN
+	1    2000 1850
+	1    0    0    -1  
+$EndComp
+Text Notes 1950 1550 0    50   ~ 0
+TODO: optimize pin order\n(could be reversed)
+Text Notes 3700 2200 0    50   ~ 0
+0.1" pitch pin header\npinout order as per Sensirion\nSFM3300-D pinout\n
+Text Notes 1300 1100 0    118  ~ 0
+Flow Sensor Interface
+$Comp
+L Amplifier_Operational:OPA188xxDBV U?
+U 1 1 5E9B3149
+P 3850 4300
+F 0 "U?" H 4194 4346 50  0000 L CNN
+F 1 "OPA188xxDBV" H 3850 4100 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:TSOT-23-5" H 3850 4300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/opa188.pdf" H 3850 4500 50  0001 C CNN
+	1    3850 4300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E9B436A
+P 3750 4600
+F 0 "#PWR?" H 3750 4350 50  0001 C CNN
+F 1 "GND" H 3755 4427 50  0000 C CNN
+F 2 "" H 3750 4600 50  0001 C CNN
+F 3 "" H 3750 4600 50  0001 C CNN
+	1    3750 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 5E9B4D46
+P 2400 4200
+F 0 "R?" V 2195 4200 50  0000 C CNN
+F 1 "R_US" V 2286 4200 50  0000 C CNN
+F 2 "" V 2440 4190 50  0001 C CNN
+F 3 "~" H 2400 4200 50  0001 C CNN
+	1    2400 4200
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5E9B6140
+P 2750 4450
+F 0 "C?" H 2865 4496 50  0000 L CNN
+F 1 "C" H 2865 4405 50  0000 L CNN
+F 2 "" H 2788 4300 50  0001 C CNN
+F 3 "~" H 2750 4450 50  0001 C CNN
+	1    2750 4450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5E9B695A
+P 3850 5150
+F 0 "C?" V 3598 5150 50  0000 C CNN
+F 1 "C" V 3689 5150 50  0000 C CNN
+F 2 "" H 3888 5000 50  0001 C CNN
+F 3 "~" H 3850 5150 50  0001 C CNN
+	1    3850 5150
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R?
+U 1 1 5E9B6EB4
+P 3850 5550
+F 0 "R?" V 3645 5550 50  0000 C CNN
+F 1 "R_US" V 3736 5550 50  0000 C CNN
+F 2 "" V 3890 5540 50  0001 C CNN
+F 3 "~" H 3850 5550 50  0001 C CNN
+	1    3850 5550
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1650 4200 2250 4200
+Wire Wire Line
+	2550 4200 2750 4200
+Wire Wire Line
+	2750 4200 2750 4300
+Connection ~ 2750 4200
+Wire Wire Line
+	2750 4200 3550 4200
+Wire Wire Line
+	3550 4400 3300 4400
+Wire Wire Line
+	3300 4400 3300 5150
+Wire Wire Line
+	3300 5150 3700 5150
+Wire Wire Line
+	4450 5150 4450 4300
+Wire Wire Line
+	4450 4300 4150 4300
+Wire Wire Line
+	4000 5150 4450 5150
+Wire Wire Line
+	3300 5150 3300 5550
+Wire Wire Line
+	3300 5550 3700 5550
+Wire Wire Line
+	4450 5550 4450 5150
+Wire Wire Line
+	4000 5550 4450 5550
+Connection ~ 3300 5150
+Connection ~ 4450 5150
+$Comp
+L power:GND #PWR?
+U 1 1 5E9B9BE6
+P 2750 4600
+F 0 "#PWR?" H 2750 4350 50  0001 C CNN
+F 1 "GND" H 2755 4427 50  0000 C CNN
+F 2 "" H 2750 4600 50  0001 C CNN
+F 3 "" H 2750 4600 50  0001 C CNN
+	1    2750 4600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 4300 5300 4300
+Connection ~ 4450 4300
+Text HLabel 5300 4300 2    50   Output ~ 0
+O2SENSOR_OUT
+$Comp
+L Connector_Generic:Conn_01x02 J?
+U 1 1 5E9BB39D
+P 1450 4200
+F 0 "J?" H 1368 4417 50  0000 C CNN
+F 1 "Conn_01x02" H 1368 4326 50  0000 C CNN
+F 2 "" H 1450 4200 50  0001 C CNN
+F 3 "~" H 1450 4200 50  0001 C CNN
+	1    1450 4200
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E9BBFC1
+P 1800 4450
+F 0 "#PWR?" H 1800 4200 50  0001 C CNN
+F 1 "GND" H 1805 4277 50  0000 C CNN
+F 2 "" H 1800 4450 50  0001 C CNN
+F 3 "" H 1800 4450 50  0001 C CNN
+	1    1800 4450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 4450 1800 4300
+Wire Wire Line
+	1800 4300 1650 4300
+$Comp
+L power:+5V #PWR?
+U 1 1 5E9BD39D
+P 3750 3550
+F 0 "#PWR?" H 3750 3400 50  0001 C CNN
+F 1 "+5V" H 3765 3723 50  0000 C CNN
+F 2 "" H 3750 3550 50  0001 C CNN
+F 3 "" H 3750 3550 50  0001 C CNN
+	1    3750 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3750 3550 3750 3650
+$Comp
+L Device:C C?
+U 1 1 5E9BEAD4
+P 4100 3800
+F 0 "C?" H 4215 3846 50  0000 L CNN
+F 1 "C" H 4215 3755 50  0000 L CNN
+F 2 "" H 4138 3650 50  0001 C CNN
+F 3 "~" H 4100 3800 50  0001 C CNN
+	1    4100 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E9BF4B2
+P 4100 3950
+F 0 "#PWR?" H 4100 3700 50  0001 C CNN
+F 1 "GND" H 4105 3777 50  0000 C CNN
+F 2 "" H 4100 3950 50  0001 C CNN
+F 3 "" H 4100 3950 50  0001 C CNN
+	1    4100 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 3650 3750 3650
+Connection ~ 3750 3650
+Wire Wire Line
+	3750 3650 3750 4000
+$Comp
+L Device:R_US R?
+U 1 1 5E9C49CE
+P 2850 5550
+F 0 "R?" V 2645 5550 50  0000 C CNN
+F 1 "R_US" V 2736 5550 50  0000 C CNN
+F 2 "" V 2890 5540 50  0001 C CNN
+F 3 "~" H 2850 5550 50  0001 C CNN
+	1    2850 5550
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3000 5550 3300 5550
+Connection ~ 3300 5550
+Wire Wire Line
+	2700 5550 2500 5550
+Wire Wire Line
+	2500 5550 2500 5700
+$Comp
+L power:GND #PWR?
+U 1 1 5E9C5CCF
+P 2500 5700
+F 0 "#PWR?" H 2500 5450 50  0001 C CNN
+F 1 "GND" H 2505 5527 50  0000 C CNN
+F 2 "" H 2500 5700 50  0001 C CNN
+F 3 "" H 2500 5700 50  0001 C CNN
+	1    2500 5700
+	1    0    0    -1  
+$EndComp
+Text Notes 2800 3300 0    118  ~ 0
+O2 Sensor Interface
+Text HLabel 6350 1800 0    50   BiDi ~ 0
+PRESSURE-SDA
+Text HLabel 6350 1900 0    50   Input ~ 0
+PRESSURE-SCL
+Wire Wire Line
+	6350 1800 7200 1800
+Wire Wire Line
+	6350 1900 7200 1900
+Text Notes 7000 5750 0    157  ~ 0
+TBD\nfiltering on sensor power
+Text Notes 5700 1100 0    118  ~ 0
+Pressure Sensor Interface
+Text Notes 5700 2800 0    157  ~ 0
+TBD: pressure sensor choice
+Text Notes 1350 6700 0    157  ~ 0
+TBD: O2 sensor signal range, \ncomponent values
+$EndSCHEMATC

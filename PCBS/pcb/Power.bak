@@ -1,0 +1,86 @@
+EESchema Schematic File Version 4
+LIBS:ventilator_shield-cache
+EELAYER 29 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 7 7
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Connector:Screw_Terminal_01x06 J?
+U 1 1 5EB0487D
+P 1600 1800
+F 0 "J?" H 1680 1792 50  0000 L CNN
+F 1 "Screw_Terminal_01x06" H 1680 1701 50  0000 L CNN
+F 2 "" H 1600 1800 50  0001 C CNN
+F 3 "~" H 1600 1800 50  0001 C CNN
+	1    1600 1800
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 1900 2000 1900
+Wire Wire Line
+	2000 1900 2000 2000
+Wire Wire Line
+	1800 2000 2000 2000
+Connection ~ 2000 2000
+Wire Wire Line
+	2000 2000 2000 2100
+Wire Wire Line
+	1800 2100 2000 2100
+Connection ~ 2000 2100
+Wire Wire Line
+	2000 2100 2000 2250
+$Comp
+L power:GND #PWR?
+U 1 1 5EB06E2C
+P 2000 2250
+F 0 "#PWR?" H 2000 2000 50  0001 C CNN
+F 1 "GND" H 2005 2077 50  0000 C CNN
+F 2 "" H 2000 2250 50  0001 C CNN
+F 3 "" H 2000 2250 50  0001 C CNN
+	1    2000 2250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 1800 2000 1800
+Wire Wire Line
+	2000 1800 2000 1700
+Wire Wire Line
+	2000 1600 1800 1600
+Wire Wire Line
+	1800 1700 2000 1700
+Connection ~ 2000 1700
+Wire Wire Line
+	2000 1700 2000 1600
+$Comp
+L Device:Fuse F?
+U 1 1 5EB07422
+P 2450 1600
+F 0 "F?" V 2253 1600 50  0000 C CNN
+F 1 "Fuse" V 2344 1600 50  0000 C CNN
+F 2 "" V 2380 1600 50  0001 C CNN
+F 3 "~" H 2450 1600 50  0001 C CNN
+	1    2450 1600
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_Shunt_US R?
+U 1 1 5EB07F9D
+P 3000 1600
+F 0 "R?" V 2775 1600 50  0000 C CNN
+F 1 "LVK12R010FER" V 2866 1600 50  0000 C CNN
+F 2 "" V 2930 1600 50  0001 C CNN
+F 3 "~" H 3000 1600 50  0001 C CNN
+	1    3000 1600
+	0    1    1    0   
+$EndComp
+$EndSCHEMATC
