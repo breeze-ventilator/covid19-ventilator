@@ -22,7 +22,7 @@ void setup() {
   // controller.stopArduinoAlarm();
   controller.init();
   sensors.init();
-  int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL, controller);
+  int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL, controller); // not using error code yet
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
   // }
@@ -32,12 +32,12 @@ void loop() {
   // Check for Params
   if (piCommunication.isDataAvailable()) {
     char messageType = piCommunication.getMessageType();
-    if (messageType == 'P')
+    if (messageType == 'P') // parameters have been sent
     {
       piCommunication.getParametersFromPi();
       parameters.getNewParameters(piCommunication.parametersBuffer);
     }
-    else if (messageType == 'G')
+    else if (messageType == 'G') // check if raspberry pi is still awake
     {
       // Pi is awake, should alarm if it hasn't been awake for a while
       piCommunication.flush();
