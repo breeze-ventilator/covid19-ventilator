@@ -1,6 +1,3 @@
-// 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
-// (eepRom: for bootup, a read-only memory whose contents can be erased and reprogrammed using a pulsed voltage.)
-
 #include "src/Parameters/Parameters.h"
 #include "src/Data/Data.h"
 #include "src/Sensors/Sensors.h"
