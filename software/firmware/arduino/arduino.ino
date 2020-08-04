@@ -29,20 +29,6 @@ void setup() {
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
   // }
-
-  // if (servosConnectedErrorCode != NO_ERROR) {
-  //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
-  // }
-  // parameters.currentMode = PRESSURE_CONTROL_MODE;
-  // parameters.currentFiO2 = 80;
-  // parameters.currentInspiratoryTime = 4000;
-  // parameters.currentMaxExpiratoryTime = 3000;
-  // parameters.currentInspiratoryPressure = 250; // mm H2O
-  // parameters.currentPEEP = 50; // mm H2O
-  // parameters.currentRiseTime = 100; // ms
-  // parameters.currentSensitivity = -1; // L
-  // parameters.currentApneaTime = 6000; // ms
-  // parameters.currentFlowCyclingOffPercentage = 0.20; // 20%
 }
 
 void loop() {
