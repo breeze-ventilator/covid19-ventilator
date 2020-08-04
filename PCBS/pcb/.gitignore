@@ -1,0 +1,40 @@
+# For PCBs designed using KiCad: http://www.kicad-pcb.org/
+# Format documentation: http://kicad-pcb.org/help/file-formats/
+
+# Temporary files
+*.000
+*.bak
+*.bck
+*.kicad_pcb-bak
+*.sch-bak
+*~
+_autosave-*
+*.tmp
+#including rescue helps when using a cloned repo
+#*-rescue.lib
+*-save.pro
+*-save.kicad_pcb
+_saved_*
+
+# Footprint cache
+fp-info-cache
+
+# Netlist files (exported from Eeschema)
+*.net
+
+# Autorouter files (exported from Pcbnew)
+*.dsn
+*.ses
+
+# Exported BOM files (and stuff to import them)
+*.xml
+*.csv
+*.xls*
+
+# Gerber and flatcam files
+gerber/*
+flatcam/*
+Data-Logger-shield-master/*
+
+# Archive for sending
+*.zip

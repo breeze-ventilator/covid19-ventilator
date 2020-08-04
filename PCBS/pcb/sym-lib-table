@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name albatros_arduino_shield-rescue)(type Legacy)(uri ${KIPRJMOD}/albatros_arduino_shield-rescue.lib)(options "")(descr "")(disabled))
+  (lib (name ventilator_shield-rescue)(type Legacy)(uri ${KIPRJMOD}/ventilator_shield-rescue.lib)(options "")(descr ""))
+  (lib (name ventilator-parts)(type Legacy)(uri ${KIPRJMOD}/ventilator-parts.lib)(options "")(descr ""))
+)

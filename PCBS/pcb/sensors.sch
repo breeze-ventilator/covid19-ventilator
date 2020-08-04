@@ -1,0 +1,493 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A 11000 8500
+encoding utf-8
+Sheet 4 5
+Title "Breeze Ventilator Electronics Board"
+Date ""
+Rev ""
+Comp "MTL Ventilator"
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Connector:Conn_01x06_Male J17
+U 1 1 5E9AF670
+P 2950 2450
+F 0 "J17" H 2922 2424 50  0000 R CNN
+F 1 "Conn_01x06_Male" H 2922 2333 50  0000 R CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical" H 2950 2450 50  0001 C CNN
+F 3 "~" H 2950 2450 50  0001 C CNN
+	1    2950 2450
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	2750 2250 2300 2250
+Wire Wire Line
+	2750 2350 1400 2350
+Wire Wire Line
+	2750 2450 2300 2450
+Wire Wire Line
+	2750 2550 1400 2550
+Wire Wire Line
+	2750 2650 1850 2650
+Wire Wire Line
+	2750 2750 2300 2750
+Text HLabel 1400 2350 0    50   BiDi ~ 0
+FLOW-SDA
+Text HLabel 1400 2550 0    50   Input ~ 0
+FLOW-SCL
+Wire Wire Line
+	2300 2450 2300 2750
+Connection ~ 2300 2750
+Wire Wire Line
+	2300 2750 2300 2850
+$Comp
+L power:GND #PWR0123
+U 1 1 5E9B0E6D
+P 2300 2850
+F 0 "#PWR0123" H 2300 2600 50  0001 C CNN
+F 1 "GND" H 2305 2677 50  0000 C CNN
+F 2 "" H 2300 2850 50  0001 C CNN
+F 3 "" H 2300 2850 50  0001 C CNN
+	1    2300 2850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2300 2250 2300 2100
+$Comp
+L power:+5V #PWR0125
+U 1 1 5E9B1DDD
+P 2300 1600
+F 0 "#PWR0125" H 2300 1450 50  0001 C CNN
+F 1 "+5V" H 2315 1773 50  0000 C CNN
+F 2 "" H 2300 1600 50  0001 C CNN
+F 3 "" H 2300 1600 50  0001 C CNN
+	1    2300 1600
+	1    0    0    -1  
+$EndComp
+Text Notes 1950 1050 0    50   ~ 0
+TODO: optimize pin order\n(could be reversed)
+Text Notes 3700 2450 0    50   ~ 0
+0.1" pitch pin header\npinout order as per Sensirion\nSFM3300-D pinout\n
+Text Notes 1300 900  0    118  ~ 0
+Flow Sensor Interface
+$Comp
+L Amplifier_Operational:OPA188xxDBV U8
+U 1 1 5E9B3149
+P 3850 4300
+F 0 "U8" H 4194 4346 50  0000 L CNN
+F 1 "OPA188xxDBV" H 3850 4100 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:TSOT-23-5" H 3850 4300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/opa188.pdf" H 3850 4500 50  0001 C CNN
+	1    3850 4300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0126
+U 1 1 5E9B436A
+P 3750 4600
+F 0 "#PWR0126" H 3750 4350 50  0001 C CNN
+F 1 "GND" H 3755 4427 50  0000 C CNN
+F 2 "" H 3750 4600 50  0001 C CNN
+F 3 "" H 3750 4600 50  0001 C CNN
+	1    3750 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_US R16
+U 1 1 5E9B4D46
+P 2200 4200
+F 0 "R16" V 1995 4200 50  0000 C CNN
+F 1 "R_US" V 2086 4200 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 2240 4190 50  0001 C CNN
+F 3 "~" H 2200 4200 50  0001 C CNN
+	1    2200 4200
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C C1
+U 1 1 5E9B6140
+P 2550 4450
+F 0 "C1" H 2665 4496 50  0000 L CNN
+F 1 "C" H 2665 4405 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 2588 4300 50  0001 C CNN
+F 3 "~" H 2550 4450 50  0001 C CNN
+	1    2550 4450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C2
+U 1 1 5E9B695A
+P 3850 5150
+F 0 "C2" V 3598 5150 50  0000 C CNN
+F 1 "C" V 3689 5150 50  0000 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 3888 5000 50  0001 C CNN
+F 3 "~" H 3850 5150 50  0001 C CNN
+	1    3850 5150
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_US R23
+U 1 1 5E9B6EB4
+P 3850 5550
+F 0 "R23" V 3645 5550 50  0000 C CNN
+F 1 "R_US" V 3736 5550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 3890 5540 50  0001 C CNN
+F 3 "~" H 3850 5550 50  0001 C CNN
+	1    3850 5550
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1650 4200 2050 4200
+Wire Wire Line
+	2350 4200 2550 4200
+Wire Wire Line
+	2550 4200 2550 4300
+Connection ~ 2550 4200
+Wire Wire Line
+	2550 4200 3550 4200
+Wire Wire Line
+	3550 4400 3300 4400
+Wire Wire Line
+	3300 4400 3300 5150
+Wire Wire Line
+	3300 5150 3700 5150
+Wire Wire Line
+	4450 5150 4450 4300
+Wire Wire Line
+	4450 4300 4150 4300
+Wire Wire Line
+	4000 5150 4450 5150
+Wire Wire Line
+	3300 5150 3300 5550
+Wire Wire Line
+	3300 5550 3700 5550
+Wire Wire Line
+	4450 5550 4450 5150
+Wire Wire Line
+	4000 5550 4450 5550
+Connection ~ 3300 5150
+Connection ~ 4450 5150
+$Comp
+L power:GND #PWR0127
+U 1 1 5E9B9BE6
+P 2550 4600
+F 0 "#PWR0127" H 2550 4350 50  0001 C CNN
+F 1 "GND" H 2555 4427 50  0000 C CNN
+F 2 "" H 2550 4600 50  0001 C CNN
+F 3 "" H 2550 4600 50  0001 C CNN
+	1    2550 4600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 4300 5300 4300
+Connection ~ 4450 4300
+Text HLabel 5300 4300 2    50   Output ~ 0
+O2SENSOR_OUT
+$Comp
+L Connector_Generic:Conn_01x02 J16
+U 1 1 5E9BB39D
+P 1450 4200
+F 0 "J16" H 1368 4417 50  0000 C CNN
+F 1 "Conn_01x02" H 1368 4326 50  0000 C CNN
+F 2 "Connector_Molex:Molex_KK-254_AE-6410-02A_1x02_P2.54mm_Vertical" H 1450 4200 50  0001 C CNN
+F 3 "~" H 1450 4200 50  0001 C CNN
+	1    1450 4200
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0128
+U 1 1 5E9BBFC1
+P 1800 4450
+F 0 "#PWR0128" H 1800 4200 50  0001 C CNN
+F 1 "GND" H 1805 4277 50  0000 C CNN
+F 2 "" H 1800 4450 50  0001 C CNN
+F 3 "" H 1800 4450 50  0001 C CNN
+	1    1800 4450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 4450 1800 4300
+Wire Wire Line
+	1800 4300 1650 4300
+$Comp
+L power:+5V #PWR0129
+U 1 1 5E9BD39D
+P 3750 3550
+F 0 "#PWR0129" H 3750 3400 50  0001 C CNN
+F 1 "+5V" H 3765 3723 50  0000 C CNN
+F 2 "" H 3750 3550 50  0001 C CNN
+F 3 "" H 3750 3550 50  0001 C CNN
+	1    3750 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3750 3550 3750 3650
+$Comp
+L Device:C C3
+U 1 1 5E9BEAD4
+P 4100 3800
+F 0 "C3" H 4215 3846 50  0000 L CNN
+F 1 "C" H 4215 3755 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 4138 3650 50  0001 C CNN
+F 3 "~" H 4100 3800 50  0001 C CNN
+	1    4100 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0130
+U 1 1 5E9BF4B2
+P 4100 3950
+F 0 "#PWR0130" H 4100 3700 50  0001 C CNN
+F 1 "GND" H 4105 3777 50  0000 C CNN
+F 2 "" H 4100 3950 50  0001 C CNN
+F 3 "" H 4100 3950 50  0001 C CNN
+	1    4100 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 3650 3750 3650
+Connection ~ 3750 3650
+Wire Wire Line
+	3750 3650 3750 3850
+$Comp
+L Device:R_US R22
+U 1 1 5E9C49CE
+P 2600 5550
+F 0 "R22" V 2395 5550 50  0000 C CNN
+F 1 "R_US" V 2486 5550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 2640 5540 50  0001 C CNN
+F 3 "~" H 2600 5550 50  0001 C CNN
+	1    2600 5550
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2750 5550 2950 5550
+Connection ~ 3300 5550
+Wire Wire Line
+	2450 5550 2250 5550
+Wire Wire Line
+	2250 5550 2250 5700
+$Comp
+L power:GND #PWR0131
+U 1 1 5E9C5CCF
+P 2250 5700
+F 0 "#PWR0131" H 2250 5450 50  0001 C CNN
+F 1 "GND" H 2255 5527 50  0000 C CNN
+F 2 "" H 2250 5700 50  0001 C CNN
+F 3 "" H 2250 5700 50  0001 C CNN
+	1    2250 5700
+	1    0    0    -1  
+$EndComp
+Text Notes 2800 3300 0    118  ~ 0
+O2 Sensor Interface
+Text Notes 7000 5750 0    157  ~ 0
+TBD\nfiltering on sensor power
+Text Notes 5700 1100 0    118  ~ 0
+Pressure Sensor Interface
+Text Notes 1350 6700 0    157  ~ 0
+TBD: O2 sensor signal range, \ncomponent values
+Text Notes 7050 1750 0    50   ~ 0
+HSCDLND001PGAA5
+$Comp
+L ventilator-parts:HSCDLND001PGAA5 U2
+U 1 1 5E8FF278
+P 7400 2300
+F 0 "U2" H 6963 2346 50  0000 R CNN
+F 1 "HSCDLND001PGAA5" H 6963 2255 50  0000 R CNN
+F 2 "ventilator-parts:DIP-8_W13.3mm" H 7500 2300 50  0001 C CNN
+F 3 "" H 7500 2300 50  0001 C CNN
+	1    7400 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7550 2700 7550 2600
+$Comp
+L power:GND #PWR0101
+U 1 1 5E901A40
+P 7550 2700
+F 0 "#PWR0101" H 7550 2450 50  0001 C CNN
+F 1 "GND" H 7555 2527 50  0000 C CNN
+F 2 "" H 7550 2700 50  0001 C CNN
+F 3 "" H 7550 2700 50  0001 C CNN
+	1    7550 2700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0104
+U 1 1 5E902113
+P 7450 2000
+F 0 "#PWR0104" H 7450 1850 50  0001 C CNN
+F 1 "+5V" H 7465 2173 50  0000 C CNN
+F 2 "" H 7450 2000 50  0001 C CNN
+F 3 "" H 7450 2000 50  0001 C CNN
+	1    7450 2000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7800 2300 8200 2300
+Text HLabel 8200 2300 2    50   Output ~ 0
+PRESSURE_A
+$Comp
+L ventilator-parts:HSCDLND001PGAA5 U3
+U 1 1 5E9046E9
+P 7400 3650
+F 0 "U3" H 6963 3696 50  0000 R CNN
+F 1 "HSCDLND001PGAA5" H 6963 3605 50  0000 R CNN
+F 2 "ventilator-parts:DIP-8_W13.3mm" H 7500 3650 50  0001 C CNN
+F 3 "" H 7500 3650 50  0001 C CNN
+	1    7400 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7550 4050 7550 3950
+$Comp
+L power:GND #PWR0105
+U 1 1 5E9046F8
+P 7550 4050
+F 0 "#PWR0105" H 7550 3800 50  0001 C CNN
+F 1 "GND" H 7555 3877 50  0000 C CNN
+F 2 "" H 7550 4050 50  0001 C CNN
+F 3 "" H 7550 4050 50  0001 C CNN
+	1    7550 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0107
+U 1 1 5E904702
+P 7450 3350
+F 0 "#PWR0107" H 7450 3200 50  0001 C CNN
+F 1 "+5V" H 7465 3523 50  0000 C CNN
+F 2 "" H 7450 3350 50  0001 C CNN
+F 3 "" H 7450 3350 50  0001 C CNN
+	1    7450 3350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7800 3650 8200 3650
+Text HLabel 8200 3650 2    50   Output ~ 0
+PRESSURE_B
+$Comp
+L Jumper:Jumper_3_Open JP2
+U 1 1 5E908149
+P 1850 1750
+F 0 "JP2" H 1850 1974 50  0000 C CNN
+F 1 "Jumper_3_Open" H 1850 1883 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 1850 1750 50  0001 C CNN
+F 3 "~" H 1850 1750 50  0001 C CNN
+	1    1850 1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1850 2650 1850 1900
+Wire Wire Line
+	2100 1750 2300 1750
+Wire Wire Line
+	2300 1600 2300 1750
+Text HLabel 1400 1750 0    50   Input ~ 0
+FLOWSENSOR_POWER
+Wire Wire Line
+	1400 1750 1600 1750
+Text Notes 6500 4500 0    118  ~ 0
+2nd sensor space allowing
+$Comp
+L power:+12V #PWR0124
+U 1 1 5E9CF73A
+P 2300 2100
+F 0 "#PWR0124" H 2300 1950 50  0001 C CNN
+F 1 "+12V" H 2315 2273 50  0000 C CNN
+F 2 "" H 2300 2100 50  0001 C CNN
+F 3 "" H 2300 2100 50  0001 C CNN
+	1    2300 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C13
+U 1 1 5EC16C88
+P 8350 2950
+F 0 "C13" H 8465 2996 50  0000 L CNN
+F 1 "C" H 8465 2905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 8388 2800 50  0001 C CNN
+F 3 "~" H 8350 2950 50  0001 C CNN
+	1    8350 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C14
+U 1 1 5EC17E72
+P 8700 2950
+F 0 "C14" H 8815 2996 50  0000 L CNN
+F 1 "C" H 8815 2905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 8738 2800 50  0001 C CNN
+F 3 "~" H 8700 2950 50  0001 C CNN
+	1    8700 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8350 3100 8350 3200
+Wire Wire Line
+	8350 3200 8500 3200
+Wire Wire Line
+	8700 3200 8700 3100
+Wire Wire Line
+	8350 2800 8350 2700
+Wire Wire Line
+	8350 2700 8500 2700
+Wire Wire Line
+	8700 2700 8700 2800
+$Comp
+L power:+5V #PWR017
+U 1 1 5EC1961A
+P 8500 2700
+F 0 "#PWR017" H 8500 2550 50  0001 C CNN
+F 1 "+5V" H 8515 2873 50  0000 C CNN
+F 2 "" H 8500 2700 50  0001 C CNN
+F 3 "" H 8500 2700 50  0001 C CNN
+	1    8500 2700
+	1    0    0    -1  
+$EndComp
+Connection ~ 8500 2700
+Wire Wire Line
+	8500 2700 8700 2700
+$Comp
+L power:GND #PWR019
+U 1 1 5EC19A98
+P 8500 3200
+F 0 "#PWR019" H 8500 2950 50  0001 C CNN
+F 1 "GND" H 8505 3027 50  0000 C CNN
+F 2 "" H 8500 3200 50  0001 C CNN
+F 3 "" H 8500 3200 50  0001 C CNN
+	1    8500 3200
+	1    0    0    -1  
+$EndComp
+Connection ~ 8500 3200
+Wire Wire Line
+	8500 3200 8700 3200
+$Comp
+L Device:R_US R2
+U 1 1 5E975F0A
+P 2950 4800
+F 0 "R2" V 2745 4800 50  0000 C CNN
+F 1 "R_US" V 2836 4800 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 2990 4790 50  0001 C CNN
+F 3 "~" H 2950 4800 50  0001 C CNN
+	1    2950 4800
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	2950 5550 2950 4950
+Wire Wire Line
+	2950 3850 3750 3850
+Wire Wire Line
+	2950 4650 2950 3850
+Connection ~ 2950 5550
+Wire Wire Line
+	2950 5550 3300 5550
+Connection ~ 3750 3850
+Wire Wire Line
+	3750 3850 3750 4000
+$EndSCHEMATC
