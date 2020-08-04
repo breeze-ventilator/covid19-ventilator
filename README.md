@@ -2,7 +2,7 @@
 Welcome to our open-source, low-cost, easy-to-build ventilator design! We are a group of students, physicians and engineers who worked on the design to help alleviate the critical need for ventilators during the COVID-19 pandemic. Here is a [video](https://youtu.be/5ufh_80dSsk) with an overview of our design.
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=6LeZjULZnUc">
+  <a href="https://www.youtube.com/watch?v=6LeZjULZnUc" target="_blank">
     <img alt="Play Introduction Video" src="media/youtube_thubnail.png" height="320">
   </a>
 </p>
