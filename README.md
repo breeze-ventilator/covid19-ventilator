@@ -4,7 +4,7 @@ Welcome to our open-source, low-cost ventilator design! We are a group of studen
 Here is a [video](https://youtu.be/5ufh_80dSsk) with an overview of our design.
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=6LeZjULZnUc" target="_blank">
+  <a href="https://youtu.be/5ufh_80dSsk" target="_blank">
     <img alt="Play Introduction Video" src="media/youtube_thubnail.png" height="320">
   </a>
 </p>
