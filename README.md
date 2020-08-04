@@ -9,7 +9,7 @@ Here is a [video](https://youtu.be/5ufh_80dSsk) with an overview of our design.
   </a>
 </p>
 
-You can also check out our [in depth design video](https://youtu.be/dRpsoaCI0QA) and [public announcement video](https://youtu.be/4-jjhEgUjkQ)
+You can also check out our [in depth design video](https://youtu.be/dRpsoaCI0QA) and [public announcement video](https://youtu.be/4-jjhEgUjkQ).
 
 ## Folder Structure
 **Mechanical:** Here you will find everything you need to construct the device including the bill of materials and the CAD files.
