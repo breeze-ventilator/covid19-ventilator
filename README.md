@@ -14,7 +14,7 @@ Here is a breakdown of what you can find in each of the folders on our page:
 
 1. Mechanical
 
-Here you will find everything you need to construct the device including the bill of materials, the CAD files and the Assembly Guide.
+Here you will find everything you need to construct the device including the bill of materials and the CAD files.
 
 2. Software
 
@@ -26,6 +26,6 @@ Here you will find the PCBs and the circuit diagrams.
 
 4- Documentation
 
-Here you will find all of the documentation for operating the device such as the User Guide! 
+Here you will find all of the documentation for operating the device such as the User Guide and the Assembly guide which will help you set-up and run your device smoothly! 
 
 We hope that you wil find inspiration from our design and that it will help you with your projects! 
