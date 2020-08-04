@@ -1,6 +1,3 @@
-// 8 kBytes of sRAM, 4 kBytes of eepROM, 256 kBytes of code storage
-// (eepRom: for bootup, a read-only memory whose contents can be erased and reprogrammed using a pulsed voltage.)
-
 #include "src/Parameters/Parameters.h"
 #include "src/Data/Data.h"
 #include "src/Sensors/Sensors.h"
@@ -25,36 +22,22 @@ void setup() {
   // controller.stopArduinoAlarm();
   controller.init();
   sensors.init();
-  int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL, controller);
+  int piCommunicationErrorCode = piCommunication.initCommunication(PI_PING_INTERVAL, controller); // not using error code yet
   // if (piCommunicationErrorCode != NO_ERROR) { // could also check for PI_SENT_WRONG_RESPONSE_ERROR
   //   controller.ringAlarmForever();
   // }
-
-  // if (servosConnectedErrorCode != NO_ERROR) {
-  //   piCommunication.sendServosNotConnectedErrorToPi(servosConnectedErrorCode);
-  // }
-  // parameters.currentMode = PRESSURE_CONTROL_MODE;
-  // parameters.currentFiO2 = 80;
-  // parameters.currentInspiratoryTime = 4000;
-  // parameters.currentMaxExpiratoryTime = 3000;
-  // parameters.currentInspiratoryPressure = 250; // mm H2O
-  // parameters.currentPEEP = 50; // mm H2O
-  // parameters.currentRiseTime = 100; // ms
-  // parameters.currentSensitivity = -1; // L
-  // parameters.currentApneaTime = 6000; // ms
-  // parameters.currentFlowCyclingOffPercentage = 0.20; // 20%
 }
 
 void loop() {
   // Check for Params
   if (piCommunication.isDataAvailable()) {
     char messageType = piCommunication.getMessageType();
-    if (messageType == 'P')
+    if (messageType == 'P') // parameters have been sent
     {
       piCommunication.getParametersFromPi();
       parameters.getNewParameters(piCommunication.parametersBuffer);
     }
-    else if (messageType == 'G')
+    else if (messageType == 'G') // check if raspberry pi is still awake
     {
       // Pi is awake, should alarm if it hasn't been awake for a while
       piCommunication.flush();
