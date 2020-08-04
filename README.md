@@ -8,9 +8,9 @@ This is the repository for all of the Breeze ventilator code. It contains code f
 </p>
 
 Videos:
-* [Breeze design (overview)](https://youtu.be/5ufh_80dSsk)
-* [Breeze design (in depth)](https://youtu.be/dRpsoaCI0QA)
-* [Public announcement](https://youtu.be/4-jjhEgUjkQ)
+* [Breeze design (overview)] (https://youtu.be/5ufh_80dSsk)
+* [Breeze design (in depth)] (https://youtu.be/dRpsoaCI0QA)
+* [Public announcement] (https://youtu.be/4-jjhEgUjkQ)
 
 ## Firmware for Arduino
 The Arduino firmware has several components:
