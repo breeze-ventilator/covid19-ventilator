@@ -20,6 +20,10 @@ You can also check out our [in depth design video](https://youtu.be/dRpsoaCI0QA)
 
 **Documentation:** Here you will find all of the documentation for operating the device such as the User Guide and the Assembly guide which will help you set-up and run your device smoothly.
 
+## Conclusion
+
 We hope that you wil find inspiration from our design and that it will help you with your projects! 
 
 If you have any comments, questions or suggestions you can reach out to our team through raphael.hotter@mail.mcgill.ca
+
+Good luck with your projects and happy creating! 
