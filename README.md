@@ -12,13 +12,13 @@ Here is a [video](https://youtu.be/5ufh_80dSsk) with an overview of our design.
 You can also check out our [in depth design video](https://youtu.be/dRpsoaCI0QA) and [public announcement video](https://youtu.be/4-jjhEgUjkQ).
 
 ## Folder Structure
-**Mechanical:** Here you will find everything you need to construct the device including the bill of materials and the CAD files.
+**Mechanical:** Everything you need to construct the device including the bill of materials and the CAD files.
 
-**Software:** Here you will find all of our Breeze ventilator code which includes code for both the interface (running on the Raspberry Pi 4) and the firmware (running on the Arduino Mega).
+**Software:** Breeze ventilator code which includes code for both the interface (running on the Raspberry Pi 4) and the firmware (running on the Arduino Mega).
 
-**Electronics:** Here you will find the PCBs and the circuit diagrams.
+**Electronics:** PCBs and the circuit diagrams.
 
-**Documentation:** Here you will find all of the documentation for operating the device such as the User Guide and the Assembly guide which will help you set-up and run your device smoothly.
+**Documentation:** Documentation for operating the device such as the User Guide and the Assembly guide which will help you set-up and run your device smoothly.
 
 ## Conclusion
 
