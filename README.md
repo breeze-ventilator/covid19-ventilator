@@ -9,6 +9,9 @@ Here is a [video](https://youtu.be/5ufh_80dSsk) with an overview of our design.
   </a>
 </p>
 
+Here is the operational diagram of our design to help you visualize our design: 
+
+
 You can also check out our [in depth design video](https://youtu.be/dRpsoaCI0QA) and [public announcement video](https://youtu.be/4-jjhEgUjkQ).
 
 ## Folder Structure
