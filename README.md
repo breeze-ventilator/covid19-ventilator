@@ -25,7 +25,7 @@ You can also check out our [in depth design video](https://youtu.be/dRpsoaCI0QA)
 
 ## Conclusion
 
-The Breeze Ventilator was built during a design sprint and was never trully completed such that it could be safely used as a functioning ventilator. Nevertheless we hope that you wil find inspiration from our design and that it will help you with your projects! 
+The Breeze Ventilator was built during a design sprint and is not ready to be safely used as a functioning ventilator. Nevertheless, we hope that you wil find inspiration from our design and that it will help you with your projects! 
 
 If you have any comments, questions or suggestions you can reach out to our team through raphael.hotter@mail.mcgill.ca
 
